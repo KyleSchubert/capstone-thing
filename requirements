@@ -1,72 +1,72 @@
 Requirements
 
 Map
-- Randomly-generated branching map of a fixed height.
-- Map nodes connect to other nodes but you can only move forward toward the boss room
-- Only 1 boss room
-- Only 1 starting room
-- Maximum of 4 nodes per depth
+[ ] Randomly-generated branching map of a fixed height.
+[ ] Map nodes connect to other nodes but you can only move forward toward the boss room
+[ ] Only 1 boss room
+[ ] Only 1 starting room
+[ ] Maximum of 4 nodes per depth
 
 Map Nodes
-- A node can either connect to 1 next node or 2 next nodes that are adjacent (no zig-zagging across the entire map)
-- x and y Positions of nodes randomized on the map
-- content of the nodes mostly randomized
-	- Only 1 boss room, only 1 starting room, and then guaranteed 1 resting room before the boss room
-- Can be a normal battle, elite battle, starting node, boss battle, shop, rest area, random event, treasure
-	- The type of node determines the appearance of the node
-- Can be clicked to travel to it if the previous node connects to it
-- Is highlighted when it can be traveled to
+[ ] A node can either connect to 1 next node or 2 next nodes that are adjacent (no zig-zagging across the entire map)
+[ ] x and y Positions of nodes randomized on the map
+[ ] content of the nodes mostly randomized
+	[ ] Only 1 boss room, only 1 starting room, and then guaranteed 1 resting room before the boss room
+[ ] Can be a normal battle, elite battle, starting node, boss battle, shop, rest area, random event, treasure
+	[ ] The type of node determines the appearance of the node
+[ ] Can be clicked to travel to it if the previous node connects to it
+[ ] Is highlighted when it can be traveled to
 
 During Battles
-- Player has by default 3 energy refreshed at the start of each turn
-- Player draws by default 5 cards at the start of each turn
-- HP persists across battles
+[ ] Player has by default 3 energy refreshed at the start of each turn
+[ ] Player draws by default 5 cards at the start of each turn
+[ ] HP persists across battles
 	Cards		
-		- Player spends energy to play cards unless a card is free
-		- Can be made to target a specific enemy or hit all enemies
-		- Deal damage to enemies, inflict a debuff on enemies, heal the player, do nothing, or buff the player
-		- Go into the discard pile once used
-		- Discard pile shuffled into draw pile once the draw pile is empty
+		[ ] Player spends energy to play cards unless a card is free
+		[ ] Can be made to target a specific enemy or hit all enemies
+		[ ] Deal damage to enemies, inflict a debuff on enemies, heal the player, do nothing, or buff the player
+		[ ] Go into the discard pile once used
+		[ ] Discard pile shuffled into draw pile once the draw pile is empty
 	Enemies
-		- Have HP
-		- Are of a specific type, which grants them different HP values and abilities
-		- Uses 1 ability when it is their turn
-		- The ability that they will use when it is their turn is shown above them by an icon and damage number, and with a tooltip on hover
+		[ ] Have HP
+		[ ] Are of a specific type, which grants them different HP values and abilities
+		[ ] Uses 1 ability when it is their turn
+		[ ] The ability that they will use when it is their turn is shown above them by an icon and damage number, and with a tooltip on hover
 	
 After Battles
-- Player receives in-game currency to spend at shops
-- Player receives a choice of 3 cards to add to their deck
-- If it was an elite battle, player receives a random artifact item and more in-game currency
-- If it was a boss battle, player receives a choice of 3 high-tier artifact items, more in-game currency, and in-game currency that persists between runs
+[ ] Player receives in-game currency to spend at shops
+[ ] Player receives a choice of 3 cards to add to their deck
+[ ] If it was an elite battle, player receives a random artifact item and more in-game currency
+[ ] If it was a boss battle, player receives a choice of 3 high-tier artifact items, more in-game currency, and in-game currency that persists between runs
 
 Shops
-- Player can pick from 8 cards to buy
-- Player can pick from 3 artifacts to buy
-- Player can pay to remove a card from their deck
-- Player can pay to upgrade a card in their deck
+[ ] Player can pick from 8 cards to buy
+[ ] Player can pick from 3 artifacts to buy
+[ ] Player can pay to remove a card from their deck
+[ ] Player can pay to upgrade a card in their deck
 
 Rest area
-- Player can rest to restore HP
-- Player can upgrade 1 cards in their deck
-- Player can double the rewards of the next elite or boss battle but make it more difficult
+[ ] Player can rest to restore HP
+[ ] Player can upgrade 1 cards in their deck
+[ ] Player can double the rewards of the next elite or boss battle but make it more difficult
 
 Main menu
-- Start game button
-- Exit game button
-- Upgrades button
+[ ] Start game button
+[X] Exit game button
+[ ] Upgrades button
 
 Upgrades menu
-- Player can spend their in-game currency that persists between runs to buy permanent upgrades for all future runs
+[ ] Player can spend their in-game currency that persists between runs to buy permanent upgrades for all future runs
 
 Starting the game
-- Player receives a choice of 5 artifacts or 1 of 5 upgraded powerful cards
-- Player starts with some in-game currency
-- Player starts with 10 cards, consisting of comparatively weak, un-upgraded defensive and offensive cards.
+[ ] Player receives a choice of 5 artifacts or 1 of 5 upgraded powerful cards
+[ ] Player starts with some in-game currency
+[ ] Player starts with 10 cards, consisting of comparatively weak, un-upgraded defensive and offensive cards.
 
 Game ending
-- The player sees how long the game took and how much persistent in-game currency they earned
+[ ] The player sees how long the game took and how much persistent in-game currency they earned
 	Winning
-	- The player receives much more persistent in-game currency
+	[ ] The player receives much more persistent in-game currency
 
 
 
