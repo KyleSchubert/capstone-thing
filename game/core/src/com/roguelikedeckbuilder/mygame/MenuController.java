@@ -15,29 +15,16 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import static com.roguelikedeckbuilder.mygame.MyGame.*;
 
 public class MenuController {
-    ScreenViewport viewportForStage;
-    Image persistentCurrencyCounterImage;
-    Stage mainMenuStage;
-    Stage pauseMenuStage;
-    Stage resultsMenuStage;
-    Stage upgradesMenuStage;
-    Stage settingsMenuStage;
-    ImageButton playButton;
-    ImageButton upgradesButton;
-    ImageButton settingsButton;
-    ImageButton exitButton;
-    ImageButton resumeButton;
-    ImageButton giveUpButton;
-    ImageButton pauseSettingsButton;
-    ImageButton mainMenuButton;
-    ImageButton upgradesBackButton;
-    ImageButton settingsBackButton;
-    ImageButton settingsConfirmButton;
-    Image darkTransparentScreen;
-    Image pauseBackground;
-    Image resultsBackground;
-    Image settingsBackground;
-    Image upgradesBackground;
+    private Stage mainMenuStage;
+    private Stage pauseMenuStage;
+    private Stage resultsMenuStage;
+    private Stage upgradesMenuStage;
+    private Stage settingsMenuStage;
+    private Image darkTransparentScreen;
+    private Image pauseBackground;
+    private Image resultsBackground;
+    private Image settingsBackground;
+    private Image upgradesBackground;
 
     public enum MenuState {
         MAIN_MENU, PLAYING, PAUSED, RESULTS, UPGRADES, SETTINGS_BACK, SETTINGS
@@ -53,7 +40,7 @@ public class MenuController {
 
     public void create(OrthographicCamera camera) {
         // For the UI and menus
-        viewportForStage = new ScreenViewport(camera);
+        ScreenViewport viewportForStage = new ScreenViewport(camera);
         viewportForStage.setUnitsPerPixel(SCALE_FACTOR);
         mainMenuStage = new Stage(viewportForStage);
         pauseMenuStage = new Stage(viewportForStage);
@@ -64,25 +51,25 @@ public class MenuController {
         Gdx.input.setInputProcessor(mainMenuStage);
 
         // Load the in-game currency counter
-        persistentCurrencyCounterImage = new Image(new Texture(Gdx.files.internal("ITEMS/doubloon.png")));
+        Image persistentCurrencyCounterImage = new Image(new Texture(Gdx.files.internal("ITEMS/doubloon.png")));
         persistentCurrencyCounterImage.setSize(29 * SCALE_FACTOR, 30 * SCALE_FACTOR);
         mainMenuStage.addActor(persistentCurrencyCounterImage);
 
         // Menu buttons below
         // PLAY button
-        playButton = newImageButtonFrom("play", MenuState.PLAYING);
+        ImageButton playButton = newImageButtonFrom("play", MenuState.PLAYING);
         mainMenuStage.addActor(playButton);
 
         // UPGRADES button
-        upgradesButton = newImageButtonFrom("upgrades", MenuState.UPGRADES);
+        ImageButton upgradesButton = newImageButtonFrom("upgrades", MenuState.UPGRADES);
         mainMenuStage.addActor(upgradesButton);
 
         // SETTINGS button
-        settingsButton = newImageButtonFrom("settings", MenuState.SETTINGS);
+        ImageButton settingsButton = newImageButtonFrom("settings", MenuState.SETTINGS);
         mainMenuStage.addActor(settingsButton);
 
         // EXIT button
-        exitButton = new ImageButton(
+        ImageButton exitButton = new ImageButton(
                 new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("MENU BUTTONS/exit/default.png")))),
                 new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("MENU BUTTONS/exit/hover.png"))))
         );
@@ -125,36 +112,36 @@ public class MenuController {
 
         // Pause menu buttons
         // Resume button
-        resumeButton = newImageButtonFrom("resume", MenuState.PLAYING);
+        ImageButton resumeButton = newImageButtonFrom("resume", MenuState.PLAYING);
         pauseMenuStage.addActor(resumeButton);
 
         // Settings button
-        pauseSettingsButton = newImageButtonFrom("settings", MenuState.SETTINGS);
+        ImageButton pauseSettingsButton = newImageButtonFrom("settings", MenuState.SETTINGS);
         pauseMenuStage.addActor(pauseSettingsButton);
 
         // Give up button
-        giveUpButton = newImageButtonFrom("give up", MenuState.RESULTS);
+        ImageButton giveUpButton = newImageButtonFrom("give up", MenuState.RESULTS);
         pauseMenuStage.addActor(giveUpButton);
 
         // Results menu buttons
         // Main menu button
-        mainMenuButton = newImageButtonFrom("main menu", MenuState.MAIN_MENU);
+        ImageButton mainMenuButton = newImageButtonFrom("main menu", MenuState.MAIN_MENU);
         resultsMenuStage.addActor(mainMenuButton);
 
         // Upgrades menu buttons
         // Back button
-        upgradesBackButton = newImageButtonFrom("back", MenuState.MAIN_MENU);
+        ImageButton upgradesBackButton = newImageButtonFrom("back", MenuState.MAIN_MENU);
         upgradesMenuStage.addActor(upgradesBackButton);
 
         // Settings menu buttons
         // Back button
         // TODO: this will need additional code to discard the changed settings
-        settingsBackButton = newImageButtonFrom("back", MenuState.SETTINGS_BACK);
+        ImageButton settingsBackButton = newImageButtonFrom("back", MenuState.SETTINGS_BACK);
         settingsMenuStage.addActor(settingsBackButton);
 
         // confirm button
         // TODO: this will need additional code to save and apply the changed settings
-        settingsConfirmButton = newImageButtonFrom("confirm", MenuState.SETTINGS_BACK);
+        ImageButton settingsConfirmButton = newImageButtonFrom("confirm", MenuState.SETTINGS_BACK);
         settingsMenuStage.addActor(settingsConfirmButton);
 
         setMenuState(MenuState.MAIN_MENU);
