@@ -26,6 +26,13 @@ Roguelike deckbuilder in Java using libGDX
 - [ ] HP persists across battles
 
 
+<b>Not in battles</b>
+- [ ] Amount of temporary currency the player has is visible
+- [ ] The time elapsed in the current round is visible
+- [ ] The player can see how much health their character has
+- [ ] The player can click on something to view their deck
+
+
 <b>Cards</b>
 - [ ] Player spends energy to play cards unless a card is free
 - [ ] Can be made to target a specific enemy or hit all enemies
@@ -62,12 +69,39 @@ Roguelike deckbuilder in Java using libGDX
 
 
 <b>Main menu</b>
-- [ ] Start game button<br>
+- [x] Start game button<br>
 - [x] Exit game button
-- [ ] Upgrades button
+- [x] Upgrades button
+- [x] Settings button
+- [ ] Has a background
+- [ ] Music plays
+- [ ] Has a title
+- [ ] Shows a version number in the bottom left
+
+
+<b>Pause menu</b>
+- [x] Pauses the game
+- [x] Has resume button
+- [x] Has settings button
+- [x] Has give up button
+
+
+<b>Settings menu</b>
+- [x] Has a back button
+- [ ] Has a music volume slider
+- [ ] Has a sound effects volume slider
+
+
+<b>Results menu</b>
+- [x] Has main menu button
+- [ ] Shows how far the player got
+- [ ] Shows the time spent playing that round
+- [ ] Shows how much persistent currency the player earned
+- [ ] Shows if the player won or lost
 
 
 <b>Upgrades menu</b>
+- [x] Has a back button
 - [ ] Player can spend their in-game currency that persists between runs to buy permanent upgrades for all future runs
 
 
@@ -77,12 +111,6 @@ Roguelike deckbuilder in Java using libGDX
 - [ ] Player starts with 10 cards, consisting of comparatively weak, un-upgraded defensive and offensive cards.
 
 
-<b>Game ending</b>
-- [ ] The player sees how long the game took and how much persistent in-game currency they earned
-
-
 <b>Winning</b>
 - [ ] The player receives much more persistent in-game currency
-
-
 
