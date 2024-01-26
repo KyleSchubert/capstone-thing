@@ -38,7 +38,7 @@ public class MyGame extends ApplicationAdapter {
         font.getData().setScale(SCALE_FACTOR, SCALE_FACTOR);
 
         amountOfPersistentCurrency = 0;
-        
+
         menuController = new MenuController();
         menuController.create(camera);
     }
@@ -47,7 +47,7 @@ public class MyGame extends ApplicationAdapter {
     @Override
     public void render() {
         float elapsedTime = stepWorld();
-        ScreenUtils.clear(0.5f, 0.5f, 0.2f, 1);
+        ScreenUtils.clear(0.24f, 0.35f, 0.42f, 1);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         viewport.apply();

@@ -20,6 +20,7 @@ public class MenuController {
     private Stage resultsMenuStage;
     private Stage upgradesMenuStage;
     private Stage settingsMenuStage;
+    private Map map;
     private Image darkTransparentScreen;
     private Image pauseBackground;
     private Image resultsBackground;
@@ -27,7 +28,7 @@ public class MenuController {
     private Image upgradesBackground;
 
     public enum MenuState {
-        MAIN_MENU, PLAYING, PAUSED, RESULTS, UPGRADES, SETTINGS_BACK, SETTINGS
+        MAIN_MENU, PLAYING, MAP, PAUSED, RESULTS, UPGRADES, SETTINGS_BACK, SETTINGS
     }
 
     protected boolean isGameplayPaused;
@@ -37,6 +38,7 @@ public class MenuController {
     private boolean isDrawResultsMenu;
     private boolean isDrawUpgradesMenu;
     private boolean isDrawSettingsMenu;
+    private boolean isDrawMapMenu;
 
     public void create(OrthographicCamera camera) {
         // For the UI and menus
@@ -47,6 +49,10 @@ public class MenuController {
         resultsMenuStage = new Stage(viewportForStage);
         upgradesMenuStage = new Stage(viewportForStage);
         settingsMenuStage = new Stage(viewportForStage);
+
+        map = new Map(viewportForStage);
+        map.generateMap();
+
 
         Gdx.input.setInputProcessor(mainMenuStage);
 
@@ -148,6 +154,10 @@ public class MenuController {
     }
 
     public void batch(float elapsedTime, String timeText, int amountOfPersistentCurrency) {
+        if (this.isDrawMapMenu) {
+            map.drawMap(batch);
+        }
+
         if (this.isDrawMainMenu) {
             mainMenuStage.getActors().get(0).setPosition(15.5f, 14); // persistentCurrencyCounterImage
             mainMenuStage.getActors().get(1).setPosition(2, 18); // playButton
@@ -160,6 +170,8 @@ public class MenuController {
             font.draw(batch, "x " + amountOfPersistentCurrency, 17.3f, 15.3f); // text for currency counter
         } else {
             font.draw(batch, timeText, 68, 45); // text for time elapsed in game
+            // Draw the map stuff
+            map.batch(elapsedTime);
         }
 
 
@@ -244,12 +256,14 @@ public class MenuController {
                 setDrawResultsMenu(false);
                 setDrawUpgradesMenu(false);
                 setDrawSettingsMenu(false);
+                setDrawMapMenu(false);
                 break;
             case PLAYING:
                 setGameplayPaused(false);
                 setDrawMainMenu(false);
                 setDrawDarkTransparentScreen(false);
                 setDrawPauseMenu(false);
+                setDrawMapMenu(true);
                 break;
             case UPGRADES:
                 Gdx.input.setInputProcessor(upgradesMenuStage);
@@ -317,6 +331,10 @@ public class MenuController {
 
     private void setGameplayPaused(boolean gameplayPaused) {
         this.isGameplayPaused = gameplayPaused;
+    }
+
+    public void setDrawMapMenu(boolean drawMapMenu) {
+        this.isDrawMapMenu = drawMapMenu;
     }
 
     private ImageButton newImageButtonFrom(String buttonInternalFolderName, MenuState menuState) {
