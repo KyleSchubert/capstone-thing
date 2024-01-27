@@ -9,6 +9,7 @@ Roguelike deckbuilder in Java using libGDX
 - [x] Only 1 boss room
 - [x] Only 1 starting room
 - [x] Controls for generation of map nodes
+- [ ] A key for what the map node icons mean
 
 
 <b>Map Nodes</b>
