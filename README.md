@@ -4,20 +4,21 @@ Roguelike deckbuilder in Java using libGDX
 <h1>Requirements</h1>
 
 <b>Map</b>
-- [ ] Randomly-generated branching map of a fixed height.
-- [ ] Map nodes connect to other nodes but you can only move forward toward the boss room
-- [ ] Only 1 boss room
-- [ ] Only 1 starting room
-- [ ] Maximum of 4 nodes per depth
+- [x] Randomly-generated branching map of a fixed height.
+- [x] Map nodes connect to other nodes but you can only move forward toward the boss room
+- [x] Only 1 boss room
+- [x] Only 1 starting room
+- [x] Controls for generation of map nodes
 
 
 <b>Map Nodes</b>
-- [ ] A node can either connect to 1 next node or 2 next nodes that are adjacent (no zig-zagging across the entire map)
-- [ ] x and y Positions of nodes randomized on the map
-- [ ] content of the nodes mostly randomized (Only 1 boss room, only 1 starting room, and then guaranteed 1 resting room before the boss room)
-- [ ] Can be a normal battle, elite battle, starting node, boss battle, shop, rest area, random event, treasure (The type of node determines the appearance of the node)
+- [x] (NOTE: THIS CAN BE CHANGED WITH THE `MAX_NEXT_CONNECTIONS_PER_NODE` constant.) A node can either connect to 1 next node or 2 next nodes that are adjacent (no zig-zagging across the entire map)
+- [x] x and y Positions of nodes randomized on the map
+- [x] content of the nodes mostly randomized (Only 1 boss room, only 1 starting room, and then guaranteed 1 resting room before the boss room)
+- [x] Can be a normal battle, elite battle, starting node, boss battle, shop, rest area, random event, treasure (The type of node determines the appearance of the node)
 - [ ] Can be clicked to travel to it if the previous node connects to it
 - [ ] Is highlighted when it can be traveled to
+- [x] Lines exist to show paths between nodes
 
 
 <b>During Battles</b>
