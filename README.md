@@ -1,5 +1,16 @@
 <h1>Capstone thing for the one class</h1>
 Roguelike deckbuilder in Java using libGDX
+<details><summary>Images of parts</summary>
+  <details><summary>Menu</summary>
+   
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/99c8f09e-0fc0-4fd7-8ae8-a605c67f2879)
+   </details>
+   
+   <details><summary>Map</summary>
+   
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/3fd199f4-907c-4547-8824-537ed4b2071f)
+   </details>
+</details>
 
 <h1>Requirements</h1>
 
