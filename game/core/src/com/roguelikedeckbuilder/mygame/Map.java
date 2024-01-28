@@ -43,14 +43,19 @@ public class Map {
     private static final int MAX_TREASURE = 6;
     private static final int NO_REST_NODES_BEFORE_STAGE_NUMBER = 3;
     private static final int NO_SHOP_NODES_BEFORE_STAGE_NUMBER = 4;
+    private int currentNodeStage = 0;
+    private int currentNodeIndex = 0;
+    private final ClickListener hoverAndClickListener;
 
-    public Map(ScreenViewport viewportForStage) {
+    public Map(ScreenViewport viewportForStage, ClickListener hoverAndClickListener) {
         mapStage = new Stage(viewportForStage);
         mapBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/map background.png")));
         mapBackground.setSize(1442 * SCALE_FACTOR, 952 * SCALE_FACTOR);
 
         mapNodes = new Array<>();
         shapeRenderer = new ShapeRenderer();
+
+        this.hoverAndClickListener = hoverAndClickListener;
 
         mapNodeTypeWeights = new HashMap<>();
         mapNodeTypeWeights.put(MapNodeType.NORMAL_BATTLE, 60);
@@ -61,23 +66,34 @@ public class Map {
         mapNodeTypeWeights.put(MapNodeType.TREASURE, 10);
 
         weightSum = mapNodeTypeWeights.values().stream().reduce(0, Integer::sum);
+
+        reset();
     }
 
     public void batch(float elapsedTime) {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for (int stageNumber = 0; stageNumber < MAX_STAGES; stageNumber++) {
             for (int i = 0; i < mapNodes.get(stageNumber).size; i++) {
-                shapeRenderer.setColor(1, 0, 0, 1);
-
                 MapNode currentNode = getMapNode(stageNumber, i);
 
                 for (int connection : getMapNode(stageNumber, i).nextConnections) {
                     MapNode nextNode = getMapNode(stageNumber + 1, connection);
-                    shapeRenderer.line(
+
+                    if (nextNode.isCompleted() && currentNode.isCompleted()) {
+                        shapeRenderer.setColor(0.6f, 0.6f, 0.6f, 1);
+                    } else if (stageNumber == currentNodeStage && i == currentNodeIndex) {
+                        // If the node is the current node, show the player's next option paths in a different color
+                        shapeRenderer.setColor(0, 1, 1, 1);
+                    } else {
+                        shapeRenderer.setColor(0.4f, 0.3f, 0.3f, 1);
+                    }
+
+                    shapeRenderer.rectLine(
                             (currentNode.getPosX() + 1.5f) / SCALE_FACTOR,
                             (currentNode.getPosY() + 1.5f) / SCALE_FACTOR,
                             (nextNode.getPosX() + 1.5f) / SCALE_FACTOR,
-                            (nextNode.getPosY() + 1.5f) / SCALE_FACTOR
+                            (nextNode.getPosY() + 1.5f) / SCALE_FACTOR,
+                            4
                     );
                 }
             }
@@ -194,14 +210,17 @@ public class Map {
             replaceOneRandomNodeByType(MapNodeType.TREASURE, MapNodeType.NORMAL_BATTLE);
             treasureNodeCount--;
         }
+
+        // Complete the start node
+        completeNode(0, 0);
     }
 
-    public void drawImagesAndAddActorsWithHoverListener(ClickListener hoverListener) {
+    public void drawImagesAndAddActors() {
         // Create and use the images of all nodes
         for (int stageNumber = 0; stageNumber < MAX_STAGES; stageNumber++) {
             for (int i = 0; i < mapNodes.get(stageNumber).size; i++) {
                 getMapNode(stageNumber, i).prepareNodeImage();
-                getMapNode(stageNumber, i).getImage().addListener(hoverListener);
+                getMapNode(stageNumber, i).getImage().addListener(hoverAndClickListener);
                 getMapNode(stageNumber, i).getImage().setUserObject(getMapNode(stageNumber, i).getMapNodeData());
                 mapStage.addActor(getMapNode(stageNumber, i).getImage());
             }
@@ -298,6 +317,32 @@ public class Map {
         return results;
     }
 
+    public void completeNode(int stage, int index) {
+        getMapNode(stage, index).complete();
+        currentNodeStage = stage;
+        currentNodeIndex = index;
+
+        // If the node that was just completed was the last node
+        if (currentNodeStage == MAX_STAGES - 1) {
+            reset();
+        }
+    }
+
+    public boolean isValidChoice(int stage, int index) {
+        for (int nodeIndex : getMapNode(stage, index).previousConnections) {
+            if (stage - 1 == currentNodeStage && nodeIndex == currentNodeIndex) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void reset() {
+        mapStage.clear();
+        mapNodes.clear();
+        generateMap();
+        drawImagesAndAddActors();
+    }
 
     public void dispose() {
         mapStage.dispose();
@@ -325,6 +370,7 @@ public class Map {
         private final int stageNumberOfSelf;
         private final int indexOfSelf;
         private MapNodeType nodeType;
+        private boolean isCompleted = false;
 
         public MapNode(int stageNumber, int thisNodesFutureIndex, int numberOfNodesInThisStage) {
             nextConnections = new Array<>();
@@ -447,6 +493,14 @@ public class Map {
 
         public void addPreviousConnection(int nodeIndex) {
             this.previousConnections.add(nodeIndex);
+        }
+
+        public void complete() {
+            this.isCompleted = true;
+        }
+
+        public boolean isCompleted() {
+            return isCompleted;
         }
 
         public MapNodeData getMapNodeData() {

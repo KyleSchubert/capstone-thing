@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -55,34 +54,10 @@ public class MenuController {
         resultsMenuStage = new Stage(viewportForStage);
         upgradesMenuStage = new Stage(viewportForStage);
         settingsMenuStage = new Stage(viewportForStage);
-
-        map = new Map(viewportForStage);
-        map.generateMap();
-
         tooltip = new Tooltip(viewportForStage);
 
-        ClickListener hoverListener = new ClickListener() {
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, @Null Actor fromActor) {
-                // Get the MapNodeData object from the image actor that triggered the mouse over event
-                Map.MapNode.MapNodeData data = (Map.MapNode.MapNodeData) event.getTarget().getUserObject();
-
-                // Use the data
-                tooltip.useMapNodeData(data.nodeType(), data.stageNumberOfSelf(), data.indexOfSelf());
-                tooltip.setSize(data.tooltipSize());
-                tooltip.setLocation(data.tooltipLocation());
-
-                // Draw the tooltip
-                setDrawTooltipMenu(true);
-            }
-
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, @Null Actor toActor) {
-                setDrawTooltipMenu(false);
-            }
-        };
-        map.drawImagesAndAddActorsWithHoverListener(hoverListener);
-
+        ClickListener hoverAndClickListener = makeHoverAndClickListener();
+        map = new Map(viewportForStage, hoverAndClickListener);
 
         Gdx.input.setInputProcessor(mainMenuStage);
 
@@ -279,6 +254,42 @@ public class MenuController {
 
     public void resize(int width, int height) {
         mainMenuStage.getViewport().update(width, height, true);
+    }
+
+    private ClickListener makeHoverAndClickListener() {
+        return new ClickListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, @Null Actor fromActor) {
+                // Get the MapNodeData object from the image actor that triggered the mouse over event
+                Map.MapNode.MapNodeData data = (Map.MapNode.MapNodeData) event.getTarget().getUserObject();
+
+                // Use the data
+                tooltip.useMapNodeData(data.nodeType(), data.stageNumberOfSelf(), data.indexOfSelf());
+                tooltip.setSize(data.tooltipSize());
+                tooltip.setLocation(data.tooltipLocation());
+
+                // Draw the tooltip
+                setDrawTooltipMenu(true);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, @Null Actor toActor) {
+                setDrawTooltipMenu(false);
+            }
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // Get the MapNodeData object from the image actor that triggered the click event
+                Map.MapNode.MapNodeData data = (Map.MapNode.MapNodeData) event.getTarget().getUserObject();
+
+                // Check if the node is a valid choice
+                if (map.isValidChoice(data.stageNumberOfSelf(), data.indexOfSelf())) {
+                    // Mark it as completed
+                    map.completeNode(data.stageNumberOfSelf(), data.indexOfSelf());
+                }
+
+            }
+        };
     }
 
     public void setMenuState(MenuState menuState) {
