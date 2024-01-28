@@ -20,6 +20,7 @@ Roguelike deckbuilder in Java using libGDX
 - [ ] Can be clicked to travel to it if the previous node connects to it
 - [ ] Is highlighted when it can be traveled to
 - [x] Lines exist to show paths between nodes
+- [ ] Completing the boss node creates a new map
 
 
 <b>During Battles</b>
