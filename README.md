@@ -17,10 +17,11 @@ Roguelike deckbuilder in Java using libGDX
 - [x] x and y Positions of nodes randomized on the map
 - [x] content of the nodes mostly randomized (Only 1 boss room, only 1 starting room, and then guaranteed 1 resting room before the boss room)
 - [x] Can be a normal battle, elite battle, starting node, boss battle, shop, rest area, random event, treasure (The type of node determines the appearance of the node)
-- [ ] Can be clicked to travel to it if the previous node connects to it
-- [ ] Is highlighted when it can be traveled to
+- [x] Can be clicked to travel to it if the previous node connects to it
+- [x] Is highlighted when it can be traveled to
 - [x] Lines exist to show paths between nodes
-- [ ] Completing the boss node creates a new map
+- [x] Completing the boss node creates a new map
+- [ ] Clicking a node starts its event
 
 
 <b>During Battles</b>
