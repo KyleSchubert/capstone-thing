@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -25,7 +26,7 @@ public class Map {
 
     public HashMap<MapNodeType, Integer> mapNodeTypeWeights;
     public int weightSum;
-    private final Stage mapStage;
+    public final Stage mapStage;
     private final Image mapBackground;
     private final Array<Array<MapNode>> mapNodes;
     private static final int MAX_STAGES = 10; // Minimum of 2: 1 for start, 1 for boss.
@@ -68,10 +69,10 @@ public class Map {
             for (int i = 0; i < mapNodes.get(stageNumber).size; i++) {
                 shapeRenderer.setColor(1, 0, 0, 1);
 
-                MapNode currentNode = mapNodes.get(stageNumber).get(i);
+                MapNode currentNode = getMapNode(stageNumber, i);
 
-                for (int connection : mapNodes.get(stageNumber).get(i).nextConnections) {
-                    MapNode nextNode = mapNodes.get(stageNumber + 1).get(connection);
+                for (int connection : getMapNode(stageNumber, i).nextConnections) {
+                    MapNode nextNode = getMapNode(stageNumber + 1, connection);
                     shapeRenderer.line(
                             (currentNode.getPosX() + 1.5f) / SCALE_FACTOR,
                             (currentNode.getPosY() + 1.5f) / SCALE_FACTOR,
@@ -113,8 +114,8 @@ public class Map {
                 // Connect the starting node to all the next nodes, and connect the second-to-last nodes to the last node
                 if (stageNumber == 0 || stageNumber == MAX_STAGES - 2) {
                     for (int nodeIndex = 0; nodeIndex < mapNodes.get(stageNumber + 1).size; nodeIndex++) {
-                        mapNodes.get(stageNumber).get(i).addNextConnection(nodeIndex);
-                        mapNodes.get(stageNumber + 1).get(nodeIndex).addPreviousConnection(i);
+                        getMapNode(stageNumber, i).addNextConnection(nodeIndex);
+                        getMapNode(stageNumber + 1, nodeIndex).addPreviousConnection(i);
                     }
                 }
                 // Do not connect the final node to any next nodes
@@ -129,7 +130,7 @@ public class Map {
         for (int stageNumber = MAX_STAGES - 2; stageNumber > 0; stageNumber--) {
             for (int i = 0; i < mapNodes.get(stageNumber).size; i++) {
 
-                if (mapNodes.get(stageNumber).get(i).previousConnections.size == 0) {
+                if (getMapNode(stageNumber, i).previousConnections.size == 0) {
                     int targetStageNumber = stageNumber - 1;
                     addClosestConnectionsToNode(stageNumber, i, targetStageNumber);
                 }
@@ -193,14 +194,22 @@ public class Map {
             replaceOneRandomNodeByType(MapNodeType.TREASURE, MapNodeType.NORMAL_BATTLE);
             treasureNodeCount--;
         }
+    }
 
+    public void drawImagesAndAddActorsWithHoverListener(ClickListener hoverListener) {
         // Create and use the images of all nodes
         for (int stageNumber = 0; stageNumber < MAX_STAGES; stageNumber++) {
             for (int i = 0; i < mapNodes.get(stageNumber).size; i++) {
-                mapNodes.get(stageNumber).get(i).prepareNodeImage();
-                mapStage.addActor(mapNodes.get(stageNumber).get(i).getImage());
+                getMapNode(stageNumber, i).prepareNodeImage();
+                getMapNode(stageNumber, i).getImage().addListener(hoverListener);
+                getMapNode(stageNumber, i).getImage().setUserObject(getMapNode(stageNumber, i).getMapNodeData());
+                mapStage.addActor(getMapNode(stageNumber, i).getImage());
             }
         }
+    }
+
+    private MapNode getMapNode(int stageNumber, int i) {
+        return mapNodes.get(stageNumber).get(i);
     }
 
     private void replaceOneRandomNodeByType(MapNodeType undesiredType, MapNodeType desiredType) {
@@ -216,7 +225,7 @@ public class Map {
         int targetStage = nodes.get(randomIndex).stageNumberOfSelf;
         int targetIndex = nodes.get(randomIndex).indexOfSelf;
         System.out.println("Changed node at stage " + targetStage + " index " + targetIndex);
-        mapNodes.get(targetStage).get(targetIndex).nodeType = desiredType;
+        getMapNode(targetStage, targetIndex).nodeType = desiredType;
     }
 
     private void addClosestConnectionsToNode(int stageNumber, int i, int targetStageNumber) {
@@ -263,11 +272,11 @@ public class Map {
         // Use that order of indexes to add connections to the closest nodes
         for (int connection = 0; connection < nConnections; connection++) {
             if (targetStageNumber < stageNumber) {
-                mapNodes.get(targetStageNumber).get(sortedIndices[connection]).addNextConnection(i);
-                mapNodes.get(stageNumber).get(i).addPreviousConnection(sortedIndices[connection]);
+                getMapNode(targetStageNumber, sortedIndices[connection]).addNextConnection(i);
+                getMapNode(stageNumber, i).addPreviousConnection(sortedIndices[connection]);
             } else {
-                mapNodes.get(stageNumber).get(i).addNextConnection(sortedIndices[connection]);
-                mapNodes.get(targetStageNumber).get(sortedIndices[connection]).addPreviousConnection(i);
+                getMapNode(stageNumber, i).addNextConnection(sortedIndices[connection]);
+                getMapNode(targetStageNumber, sortedIndices[connection]).addPreviousConnection(i);
             }
         }
     }
@@ -289,7 +298,21 @@ public class Map {
         return results;
     }
 
-    private class MapNode {
+
+    public void dispose() {
+        mapStage.dispose();
+    }
+
+    public class MapNode {
+        public record MapNodeData(
+                int stageNumberOfSelf,
+                int indexOfSelf,
+                Map.MapNodeType nodeType,
+                Tooltip.Size tooltipSize,
+                Tooltip.Location tooltipLocation
+        ) {
+        }
+
         private Image nodeImage;
         private final float posX;
         private final float posY;
@@ -424,6 +447,23 @@ public class Map {
 
         public void addPreviousConnection(int nodeIndex) {
             this.previousConnections.add(nodeIndex);
+        }
+
+        public MapNodeData getMapNodeData() {
+            Tooltip.Location desiredLocation;
+            if (this.stageNumberOfSelf <= MAX_STAGES * 0.5) {
+                desiredLocation = Tooltip.Location.RIGHT;
+            } else {
+                desiredLocation = Tooltip.Location.LEFT;
+            }
+
+            return new MapNodeData(
+                    this.stageNumberOfSelf,
+                    this.indexOfSelf,
+                    this.nodeType,
+                    Tooltip.Size.SMALL,
+                    desiredLocation
+            );
         }
     }
 }

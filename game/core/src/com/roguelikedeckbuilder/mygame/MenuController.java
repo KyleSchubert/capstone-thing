@@ -4,12 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.*;
@@ -21,6 +25,7 @@ public class MenuController {
     private Stage upgradesMenuStage;
     private Stage settingsMenuStage;
     private Map map;
+    private Tooltip tooltip;
     private Image darkTransparentScreen;
     private Image pauseBackground;
     private Image resultsBackground;
@@ -39,6 +44,7 @@ public class MenuController {
     private boolean isDrawUpgradesMenu;
     private boolean isDrawSettingsMenu;
     private boolean isDrawMapMenu;
+    private boolean isDrawTooltipMenu;
 
     public void create(OrthographicCamera camera) {
         // For the UI and menus
@@ -52,6 +58,30 @@ public class MenuController {
 
         map = new Map(viewportForStage);
         map.generateMap();
+
+        tooltip = new Tooltip(viewportForStage);
+
+        ClickListener hoverListener = new ClickListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, @Null Actor fromActor) {
+                // Get the MapNodeData object from the image actor that triggered the mouse over event
+                Map.MapNode.MapNodeData data = (Map.MapNode.MapNodeData) event.getTarget().getUserObject();
+
+                // Use the data
+                tooltip.useMapNodeData(data.nodeType(), data.stageNumberOfSelf(), data.indexOfSelf());
+                tooltip.setSize(data.tooltipSize());
+                tooltip.setLocation(data.tooltipLocation());
+
+                // Draw the tooltip
+                setDrawTooltipMenu(true);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, @Null Actor toActor) {
+                setDrawTooltipMenu(false);
+            }
+        };
+        map.drawImagesAndAddActorsWithHoverListener(hoverListener);
 
 
         Gdx.input.setInputProcessor(mainMenuStage);
@@ -174,7 +204,12 @@ public class MenuController {
             map.batch(elapsedTime);
         }
 
+        batch.end();
+        batch.begin();
 
+        if (this.isDrawTooltipMenu) {
+            tooltip.batch(elapsedTime);
+        }
         if (this.isDrawDarkTransparentScreen) {
             // draw the dark transparent screen
             darkTransparentScreen.setPosition(0, 0);
@@ -238,6 +273,8 @@ public class MenuController {
         resultsMenuStage.dispose();
         upgradesMenuStage.dispose();
         settingsMenuStage.dispose();
+        tooltip.dispose();
+        map.dispose();
     }
 
     public void resize(int width, int height) {
@@ -259,6 +296,7 @@ public class MenuController {
                 setDrawMapMenu(false);
                 break;
             case PLAYING:
+                Gdx.input.setInputProcessor(map.mapStage);
                 setGameplayPaused(false);
                 setDrawMainMenu(false);
                 setDrawDarkTransparentScreen(false);
@@ -299,8 +337,8 @@ public class MenuController {
                 setDrawDarkTransparentScreen(true);
                 setDrawPauseMenu(false);
                 setDrawResultsMenu(true);
+                setDrawTooltipMenu(false);
                 break;
-
         }
     }
 
@@ -335,6 +373,10 @@ public class MenuController {
 
     public void setDrawMapMenu(boolean drawMapMenu) {
         this.isDrawMapMenu = drawMapMenu;
+    }
+
+    public void setDrawTooltipMenu(boolean drawTooltipMenu) {
+        this.isDrawTooltipMenu = drawTooltipMenu;
     }
 
     private ImageButton newImageButtonFrom(String buttonInternalFolderName, MenuState menuState) {
