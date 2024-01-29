@@ -43,7 +43,7 @@ Roguelike deckbuilder in Java using libGDX
 
 <b>Not in battles</b>
 - [ ] Amount of temporary currency the player has is visible
-- [ ] The time elapsed in the current round is visible
+- [x] The time elapsed in the current round is visible
 - [ ] The player can see how much health their character has
 - [ ] The player can click on something to view their deck
 
@@ -121,6 +121,7 @@ Roguelike deckbuilder in Java using libGDX
 
 
 <b>Starting the game</b>
+- [x] A menu appears with options for the player to choose from
 - [ ] Player receives a choice of 5 artifacts or 1 of 5 upgraded powerful cards
 - [ ] Player starts with some in-game currency
 - [ ] Player starts with 10 cards, consisting of comparatively weak, un-upgraded defensive and offensive cards.
