@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.*;
@@ -16,22 +18,25 @@ public class Tooltip {
     }
 
     public enum Location {
-        LEFT, RIGHT
+        LEFT, RIGHT, MIDDLE
     }
 
     private final BitmapFont tooltipFont;
-    private final Stage tooltipStage;
+    public final Stage tooltipStage;
     private String tooltipTitleText;
     private String tooltipBodyText;
     private Size size;
     private Location location;
+    private boolean isShowingItems = false;
     private static final Vector2 leftPosition = new Vector2(1, 8);
     private static final Vector2 rightPosition = new Vector2(71, 8);
+    private static final Vector2 middlePosition = new Vector2(21.2f, 14);
     private static final Vector2 offScreen = new Vector2(9999, 9999);
 
-    Tooltip(ScreenViewport viewportForStage) {
+    Tooltip(ScreenViewport viewportForStage, ClickListener clickListenerForItems) {
         tooltipStage = new Stage(viewportForStage);
         size = Size.SMALL;
+        location = Location.LEFT;
 
         tooltipFont = new BitmapFont(Gdx.files.internal("font2.fnt"), false);
         tooltipFont.setUseIntegerPositions(false);
@@ -39,6 +44,8 @@ public class Tooltip {
 
         // Tooltip text
         tooltipTitleText = "";
+        tooltipBodyText = "";
+
         // Tooltip backgrounds
         Image tooltipBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/tooltip.png")));
         tooltipBackground.setSize(580 * SCALE_FACTOR, 490 * SCALE_FACTOR);
@@ -54,20 +61,27 @@ public class Tooltip {
         smallTooltipBackground.setSize(290 * SCALE_FACTOR, 245 * SCALE_FACTOR);
         smallTooltipBackground.setPosition(offScreen.x, offScreen.y);
         tooltipStage.addActor(smallTooltipBackground);
+
+        // 3 Items
+        for (int i = 0; i < 3; i++) {
+            Image item = new Image(new Texture(Gdx.files.internal("items/default.png")));
+            item.setSize(29 * SCALE_FACTOR * 2, 31 * SCALE_FACTOR * 2);
+            item.setPosition(offScreen.x, offScreen.y);
+            item.addListener(clickListenerForItems);
+            tooltipStage.addActor(item);
+        }
     }
 
     public void batch(float elapsedTime) {
-        tooltipStage.getActors().get(0).setPosition(offScreen.x, offScreen.y); // Tooltip background
-        tooltipStage.getActors().get(1).setPosition(offScreen.x, offScreen.y); // Medium tooltip background
-        tooltipStage.getActors().get(2).setPosition(offScreen.x, offScreen.y); // Small tooltip background
-
         float x = 0, y = 0, titleX = 0, bodyX = 0;
+        float usedTooltipWidth = tooltipStage.getActors().get(size.ordinal()).getWidth();
+        float usedTooltipHeight = tooltipStage.getActors().get(size.ordinal()).getHeight();
+
         switch (location) {
             case LEFT -> {
                 x = leftPosition.x;
                 y = leftPosition.y;
                 tooltipStage.getActors().get(2).setScaleX(1);
-                float usedTooltipWidth = tooltipStage.getActors().get(size.ordinal()).getWidth();
                 titleX = 1 + x;
                 bodyX = x + usedTooltipWidth - 2.3f;
             }
@@ -75,22 +89,30 @@ public class Tooltip {
                 x = rightPosition.x;
                 y = rightPosition.y;
                 tooltipStage.getActors().get(2).setScaleX(-1);
-                float usedTooltipWidth = tooltipStage.getActors().get(size.ordinal()).getWidth();
                 titleX = 1 + x - usedTooltipWidth;
                 bodyX = x - 2.3f;
             }
+            case MIDDLE -> {
+                x = middlePosition.x;
+                y = middlePosition.y;
+                tooltipStage.getActors().get(2).setScaleX(1);
+                titleX = 1 + x;
+                bodyX = x + usedTooltipWidth - 2.3f;
+            }
         }
+        float titleY = y + usedTooltipHeight - 1;
 
         tooltipStage.getActors().get(size.ordinal()).setPosition(x, y); // Tooltip background
         tooltipStage.getViewport().apply();
         tooltipStage.act(elapsedTime);
         tooltipStage.draw();
 
-        font.draw(batch, tooltipTitleText, titleX, 11.3f + y); // Text for tooltip title
+        font.draw(batch, tooltipTitleText, titleX, titleY); // Text for tooltip title
         tooltipFont.draw(batch, tooltipBodyText, bodyX, 1.6f + y); // Text for tooltip body
     }
 
     public void useMapNodeData(Map.MapNodeType mapNodeType, int stageNumber, int index) {
+        resetPositionsOffscreen();
         String typeText = "";
         switch (mapNodeType) {
             case NORMAL_BATTLE -> typeText = "Normal Monster";
@@ -115,8 +137,33 @@ public class Tooltip {
         this.location = location;
     }
 
+    public void artifactReward() {
+        resetPositionsOffscreen();
+        setSize(Tooltip.Size.LARGE);
+        setLocation(Tooltip.Location.MIDDLE);
+        tooltipTitleText = "Choose an item to start with";
+        isShowingItems = true;
+
+        float x = middlePosition.x;
+        float y = middlePosition.y;
+
+        tooltipStage.getActors().get(3).setPosition(x + 2, y + 17); // Item 1
+        tooltipStage.getActors().get(4).setPosition(x + 2, y + 10); // Item 2
+        tooltipStage.getActors().get(5).setPosition(x + 2, y + 3); // Item 3
+    }
+
     public void dispose() {
         tooltipStage.dispose();
         tooltipFont.dispose();
+    }
+
+    public void stopShowingItems() {
+        isShowingItems = false;
+    }
+
+    private void resetPositionsOffscreen() {
+        for (Actor actor : tooltipStage.getActors()) {
+            actor.setPosition(offScreen.x, offScreen.y);
+        }
     }
 }

@@ -56,7 +56,7 @@ public class MenuController {
         resultsMenuStage = new Stage(viewportForStage);
         upgradesMenuStage = new Stage(viewportForStage);
         settingsMenuStage = new Stage(viewportForStage);
-        tooltip = new Tooltip(viewportForStage);
+        tooltip = new Tooltip(viewportForStage, makeClickListenerThatCallsSetMenuState(MenuState.MAP));
 
         ClickListener hoverAndClickListener = makeHoverAndClickListener();
         map = new Map(viewportForStage, hoverAndClickListener);
@@ -72,7 +72,7 @@ public class MenuController {
 
         // Menu buttons below
         // PLAY button
-        ImageButton playButton = newImageButtonFrom("play", MenuState.MAP);
+        ImageButton playButton = newImageButtonFrom("play", MenuState.START_REWARDS);
         mainMenuStage.addActor(playButton);
 
         // UPGRADES button
@@ -186,13 +186,16 @@ public class MenuController {
         batch.end();
         batch.begin();
 
-        if (this.isDrawTooltipMenu) {
-            tooltip.batch(elapsedTime);
-        }
         if (this.isDrawDarkTransparentScreen) {
             // draw the dark transparent screen
             darkTransparentScreen.setPosition(0, 0);
             darkTransparentScreen.draw(batch, 1);
+        }
+        
+        batch.end();
+        batch.begin();
+        if (this.isDrawTooltipMenu) {
+            tooltip.batch(elapsedTime);
         }
         if (this.isDrawPauseMenu) { // JUST for the pause menu background texture
             pauseBackground.setPosition(29.5f, 20);
@@ -296,6 +299,15 @@ public class MenuController {
         };
     }
 
+    private ClickListener makeClickListenerThatCallsSetMenuState(MenuState menuState) {
+        return new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                setMenuState(menuState);
+            }
+        };
+    }
+
     public void setMenuState(MenuState menuState) {
         switch (menuState) {
             case MAIN_MENU -> {
@@ -312,14 +324,12 @@ public class MenuController {
                 setDrawMapMenu(false);
             }
             case MAP -> {
+                setDrawTooltipMenu(false);
+                tooltip.stopShowingItems();
                 currentMenuState = MenuState.MAP;
                 Gdx.input.setInputProcessor(map.mapStage);
                 previousImportantMenuState = MenuState.MAP;
-                setGameplayPaused(false);
-                setDrawMainMenu(false);
                 setDrawDarkTransparentScreen(false);
-                setDrawPauseMenu(false);
-                setDrawMapMenu(true);
             }
             case UPGRADES -> {
                 currentMenuState = MenuState.UPGRADES;
@@ -353,8 +363,24 @@ public class MenuController {
                 setDrawResultsMenu(true);
                 setDrawTooltipMenu(false);
             }
+            case START_REWARDS -> {
+                tooltip.artifactReward();
+                currentMenuState = MenuState.START_REWARDS;
+                Gdx.input.setInputProcessor(tooltip.tooltipStage);
+                setDrawTooltipMenu(true);
+                setDrawDarkTransparentScreen(true);
+                setGameplayPaused(false);
+                setDrawMainMenu(false);
+                setDrawPauseMenu(false);
+                setDrawMapMenu(true);
+            }
+            case EVENT -> {
+            }
+            case STAGE_RESULTS -> {
+            }
             case COMBAT -> {
             }
+
         }
     }
 
