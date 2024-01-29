@@ -191,7 +191,7 @@ public class MenuController {
             darkTransparentScreen.setPosition(0, 0);
             darkTransparentScreen.draw(batch, 1);
         }
-        
+
         batch.end();
         batch.begin();
         if (this.isDrawTooltipMenu) {
@@ -325,7 +325,6 @@ public class MenuController {
             }
             case MAP -> {
                 setDrawTooltipMenu(false);
-                tooltip.stopShowingItems();
                 currentMenuState = MenuState.MAP;
                 Gdx.input.setInputProcessor(map.mapStage);
                 previousImportantMenuState = MenuState.MAP;

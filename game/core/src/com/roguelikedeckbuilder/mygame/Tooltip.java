@@ -27,7 +27,6 @@ public class Tooltip {
     private String tooltipBodyText;
     private Size size;
     private Location location;
-    private boolean isShowingItems = false;
     private static final Vector2 leftPosition = new Vector2(1, 8);
     private static final Vector2 rightPosition = new Vector2(71, 8);
     private static final Vector2 middlePosition = new Vector2(21.2f, 14);
@@ -142,7 +141,6 @@ public class Tooltip {
         setSize(Tooltip.Size.LARGE);
         setLocation(Tooltip.Location.MIDDLE);
         tooltipTitleText = "Choose an item to start with";
-        isShowingItems = true;
 
         float x = middlePosition.x;
         float y = middlePosition.y;
@@ -155,10 +153,6 @@ public class Tooltip {
     public void dispose() {
         tooltipStage.dispose();
         tooltipFont.dispose();
-    }
-
-    public void stopShowingItems() {
-        isShowingItems = false;
     }
 
     private void resetPositionsOffscreen() {
