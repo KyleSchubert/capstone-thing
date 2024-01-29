@@ -32,9 +32,11 @@ public class MenuController {
     private Image upgradesBackground;
 
     public enum MenuState {
-        MAIN_MENU, PLAYING, MAP, PAUSED, RESULTS, UPGRADES, SETTINGS_BACK, SETTINGS
+        MAIN_MENU, MAP, PAUSED, RESULTS, UPGRADES, SETTINGS_BACK, RESUME, SETTINGS, START_REWARDS, EVENT, STAGE_RESULTS, COMBAT
     }
 
+    private MenuState currentMenuState;
+    private MenuState previousImportantMenuState;
     protected boolean isGameplayPaused;
     private boolean isDrawMainMenu;
     private boolean isDrawDarkTransparentScreen;
@@ -60,6 +62,8 @@ public class MenuController {
         map = new Map(viewportForStage, hoverAndClickListener);
 
         Gdx.input.setInputProcessor(mainMenuStage);
+        currentMenuState = MenuState.MAIN_MENU;
+        previousImportantMenuState = MenuState.MAIN_MENU;
 
         // Load the in-game currency counter
         Image persistentCurrencyCounterImage = new Image(new Texture(Gdx.files.internal("ITEMS/doubloon.png")));
@@ -68,7 +72,7 @@ public class MenuController {
 
         // Menu buttons below
         // PLAY button
-        ImageButton playButton = newImageButtonFrom("play", MenuState.PLAYING);
+        ImageButton playButton = newImageButtonFrom("play", MenuState.MAP);
         mainMenuStage.addActor(playButton);
 
         // UPGRADES button
@@ -123,7 +127,7 @@ public class MenuController {
 
         // Pause menu buttons
         // Resume button
-        ImageButton resumeButton = newImageButtonFrom("resume", MenuState.PLAYING);
+        ImageButton resumeButton = newImageButtonFrom("resume", MenuState.RESUME);
         pauseMenuStage.addActor(resumeButton);
 
         // Settings button
@@ -294,8 +298,9 @@ public class MenuController {
 
     public void setMenuState(MenuState menuState) {
         switch (menuState) {
-            case MAIN_MENU:
+            case MAIN_MENU -> {
                 // GAME STARTS IN THIS STATE
+                currentMenuState = MenuState.MAIN_MENU;
                 Gdx.input.setInputProcessor(mainMenuStage);
                 MyGame.setTimeElapsedInGame(0f);
                 setGameplayPaused(true);
@@ -305,51 +310,51 @@ public class MenuController {
                 setDrawUpgradesMenu(false);
                 setDrawSettingsMenu(false);
                 setDrawMapMenu(false);
-                break;
-            case PLAYING:
+            }
+            case MAP -> {
+                currentMenuState = MenuState.MAP;
                 Gdx.input.setInputProcessor(map.mapStage);
+                previousImportantMenuState = MenuState.MAP;
                 setGameplayPaused(false);
                 setDrawMainMenu(false);
                 setDrawDarkTransparentScreen(false);
                 setDrawPauseMenu(false);
                 setDrawMapMenu(true);
-                break;
-            case UPGRADES:
+            }
+            case UPGRADES -> {
+                currentMenuState = MenuState.UPGRADES;
                 Gdx.input.setInputProcessor(upgradesMenuStage);
                 setDrawDarkTransparentScreen(true);
                 setDrawUpgradesMenu(true);
-                break;
-            case SETTINGS:
+            }
+            case SETTINGS -> {
                 Gdx.input.setInputProcessor(settingsMenuStage);
                 setDrawDarkTransparentScreen(true);
                 setDrawPauseMenu(false);
                 setDrawSettingsMenu(true);
-                break;
-            case SETTINGS_BACK: // exclusive to the buttons in the settings menu
-                if (isDrawMainMenu) {
-                    Gdx.input.setInputProcessor(mainMenuStage);
-                    setDrawDarkTransparentScreen(false);
-                } else {
-                    Gdx.input.setInputProcessor(pauseMenuStage);
-                    setDrawPauseMenu(true);
-                }
-                setDrawSettingsMenu(false);
-                break;
-            case PAUSED:
+            }
+            case SETTINGS_BACK -> // exclusive to the buttons in the settings menu
+                    setMenuState(currentMenuState);
+            case PAUSED -> {
+                currentMenuState = MenuState.PAUSED;
                 Gdx.input.setInputProcessor(pauseMenuStage);
                 setGameplayPaused(true);
                 setDrawDarkTransparentScreen(true);
                 setDrawPauseMenu(true);
                 setDrawSettingsMenu(false);
-                break;
-            case RESULTS:
+            }
+            case RESUME -> setMenuState(previousImportantMenuState);
+            case RESULTS -> {
+                currentMenuState = MenuState.RESULTS;
                 Gdx.input.setInputProcessor(resultsMenuStage);
                 setGameplayPaused(true);
                 setDrawDarkTransparentScreen(true);
                 setDrawPauseMenu(false);
                 setDrawResultsMenu(true);
                 setDrawTooltipMenu(false);
-                break;
+            }
+            case COMBAT -> {
+            }
         }
     }
 
@@ -411,5 +416,9 @@ public class MenuController {
         });
 
         return button;
+    }
+
+    public MenuState getCurrentMenuState() {
+        return currentMenuState;
     }
 }

@@ -94,9 +94,12 @@ public class MyGame extends ApplicationAdapter {
                 }
             }
             // Check for ESCAPE key -- Toggle pause menu
-            if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-                menuController.setMenuState(MenuController.MenuState.PAUSED);
+            if (menuController.getCurrentMenuState() == MenuController.MenuState.MAP || menuController.getCurrentMenuState() == MenuController.MenuState.COMBAT) {
+                if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+                    menuController.setMenuState(MenuController.MenuState.PAUSED);
+                }
             }
+
             return STEP_TIME;
         } else {
             return 0;
