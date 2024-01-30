@@ -24,6 +24,8 @@ public class Map {
         NORMAL_BATTLE, ELITE_BATTLE, BOSS_BATTLE, START, SHOP, REST, RANDOM_EVENT, TREASURE
     }
 
+    private Array<MapNodeType> randomEventOptions;
+
     public HashMap<MapNodeType, Integer> mapNodeTypeWeights;
     public int weightSum;
     public final Stage mapStage;
@@ -66,6 +68,9 @@ public class Map {
         mapNodeTypeWeights.put(MapNodeType.TREASURE, 10);
 
         weightSum = mapNodeTypeWeights.values().stream().reduce(0, Integer::sum);
+
+        MapNodeType[] options = {MapNodeType.ELITE_BATTLE, MapNodeType.REST, MapNodeType.SHOP, MapNodeType.TREASURE};
+        randomEventOptions = new Array<>(options);
 
         reset();
     }
@@ -337,7 +342,7 @@ public class Map {
         return false;
     }
 
-    private void reset() {
+    public void reset() {
         mapStage.clear();
         mapNodes.clear();
         generateMap();
@@ -346,6 +351,10 @@ public class Map {
 
     public void dispose() {
         mapStage.dispose();
+    }
+
+    public Array<MapNodeType> getRandomEventOptions() {
+        return randomEventOptions;
     }
 
     public class MapNode {

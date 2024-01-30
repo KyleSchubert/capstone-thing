@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import static com.roguelikedeckbuilder.mygame.Map.MapNodeType.RANDOM_EVENT;
 import static com.roguelikedeckbuilder.mygame.MyGame.*;
 
 public class MenuController {
@@ -23,6 +24,10 @@ public class MenuController {
     private Stage resultsMenuStage;
     private Stage upgradesMenuStage;
     private Stage settingsMenuStage;
+    private RestMenuStage restMenuStage;
+    private TreasureMenuStage treasureMenuStage;
+    private ShopMenuStage shopMenuStage;
+    private CombatMenuStage combatMenuStage;
     private Map map;
     private Tooltip tooltip;
     private Image darkTransparentScreen;
@@ -32,7 +37,7 @@ public class MenuController {
     private Image upgradesBackground;
 
     public enum MenuState {
-        MAIN_MENU, MAP, PAUSED, RESULTS, UPGRADES, SETTINGS_BACK, RESUME, SETTINGS, START_REWARDS, EVENT, STAGE_RESULTS, COMBAT
+        MAIN_MENU, MAP, PAUSED, RESULTS, UPGRADES, SETTINGS_BACK, RESUME, SETTINGS, START_REWARDS, REST_AREA, TREASURE, SHOP, STAGE_RESULTS, COMBAT
     }
 
     private MenuState currentMenuState;
@@ -46,6 +51,10 @@ public class MenuController {
     private boolean isDrawSettingsMenu;
     private boolean isDrawMapMenu;
     private boolean isDrawTooltipMenu;
+    private boolean isDrawRestMenu;
+    private boolean isDrawTreasureMenuStage;
+    private boolean isDrawShopMenuStage;
+    private boolean isDrawCombatMenuStage;
 
     public void create(OrthographicCamera camera) {
         // For the UI and menus
@@ -56,6 +65,12 @@ public class MenuController {
         resultsMenuStage = new Stage(viewportForStage);
         upgradesMenuStage = new Stage(viewportForStage);
         settingsMenuStage = new Stage(viewportForStage);
+
+        restMenuStage = new RestMenuStage(viewportForStage);
+        treasureMenuStage = new TreasureMenuStage(viewportForStage);
+        shopMenuStage = new ShopMenuStage(viewportForStage);
+        combatMenuStage = new CombatMenuStage(viewportForStage);
+
         tooltip = new Tooltip(viewportForStage, makeClickListenerThatCallsSetMenuState(MenuState.MAP));
 
         ClickListener hoverAndClickListener = makeHoverAndClickListener();
@@ -191,6 +206,21 @@ public class MenuController {
             darkTransparentScreen.setPosition(0, 0);
             darkTransparentScreen.draw(batch, 1);
         }
+        batch.end();
+        batch.begin();
+
+        if (this.isDrawRestMenu) {
+            restMenuStage.batch(elapsedTime);
+        }
+        if (this.isDrawTreasureMenuStage) {
+            treasureMenuStage.batch(elapsedTime);
+        }
+        if (this.isDrawShopMenuStage) {
+            shopMenuStage.batch(elapsedTime);
+        }
+        if (this.isDrawCombatMenuStage) {
+            combatMenuStage.batch(elapsedTime);
+        }
 
         batch.end();
         batch.begin();
@@ -257,6 +287,10 @@ public class MenuController {
         settingsMenuStage.dispose();
         tooltip.dispose();
         map.dispose();
+        restMenuStage.dispose();
+        combatMenuStage.dispose();
+        shopMenuStage.dispose();
+        treasureMenuStage.dispose();
     }
 
     public void resize(int width, int height) {
@@ -291,6 +325,36 @@ public class MenuController {
 
                 // Check if the node is a valid choice
                 if (map.isValidChoice(data.stageNumberOfSelf(), data.indexOfSelf())) {
+                    // Make ??? (RANDOM_EVENT) nodes act like a random map node type
+                    Map.MapNodeType nodeType;
+                    if (data.nodeType() == RANDOM_EVENT) {
+                        nodeType = map.getRandomEventOptions().random();
+                    } else {
+                        nodeType = data.nodeType();
+                    }
+
+                    // Set the correct menu state
+                    switch (nodeType) {
+                        case NORMAL_BATTLE -> {
+                            setMenuState(MenuState.COMBAT);
+                        }
+                        case ELITE_BATTLE -> {
+                            setMenuState(MenuState.COMBAT);
+                        }
+                        case BOSS_BATTLE -> {
+                            setMenuState(MenuState.COMBAT);
+                        }
+                        case SHOP -> {
+                            setMenuState(MenuState.SHOP);
+                        }
+                        case REST -> {
+                            setMenuState(MenuState.REST_AREA);
+                        }
+                        case TREASURE -> {
+                            setMenuState(MenuState.TREASURE);
+                        }
+                    }
+
                     // Mark it as completed
                     map.completeNode(data.stageNumberOfSelf(), data.indexOfSelf());
                 }
@@ -313,8 +377,9 @@ public class MenuController {
             case MAIN_MENU -> {
                 // GAME STARTS IN THIS STATE
                 currentMenuState = MenuState.MAIN_MENU;
+                map.reset();
                 Gdx.input.setInputProcessor(mainMenuStage);
-                MyGame.setTimeElapsedInGame(0f);
+                setTimeElapsedInGame(0f);
                 setGameplayPaused(true);
                 setDrawMainMenu(true);
                 setDrawDarkTransparentScreen(false);
@@ -322,6 +387,10 @@ public class MenuController {
                 setDrawUpgradesMenu(false);
                 setDrawSettingsMenu(false);
                 setDrawMapMenu(false);
+                setDrawRestMenu(false);
+                setDrawTreasureMenu(false);
+                setDrawShopMenu(false);
+                setDrawCombatMenu(false);
             }
             case MAP -> {
                 setDrawTooltipMenu(false);
@@ -329,6 +398,10 @@ public class MenuController {
                 Gdx.input.setInputProcessor(map.mapStage);
                 previousImportantMenuState = MenuState.MAP;
                 setDrawDarkTransparentScreen(false);
+                setDrawRestMenu(false);
+                setDrawTreasureMenu(false);
+                setDrawShopMenu(false);
+                setDrawCombatMenu(false);
             }
             case UPGRADES -> {
                 currentMenuState = MenuState.UPGRADES;
@@ -373,13 +446,22 @@ public class MenuController {
                 setDrawPauseMenu(false);
                 setDrawMapMenu(true);
             }
-            case EVENT -> {
+            case REST_AREA -> {
+                setDrawRestMenu(true);
+            }
+            case TREASURE -> {
+                setDrawTreasureMenu(true);
+            }
+            case SHOP -> {
+                setDrawShopMenu(true);
             }
             case STAGE_RESULTS -> {
             }
             case COMBAT -> {
+                setDrawCombatMenu(true);
             }
 
+            default -> throw new IllegalStateException("Unexpected value: " + menuState);
         }
     }
 
@@ -418,6 +500,22 @@ public class MenuController {
 
     public void setDrawTooltipMenu(boolean drawTooltipMenu) {
         this.isDrawTooltipMenu = drawTooltipMenu;
+    }
+
+    public void setDrawRestMenu(boolean drawRestMenu) {
+        this.isDrawRestMenu = drawRestMenu;
+    }
+
+    public void setDrawTreasureMenu(boolean drawTreasureMenu) {
+        this.isDrawTreasureMenuStage = drawTreasureMenu;
+    }
+
+    public void setDrawShopMenu(boolean drawShopMenu) {
+        this.isDrawShopMenuStage = drawShopMenu;
+    }
+
+    public void setDrawCombatMenu(boolean drawCombatMenu) {
+        this.isDrawCombatMenuStage = drawCombatMenu;
     }
 
     private ImageButton newImageButtonFrom(String buttonInternalFolderName, MenuState menuState) {
