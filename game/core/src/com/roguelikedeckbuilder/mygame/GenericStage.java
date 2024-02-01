@@ -3,6 +3,7 @@ package com.roguelikedeckbuilder.mygame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -43,5 +44,9 @@ public class GenericStage {
 
     public BitmapFont getStageFont() {
         return stageFont;
+    }
+
+    public Actor getStageBackgroundActor() {
+        return stage.getActors().get(0);
     }
 }

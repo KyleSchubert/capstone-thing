@@ -68,7 +68,7 @@ public class MenuController {
 
         restMenuStage = new RestMenuStage(viewportForStage);
         treasureMenuStage = new TreasureMenuStage(viewportForStage);
-        shopMenuStage = new ShopMenuStage(viewportForStage);
+        shopMenuStage = new ShopMenuStage(viewportForStage, newImageButtonFrom("exit", MenuState.MAP));
         combatMenuStage = new CombatMenuStage(viewportForStage);
 
         tooltip = new Tooltip(viewportForStage, makeClickListenerThatCallsSetMenuState(MenuState.MAP));
@@ -216,6 +216,7 @@ public class MenuController {
             treasureMenuStage.batch(elapsedTime);
         }
         if (this.isDrawShopMenuStage) {
+            tooltip.setUsingTooltipLingerTime(true);
             shopMenuStage.batch(elapsedTime);
         }
         if (this.isDrawCombatMenuStage) {
@@ -224,7 +225,7 @@ public class MenuController {
 
         batch.end();
         batch.begin();
-        if (this.isDrawTooltipMenu) {
+        if (this.isDrawTooltipMenu || (tooltip.isUsingTooltipLingerTime() && tooltip.getTooltipLingerTime() > 0)) {
             tooltip.batch(elapsedTime);
         }
         if (this.isDrawPauseMenu) { // JUST for the pause menu background texture
@@ -310,12 +311,15 @@ public class MenuController {
                 tooltip.setLocation(data.tooltipLocation());
 
                 // Draw the tooltip
+                tooltip.setUsingTooltipLingerTime(false);
                 setDrawTooltipMenu(true);
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, @Null Actor toActor) {
                 setDrawTooltipMenu(false);
+                tooltip.setUsingTooltipLingerTime(true);
+                tooltip.refreshTooltipLingerTime();
             }
 
             @Override
@@ -345,6 +349,7 @@ public class MenuController {
                             setMenuState(MenuState.COMBAT);
                         }
                         case SHOP -> {
+                            shopMenuStage.generateShop();
                             setMenuState(MenuState.SHOP);
                         }
                         case REST -> {
@@ -393,6 +398,7 @@ public class MenuController {
                 setDrawCombatMenu(false);
             }
             case MAP -> {
+                tooltip.setUsingTooltipLingerTime(true);
                 setDrawTooltipMenu(false);
                 currentMenuState = MenuState.MAP;
                 Gdx.input.setInputProcessor(map.mapStage);
@@ -440,6 +446,7 @@ public class MenuController {
                 currentMenuState = MenuState.START_REWARDS;
                 Gdx.input.setInputProcessor(tooltip.tooltipStage);
                 setDrawTooltipMenu(true);
+                tooltip.refreshTooltipLingerTime();
                 setDrawDarkTransparentScreen(true);
                 setGameplayPaused(false);
                 setDrawMainMenu(false);
@@ -453,6 +460,9 @@ public class MenuController {
                 setDrawTreasureMenu(true);
             }
             case SHOP -> {
+                Gdx.input.setInputProcessor(shopMenuStage.getStage());
+                tooltip.setUsingTooltipLingerTime(true);
+                setDrawTooltipMenu(false);
                 setDrawShopMenu(true);
             }
             case STAGE_RESULTS -> {

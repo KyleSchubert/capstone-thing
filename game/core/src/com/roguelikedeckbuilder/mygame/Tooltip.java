@@ -21,12 +21,14 @@ public class Tooltip {
         LEFT, RIGHT, MIDDLE
     }
 
+    private float tooltipLingerTime;
     private final BitmapFont tooltipFont;
     public final Stage tooltipStage;
     private String tooltipTitleText;
     private String tooltipBodyText;
     private Size size;
     private Location location;
+    private boolean isUsingTooltipLingerTime = false;
     private static final Vector2 leftPosition = new Vector2(1, 8);
     private static final Vector2 rightPosition = new Vector2(71, 8);
     private static final Vector2 middlePosition = new Vector2(21.2f, 14);
@@ -63,7 +65,7 @@ public class Tooltip {
 
         // 3 Items
         for (int i = 0; i < 3; i++) {
-            Image item = new Image(new Texture(Gdx.files.internal("items/default.png")));
+            Image item = new Image(new Texture(Gdx.files.internal("ITEMS/default.png")));
             item.setSize(29 * SCALE_FACTOR * 2, 31 * SCALE_FACTOR * 2);
             item.setPosition(offScreen.x, offScreen.y);
             item.addListener(clickListenerForItems);
@@ -75,6 +77,11 @@ public class Tooltip {
         float x = 0, y = 0, titleX = 0, bodyX = 0;
         float usedTooltipWidth = tooltipStage.getActors().get(size.ordinal()).getWidth();
         float usedTooltipHeight = tooltipStage.getActors().get(size.ordinal()).getHeight();
+
+        this.tooltipLingerTime -= elapsedTime;
+        if (tooltipLingerTime < 0 && isUsingTooltipLingerTime) {
+            return;
+        }
 
         switch (location) {
             case LEFT -> {
@@ -127,6 +134,21 @@ public class Tooltip {
         this.tooltipBodyText = String.format("%d-%d", stageNumber, index);
     }
 
+    public float getTooltipLingerTime() {
+        return tooltipLingerTime;
+    }
+
+    public void refreshTooltipLingerTime() {
+        this.tooltipLingerTime = 0.15f;
+    }
+
+    public void setUsingTooltipLingerTime(boolean usingTooltipLingerTime) {
+        isUsingTooltipLingerTime = usingTooltipLingerTime;
+    }
+
+    public boolean isUsingTooltipLingerTime() {
+        return isUsingTooltipLingerTime;
+    }
 
     public void setSize(Size size) {
         this.size = size;
