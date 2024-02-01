@@ -28,6 +28,7 @@ public class Card {
 
         labelStyle.font = new BitmapFont(Gdx.files.internal("font2.fnt"));
         labelStyle.fontColor = Color.WHITE;
+        labelStyle.font.getData().markupEnabled = true;
 
         cardValue = cardType.value;
 
@@ -80,7 +81,7 @@ public class Card {
     public enum CardData {
         DEFAULT(
                 "Default",
-                "I am testing out a card and seeing if I want to format the file this way.",
+                "I am [ORANGE]testing[] out a card and seeing if I want to format the file this way. Deals [RED]9 Damage[][PURPLE], which is [][CYAN]cool[]",
                 110,
                 "ITEMS/default.png"
         );
