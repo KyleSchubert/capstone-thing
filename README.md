@@ -1,7 +1,7 @@
-<h1>Capstone thing for the one class</h1>
-Roguelike deckbuilder in Java using libGDX
+<h1>What</h1>
+This will be a roguelike deckbuilder made in Java using libGDX
 
-<details><summary>Images of parts</summary>
+<h1>Images of parts of the game so far</h1>
   <details><summary>Menu</summary>
    
 ![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/99c8f09e-0fc0-4fd7-8ae8-a605c67f2879)
@@ -11,6 +11,16 @@ Roguelike deckbuilder in Java using libGDX
    
 ![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/3fd199f4-907c-4547-8824-537ed4b2071f)
    </details>
+
+  <details><summary>"Start with an item" panel</summary>
+   
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/c97c1feb-b4c1-42b8-89ce-c5555b3fd516)
+  </details>
+
+  <details><summary>Shop</summary>
+    
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/2e9c9d9a-f184-4471-a310-8268d5b2008d)
+  </details>
 </details>
 
 <h1>"How do I run/build this?"</h1>
