@@ -66,7 +66,7 @@ public class MenuController {
         upgradesMenuStage = new Stage(viewportForStage);
         settingsMenuStage = new Stage(viewportForStage);
 
-        restMenuStage = new RestMenuStage(viewportForStage);
+        restMenuStage = new RestMenuStage(viewportForStage, makeClickListenerThatCallsSetMenuState(MenuState.MAP));
         treasureMenuStage = new TreasureMenuStage(viewportForStage);
         shopMenuStage = new ShopMenuStage(viewportForStage, newImageButtonFrom("exit", MenuState.MAP));
         combatMenuStage = new CombatMenuStage(viewportForStage);
@@ -210,6 +210,7 @@ public class MenuController {
         batch.begin();
 
         if (this.isDrawRestMenu) {
+            tooltip.setUsingTooltipLingerTime(true);
             restMenuStage.batch(elapsedTime);
         }
         if (this.isDrawTreasureMenuStage) {
@@ -454,6 +455,9 @@ public class MenuController {
                 setDrawMapMenu(true);
             }
             case REST_AREA -> {
+                Gdx.input.setInputProcessor(restMenuStage.getStage());
+                tooltip.setUsingTooltipLingerTime(true);
+                setDrawTooltipMenu(false);
                 setDrawRestMenu(true);
             }
             case TREASURE -> {
