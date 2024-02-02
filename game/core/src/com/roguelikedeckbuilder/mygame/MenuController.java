@@ -30,6 +30,8 @@ public class MenuController {
     private CombatMenuStage combatMenuStage;
     private Map map;
     private Tooltip tooltip;
+    private Image topBarBackground;
+    private Image topBarCoin;
     private Image darkTransparentScreen;
     private Image pauseBackground;
     private Image resultsBackground;
@@ -81,8 +83,8 @@ public class MenuController {
         previousImportantMenuState = MenuState.MAIN_MENU;
 
         // Load the in-game currency counter
-        Image persistentCurrencyCounterImage = new Image(new Texture(Gdx.files.internal("ITEMS/doubloon.png")));
-        persistentCurrencyCounterImage.setSize(29 * SCALE_FACTOR, 30 * SCALE_FACTOR);
+        Image persistentCurrencyCounterImage = new Image(new Texture(Gdx.files.internal("ITEMS/persistent coin.png")));
+        persistentCurrencyCounterImage.setScale(SCALE_FACTOR);
         mainMenuStage.addActor(persistentCurrencyCounterImage);
 
         // Menu buttons below
@@ -119,9 +121,19 @@ public class MenuController {
         mainMenuStage.addActor(exitButton);
 
 
+        // Top Bar Images
+        topBarBackground = new Image(new Texture(Gdx.files.internal("OTHER UI/top bar background.png")));
+        topBarBackground.setScale(SCALE_FACTOR);
+        topBarBackground.setPosition(0, 42.7f);
+
+        topBarCoin = new Image(new Texture(Gdx.files.internal("ITEMS/doubloon.png")));
+        topBarCoin.setScale(SCALE_FACTOR);
+        topBarCoin.setPosition(53.2f, 43.6f);
+
         // Dark transparent screen
         darkTransparentScreen = new Image(new Texture(Gdx.files.internal("MENU backgrounds/dark transparent screen.png")));
         darkTransparentScreen.setSize(40 * SCALE_FACTOR * 300, 40 * SCALE_FACTOR * 300);
+        darkTransparentScreen.setPosition(0, 0);
 
         // Pause background
         pauseBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/pause background.png")));
@@ -177,7 +189,7 @@ public class MenuController {
         setMenuState(MenuState.MAIN_MENU);
     }
 
-    public void batch(float elapsedTime, String timeText, int amountOfPersistentCurrency) {
+    public void batch(float elapsedTime, String timeText) {
         if (this.isDrawMapMenu) {
             map.drawMap(batch);
         }
@@ -191,9 +203,13 @@ public class MenuController {
             mainMenuStage.getViewport().apply();
             mainMenuStage.act(elapsedTime);
             mainMenuStage.draw();
-            font.draw(batch, "x " + amountOfPersistentCurrency, 17.3f, 15.3f); // text for currency counter
+            font.draw(batch, "x " + Player.getPersistentMoney(), 17.3f, 15.3f); // text for currency counter
         } else {
+            topBarBackground.draw(batch, 1);
+            topBarCoin.draw(batch, 1);
             font.draw(batch, timeText, 68, 45); // text for time elapsed in game
+            font.draw(batch, "HP: " + Player.getHp() + " / " + Player.getMaxHp(), 2, 45);
+            font.draw(batch, Integer.toString(Player.getMoney()), 55, 45);
             // Draw the map stuff
             map.batch(elapsedTime);
         }
@@ -203,7 +219,6 @@ public class MenuController {
 
         if (this.isDrawDarkTransparentScreen) {
             // draw the dark transparent screen
-            darkTransparentScreen.setPosition(0, 0);
             darkTransparentScreen.draw(batch, 1);
         }
         batch.end();
@@ -303,6 +318,9 @@ public class MenuController {
         return new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, @Null Actor fromActor) {
+                if (currentMenuState == MenuState.START_REWARDS) {
+                    return;
+                }
                 // Get the MapNodeData object from the image actor that triggered the mouse over event
                 Map.MapNode.MapNodeData data = (Map.MapNode.MapNodeData) event.getTarget().getUserObject();
 
@@ -318,15 +336,20 @@ public class MenuController {
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, @Null Actor toActor) {
-                setDrawTooltipMenu(false);
-                tooltip.setUsingTooltipLingerTime(true);
-                tooltip.refreshTooltipLingerTime();
+                if (currentMenuState != MenuState.START_REWARDS) {
+                    setDrawTooltipMenu(false);
+                    tooltip.setUsingTooltipLingerTime(true);
+                    tooltip.refreshTooltipLingerTime();
+                }
             }
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Get the MapNodeData object from the image actor that triggered the click event
                 Map.MapNode.MapNodeData data = (Map.MapNode.MapNodeData) event.getTarget().getUserObject();
+
+                Player.changeMaxHp(-2);
+                Player.changeHp(-1);
 
                 // Check if the node is a valid choice
                 if (map.isValidChoice(data.stageNumberOfSelf(), data.indexOfSelf())) {
@@ -353,9 +376,7 @@ public class MenuController {
                             shopMenuStage.generateShop();
                             setMenuState(MenuState.SHOP);
                         }
-                        case REST -> {
-                            setMenuState(MenuState.REST_AREA);
-                        }
+                        case REST -> setMenuState(MenuState.REST_AREA);
                         case TREASURE -> {
                             setMenuState(MenuState.TREASURE);
                         }
@@ -382,9 +403,11 @@ public class MenuController {
         switch (menuState) {
             case MAIN_MENU -> {
                 // GAME STARTS IN THIS STATE
+                Player.reset();
                 currentMenuState = MenuState.MAIN_MENU;
                 map.reset();
                 Gdx.input.setInputProcessor(mainMenuStage);
+                tooltip.setUsingTooltipLingerTime(false);
                 setTimeElapsedInGame(0f);
                 setGameplayPaused(true);
                 setDrawMainMenu(true);
@@ -404,6 +427,8 @@ public class MenuController {
                 currentMenuState = MenuState.MAP;
                 Gdx.input.setInputProcessor(map.mapStage);
                 previousImportantMenuState = MenuState.MAP;
+                setDrawPauseMenu(false);
+                isGameplayPaused = false;
                 setDrawDarkTransparentScreen(false);
                 setDrawRestMenu(false);
                 setDrawTreasureMenu(false);
@@ -447,7 +472,7 @@ public class MenuController {
                 currentMenuState = MenuState.START_REWARDS;
                 Gdx.input.setInputProcessor(tooltip.tooltipStage);
                 setDrawTooltipMenu(true);
-                tooltip.refreshTooltipLingerTime();
+                tooltip.setUsingTooltipLingerTime(false);
                 setDrawDarkTransparentScreen(true);
                 setGameplayPaused(false);
                 setDrawMainMenu(false);
@@ -455,15 +480,18 @@ public class MenuController {
                 setDrawMapMenu(true);
             }
             case REST_AREA -> {
+                currentMenuState = MenuState.REST_AREA;
                 Gdx.input.setInputProcessor(restMenuStage.getStage());
                 tooltip.setUsingTooltipLingerTime(true);
                 setDrawTooltipMenu(false);
                 setDrawRestMenu(true);
             }
             case TREASURE -> {
+                currentMenuState = MenuState.TREASURE;
                 setDrawTreasureMenu(true);
             }
             case SHOP -> {
+                currentMenuState = MenuState.SHOP;
                 Gdx.input.setInputProcessor(shopMenuStage.getStage());
                 tooltip.setUsingTooltipLingerTime(true);
                 setDrawTooltipMenu(false);
@@ -472,6 +500,9 @@ public class MenuController {
             case STAGE_RESULTS -> {
             }
             case COMBAT -> {
+                currentMenuState = MenuState.COMBAT;
+                isGameplayPaused = false;
+                setDrawPauseMenu(false);
                 setDrawCombatMenu(true);
             }
 

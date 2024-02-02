@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
@@ -57,6 +59,13 @@ public class Card {
         }
 
         group.setScale(SCALE_FACTOR);
+
+        group.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Player.buyCard(cardValue, cardType.name);
+            }
+        });
     }
 
     private Label newLabel(String text) {

@@ -22,7 +22,6 @@ public class MyGame extends ApplicationAdapter {
     private static final float viewHeight = windowHeight * SCALE_FACTOR;
     public static float timeElapsedInGame = 0.0f;
     private String timeText = "0:00";
-    public int amountOfPersistentCurrency;
 
     @Override
     public void create() {
@@ -37,7 +36,7 @@ public class MyGame extends ApplicationAdapter {
         font.setUseIntegerPositions(false);
         font.getData().setScale(SCALE_FACTOR, SCALE_FACTOR);
 
-        amountOfPersistentCurrency = 0;
+        Player.initialize();
 
         menuController = new MenuController();
         menuController.create(camera);
@@ -54,7 +53,7 @@ public class MyGame extends ApplicationAdapter {
 
         batch.begin();
 
-        menuController.batch(elapsedTime, timeText, amountOfPersistentCurrency);
+        menuController.batch(elapsedTime, timeText);
 
         batch.end();
 
@@ -83,6 +82,9 @@ public class MyGame extends ApplicationAdapter {
         accumulator += Math.min(delta, 0.25f);
         if (accumulator >= STEP_TIME) {
             accumulator -= STEP_TIME;
+            if (Player.getHp() == 0) {
+                menuController.setMenuState(MenuController.MenuState.RESULTS);
+            }
             if (!menuController.isGameplayPaused) {
                 timeElapsedInGame += STEP_TIME;
                 int minutes = (int) timeElapsedInGame / 60;
