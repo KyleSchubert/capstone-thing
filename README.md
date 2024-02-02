@@ -4,23 +4,30 @@ This will be a roguelike deckbuilder made in Java using libGDX
 <h1>Images of parts of the game so far</h1>
   <details><summary>Menu</summary>
    
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/99c8f09e-0fc0-4fd7-8ae8-a605c67f2879)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/ba4f64c5-bf9e-47c0-9914-cd6f54c34910)
    </details>
    
    <details><summary>Map</summary>
    
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/3fd199f4-907c-4547-8824-537ed4b2071f)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/80d70c27-6eb1-41ae-a9c3-edb77b734331)
    </details>
 
   <details><summary>"Start with an item" panel</summary>
    
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/c97c1feb-b4c1-42b8-89ce-c5555b3fd516)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/f9aa7acf-3c20-4e2e-9405-71b1b8cb1c1c)
+
   </details>
 
   <details><summary>Shop</summary>
     
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/5a596b6f-4615-48f4-a854-db55b6e5229e)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/62f91856-634b-4d3d-a3a2-72774699c2a8)
   </details>
+
+  <details><summary>Rest Area</summary>
+    
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/05e850d9-0c90-4d57-8a75-21d04d2e1615)
+  </details>
+  
 </details>
 
 <h1>"How do I run/build this?"</h1>
@@ -54,13 +61,13 @@ I am using IntelliJ IDEA.
 <b>During Battles</b>
 - [ ] Player has by default 3 energy refreshed at the start of each turn
 - [ ] Player draws by default 5 cards at the start of each turn
-- [ ] HP persists across battles
+- [x] HP persists across battles
 
 
 <b>Not in battles</b>
-- [ ] Amount of temporary currency the player has is visible
+- [x] Amount of temporary currency the player has is visible
 - [x] The time elapsed in the current round is visible
-- [ ] The player can see how much health their character has
+- [x] The player can see how much health their character has
 - [ ] The player can click on something to view their deck
 
 
@@ -139,7 +146,7 @@ I am using IntelliJ IDEA.
 <b>Starting the game</b>
 - [x] A menu appears with options for the player to choose from
 - [ ] Player receives a choice of 5 artifacts or 1 of 5 upgraded powerful cards
-- [ ] Player starts with some in-game currency
+- [x] Player starts with some in-game currency
 - [ ] Player starts with 10 cards, consisting of comparatively weak, un-upgraded defensive and offensive cards.
 
 
