@@ -24,7 +24,7 @@ public class Map {
         NORMAL_BATTLE, ELITE_BATTLE, BOSS_BATTLE, START, SHOP, REST, RANDOM_EVENT, TREASURE
     }
 
-    private Array<MapNodeType> randomEventOptions;
+    private final Array<MapNodeType> randomEventOptions;
 
     public HashMap<MapNodeType, Integer> mapNodeTypeWeights;
     public int weightSum;
@@ -110,7 +110,7 @@ public class Map {
         mapStage.draw();
     }
 
-    public void generateMap() {
+    private void generateMap() {
         int randomNumberOfNodes;
 
         // Create all the nodes
