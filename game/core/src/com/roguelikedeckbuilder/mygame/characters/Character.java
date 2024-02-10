@@ -43,20 +43,8 @@ public class Character {
     }
 
     private void prepareFrameStartAndEndIndex() {
-        switch (this.state) {
-            case DYING:
-                this.stateFrameStartIndex = CharacterData.getDyingAnimationStartFrameIndex(characterTypeName);
-                this.stateFrameEndIndex = CharacterData.getDyingAnimationEndFrameIndex(characterTypeName);
-                break;
-            case MOVING:
-                this.stateFrameStartIndex = CharacterData.getMovingAnimationStartFrameIndex(characterTypeName);
-                this.stateFrameEndIndex = CharacterData.getMovingAnimationEndFrameIndex(characterTypeName);
-                break;
-            case STANDING:
-                this.stateFrameStartIndex = CharacterData.getStandingAnimationStartFrameIndex(characterTypeName);
-                this.stateFrameEndIndex = CharacterData.getStandingAnimationEndFrameIndex(characterTypeName);
-                break;
-        }
+        this.stateFrameStartIndex = CharacterData.getStartFrameIndex(characterTypeName, this.state);
+        this.stateFrameEndIndex = CharacterData.getEndFrameIndex(characterTypeName, this.state);
     }
 
     public void animate(SpriteBatch batch, float elapsedTime) {

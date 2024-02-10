@@ -36,28 +36,42 @@ public class CharacterData {
         return data.get(typeName.ordinal()).getAllAnimationFrameDelays();
     }
 
-    public static int getDyingAnimationStartFrameIndex(Character.CharacterTypeName typeName) {
-        return data.get(typeName.ordinal()).getDyingAnimationStartFrameIndex();
+    public static int getStartFrameIndex(Character.CharacterTypeName typeName, Character.CharacterState state) {
+        switch (state) {
+            case DYING -> {
+                return data.get(typeName.ordinal()).getDyingAnimationStartFrameIndex();
+            }
+            case MOVING -> {
+                return data.get(typeName.ordinal()).getMovingAnimationStartFrameIndex();
+            }
+            case STANDING -> {
+                return data.get(typeName.ordinal()).getStandingAnimationStartFrameIndex();
+            }
+            default -> {
+                // Return the dying one by default
+                System.out.println("[Huh?] Why was getStartFrameIndex() called with " + typeName + " and " + state + "?");
+                return data.get(typeName.ordinal()).getDyingAnimationStartFrameIndex();
+            }
+        }
     }
 
-    public static int getDyingAnimationEndFrameIndex(Character.CharacterTypeName typeName) {
-        return data.get(typeName.ordinal()).getDyingAnimationEndFrameIndex();
-    }
-
-    public static int getMovingAnimationStartFrameIndex(Character.CharacterTypeName typeName) {
-        return data.get(typeName.ordinal()).getMovingAnimationStartFrameIndex();
-    }
-
-    public static int getMovingAnimationEndFrameIndex(Character.CharacterTypeName typeName) {
-        return data.get(typeName.ordinal()).getMovingAnimationEndFrameIndex();
-    }
-
-    public static int getStandingAnimationStartFrameIndex(Character.CharacterTypeName typeName) {
-        return data.get(typeName.ordinal()).getStandingAnimationStartFrameIndex();
-    }
-
-    public static int getStandingAnimationEndFrameIndex(Character.CharacterTypeName typeName) {
-        return data.get(typeName.ordinal()).getStandingAnimationEndFrameIndex();
+    public static int getEndFrameIndex(Character.CharacterTypeName typeName, Character.CharacterState state) {
+        switch (state) {
+            case DYING -> {
+                return data.get(typeName.ordinal()).getDyingAnimationEndFrameIndex();
+            }
+            case MOVING -> {
+                return data.get(typeName.ordinal()).getMovingAnimationEndFrameIndex();
+            }
+            case STANDING -> {
+                return data.get(typeName.ordinal()).getStandingAnimationEndFrameIndex();
+            }
+            default -> {
+                // Return the dying one by default
+                System.out.println("[Huh?] Why was getEndFrameIndex() called with " + typeName + " and " + state + "?");
+                return data.get(typeName.ordinal()).getDyingAnimationEndFrameIndex();
+            }
+        }
     }
 
     public String getInternalName(Character.CharacterTypeName typeName) {
