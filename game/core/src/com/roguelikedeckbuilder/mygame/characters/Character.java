@@ -1,12 +1,8 @@
 package com.roguelikedeckbuilder.mygame.characters;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.roguelikedeckbuilder.mygame.helpers.XYPair;
-
-import java.util.Iterator;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 

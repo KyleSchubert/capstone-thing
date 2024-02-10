@@ -21,7 +21,8 @@ import com.roguelikedeckbuilder.mygame.stages.RestMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.ShopMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.TreasureMenuStage;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
+import java.util.Random;
+
 import static com.roguelikedeckbuilder.mygame.Map.MapNodeType.RANDOM_EVENT;
 import static com.roguelikedeckbuilder.mygame.MyGame.*;
 
@@ -541,6 +542,15 @@ public class MenuController {
                 isGameplayPaused = false;
                 setDrawPauseMenu(false);
                 setDrawCombatMenu(true);
+
+                // Reset and then add 4 random enemies for testing
+                Random random = new Random();
+                combatMenuStage.reset();
+                for (int i = 0; i < 4; i++) {
+                    int randomNumber = random.nextInt(Character.CharacterTypeName.values().length);
+                    combatMenuStage.addEnemy(Character.CharacterTypeName.values()[randomNumber]);
+
+                }
             }
 
             default -> throw new IllegalStateException("Unexpected value: " + menuState);

@@ -1,6 +1,5 @@
 package com.roguelikedeckbuilder.mygame;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.roguelikedeckbuilder.mygame.characters.Character;
 
 public class Player {
