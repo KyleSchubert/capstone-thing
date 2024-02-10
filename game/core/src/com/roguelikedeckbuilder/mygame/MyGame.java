@@ -36,7 +36,7 @@ public class MyGame extends ApplicationAdapter {
         font = new BitmapFont(Gdx.files.internal("font.fnt"), false);
         font.setUseIntegerPositions(false);
         font.getData().setScale(SCALE_FACTOR, SCALE_FACTOR);
-        
+
         CharacterData.initialize();
         Player.initialize();
 
@@ -56,7 +56,6 @@ public class MyGame extends ApplicationAdapter {
         batch.begin();
 
         menuController.batch(elapsedTime, timeText);
-        Player.animateCharacter(batch, elapsedTime);
 
         batch.end();
 

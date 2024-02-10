@@ -26,10 +26,6 @@ public class ShopMenuStage extends GenericStage {
         for (int i = 0; i < 8; i++) {
             addCard(new Card(Card.CardData.DEFAULT, true));
         }
-
-        // cool animation feature:
-        // TODO: consider using this for a character or something on the map maybe
-        // getStage().getActors().get(getStage().getActors().size - 1).addAction(moveBy(10, 10, 20, com.badlogic.gdx.math.Interpolation.circleOut));
     }
 
     public void addCard(Card card) {

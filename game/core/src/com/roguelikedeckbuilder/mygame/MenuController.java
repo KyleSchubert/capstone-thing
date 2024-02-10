@@ -8,17 +8,20 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.roguelikedeckbuilder.mygame.characters.Character;
 import com.roguelikedeckbuilder.mygame.stages.CombatMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.RestMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.ShopMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.TreasureMenuStage;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
 import static com.roguelikedeckbuilder.mygame.Map.MapNodeType.RANDOM_EVENT;
 import static com.roguelikedeckbuilder.mygame.MyGame.*;
 
@@ -189,6 +192,36 @@ public class MenuController {
         // TODO: this will need additional code to save and apply the changed settings
         ImageButton settingsConfirmButton = newImageButtonFrom("confirm", MenuState.SETTINGS_BACK);
         settingsMenuStage.addActor(settingsConfirmButton);
+
+        // Characters on main menu
+
+        mainMenuStage.addActor(new Character(Character.CharacterTypeName.BIRD, 23, 6));
+        mainMenuStage.addActor(new Character(Character.CharacterTypeName.BLUE_MUSHROOM, 29, 6));
+        mainMenuStage.addActor(new Character(Character.CharacterTypeName.HELMET_PENGUIN, 35, 6));
+        mainMenuStage.addActor(new Character(Character.CharacterTypeName.ORANGE_MUSHROOM, 41, 6));
+        mainMenuStage.addActor(new Character(Character.CharacterTypeName.PIG, 47, 6));
+        mainMenuStage.addActor(new Character(Character.CharacterTypeName.PLANT, 53, 6));
+        mainMenuStage.addActor(new Character(Character.CharacterTypeName.STUMP, 59, 6));
+
+        // Running animation
+        float startX = 130;
+        float startY = 34;
+        float endX = -60;
+
+        for (Character.CharacterTypeName typeName : Character.CharacterTypeName.values()) {
+            mainMenuStage.addActor(new Character(typeName, startX, startY));
+            Character character = (Character) mainMenuStage.getActors().get(mainMenuStage.getActors().size - 1);
+            character.setState(Character.CharacterState.MOVING);
+
+            MoveToAction moveAction = new MoveToAction();
+            moveAction.setPosition(endX, character.getY());
+            moveAction.setDuration(20f);
+
+            startX -= 9;
+            endX -= 9;
+            character.addAction(moveAction);
+        }
+
 
         setMenuState(MenuState.MAIN_MENU);
     }

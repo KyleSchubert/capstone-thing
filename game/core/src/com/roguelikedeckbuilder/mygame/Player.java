@@ -70,8 +70,4 @@ public class Player {
             changeMoney(-cardValue);
         }
     }
-
-    public static void animateCharacter(SpriteBatch batch, float elapsedTime) {
-        character.animate(batch, elapsedTime);
-    }
 }
