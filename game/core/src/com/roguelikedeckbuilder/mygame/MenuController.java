@@ -14,6 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.roguelikedeckbuilder.mygame.stages.CombatMenuStage;
+import com.roguelikedeckbuilder.mygame.stages.RestMenuStage;
+import com.roguelikedeckbuilder.mygame.stages.ShopMenuStage;
+import com.roguelikedeckbuilder.mygame.stages.TreasureMenuStage;
 
 import static com.roguelikedeckbuilder.mygame.Map.MapNodeType.RANDOM_EVENT;
 import static com.roguelikedeckbuilder.mygame.MyGame.*;

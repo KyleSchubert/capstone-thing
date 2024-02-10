@@ -1,4 +1,4 @@
-package com.roguelikedeckbuilder.mygame;
+package com.roguelikedeckbuilder.mygame.stages;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

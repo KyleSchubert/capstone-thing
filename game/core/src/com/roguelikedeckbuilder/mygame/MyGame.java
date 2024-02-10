@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.roguelikedeckbuilder.mygame.characters.CharacterData;
 
 public class MyGame extends ApplicationAdapter {
     public static final float SCALE_FACTOR = 0.05f;
@@ -35,7 +36,8 @@ public class MyGame extends ApplicationAdapter {
         font = new BitmapFont(Gdx.files.internal("font.fnt"), false);
         font.setUseIntegerPositions(false);
         font.getData().setScale(SCALE_FACTOR, SCALE_FACTOR);
-
+        
+        CharacterData.initialize();
         Player.initialize();
 
         menuController = new MenuController();
@@ -54,6 +56,7 @@ public class MyGame extends ApplicationAdapter {
         batch.begin();
 
         menuController.batch(elapsedTime, timeText);
+        Player.animateCharacter(batch, elapsedTime);
 
         batch.end();
 

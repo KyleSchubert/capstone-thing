@@ -1,6 +1,10 @@
 package com.roguelikedeckbuilder.mygame;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.roguelikedeckbuilder.mygame.characters.Character;
+
 public class Player {
+    private static Character character;
     private static int maxHp;
     private static int hp;
     private static int money;
@@ -9,6 +13,8 @@ public class Player {
     public static void initialize() {
         persistentMoney = 200;
         reset();
+        character = new Character(Character.CharacterTypeName.HELMET_PENGUIN, 24, 4);
+        character.faceRight();
     }
 
     public static void reset() {
@@ -63,5 +69,9 @@ public class Player {
         if (money > cardValue) {
             changeMoney(-cardValue);
         }
+    }
+
+    public static void animateCharacter(SpriteBatch batch, float elapsedTime) {
+        character.animate(batch, elapsedTime);
     }
 }

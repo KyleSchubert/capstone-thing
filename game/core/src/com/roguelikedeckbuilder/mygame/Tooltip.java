@@ -3,12 +3,12 @@ package com.roguelikedeckbuilder.mygame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.*;
 
@@ -29,10 +29,10 @@ public class Tooltip {
     private Size size;
     private Location location;
     private boolean isUsingTooltipLingerTime = false;
-    private static final Vector2 leftPosition = new Vector2(1, 8);
-    private static final Vector2 rightPosition = new Vector2(71, 8);
-    private static final Vector2 middlePosition = new Vector2(21.2f, 14);
-    private static final Vector2 offScreen = new Vector2(9999, 9999);
+    private static final XYPair<Float> leftPosition = new XYPair<>(1f, 8f);
+    private static final XYPair<Float> rightPosition = new XYPair<>(71f, 8f);
+    private static final XYPair<Float> middlePosition = new XYPair<>(21.2f, 14f);
+    private static final XYPair<Float> offScreen = new XYPair<>(9999f, 9999f);
 
     Tooltip(ScreenViewport viewportForStage, ClickListener clickListenerForItems) {
         tooltipStage = new Stage(viewportForStage);
@@ -50,31 +50,32 @@ public class Tooltip {
         // Tooltip backgrounds
         Image tooltipBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/tooltip.png")));
         tooltipBackground.setSize(580 * SCALE_FACTOR, 490 * SCALE_FACTOR);
-        tooltipBackground.setPosition(offScreen.x, offScreen.y);
+        tooltipBackground.setPosition(offScreen.x(), offScreen.y());
         tooltipStage.addActor(tooltipBackground);
 
         Image mediumTooltipBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/medium tooltip.png")));
         mediumTooltipBackground.setSize(435 * SCALE_FACTOR, 368 * SCALE_FACTOR);
-        mediumTooltipBackground.setPosition(offScreen.x, offScreen.y);
+        mediumTooltipBackground.setPosition(offScreen.x(), offScreen.y());
         tooltipStage.addActor(mediumTooltipBackground);
 
         Image smallTooltipBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/small tooltip.png")));
         smallTooltipBackground.setSize(290 * SCALE_FACTOR, 245 * SCALE_FACTOR);
-        smallTooltipBackground.setPosition(offScreen.x, offScreen.y);
+        smallTooltipBackground.setPosition(offScreen.x(), offScreen.y());
         tooltipStage.addActor(smallTooltipBackground);
 
         // 3 Items
         for (int i = 0; i < 3; i++) {
             Image item = new Image(new Texture(Gdx.files.internal("ITEMS/default.png")));
             item.setSize(29 * SCALE_FACTOR * 2, 31 * SCALE_FACTOR * 2);
-            item.setPosition(offScreen.x, offScreen.y);
+            item.setPosition(offScreen.x(), offScreen.y());
             item.addListener(clickListenerForItems);
             tooltipStage.addActor(item);
         }
     }
 
     public void batch(float elapsedTime) {
-        float x = 0, y = 0, titleX = 0, bodyX = 0;
+        XYPair<Float> pos;
+        float titleX = 0, bodyX = 0;
         float usedTooltipWidth = tooltipStage.getActors().get(size.ordinal()).getWidth();
         float usedTooltipHeight = tooltipStage.getActors().get(size.ordinal()).getHeight();
 
@@ -85,36 +86,34 @@ public class Tooltip {
 
         switch (location) {
             case LEFT -> {
-                x = leftPosition.x;
-                y = leftPosition.y;
+                pos = leftPosition;
                 tooltipStage.getActors().get(2).setScaleX(1);
-                titleX = 1 + x;
-                bodyX = x + usedTooltipWidth - 2.3f;
+                titleX = 1 + pos.x();
+                bodyX = pos.x() + usedTooltipWidth - 2.3f;
             }
             case RIGHT -> {
-                x = rightPosition.x;
-                y = rightPosition.y;
+                pos = rightPosition;
                 tooltipStage.getActors().get(2).setScaleX(-1);
-                titleX = 1 + x - usedTooltipWidth;
-                bodyX = x - 2.3f;
+                titleX = 1 + pos.x() - usedTooltipWidth;
+                bodyX = pos.x() - 2.3f;
             }
             case MIDDLE -> {
-                x = middlePosition.x;
-                y = middlePosition.y;
+                pos = middlePosition;
                 tooltipStage.getActors().get(2).setScaleX(1);
-                titleX = 1 + x;
-                bodyX = x + usedTooltipWidth - 2.3f;
+                titleX = 1 + pos.x();
+                bodyX = pos.x() + usedTooltipWidth - 2.3f;
             }
+            default -> pos = new XYPair<>(0f, 0f);
         }
-        float titleY = y + usedTooltipHeight - 1;
+        float titleY = pos.y() + usedTooltipHeight - 1;
 
-        tooltipStage.getActors().get(size.ordinal()).setPosition(x, y); // Tooltip background
+        tooltipStage.getActors().get(size.ordinal()).setPosition(pos.x(), pos.y()); // Tooltip background
         tooltipStage.getViewport().apply();
         tooltipStage.act(elapsedTime);
         tooltipStage.draw();
 
         font.draw(batch, tooltipTitleText, titleX, titleY); // Text for tooltip title
-        tooltipFont.draw(batch, tooltipBodyText, bodyX, 1.6f + y); // Text for tooltip body
+        tooltipFont.draw(batch, tooltipBodyText, bodyX, 1.6f + pos.y()); // Text for tooltip body
     }
 
     public void useMapNodeData(Map.MapNodeType mapNodeType, int stageNumber, int index) {
@@ -164,12 +163,11 @@ public class Tooltip {
         setLocation(Tooltip.Location.MIDDLE);
         tooltipTitleText = "Choose an item to start with";
 
-        float x = middlePosition.x;
-        float y = middlePosition.y;
+        XYPair<Float> pos = middlePosition;
 
-        tooltipStage.getActors().get(3).setPosition(x + 2, y + 17); // Item 1
-        tooltipStage.getActors().get(4).setPosition(x + 2, y + 10); // Item 2
-        tooltipStage.getActors().get(5).setPosition(x + 2, y + 3); // Item 3
+        tooltipStage.getActors().get(3).setPosition(pos.x() + 2, pos.y() + 17); // Item 1
+        tooltipStage.getActors().get(4).setPosition(pos.x() + 2, pos.y() + 10); // Item 2
+        tooltipStage.getActors().get(5).setPosition(pos.x() + 2, pos.y() + 3); // Item 3
     }
 
     public void dispose() {
@@ -179,7 +177,7 @@ public class Tooltip {
 
     private void resetPositionsOffscreen() {
         for (Actor actor : tooltipStage.getActors()) {
-            actor.setPosition(offScreen.x, offScreen.y);
+            actor.setPosition(offScreen.x(), offScreen.y());
         }
     }
 }

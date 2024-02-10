@@ -1,8 +1,9 @@
-package com.roguelikedeckbuilder.mygame;
+package com.roguelikedeckbuilder.mygame.stages;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.roguelikedeckbuilder.mygame.Card;
 
 
 public class ShopMenuStage extends GenericStage {

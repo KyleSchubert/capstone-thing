@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -94,10 +95,10 @@ public class Map {
                     }
 
                     shapeRenderer.rectLine(
-                            (currentNode.getPosX() + 1.5f) / SCALE_FACTOR,
-                            (currentNode.getPosY() + 1.5f) / SCALE_FACTOR,
-                            (nextNode.getPosX() + 1.5f) / SCALE_FACTOR,
-                            (nextNode.getPosY() + 1.5f) / SCALE_FACTOR,
+                            (currentNode.getPos().x() + 1.5f) / SCALE_FACTOR,
+                            (currentNode.getPos().y() + 1.5f) / SCALE_FACTOR,
+                            (nextNode.getPos().x() + 1.5f) / SCALE_FACTOR,
+                            (nextNode.getPos().y() + 1.5f) / SCALE_FACTOR,
                             4
                     );
                 }
@@ -368,8 +369,7 @@ public class Map {
         }
 
         private Image nodeImage;
-        private final float posX;
-        private final float posY;
+        private final XYPair<Float> pos;
         private static final float POS_X_MIN = 4;
         private static final float POS_X_MAX = 68;
         private static final float POS_Y_MIN = 5;
@@ -387,16 +387,16 @@ public class Map {
             nodeType = MapNodeType.NORMAL_BATTLE;
 
             if (stageNumber == 0) {
-                posX = POS_X_MIN;
-                posY = (POS_Y_MAX + POS_Y_MIN) / 2;
+                pos = new XYPair<>(POS_X_MIN, (POS_Y_MAX + POS_Y_MIN) / 2);
                 nodeType = MapNodeType.START;
             } else if (stageNumber == MAX_STAGES - 1) {
-                posX = POS_X_MAX;
-                posY = (POS_Y_MAX + POS_Y_MIN) / 2;
+                pos = new XYPair<>(POS_X_MAX, (POS_Y_MAX + POS_Y_MIN) / 2);
                 nodeType = MapNodeType.BOSS_BATTLE;
             } else {
-                posX = ((POS_X_MAX - POS_X_MIN) / (MAX_STAGES - 1)) * stageNumber + POS_X_MIN;
-                posY = ((POS_Y_MAX - POS_Y_MIN) / (numberOfNodesInThisStage - 1)) * thisNodesFutureIndex + POS_Y_MIN;
+                pos = new XYPair<>(
+                        ((POS_X_MAX - POS_X_MIN) / (MAX_STAGES - 1)) * stageNumber + POS_X_MIN,
+                        ((POS_Y_MAX - POS_Y_MIN) / (numberOfNodesInThisStage - 1)) * thisNodesFutureIndex + POS_Y_MIN
+                );
 
                 int usedNodeTypeWeight = weightSum;
                 // No rest nodes earlier than this stage number
@@ -481,19 +481,15 @@ public class Map {
             }
             nodeImage = new Image(new Texture(Gdx.files.internal(filePath)));
             nodeImage.setSize(x * SCALE_FACTOR * 2, y * SCALE_FACTOR * 2);
-            nodeImage.setPosition(posX, posY);
+            nodeImage.setPosition(pos.x(), pos.y());
         }
 
         public Image getImage() {
             return nodeImage;
         }
 
-        public float getPosX() {
-            return posX;
-        }
-
-        public float getPosY() {
-            return posY;
+        public XYPair<Float> getPos() {
+            return pos;
         }
 
         public void addNextConnection(int nodeIndex) {
