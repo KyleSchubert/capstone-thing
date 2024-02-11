@@ -33,7 +33,7 @@ This will be a roguelike deckbuilder made in Java using libGDX
 <h1>How do I run this?</h1>
 Click the release in the Releases section, download the .zip, extract the entire folder together, and run the .exe
 
-<h1>How do I build this?"</h1>
+<h1>How do I build this?</h1>
 If you want to build the game, follow this: https://libgdx.com/wiki/start/import-and-running 
 <br>
 I am using IntelliJ IDEA.
