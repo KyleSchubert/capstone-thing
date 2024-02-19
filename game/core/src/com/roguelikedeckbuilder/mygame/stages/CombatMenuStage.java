@@ -124,9 +124,9 @@ public class CombatMenuStage extends GenericStage {
         shufflePileContents.clear();
 
         handContents.clear();
-
-        updatePileText();
+        
         drawCards(5);
+        updatePileText();
     }
 
     private void removeActorsByType(UserObjectOptions userObjectOption) {
