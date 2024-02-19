@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.characters.Character;
 import com.roguelikedeckbuilder.mygame.combat.Enemy;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
@@ -21,6 +22,9 @@ public class CombatMenuStage extends GenericStage {
         // TODO: REMOVE THIS AFTER COMBAT IS IMPLEMENTED
         exitButtonForTesting.setPosition(33, 36);
         this.getStage().addActor(exitButtonForTesting);
+
+        // Add the player
+        this.getStage().addActor(Player.getCharacter());
     }
 
     public void batch(float elapsedTime) {

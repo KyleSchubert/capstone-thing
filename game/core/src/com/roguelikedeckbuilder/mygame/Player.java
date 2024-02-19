@@ -12,7 +12,7 @@ public class Player {
     public static void initialize() {
         persistentMoney = 200;
         reset();
-        character = new Character(Character.CharacterTypeName.HELMET_PENGUIN, 24, 4);
+        character = new Character(Character.CharacterTypeName.HELMET_PENGUIN, 46, 22.8f);
         character.faceRight();
     }
 
@@ -68,5 +68,9 @@ public class Player {
         if (money > cardValue) {
             changeMoney(-cardValue);
         }
+    }
+
+    public static Character getCharacter() {
+        return character;
     }
 }
