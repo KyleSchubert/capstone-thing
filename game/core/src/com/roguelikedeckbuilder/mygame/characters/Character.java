@@ -7,14 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class Character extends Actor {
-    public enum CharacterState {
-        DYING, MOVING, STANDING, DEAD
-    }
-
-    public enum CharacterTypeName {
-        BIRD, PLANT, STUMP, PIG, ORANGE_MUSHROOM, BLUE_MUSHROOM, HELMET_PENGUIN
-    }
-
     private final CharacterTypeName characterTypeName;
     private CharacterState state;
     private float frameTime = 0;
@@ -99,5 +91,13 @@ public class Character extends Actor {
 
     public int getIsFacingLeft() {
         return this.isFacingLeft;
+    }
+
+    public enum CharacterState {
+        DYING, MOVING, STANDING, DEAD
+    }
+
+    public enum CharacterTypeName {
+        BIRD, PLANT, STUMP, PIG, ORANGE_MUSHROOM, BLUE_MUSHROOM, HELMET_PENGUIN
     }
 }

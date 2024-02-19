@@ -19,19 +19,6 @@ import static com.badlogic.gdx.math.MathUtils.random;
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class Map {
-    ShapeRenderer shapeRenderer;
-
-    public enum MapNodeType {
-        NORMAL_BATTLE, ELITE_BATTLE, BOSS_BATTLE, START, SHOP, REST, RANDOM_EVENT, TREASURE
-    }
-
-    private final Array<MapNodeType> randomEventOptions;
-
-    public HashMap<MapNodeType, Integer> mapNodeTypeWeights;
-    public int weightSum;
-    public final Stage mapStage;
-    private final Image mapBackground;
-    private final Array<Array<MapNode>> mapNodes;
     private static final int MAX_STAGES = 10; // Minimum of 2: 1 for start, 1 for boss.
     private static final int MAX_NODES_PER_STAGE = 6;
     private static final int MIN_NODES_PER_STAGE = 4;
@@ -46,9 +33,16 @@ public class Map {
     private static final int MAX_TREASURE = 6;
     private static final int NO_REST_NODES_BEFORE_STAGE_NUMBER = 3;
     private static final int NO_SHOP_NODES_BEFORE_STAGE_NUMBER = 4;
+    public final Stage mapStage;
+    private final Array<MapNodeType> randomEventOptions;
+    private final Image mapBackground;
+    private final Array<Array<MapNode>> mapNodes;
+    private final ClickListener hoverAndClickListener;
+    public HashMap<MapNodeType, Integer> mapNodeTypeWeights;
+    public int weightSum;
+    private final ShapeRenderer shapeRenderer;
     private int currentNodeStage = 0;
     private int currentNodeIndex = 0;
-    private final ClickListener hoverAndClickListener;
 
     public Map(ScreenViewport viewportForStage, ClickListener hoverAndClickListener) {
         mapStage = new Stage(viewportForStage);
@@ -358,26 +352,21 @@ public class Map {
         return randomEventOptions;
     }
 
-    public class MapNode {
-        public record MapNodeData(
-                int stageNumberOfSelf,
-                int indexOfSelf,
-                Map.MapNodeType nodeType,
-                Tooltip.Size tooltipSize,
-                Tooltip.Location tooltipLocation
-        ) {
-        }
+    public enum MapNodeType {
+        NORMAL_BATTLE, ELITE_BATTLE, BOSS_BATTLE, START, SHOP, REST, RANDOM_EVENT, TREASURE
+    }
 
-        private Image nodeImage;
-        private final XYPair<Float> pos;
+    public class MapNode {
         private static final float POS_X_MIN = 4;
         private static final float POS_X_MAX = 68;
         private static final float POS_Y_MIN = 5;
         private static final float POS_Y_MAX = 38;
+        private final XYPair<Float> pos;
         private final Array<Integer> nextConnections;
         private final Array<Integer> previousConnections;
         private final int stageNumberOfSelf;
         private final int indexOfSelf;
+        private Image nodeImage;
         private MapNodeType nodeType;
         private boolean isCompleted = false;
 
@@ -523,6 +512,15 @@ public class Map {
                     Tooltip.Size.SMALL,
                     desiredLocation
             );
+        }
+
+        public record MapNodeData(
+                int stageNumberOfSelf,
+                int indexOfSelf,
+                Map.MapNodeType nodeType,
+                Tooltip.Size tooltipSize,
+                Tooltip.Location tooltipLocation
+        ) {
         }
     }
 }

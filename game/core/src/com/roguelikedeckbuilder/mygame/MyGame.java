@@ -12,17 +12,23 @@ import com.roguelikedeckbuilder.mygame.characters.CharacterData;
 
 public class MyGame extends ApplicationAdapter {
     public static final float SCALE_FACTOR = 0.05f;
-    static SpriteBatch batch;
-    ScreenViewport viewport;
-    OrthographicCamera camera;
-    MenuController menuController;
-    static BitmapFont font;
+    public static final float STEP_TIME = 1f / 60f;
     private static final float windowWidth = 1440;
     private static final float windowHeight = 920;
     private static final float viewWidth = windowWidth * SCALE_FACTOR;
     private static final float viewHeight = windowHeight * SCALE_FACTOR;
     public static float timeElapsedInGame = 0.0f;
+    static SpriteBatch batch;
+    static BitmapFont font;
+    ScreenViewport viewport;
+    OrthographicCamera camera;
+    MenuController menuController;
+    float accumulator = 0;
     private String timeText = "0:00";
+
+    public static void setTimeElapsedInGame(float newTime) {
+        timeElapsedInGame = newTime;
+    }
 
     @Override
     public void create() {
@@ -43,7 +49,6 @@ public class MyGame extends ApplicationAdapter {
         menuController = new MenuController();
         menuController.create(camera);
     }
-
 
     @Override
     public void render() {
@@ -76,9 +81,6 @@ public class MyGame extends ApplicationAdapter {
         font.dispose();
     }
 
-    public static final float STEP_TIME = 1f / 60f;
-    float accumulator = 0;
-
     private float stepWorld() {
         float delta = Gdx.graphics.getDeltaTime();
         accumulator += Math.min(delta, 0.25f);
@@ -108,9 +110,5 @@ public class MyGame extends ApplicationAdapter {
         } else {
             return 0;
         }
-    }
-
-    public static void setTimeElapsedInGame(float newTime) {
-        timeElapsedInGame = newTime;
     }
 }

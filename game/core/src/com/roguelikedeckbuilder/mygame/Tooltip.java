@@ -13,26 +13,18 @@ import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import static com.roguelikedeckbuilder.mygame.MyGame.*;
 
 public class Tooltip {
-    public enum Size {
-        LARGE, MEDIUM, SMALL
-    }
-
-    public enum Location {
-        LEFT, RIGHT, MIDDLE
-    }
-
-    private float tooltipLingerTime;
-    private final BitmapFont tooltipFont;
+    private static final XYPair<Float> leftPosition = new XYPair<>(1f, 8f);
+    private static final XYPair<Float> rightPosition = new XYPair<>(71f, 8f);
+    private static final XYPair<Float> middlePosition = new XYPair<>(21.2f, 14f);
+    private static final XYPair<Float> offScreen = new XYPair<>(9999f, 9999f);
     public final Stage tooltipStage;
+    private final BitmapFont tooltipFont;
+    private float tooltipLingerTime;
     private String tooltipTitleText;
     private String tooltipBodyText;
     private Size size;
     private Location location;
     private boolean isUsingTooltipLingerTime = false;
-    private static final XYPair<Float> leftPosition = new XYPair<>(1f, 8f);
-    private static final XYPair<Float> rightPosition = new XYPair<>(71f, 8f);
-    private static final XYPair<Float> middlePosition = new XYPair<>(21.2f, 14f);
-    private static final XYPair<Float> offScreen = new XYPair<>(9999f, 9999f);
 
     Tooltip(ScreenViewport viewportForStage, ClickListener clickListenerForItems) {
         tooltipStage = new Stage(viewportForStage);
@@ -141,12 +133,12 @@ public class Tooltip {
         this.tooltipLingerTime = 0.15f;
     }
 
-    public void setUsingTooltipLingerTime(boolean usingTooltipLingerTime) {
-        isUsingTooltipLingerTime = usingTooltipLingerTime;
-    }
-
     public boolean isUsingTooltipLingerTime() {
         return isUsingTooltipLingerTime;
+    }
+
+    public void setUsingTooltipLingerTime(boolean usingTooltipLingerTime) {
+        isUsingTooltipLingerTime = usingTooltipLingerTime;
     }
 
     public void setSize(Size size) {
@@ -179,5 +171,13 @@ public class Tooltip {
         for (Actor actor : tooltipStage.getActors()) {
             actor.setPosition(offScreen.x(), offScreen.y());
         }
+    }
+
+    public enum Size {
+        LARGE, MEDIUM, SMALL
+    }
+
+    public enum Location {
+        LEFT, RIGHT, MIDDLE
     }
 }

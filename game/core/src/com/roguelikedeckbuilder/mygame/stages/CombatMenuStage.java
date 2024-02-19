@@ -1,6 +1,7 @@
 package com.roguelikedeckbuilder.mygame.stages;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.characters.Character;
@@ -11,8 +12,15 @@ import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 public class CombatMenuStage extends GenericStage {
     private final Array<Enemy> currentEnemies = new Array<>();
 
-    public CombatMenuStage(ScreenViewport viewportForStage) {
-        super(viewportForStage, "default");
+    public CombatMenuStage(ScreenViewport viewportForStage, ImageButton exitButtonForTesting) {
+        super(viewportForStage, "combat background");
+
+        // Reposition the background
+        getStageBackgroundActor().setPosition(-7, -5);
+
+        // TODO: REMOVE THIS AFTER COMBAT IS IMPLEMENTED
+        exitButtonForTesting.setPosition(33, 36);
+        this.getStage().addActor(exitButtonForTesting);
     }
 
     public void batch(float elapsedTime) {
@@ -61,10 +69,10 @@ public class CombatMenuStage extends GenericStage {
     }
 
     public enum EnemyPositions {
-        ENEMY1(44, 1),
-        ENEMY2(49, 1),
-        ENEMY3(54, 1),
-        ENEMY4(59, 1);
+        ENEMY1(44, 22.8f),
+        ENEMY2(49, 22.8f),
+        ENEMY3(54, 22.8f),
+        ENEMY4(59, 22.8f);
 
         private final XYPair<Float> pos;
 

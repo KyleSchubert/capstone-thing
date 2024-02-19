@@ -27,6 +27,7 @@ import static com.roguelikedeckbuilder.mygame.Map.MapNodeType.RANDOM_EVENT;
 import static com.roguelikedeckbuilder.mygame.MyGame.*;
 
 public class MenuController {
+    protected boolean isGameplayPaused;
     private Stage mainMenuStage;
     private Stage pauseMenuStage;
     private Stage resultsMenuStage;
@@ -45,14 +46,8 @@ public class MenuController {
     private Image resultsBackground;
     private Image settingsBackground;
     private Image upgradesBackground;
-
-    public enum MenuState {
-        MAIN_MENU, MAP, PAUSED, RESULTS, UPGRADES, SETTINGS_BACK, RESUME, SETTINGS, START_REWARDS, REST_AREA, TREASURE, SHOP, STAGE_RESULTS, COMBAT
-    }
-
     private MenuState currentMenuState;
     private MenuState previousImportantMenuState;
-    protected boolean isGameplayPaused;
     private boolean isDrawMainMenu;
     private boolean isDrawDarkTransparentScreen;
     private boolean isDrawPauseMenu;
@@ -79,7 +74,7 @@ public class MenuController {
         restMenuStage = new RestMenuStage(viewportForStage, makeClickListenerThatCallsSetMenuState(MenuState.MAP));
         treasureMenuStage = new TreasureMenuStage(viewportForStage);
         shopMenuStage = new ShopMenuStage(viewportForStage, newImageButtonFrom("exit", MenuState.MAP));
-        combatMenuStage = new CombatMenuStage(viewportForStage);
+        combatMenuStage = new CombatMenuStage(viewportForStage, newImageButtonFrom("exit", MenuState.MAP));
 
         tooltip = new Tooltip(viewportForStage, makeClickListenerThatCallsSetMenuState(MenuState.MAP));
 
@@ -539,6 +534,7 @@ public class MenuController {
             }
             case COMBAT -> {
                 currentMenuState = MenuState.COMBAT;
+                Gdx.input.setInputProcessor(combatMenuStage.getStage());
                 isGameplayPaused = false;
                 setDrawPauseMenu(false);
                 setDrawCombatMenu(true);
@@ -556,7 +552,6 @@ public class MenuController {
             default -> throw new IllegalStateException("Unexpected value: " + menuState);
         }
     }
-
 
     private void setDrawMainMenu(boolean drawMainMenu) {
         this.isDrawMainMenu = drawMainMenu;
@@ -635,5 +630,9 @@ public class MenuController {
 
     public MenuState getCurrentMenuState() {
         return currentMenuState;
+    }
+
+    public enum MenuState {
+        MAIN_MENU, MAP, PAUSED, RESULTS, UPGRADES, SETTINGS_BACK, RESUME, SETTINGS, START_REWARDS, REST_AREA, TREASURE, SHOP, STAGE_RESULTS, COMBAT
     }
 }

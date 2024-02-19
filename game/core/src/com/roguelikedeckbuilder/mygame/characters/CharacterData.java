@@ -80,8 +80,8 @@ public class CharacterData {
 
 
     private static class IndividualCharacterData {
-        private TextureRegion[] allAnimationFrames;
         private final ArrayList<Float> allAnimationFrameDelays = new ArrayList<>();
+        private TextureRegion[] allAnimationFrames;
         private XYPair<Integer> origin;
         private XYPair<Integer> dimensions;
         private String internalName = "";
