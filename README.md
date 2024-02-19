@@ -4,7 +4,7 @@ This will be a roguelike deckbuilder made in Java using libGDX
 <h1>Images of parts of the game so far</h1>
   <details><summary>Menu</summary>
    
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/ba4f64c5-bf9e-47c0-9914-cd6f54c34910)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/0503514e-6b11-48bd-b955-36c1aa62c2b6)
    </details>
    
    <details><summary>Map</summary>
@@ -12,10 +12,14 @@ This will be a roguelike deckbuilder made in Java using libGDX
 ![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/80d70c27-6eb1-41ae-a9c3-edb77b734331)
    </details>
 
+  <details><summary>Combat</summary>
+
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/e76cd08f-b11b-42a5-9fef-c3170434c281)
+  </details>
+
   <details><summary>"Start with an item" panel</summary>
    
 ![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/f9aa7acf-3c20-4e2e-9405-71b1b8cb1c1c)
-
   </details>
 
   <details><summary>Shop</summary>
@@ -64,7 +68,7 @@ I am using IntelliJ IDEA.
 
 <b>During Battles</b>
 - [ ] Player has by default 3 energy refreshed at the start of each turn
-- [ ] Player draws by default 5 cards at the start of each turn
+- [x] Player draws by default 5 cards at the start of each turn
 - [x] HP persists across battles
 
 
@@ -79,8 +83,8 @@ I am using IntelliJ IDEA.
 - [ ] Player spends energy to play cards unless a card is free
 - [ ] Can be made to target a specific enemy or hit all enemies
 - [ ] Deal damage to enemies, inflict a debuff on enemies, heal the player, do nothing, or buff the player
-- [ ] Go into the discard pile once used
-- [ ] Discard pile shuffled into draw pile once the draw pile is empty
+- [x] Go into the discard pile once used
+- [x] Discard pile shuffled into draw pile once the draw pile is empty
 
 
 <b>Enemies</b>
@@ -98,7 +102,7 @@ I am using IntelliJ IDEA.
 
 
 <b>Shops</b>
-- [ ] Player can pick from 8 cards to buy
+- [x] Player can pick from 8 cards to buy
 - [ ] Player can pick from 3 artifacts to buy
 - [ ] Player can pay to remove a card from their deck
 - [ ] Player can pay to upgrade a card in their deck
