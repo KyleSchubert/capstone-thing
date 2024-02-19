@@ -3,7 +3,9 @@ package com.roguelikedeckbuilder.mygame.stages;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.roguelikedeckbuilder.mygame.Card;
+import com.roguelikedeckbuilder.mygame.cards.Card;
+
+import java.util.Random;
 
 
 public class ShopMenuStage extends GenericStage {
@@ -23,8 +25,14 @@ public class ShopMenuStage extends GenericStage {
 
     public void generateShop() {
         numberOfCards = 0;
+        Random random = new Random();
+        int randomNumber;
+
         for (int i = 0; i < 8; i++) {
-            addCard(new Card(Card.CardData.DEFAULT, true));
+            randomNumber = random.nextInt(Card.CardData.values().length);
+            Card card = new Card(Card.CardData.values()[randomNumber], true);
+            card.setInShop(true);
+            addCard(card);
         }
     }
 
@@ -45,7 +53,6 @@ public class ShopMenuStage extends GenericStage {
 
         cardGroup.setPosition(position.x, position.y);
         numberOfCards += 1;
-        System.out.println(numberOfCards);
 
         getStage().addActor(cardGroup);
     }

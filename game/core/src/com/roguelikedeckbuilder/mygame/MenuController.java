@@ -606,13 +606,7 @@ public class MenuController {
     }
 
     private ImageButton newImageButtonFrom(String buttonInternalFolderName, MenuState menuState) {
-        Texture notClickedTexture = new Texture(Gdx.files.internal("MENU BUTTONS/" + buttonInternalFolderName + "/default.png"));
-        Texture clickedTexture = new Texture(Gdx.files.internal("MENU BUTTONS/" + buttonInternalFolderName + "/hover.png"));
-        ImageButton button = new ImageButton(
-                new TextureRegionDrawable(new TextureRegion(notClickedTexture)),
-                new TextureRegionDrawable(new TextureRegion(clickedTexture))
-        );
-        button.setSize(notClickedTexture.getWidth() * SCALE_FACTOR, notClickedTexture.getHeight() * SCALE_FACTOR);
+        ImageButton button = getImageButton(buttonInternalFolderName);
         button.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -625,6 +619,17 @@ public class MenuController {
             }
         });
 
+        return button;
+    }
+
+    public static ImageButton getImageButton(String buttonInternalFolderName) {
+        Texture notClickedTexture = new Texture(Gdx.files.internal("MENU BUTTONS/" + buttonInternalFolderName + "/default.png"));
+        Texture clickedTexture = new Texture(Gdx.files.internal("MENU BUTTONS/" + buttonInternalFolderName + "/hover.png"));
+        ImageButton button = new ImageButton(
+                new TextureRegionDrawable(new TextureRegion(notClickedTexture)),
+                new TextureRegionDrawable(new TextureRegion(clickedTexture))
+        );
+        button.setSize(notClickedTexture.getWidth() * SCALE_FACTOR, notClickedTexture.getHeight() * SCALE_FACTOR);
         return button;
     }
 

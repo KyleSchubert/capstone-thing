@@ -1,4 +1,4 @@
-package com.roguelikedeckbuilder.mygame;
+package com.roguelikedeckbuilder.mygame.cards;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -9,6 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
+import com.roguelikedeckbuilder.mygame.Player;
+import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
+import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
@@ -17,6 +21,8 @@ public class Card {
     private final int cardValue;
     private final Group group;
     private final Label.LabelStyle labelStyle = new Label.LabelStyle();
+    private boolean isUpgraded = false;
+    private boolean isInShop = false;
 
     public Card(CardData cardType, boolean showValue) {
         this.cardType = cardType;
@@ -25,8 +31,12 @@ public class Card {
         background.setPosition(0, 0);
 
         Image image = new Image(new Texture(Gdx.files.internal(cardType.imagePath)));
-        float imageXPosition = (background.getWidth() - image.getWidth()) / 2;
-        image.setPosition(imageXPosition, 230 - image.getWidth() / 2);
+        image.setScale(2);
+        XYPair<Float> imagePosition = new XYPair<>(
+                (background.getWidth() - image.getWidth() * 2) / 2,
+                220 - image.getWidth() / 2
+        );
+        image.setPosition(imagePosition.x(), imagePosition.y());
 
         labelStyle.font = new BitmapFont(Gdx.files.internal("font2.fnt"));
         labelStyle.fontColor = Color.WHITE;
@@ -35,10 +45,10 @@ public class Card {
         cardValue = cardType.value;
 
         Label cardName = newLabel(cardType.name);
-        cardName.setPosition(14, 274);
+        cardName.setPosition(16, 274);
 
         Label cardEffectDescription = newLabel(cardType.effectDescription);
-        cardEffectDescription.setPosition(14, 130);
+        cardEffectDescription.setPosition(16, 120);
 
 
         group = new Group();
@@ -59,13 +69,7 @@ public class Card {
         }
 
         group.setScale(SCALE_FACTOR);
-
-        group.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Player.buyCard(cardValue, cardType.name);
-            }
-        });
+        group.setUserObject(UserObjectOptions.CARD);
     }
 
     private Label newLabel(String text) {
@@ -87,12 +91,41 @@ public class Card {
         return cardType;
     }
 
+    public void setInShop(boolean inShop) {
+        isInShop = inShop;
+
+        if (inShop) {
+            group.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Player.buyCard(cardValue, cardType, isUpgraded);
+                }
+            });
+        }
+    }
+
+    public void setUpgraded(boolean upgraded) {
+        isUpgraded = upgraded;
+    }
+
     public enum CardData {
         DEFAULT(
                 "Default",
                 "I am [ORANGE]testing[] out a card and seeing if I want to format the file this way. Deals [RED]9 Damage[][PURPLE], which is [][CYAN]cool[]",
                 110,
-                "ITEMS/default.png"
+                "ABILITIES/1.png"
+        ),
+        TEST2(
+                "Test2",
+                "Deals [RED]3 Damage[] to an enemy [CYAN]2 times[].",
+                70,
+                "ABILITIES/2.png"
+        ),
+        TEST3(
+                "Test3",
+                "Deals [RED]1 Damage[] to an enemy [CYAN]4 times[].",
+                80,
+                "ABILITIES/3.png"
         );
 
         private final String name;

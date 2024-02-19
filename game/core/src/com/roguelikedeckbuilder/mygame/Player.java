@@ -1,5 +1,7 @@
 package com.roguelikedeckbuilder.mygame;
 
+import com.badlogic.gdx.utils.Array;
+import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.characters.Character;
 
 public class Player {
@@ -8,18 +10,34 @@ public class Player {
     private static int hp;
     private static int money;
     private static int persistentMoney;
+    private static Array<Card> ownedCards;
 
     public static void initialize() {
         persistentMoney = 200;
-        reset();
         character = new Character(Character.CharacterTypeName.HELMET_PENGUIN, 46, 22.8f);
         character.faceRight();
+        ownedCards = new Array<>();
+        reset();
     }
 
     public static void reset() {
         maxHp = 70;
         hp = maxHp;
         money = 1500;
+
+        ownedCards.clear();
+        for (int i = 0; i < 5; i++) {
+            Card card = new Card(Card.CardData.TEST2, false);
+            ownedCards.add(card);
+        }
+        for (int i = 0; i < 3; i++) {
+            Card card = new Card(Card.CardData.TEST3, false);
+            ownedCards.add(card);
+        }
+        for (int i = 0; i < 3; i++) {
+            Card card = new Card(Card.CardData.DEFAULT, false);
+            ownedCards.add(card);
+        }
     }
 
     public static void changeMoney(int change) {
@@ -64,13 +82,21 @@ public class Player {
         return persistentMoney;
     }
 
-    public static void buyCard(int cardValue, String cardName) {
+    public static void buyCard(int cardValue, Card.CardData cardData, boolean isUpgraded) {
         if (money > cardValue) {
             changeMoney(-cardValue);
+
+            Card boughtCard = new Card(cardData, false);
+            boughtCard.setUpgraded(isUpgraded);
+            ownedCards.add(boughtCard);
         }
     }
 
     public static Character getCharacter() {
         return character;
+    }
+
+    public static Array<Card> getOwnedCards() {
+        return ownedCards;
     }
 }
