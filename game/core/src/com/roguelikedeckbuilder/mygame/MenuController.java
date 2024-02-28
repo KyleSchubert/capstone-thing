@@ -269,6 +269,7 @@ public class MenuController {
             shopMenuStage.batch(elapsedTime);
         }
         if (this.isDrawCombatMenuStage) {
+            tooltip.setUsingTooltipLingerTime(true);
             combatMenuStage.batch(elapsedTime);
         }
 
@@ -535,6 +536,8 @@ public class MenuController {
             case COMBAT -> {
                 currentMenuState = MenuState.COMBAT;
                 Gdx.input.setInputProcessor(combatMenuStage.getStage());
+                tooltip.setUsingTooltipLingerTime(true);
+                setDrawTooltipMenu(false);
                 isGameplayPaused = false;
                 setDrawPauseMenu(false);
                 setDrawCombatMenu(true);
