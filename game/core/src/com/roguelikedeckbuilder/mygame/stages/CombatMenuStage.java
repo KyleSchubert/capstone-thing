@@ -1,6 +1,7 @@
 package com.roguelikedeckbuilder.mygame.stages;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.MenuController;
 import com.roguelikedeckbuilder.mygame.Player;
+import com.roguelikedeckbuilder.mygame.UseLine;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.characters.Character;
 import com.roguelikedeckbuilder.mygame.combat.Enemy;
@@ -20,6 +22,7 @@ import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
+import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 
 public class CombatMenuStage extends GenericStage {
     private final Array<Enemy> currentEnemies = new Array<>();
@@ -88,6 +91,8 @@ public class CombatMenuStage extends GenericStage {
 
     public void batch(float elapsedTime) {
         super.batch(elapsedTime);
+        UseLine.setMainColor(Color.PURPLE);
+        UseLine.setPosition(new XYPair<>(19f, 12f), getMousePosition());
     }
 
     public void addEnemy(Character.CharacterTypeName characterTypeName) {
@@ -124,7 +129,7 @@ public class CombatMenuStage extends GenericStage {
         shufflePileContents.clear();
 
         handContents.clear();
-        
+
         drawCards(5);
         updatePileText();
     }
@@ -162,7 +167,6 @@ public class CombatMenuStage extends GenericStage {
         handContents.clear();
 
         drawCards(5);
-        updatePileText();
     }
 
     private void drawCards(int amount) {
@@ -178,13 +182,12 @@ public class CombatMenuStage extends GenericStage {
                 drawPileContents.shuffle();
                 shufflePileContents.clear();
             }
-            drawPileContents.get(0).getGroup().setPosition(12 + getAmountOfCardsInHand() * 7, 4);
+            drawPileContents.get(0).getGroup().setPosition(12 + getAmountOfCardsInHand() * 7, 0);
             this.getStage().addActor(drawPileContents.get(0).getGroup());
             handContents.add(drawPileContents.get(0));
             drawPileContents.removeIndex(0);
-
-
         }
+        updatePileText();
     }
 
     private int getAmountOfCardsInHand() {

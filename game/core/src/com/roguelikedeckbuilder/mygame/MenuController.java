@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.characters.Character;
+import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.stages.CombatMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.RestMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.ShopMenuStage;
@@ -247,9 +248,17 @@ public class MenuController {
             map.batch(elapsedTime);
         }
 
+        if (this.isDrawCombatMenuStage) {
+            tooltip.setUsingTooltipLingerTime(true);
+            combatMenuStage.batch(elapsedTime);
+        }
         batch.end();
         batch.begin();
-
+        if (UseLine.isVisible()) {
+            UseLine.draw();
+        }
+        batch.end();
+        batch.begin();
         if (this.isDrawDarkTransparentScreen) {
             // draw the dark transparent screen
             darkTransparentScreen.draw(batch, 1);
@@ -267,10 +276,6 @@ public class MenuController {
         if (this.isDrawShopMenuStage) {
             tooltip.setUsingTooltipLingerTime(true);
             shopMenuStage.batch(elapsedTime);
-        }
-        if (this.isDrawCombatMenuStage) {
-            tooltip.setUsingTooltipLingerTime(true);
-            combatMenuStage.batch(elapsedTime);
         }
 
         batch.end();

@@ -6,9 +6,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.characters.CharacterData;
+import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 public class MyGame extends ApplicationAdapter {
     public static final float SCALE_FACTOR = 0.05f;
@@ -20,8 +22,8 @@ public class MyGame extends ApplicationAdapter {
     public static float timeElapsedInGame = 0.0f;
     static SpriteBatch batch;
     static BitmapFont font;
-    ScreenViewport viewport;
-    OrthographicCamera camera;
+    static ScreenViewport viewport;
+    static OrthographicCamera camera;
     MenuController menuController;
     float accumulator = 0;
     private String timeText = "0:00";
@@ -45,6 +47,7 @@ public class MyGame extends ApplicationAdapter {
 
         CharacterData.initialize();
         Player.initialize();
+        UseLine.initialize();
 
         menuController = new MenuController();
         menuController.create(camera);
@@ -79,6 +82,7 @@ public class MyGame extends ApplicationAdapter {
         batch.dispose();
         menuController.dispose();
         font.dispose();
+        UseLine.dispose();
     }
 
     private float stepWorld() {
@@ -110,5 +114,14 @@ public class MyGame extends ApplicationAdapter {
         } else {
             return 0;
         }
+    }
+
+    public static XYPair<Float> getMousePosition() {
+        float x = Gdx.input.getX();
+        float y = Gdx.input.getY();
+        Vector3 coordinates = new Vector3(x, y, 0);
+        camera.unproject(coordinates);
+
+        return new XYPair<>(coordinates.x, coordinates.y);
     }
 }
