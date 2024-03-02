@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
+import com.roguelikedeckbuilder.mygame.stages.Map;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.*;
 

@@ -1,12 +1,16 @@
 package com.roguelikedeckbuilder.mygame.characters;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
-public class Character extends Actor {
+public class Character extends Group {
     private final CharacterTypeName characterTypeName;
     private CharacterState state;
     private float frameTime = 0;
@@ -14,6 +18,8 @@ public class Character extends Actor {
     private int stateFrameStartIndex = 0;
     private int stateFrameEndIndex = 0;
     private int isFacingLeft = 1;
+    private final Image targetGlow;
+    private boolean isTargeted = false;
 
     public Character(CharacterTypeName characterTypeName, float x, float y) {
         this.characterTypeName = characterTypeName;
@@ -32,6 +38,10 @@ public class Character extends Actor {
         setBounds(x, y,
                 CharacterData.getDimensions(characterTypeName).x(),
                 CharacterData.getDimensions(characterTypeName).y());
+
+        targetGlow = new Image(new Texture(Gdx.files.internal("OTHER UI/target glow.png")));
+        targetGlow.setScale(SCALE_FACTOR);
+        targetGlow.setOrigin(-96 * SCALE_FACTOR, -80 * SCALE_FACTOR);
     }
 
     public void setState(CharacterState state) {
@@ -70,6 +80,10 @@ public class Character extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (isTargeted) {
+            targetGlow.draw(batch, parentAlpha);
+        }
+
         batch.draw(CharacterData.getAllAnimationFrames(characterTypeName)[this.frame],
                 this.getX(),
                 this.getY(),
@@ -91,6 +105,29 @@ public class Character extends Actor {
 
     public int getIsFacingLeft() {
         return this.isFacingLeft;
+    }
+
+    public void setTargeted(boolean targeted) {
+        isTargeted = targeted;
+        if (targeted) {
+            refreshTargetPosition();
+        }
+    }
+
+    private float getBottomUpYOrigin() {
+        return (CharacterData.getDimensions(characterTypeName).y() - CharacterData.getOrigin(characterTypeName).y()) * SCALE_FACTOR;
+    }
+
+    private XYPair<Float> getCharacterCenter() {
+        float x = this.getX() + CharacterData.getOrigin(characterTypeName).x() * SCALE_FACTOR;
+        float y = this.getY() + getBottomUpYOrigin();
+
+        return new XYPair<>(x, y);
+    }
+
+    private void refreshTargetPosition() {
+        XYPair<Float> coordinates = getCharacterCenter();
+        targetGlow.setPosition(coordinates.x(), coordinates.y());
     }
 
     public enum CharacterState {

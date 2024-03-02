@@ -13,18 +13,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.characters.Character;
-import com.roguelikedeckbuilder.mygame.helpers.XYPair;
-import com.roguelikedeckbuilder.mygame.stages.CombatMenuStage;
-import com.roguelikedeckbuilder.mygame.stages.RestMenuStage;
-import com.roguelikedeckbuilder.mygame.stages.ShopMenuStage;
-import com.roguelikedeckbuilder.mygame.stages.TreasureMenuStage;
+import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
+import com.roguelikedeckbuilder.mygame.stages.*;
 
 import java.util.Random;
 
-import static com.roguelikedeckbuilder.mygame.Map.MapNodeType.RANDOM_EVENT;
+import static com.roguelikedeckbuilder.mygame.stages.Map.MapNodeType.RANDOM_EVENT;
 import static com.roguelikedeckbuilder.mygame.MyGame.*;
 
 public class MenuController {
@@ -61,6 +59,9 @@ public class MenuController {
     private boolean isDrawTreasureMenuStage;
     private boolean isDrawShopMenuStage;
     private boolean isDrawCombatMenuStage;
+    private float runningAnimationAddClock = 0;
+    private float runningAnimationRemovalClock = 0;
+    private final Random random = new Random();
 
     public void create(OrthographicCamera camera) {
         // For the UI and menus
@@ -200,26 +201,6 @@ public class MenuController {
         mainMenuStage.addActor(new Character(Character.CharacterTypeName.PLANT, 53, 6));
         mainMenuStage.addActor(new Character(Character.CharacterTypeName.STUMP, 59, 6));
 
-        // Running animation
-        float startX = 130;
-        float startY = 34;
-        float endX = -60;
-
-        for (Character.CharacterTypeName typeName : Character.CharacterTypeName.values()) {
-            mainMenuStage.addActor(new Character(typeName, startX, startY));
-            Character character = (Character) mainMenuStage.getActors().get(mainMenuStage.getActors().size - 1);
-            character.setState(Character.CharacterState.MOVING);
-
-            MoveToAction moveAction = new MoveToAction();
-            moveAction.setPosition(endX, character.getY());
-            moveAction.setDuration(20f);
-
-            startX -= 9;
-            endX -= 9;
-            character.addAction(moveAction);
-        }
-
-
         setMenuState(MenuState.MAIN_MENU);
     }
 
@@ -238,6 +219,33 @@ public class MenuController {
             mainMenuStage.act(elapsedTime);
             mainMenuStage.draw();
             font.draw(batch, "x " + Player.getPersistentMoney(), 17.3f, 15.3f); // text for currency counter
+
+            // For the running animation looping
+            runningAnimationAddClock += elapsedTime;
+            if (runningAnimationAddClock > 0.2f) {
+                runningAnimationAddClock -= 0.2f;
+                animateRandomRunningCharacter();
+            }
+
+            runningAnimationRemovalClock += elapsedTime;
+            if (runningAnimationRemovalClock > 3) {
+                runningAnimationRemovalClock -= 3;
+
+                Array<Actor> mustRemove = new Array<>();
+
+                for (Actor actor : mainMenuStage.getActors()) {
+                    UserObjectOptions actorType = (UserObjectOptions) actor.getUserObject();
+                    if (actorType == UserObjectOptions.RUNNING_ANIMATION_CHARACTER) {
+                        if (actor.getX() < -15) {
+                            mustRemove.add(actor);
+                        }
+                    }
+                }
+
+                for (Actor actor : mustRemove) {
+                    actor.remove();
+                }
+            }
         } else {
             topBarBackground.draw(batch, 1);
             topBarCoin.draw(batch, 1);
@@ -643,6 +651,29 @@ public class MenuController {
 
     public MenuState getCurrentMenuState() {
         return currentMenuState;
+    }
+
+
+    private void animateRandomRunningCharacter() {
+        float startX = 80;
+        float startY = 34;
+        float endXOffset = -160;
+
+        float randomX = random.nextFloat(15) - 7;
+        float randomY = random.nextFloat(15) - 7;
+
+        int randomTypeIndex = random.nextInt(Character.CharacterTypeName.values().length);
+        Character.CharacterTypeName randomType = Character.CharacterTypeName.values()[randomTypeIndex];
+
+        mainMenuStage.addActor(new Character(randomType, startX + randomX, startY + randomY));
+        Character character = (Character) mainMenuStage.getActors().get(mainMenuStage.getActors().size - 1);
+        character.setUserObject(UserObjectOptions.RUNNING_ANIMATION_CHARACTER);
+        character.setState(Character.CharacterState.MOVING);
+
+        MoveToAction moveAction = new MoveToAction();
+        moveAction.setPosition(character.getX() + endXOffset, character.getY());
+        moveAction.setDuration(20f);
+        character.addAction(moveAction);
     }
 
     public enum MenuState {
