@@ -208,6 +208,12 @@ public class MenuController {
         if (this.isDrawMapMenu) {
             map.drawMap(batch);
         }
+        if (this.isDrawCombatMenuStage) {
+            tooltip.setUsingTooltipLingerTime(true);
+            combatMenuStage.batch(elapsedTime);
+        }
+        batch.end();
+        batch.begin();
 
         if (this.isDrawMainMenu) {
             mainMenuStage.getActors().get(0).setPosition(15.5f, 14); // persistentCurrencyCounterImage
@@ -252,13 +258,11 @@ public class MenuController {
             font.draw(batch, timeText, 68, 45); // text for time elapsed in game
             font.draw(batch, "HP: " + Player.getHp() + " / " + Player.getMaxHp(), 2, 45);
             font.draw(batch, Integer.toString(Player.getMoney()), 55, 45);
-            // Draw the map stuff
-            map.batch(elapsedTime);
         }
-
-        if (this.isDrawCombatMenuStage) {
-            tooltip.setUsingTooltipLingerTime(true);
-            combatMenuStage.batch(elapsedTime);
+        batch.end();
+        batch.begin();
+        if (this.isDrawMapMenu) {
+            map.batch(elapsedTime);
         }
         batch.end();
         batch.begin();
@@ -469,6 +473,7 @@ public class MenuController {
                 setDrawCombatMenu(false);
             }
             case MAP -> {
+                setDrawMapMenu(true);
                 tooltip.setUsingTooltipLingerTime(true);
                 setDrawTooltipMenu(false);
                 currentMenuState = MenuState.MAP;
@@ -554,6 +559,7 @@ public class MenuController {
                 isGameplayPaused = false;
                 setDrawPauseMenu(false);
                 setDrawCombatMenu(true);
+                setDrawMapMenu(false);
 
                 // Reset and then add 4 random enemies for testing
                 Random random = new Random();
