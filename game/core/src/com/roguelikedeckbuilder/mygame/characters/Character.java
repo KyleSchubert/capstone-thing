@@ -84,8 +84,13 @@ public class Character extends Group {
             targetGlow.draw(batch, parentAlpha);
         }
 
+        float additionalShiftX = 0;
+        if (this.isFacingLeft == -1) {
+            additionalShiftX = 2 * CharacterData.getOrigin(characterTypeName).x() * SCALE_FACTOR;
+        }
+
         batch.draw(CharacterData.getAllAnimationFrames(characterTypeName)[this.frame],
-                this.getX(),
+                this.getX() + additionalShiftX,
                 this.getY(),
                 this.getOriginX(),
                 this.getOriginY(),
@@ -118,7 +123,7 @@ public class Character extends Group {
         return (CharacterData.getDimensions(characterTypeName).y() - CharacterData.getOrigin(characterTypeName).y()) * SCALE_FACTOR;
     }
 
-    private XYPair<Float> getCharacterCenter() {
+    public XYPair<Float> getCharacterCenter() {
         float x = this.getX() + CharacterData.getOrigin(characterTypeName).x() * SCALE_FACTOR;
         float y = this.getY() + getBottomUpYOrigin();
 
@@ -128,6 +133,11 @@ public class Character extends Group {
     private void refreshTargetPosition() {
         XYPair<Float> coordinates = getCharacterCenter();
         targetGlow.setPosition(coordinates.x(), coordinates.y());
+    }
+
+    public XYPair<Float> getHpBarPosition() {
+        XYPair<Float> position = getCharacterCenter();
+        return new XYPair<>(position.x() - 4.1f, position.y() - 1.5f);
     }
 
     public enum CharacterState {

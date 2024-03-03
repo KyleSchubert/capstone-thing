@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.characters.CharacterData;
+import com.roguelikedeckbuilder.mygame.combat.EnemyData;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 public class MyGame extends ApplicationAdapter {
@@ -46,6 +47,7 @@ public class MyGame extends ApplicationAdapter {
         font.getData().setScale(SCALE_FACTOR, SCALE_FACTOR);
 
         CharacterData.initialize();
+        EnemyData.initialize();
         Player.initialize();
         UseLine.initialize();
 

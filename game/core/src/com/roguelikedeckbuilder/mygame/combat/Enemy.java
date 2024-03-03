@@ -9,7 +9,7 @@ import com.roguelikedeckbuilder.mygame.stages.CombatMenuStage;
 
 public class Enemy {
     private final Character character;
-    private CombatInformation combatInformation;
+    private final CombatInformation combatInformation;
     private AbilityData nextAbility;
     private final XYPair<Float> positionOnStage;
 
@@ -17,6 +17,11 @@ public class Enemy {
         positionOnStage = position.getPos();
         character = new Character(characterTypeName, positionOnStage.x(), positionOnStage.y());
         character.setUserObject(UserObjectOptions.ENEMY);
+
+        combatInformation = new CombatInformation();
+        combatInformation.setHpBarPosition(character.getHpBarPosition());
+        combatInformation.loadEnemyStats(characterTypeName);
+        combatInformation.setHpBarVisibility(true);
     }
 
     public void putOnStage(Stage stage) {
@@ -46,5 +51,9 @@ public class Enemy {
 
     public CombatInformation getCombatInformation() {
         return combatInformation;
+    }
+
+    public void dispose() {
+        combatInformation.dispose();
     }
 }

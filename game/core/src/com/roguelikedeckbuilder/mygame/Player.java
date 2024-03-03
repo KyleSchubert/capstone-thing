@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.characters.Character;
 import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
+import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 public class Player {
     private static Character character;
@@ -14,7 +15,7 @@ public class Player {
 
     public static void initialize() {
         persistentMoney = 200;
-        character = new Character(Character.CharacterTypeName.HELMET_PENGUIN, 46, 22.8f);
+        character = new Character(Character.CharacterTypeName.HELMET_PENGUIN, 18f, 22.8f);
         character.faceRight();
         ownedCards = new Array<>();
         combatInformation = new CombatInformation();
@@ -23,6 +24,7 @@ public class Player {
 
     public static void reset() {
         money = 1500;
+        combatInformation.setHpBarPosition(character.getHpBarPosition());
         combatInformation.loadPlayerStats();
 
         ownedCards.clear();
@@ -80,5 +82,14 @@ public class Player {
 
     public static CombatInformation getCombatInformation() {
         return combatInformation;
+    }
+
+    public static void combatStart() {
+        combatInformation.setHpBarPosition(character.getHpBarPosition());
+        combatInformation.setHpBarVisibility(true);
+    }
+
+    public static void combatEnd() {
+        combatInformation.setHpBarVisibility(false);
     }
 }

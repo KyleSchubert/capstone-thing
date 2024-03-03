@@ -93,6 +93,10 @@ public class CombatMenuStage extends GenericStage {
     public void batch(float elapsedTime) {
         super.batch(elapsedTime);
         targetHoverListener();
+        for (Enemy enemy : currentEnemies) {
+            enemy.getCombatInformation().drawHpBar();
+        }
+        Player.getCombatInformation().drawHpBar();
     }
 
     public void addEnemy(Character.CharacterTypeName characterTypeName) {
@@ -118,6 +122,12 @@ public class CombatMenuStage extends GenericStage {
     public void reset() {
         removeActorsByType(UserObjectOptions.ENEMY);
         removeActorsByType(UserObjectOptions.CARD);
+
+        for (Enemy enemy : currentEnemies) {
+            enemy.dispose();
+        }
+
+        Player.combatStart();
 
         currentEnemies.clear();
 
