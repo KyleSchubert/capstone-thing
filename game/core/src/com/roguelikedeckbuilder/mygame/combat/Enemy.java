@@ -9,9 +9,8 @@ import com.roguelikedeckbuilder.mygame.stages.CombatMenuStage;
 
 public class Enemy {
     private final Character character;
-    private int hp;
-    private int maxHp;
-    private Ability nextAbility;
+    private CombatInformation combatInformation;
+    private AbilityData nextAbility;
     private final XYPair<Float> positionOnStage;
 
     public Enemy(Character.CharacterTypeName characterTypeName, CombatMenuStage.EnemyPositions position) {
@@ -43,5 +42,9 @@ public class Enemy {
 
     public void setTargeted(boolean targeted) {
         character.setTargeted(targeted);
+    }
+
+    public CombatInformation getCombatInformation() {
+        return combatInformation;
     }
 }

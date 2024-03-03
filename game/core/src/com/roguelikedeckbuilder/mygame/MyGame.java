@@ -90,7 +90,7 @@ public class MyGame extends ApplicationAdapter {
         accumulator += Math.min(delta, 0.25f);
         if (accumulator >= STEP_TIME) {
             accumulator -= STEP_TIME;
-            if (Player.getHp() == 0) {
+            if (Player.getCombatInformation().getHp() == 0) {
                 menuController.setMenuState(MenuController.MenuState.RESULTS);
             }
             if (!menuController.isGameplayPaused) {

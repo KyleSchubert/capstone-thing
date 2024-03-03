@@ -256,7 +256,7 @@ public class MenuController {
             topBarBackground.draw(batch, 1);
             topBarCoin.draw(batch, 1);
             font.draw(batch, timeText, 68, 45); // text for time elapsed in game
-            font.draw(batch, "HP: " + Player.getHp() + " / " + Player.getMaxHp(), 2, 45);
+            font.draw(batch, "HP: " + Player.getCombatInformation().getHp() + " / " + Player.getCombatInformation().getMaxHp(), 2, 45);
             font.draw(batch, Integer.toString(Player.getMoney()), 55, 45);
         }
         batch.end();
@@ -399,8 +399,8 @@ public class MenuController {
                 // Get the MapNodeData object from the image actor that triggered the click event
                 Map.MapNode.MapNodeData data = (Map.MapNode.MapNodeData) event.getTarget().getUserObject();
 
-                Player.changeMaxHp(-2);
-                Player.changeHp(-1);
+                Player.getCombatInformation().changeMaxHp(-2);
+                Player.getCombatInformation().changeHp(-1);
 
                 // Check if the node is a valid choice
                 if (map.isValidChoice(data.stageNumberOfSelf(), data.indexOfSelf())) {

@@ -4,18 +4,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 import com.roguelikedeckbuilder.mygame.Player;
+import com.roguelikedeckbuilder.mygame.UseLine;
+import com.roguelikedeckbuilder.mygame.combat.CombatHandler;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
+import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 
 public class Card {
     private final CardData cardType;
@@ -24,6 +25,8 @@ public class Card {
     private final Label.LabelStyle labelStyle = new Label.LabelStyle();
     private boolean isUpgraded = false;
     private boolean isInShop = false;
+    private float width;
+    private float height;
 
     public Card(CardData cardType, boolean showValue) {
         this.cardType = cardType;
@@ -69,6 +72,9 @@ public class Card {
             group.addActor(cardValueLabel);
         }
 
+        width = background.getWidth() * SCALE_FACTOR;
+        height = background.getWidth() * SCALE_FACTOR;
+
         group.setScale(SCALE_FACTOR);
         group.setUserObject(UserObjectOptions.CARD);
     }
@@ -103,6 +109,31 @@ public class Card {
                 }
             });
         }
+    }
+
+    public ClickListener getClickListener() {
+        return new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                UseLine.setVisibility(true);
+                UseLine.setPosition(
+                        new XYPair<>(
+                                getGroup().getX() + width / 2,
+                                getGroup().getY() + height),
+                        getMousePosition());
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                UseLine.setVisibility(false);
+                CombatHandler.playerUsesCard(Card.this);
+            }
+        };
     }
 
     public void setUpgraded(boolean upgraded) {

@@ -17,6 +17,7 @@ import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.UseLine;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.characters.Character;
+import com.roguelikedeckbuilder.mygame.combat.CombatHandler;
 import com.roguelikedeckbuilder.mygame.combat.Enemy;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
@@ -91,7 +92,6 @@ public class CombatMenuStage extends GenericStage {
 
     public void batch(float elapsedTime) {
         super.batch(elapsedTime);
-        UseLine.setPosition(new XYPair<>(19f, 12f), getMousePosition());
         targetHoverListener();
     }
 
@@ -133,6 +133,7 @@ public class CombatMenuStage extends GenericStage {
         updatePileText();
 
         UseLine.setMainColor(Color.PURPLE);
+        UseLine.setVisibility(false);
     }
 
     private void removeActorsByType(UserObjectOptions userObjectOption) {
@@ -214,7 +215,10 @@ public class CombatMenuStage extends GenericStage {
 
             for (Enemy enemy : currentEnemies) {
                 if (enemy.isPointWithinRange(mousePosition)) {
-                    enemy.setTargeted(true);
+                    // For now, it'll just be an array of 1 until I add AOE cards
+                    Array<Enemy> enemies = new Array<>();
+                    enemies.add(enemy);
+                    CombatHandler.setEnemiesThePlayerIsHoveringOver(enemies);
                     break;
                 }
             }

@@ -17,7 +17,7 @@ public class UseLine {
         start = new XYPair<>(0f, 0f);
         end = new XYPair<>(0f, 0f);
         shapeRenderer = new ShapeRenderer();
-        isVisible = true;
+        isVisible = false;
         mainColor = Color.ORANGE;
     }
 
