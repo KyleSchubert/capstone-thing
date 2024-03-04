@@ -42,6 +42,12 @@ If you want to build the game, follow this: https://libgdx.com/wiki/start/import
 <br>
 I am using IntelliJ IDEA.
 
+<h1>Where are the files?</h1>
+
+- Classes and all that: `/game/core/src/com/roguelikedeckbuilder/mygame`
+- `MyGame.java`, which is in there ^ is the "main" for this
+- Assets: `/game/assets`
+- The desktop launcher: `/game/desktop/src/com/roguelikedeckbuilder/mygame/DesktopLauncher.java`
 
 <h1>Requirements</h1>
 * Some things aren't listed or marked here, like the UseLine or HP Bars, but were added anyways
