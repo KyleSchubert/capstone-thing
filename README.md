@@ -14,7 +14,7 @@ This will be a roguelike deckbuilder made in Java using libGDX
 
   <details><summary>Combat</summary>
 
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/b32f7f39-b6cb-4bdb-bf4d-df844967fd60)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/9e5b4642-386e-4086-a210-48842ee23014)
   </details>
 
   <details><summary>"Start with an item" panel</summary>
