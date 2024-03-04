@@ -1,11 +1,15 @@
 package com.roguelikedeckbuilder.mygame.combat;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.roguelikedeckbuilder.mygame.characters.Character;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.stages.CombatMenuStage;
+
+import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class Enemy {
     private final Character character;
@@ -19,13 +23,17 @@ public class Enemy {
         character.setUserObject(UserObjectOptions.ENEMY);
 
         combatInformation = new CombatInformation();
-        combatInformation.setHpBarPosition(character.getHpBarPosition());
+        combatInformation.setPositions(character.getCharacterCenter());
         combatInformation.loadEnemyStats(characterTypeName);
         combatInformation.setHpBarVisibility(true);
     }
 
     public void putOnStage(Stage stage) {
         stage.addActor(character);
+    }
+
+    public void removeFromStage(Stage stage) {
+        stage.getActors().removeValue(character, true);
     }
 
     public boolean isPointWithinRange(XYPair<Float> point) {
@@ -53,7 +61,7 @@ public class Enemy {
         return combatInformation;
     }
 
-    public void dispose() {
-        combatInformation.dispose();
+    public Character getCharacter() {
+        return character;
     }
 }

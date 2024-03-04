@@ -7,15 +7,25 @@ public class CombatHandler {
     private static Array<CombatInformation> targets = new Array<>();
     private static Array<Enemy> enemiesThePlayerIsHoveringOver = new Array<>();
 
-    public static void enemyUsesAbility(AbilityData abilityData) {
+    public static void enemyUsesAbility(Ability.AbilityTypeName abilityTypeName) {
         // do any additional PRE effects of the enemy --> an effect on them triggers?
-        useAbility(abilityData);
+        useAbility(abilityTypeName);
         // do any additional POST effects of the enemy --> they self-destruct?
     }
 
-    private static void useAbility(AbilityData abilityData) {
-        // targets is used here
-        // ability is dealt to each CombatInformation how it should
+    private static void useAbility(Ability.AbilityTypeName abilityTypeName) {
+        int hits = AbilityData.getHits(abilityTypeName);
+        int damage = AbilityData.getDamage(abilityTypeName);
+        boolean stopEarly;
+
+        for (CombatInformation combatInformation : targets) {
+            for (int i = 0; i < hits; i++) {
+                stopEarly = combatInformation.takeDamage(damage);
+                if (stopEarly) {
+                    break;
+                }
+            }
+        }
     }
 
     public static void playerUsesCard(Card card) {
@@ -24,7 +34,7 @@ public class CombatHandler {
             enemy.setTargeted(false);
         }
         // do any additional PRE effects of card/player
-        // useAbility(card.getAbility() and include bonuses on the card like upgraded or not);
+        useAbility(card.getAbilityTypeName());
         // do any additional POST effects of card/player
         // send card to shuffle pile
     }

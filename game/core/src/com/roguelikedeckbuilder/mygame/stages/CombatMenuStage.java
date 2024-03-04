@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -33,6 +34,7 @@ public class CombatMenuStage extends GenericStage {
     private final Label.LabelStyle labelStyle = new Label.LabelStyle();
     private final int drawPileAmountTextIndex;
     private final int shufflePileAmountTextIndex;
+    private final Array<Enemy> mustRemoveBecauseDead;
 
     public CombatMenuStage(ScreenViewport viewportForStage, ImageButton exitButtonForTesting) {
         super(viewportForStage, "combat background");
@@ -88,15 +90,27 @@ public class CombatMenuStage extends GenericStage {
             }
         });
         this.getStage().addActor(endTurnButton);
+
+        mustRemoveBecauseDead = new Array<>();
     }
 
-    public void batch(float elapsedTime) {
+    public void batch(float elapsedTime, SpriteBatch batch) {
         super.batch(elapsedTime);
         targetHoverListener();
         for (Enemy enemy : currentEnemies) {
-            enemy.getCombatInformation().drawHpBar();
+            enemy.getCombatInformation().drawHpBar(batch);
+            if (enemy.getCharacter().getState() == Character.CharacterState.DEAD) {
+                mustRemoveBecauseDead.add(enemy);
+            } else if (enemy.getCombatInformation().getHp() == 0 && enemy.getCharacter().getState() != Character.CharacterState.DYING) {
+                enemy.getCharacter().setState(Character.CharacterState.DYING);
+            }
         }
-        Player.getCombatInformation().drawHpBar();
+
+        for (Enemy enemy : mustRemoveBecauseDead) {
+            enemy.removeFromStage(getStage());
+            currentEnemies.removeValue(enemy, true);
+        }
+        Player.getCombatInformation().drawHpBar(batch);
     }
 
     public void addEnemy(Character.CharacterTypeName characterTypeName) {
@@ -122,10 +136,6 @@ public class CombatMenuStage extends GenericStage {
     public void reset() {
         removeActorsByType(UserObjectOptions.ENEMY);
         removeActorsByType(UserObjectOptions.CARD);
-
-        for (Enemy enemy : currentEnemies) {
-            enemy.dispose();
-        }
 
         Player.combatStart();
 

@@ -210,7 +210,7 @@ public class MenuController {
         }
         if (this.isDrawCombatMenuStage) {
             tooltip.setUsingTooltipLingerTime(true);
-            combatMenuStage.batch(elapsedTime);
+            combatMenuStage.batch(elapsedTime, batch);
         }
         batch.end();
         batch.begin();

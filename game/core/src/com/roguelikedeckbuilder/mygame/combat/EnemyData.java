@@ -44,7 +44,7 @@ public class EnemyData {
                     maxHp = 80;
                     break;
                 default:
-                    System.out.println("Why was a character almost generated with no matching type name? characterTypeName:  " + characterTypeName);
+                    System.out.println("Why was an enemy's stats almost generated from no matching type name? characterTypeName:  " + characterTypeName);
             }
         }
 

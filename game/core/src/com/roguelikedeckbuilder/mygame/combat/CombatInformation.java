@@ -1,15 +1,26 @@
 package com.roguelikedeckbuilder.mygame.combat;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.roguelikedeckbuilder.mygame.characters.Character;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
+
+import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class CombatInformation {
     private int hp;
     private int maxHp;
     private final HpBar hpBar;
+    private XYPair<Float> damageNumberCenter;
+    private final BitmapFont font;
 
     public CombatInformation() {
         hpBar = new HpBar();
+
+        font = new BitmapFont(Gdx.files.internal("hp_and_damage.fnt"));
+        font.setUseIntegerPositions(false);
+        font.getData().setScale(SCALE_FACTOR / 6);
     }
 
     public void loadEnemyStats(Character.CharacterTypeName characterTypeName) {
@@ -44,8 +55,22 @@ public class CombatInformation {
         }
     }
 
-    public void setHpBarPosition(XYPair<Float> position) {
-        hpBar.setPosition(position);
+    public boolean takeDamage(int amount) {
+        if (hp == 0) {
+            return true;
+        }
+        createHpChangeNumbers(-amount);
+        changeHp(-amount);
+        return false;
+    }
+
+    private void createHpChangeNumbers(int amount) {
+        // The numbers should be move-able too, though
+    }
+
+    public void setPositions(XYPair<Float> position) {
+        damageNumberCenter = position;
+        hpBar.setPosition(new XYPair<>(position.x() - 4.1f, position.y() - 1.5f));
     }
 
     public void setHpBarVisibility(boolean visibility) {
@@ -60,11 +85,7 @@ public class CombatInformation {
         return hp;
     }
 
-    public void dispose() {
-        hpBar.dispose();
-    }
-
-    public void drawHpBar() {
-        hpBar.draw();
+    public void drawHpBar(SpriteBatch batch) {
+        hpBar.draw(batch);
     }
 }

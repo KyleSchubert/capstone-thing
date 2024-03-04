@@ -45,6 +45,10 @@ public class Character extends Group {
     }
 
     public void setState(CharacterState state) {
+        if (state.equals(CharacterState.DEAD)) {
+            this.state = state;
+            return;
+        }
         if (!state.equals(this.state)) {
             this.state = state;
             prepareFrameStartAndEndIndex();
@@ -104,12 +108,8 @@ public class Character extends Group {
         this.isFacingLeft = -1;
     }
 
-    public void faceLeft() {
-        this.isFacingLeft = 1;
-    }
-
-    public int getIsFacingLeft() {
-        return this.isFacingLeft;
+    public CharacterState getState() {
+        return state;
     }
 
     public void setTargeted(boolean targeted) {
@@ -133,11 +133,6 @@ public class Character extends Group {
     private void refreshTargetPosition() {
         XYPair<Float> coordinates = getCharacterCenter();
         targetGlow.setPosition(coordinates.x(), coordinates.y());
-    }
-
-    public XYPair<Float> getHpBarPosition() {
-        XYPair<Float> position = getCharacterCenter();
-        return new XYPair<>(position.x() - 4.1f, position.y() - 1.5f);
     }
 
     public enum CharacterState {

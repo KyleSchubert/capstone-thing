@@ -4,7 +4,6 @@ import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.characters.Character;
 import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
-import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 public class Player {
     private static Character character;
@@ -24,22 +23,22 @@ public class Player {
 
     public static void reset() {
         money = 1500;
-        combatInformation.setHpBarPosition(character.getHpBarPosition());
+        combatInformation.setPositions(character.getCharacterCenter());
         combatInformation.loadPlayerStats();
 
         ownedCards.clear();
         for (int i = 0; i < 5; i++) {
-            Card card = new Card(Card.CardData.TEST2, false);
+            Card card = new Card(Card.CardData.VORTEX, false);
             card.getGroup().addCaptureListener(card.getClickListener());
             ownedCards.add(card);
         }
         for (int i = 0; i < 3; i++) {
-            Card card = new Card(Card.CardData.TEST3, false);
+            Card card = new Card(Card.CardData.FLAME, false);
             card.getGroup().addCaptureListener(card.getClickListener());
             ownedCards.add(card);
         }
         for (int i = 0; i < 3; i++) {
-            Card card = new Card(Card.CardData.DEFAULT, false);
+            Card card = new Card(Card.CardData.FIRE_STRIKE, false);
             card.getGroup().addCaptureListener(card.getClickListener());
             ownedCards.add(card);
         }
@@ -85,7 +84,7 @@ public class Player {
     }
 
     public static void combatStart() {
-        combatInformation.setHpBarPosition(character.getHpBarPosition());
+        combatInformation.setPositions(character.getCharacterCenter());
         combatInformation.setHpBarVisibility(true);
     }
 

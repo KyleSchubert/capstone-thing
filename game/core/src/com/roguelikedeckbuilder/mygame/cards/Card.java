@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.UseLine;
+import com.roguelikedeckbuilder.mygame.combat.Ability;
+import com.roguelikedeckbuilder.mygame.combat.AbilityData;
 import com.roguelikedeckbuilder.mygame.combat.CombatHandler;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
@@ -25,8 +27,8 @@ public class Card {
     private final Label.LabelStyle labelStyle = new Label.LabelStyle();
     private boolean isUpgraded = false;
     private boolean isInShop = false;
-    private float width;
-    private float height;
+    private final float width;
+    private final float height;
 
     public Card(CardData cardType, boolean showValue) {
         this.cardType = cardType;
@@ -51,7 +53,7 @@ public class Card {
         Label cardName = newLabel(cardType.name);
         cardName.setPosition(16, 274);
 
-        Label cardEffectDescription = newLabel(cardType.effectDescription);
+        Label cardEffectDescription = newLabel(cardType.description);
         cardEffectDescription.setPosition(16, 120);
 
 
@@ -92,6 +94,10 @@ public class Card {
 
     public int getCardValue() {
         return cardValue;
+    }
+
+    public Ability.AbilityTypeName getAbilityTypeName() {
+        return cardType.abilityTypeName;
     }
 
     public CardData getCardType() {
@@ -141,35 +147,31 @@ public class Card {
     }
 
     public enum CardData {
-        DEFAULT(
-                "Default",
-                "I am [ORANGE]testing[] out a card and seeing if I want to format the file this way. Deals [RED]9 Damage[][PURPLE], which is [][CYAN]cool[]",
-                110,
-                "ABILITIES/1.png"
+        VORTEX(
+                Ability.AbilityTypeName.VORTEX,
+                110
         ),
-        TEST2(
-                "Test2",
-                "Deals [RED]3 Damage[] to an enemy [CYAN]2 times[].",
-                70,
-                "ABILITIES/2.png"
+        FLAME(
+                Ability.AbilityTypeName.FLAME,
+                70
         ),
-        TEST3(
-                "Test3",
-                "Deals [RED]1 Damage[] to an enemy [CYAN]4 times[].",
-                80,
-                "ABILITIES/3.png"
+        FIRE_STRIKE(
+                Ability.AbilityTypeName.FIRE_STRIKE,
+                80
         );
 
         private final String name;
-        private final String effectDescription;
+        private final String description;
         private final int value;
         private final String imagePath;
+        private final Ability.AbilityTypeName abilityTypeName;
 
-        CardData(String name, String description, int value, String imagePath) {
-            this.name = name;
-            this.effectDescription = description;
+        CardData(Ability.AbilityTypeName abilityTypeName, int value) {
+            this.name = AbilityData.getName(abilityTypeName);
+            this.description = AbilityData.getDescription(abilityTypeName);
             this.value = value;
-            this.imagePath = imagePath;
+            this.imagePath = AbilityData.getCardIconPath(abilityTypeName);
+            this.abilityTypeName = abilityTypeName;
         }
     }
 }
