@@ -458,6 +458,7 @@ public class MenuController {
                 currentMenuState = MenuState.MAIN_MENU;
                 map.reset();
                 Gdx.input.setInputProcessor(mainMenuStage);
+                UseLine.setVisibility(false);
                 tooltip.setUsingTooltipLingerTime(false);
                 setTimeElapsedInGame(0f);
                 setGameplayPaused(true);
