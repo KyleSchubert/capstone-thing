@@ -44,6 +44,9 @@ I am using IntelliJ IDEA.
 
 
 <h1>Requirements</h1>
+* Some things aren't listed or marked here, like the UseLine or HP Bars, but were added anyways
+<br>
+<br>
 
 <b>Map</b>
 - [x] Randomly-generated branching map of a fixed height.
@@ -88,8 +91,8 @@ I am using IntelliJ IDEA.
 
 
 <b>Enemies</b>
-- [ ] Have HP
-- [ ] Are of a specific type, which grants them different HP values and abilities
+- [X] Have HP
+- [X] Are of a specific type, which grants them different HP values and abilities
 - [ ] Uses 1 ability when it is their turn
 - [ ] The ability that they will use when it is their turn is shown above them by an icon and damage number, and with a tooltip on hover
 
