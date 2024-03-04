@@ -233,15 +233,15 @@ public class CombatMenuStage extends GenericStage {
                 enemy.setTargeted(false);
             }
 
+            Array<Enemy> enemies = new Array<>();
             for (Enemy enemy : currentEnemies) {
                 if (enemy.isPointWithinRange(mousePosition)) {
                     // For now, it'll just be an array of 1 until I add AOE cards
-                    Array<Enemy> enemies = new Array<>();
                     enemies.add(enemy);
-                    CombatHandler.setEnemiesThePlayerIsHoveringOver(enemies);
                     break;
                 }
             }
+            CombatHandler.setEnemiesThePlayerIsHoveringOver(enemies);
         }
     }
 
