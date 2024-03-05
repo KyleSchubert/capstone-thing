@@ -11,6 +11,7 @@ public class Player {
     private static int money;
     private static int persistentMoney;
     private static Array<Card> ownedCards;
+    private static int energy;
 
     public static void initialize() {
         persistentMoney = 200;
@@ -86,6 +87,24 @@ public class Player {
     public static void combatStart() {
         combatInformation.setPositions(character.getCharacterCenter());
         combatInformation.setHpBarVisibility(true);
+        startTurn();
+    }
+
+    public static void startTurn() {
+        energy = 3;
+    }
+
+    public static int getEnergy() {
+        return energy;
+    }
+
+    public static boolean tryToSpendEnergy(int amount) {
+        if (energy >= amount) {
+            energy -= amount;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static void combatEnd() {

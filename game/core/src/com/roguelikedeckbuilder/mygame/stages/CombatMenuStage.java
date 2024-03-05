@@ -32,9 +32,11 @@ public class CombatMenuStage extends GenericStage {
     private final Array<Card> shufflePileContents = new Array<>();
     private final Array<Card> handContents = new Array<>();
     private final Label.LabelStyle labelStyle = new Label.LabelStyle();
+    private final Label.LabelStyle labelStyleLarge = new Label.LabelStyle();
     private final int drawPileAmountTextIndex;
     private final int shufflePileAmountTextIndex;
     private final Array<Enemy> mustRemoveBecauseDead;
+    private Label energyLabel;
 
     public CombatMenuStage(ScreenViewport viewportForStage, ImageButton exitButtonForTesting) {
         super(viewportForStage, "combat background");
@@ -92,6 +94,22 @@ public class CombatMenuStage extends GenericStage {
         this.getStage().addActor(endTurnButton);
 
         mustRemoveBecauseDead = new Array<>();
+
+        labelStyleLarge.font = new BitmapFont(Gdx.files.internal("hp_and_damage.fnt"));
+        labelStyleLarge.font.getData().setScale(SCALE_FACTOR / 2);
+        labelStyleLarge.font.setUseIntegerPositions(false);
+
+        // Energy
+        Image energyImage = new Image(new Texture(Gdx.files.internal("CARDS/energy.png")));
+        energyImage.setPosition(3, 8);
+        energyImage.setScale(SCALE_FACTOR);
+        this.getStage().addActor(energyImage);
+
+        energyLabel = new Label(String.valueOf(Player.getEnergy()), labelStyleLarge);
+        energyLabel.setWidth(6);
+        energyLabel.setWrap(true);
+        energyLabel.setPosition(5, 9.3f);
+        this.getStage().addActor(energyLabel);
     }
 
     public void batch(float elapsedTime, SpriteBatch batch) {
@@ -111,6 +129,7 @@ public class CombatMenuStage extends GenericStage {
             currentEnemies.removeValue(enemy, true);
         }
         Player.getCombatInformation().drawHpBar(batch);
+        energyLabel.setText(String.valueOf(Player.getEnergy()));
     }
 
     public void addEnemy(Character.CharacterTypeName characterTypeName) {
@@ -189,6 +208,8 @@ public class CombatMenuStage extends GenericStage {
         handContents.clear();
 
         drawCards(5);
+
+        Player.startTurn();
     }
 
     private void drawCards(int amount) {
