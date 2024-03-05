@@ -1,5 +1,5 @@
 package com.roguelikedeckbuilder.mygame.combat;
 
-public enum HitType {
+public enum TargetType {
     ONE, ALL
 }

@@ -130,6 +130,7 @@ public class Card {
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
                 UseLine.setVisibility(true);
+                Player.setPotentialAbilityTargetType(AbilityData.getTargetType(Card.this.getAbilityTypeName()));
                 UseLine.setPosition(
                         new XYPair<>(
                                 getGroup().getX() + width / 2,

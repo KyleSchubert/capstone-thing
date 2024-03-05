@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.characters.Character;
 import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
+import com.roguelikedeckbuilder.mygame.combat.TargetType;
 
 public class Player {
     private static Character character;
@@ -12,6 +13,7 @@ public class Player {
     private static int persistentMoney;
     private static Array<Card> ownedCards;
     private static int energy;
+    private static TargetType potentialAbilityTargetType;
 
     public static void initialize() {
         persistentMoney = 200;
@@ -105,6 +107,14 @@ public class Player {
         } else {
             return false;
         }
+    }
+
+    public static void setPotentialAbilityTargetType(TargetType potentialAbilityTargetType) {
+        Player.potentialAbilityTargetType = potentialAbilityTargetType;
+    }
+
+    public static TargetType getPotentialAbilityTargetType() {
+        return potentialAbilityTargetType;
     }
 
     public static void combatEnd() {

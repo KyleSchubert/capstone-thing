@@ -26,12 +26,13 @@ public class AbilityData {
         int damage = getDamage(typeName);
         String damageText = String.format("[RED]%d Damage[]", damage);
 
-        HitType hitType = getHitType(typeName);
+        TargetType targetType = getTargetType(typeName);
         String hitTypeText;
-        switch (hitType) {
+        switch (targetType) {
             case ONE -> hitTypeText = "to an enemy";
             case ALL -> hitTypeText = "to [LIME]all[] enemies";
-            default -> throw new IllegalStateException("Unexpected value for hitType in getDescription(): " + hitType);
+            default ->
+                    throw new IllegalStateException("Unexpected value for hitType in getDescription(): " + targetType);
         }
 
         int hits = getHits(typeName);
@@ -53,8 +54,8 @@ public class AbilityData {
         return data.get(typeName.ordinal()).getHits();
     }
 
-    public static HitType getHitType(Ability.AbilityTypeName typeName) {
-        return data.get(typeName.ordinal()).getHitType();
+    public static TargetType getTargetType(Ability.AbilityTypeName typeName) {
+        return data.get(typeName.ordinal()).getTargetType();
     }
 
     private static class IndividualAbilityData {
@@ -62,7 +63,7 @@ public class AbilityData {
         private String name;
         private int damage;
         private int hits;
-        private HitType hitType;
+        private TargetType targetType;
 
         public IndividualAbilityData(Ability.AbilityTypeName abilityTypeName) {
             String cardIconFileName;
@@ -72,21 +73,21 @@ public class AbilityData {
                     name = "Vortex";
                     damage = 1;
                     hits = 8;
-                    hitType = HitType.ALL;
+                    targetType = TargetType.ALL;
                     break;
                 case FLAME:
                     cardIconFileName = "2.png";
                     name = "Flame";
                     damage = 5;
                     hits = 1;
-                    hitType = HitType.ONE;
+                    targetType = TargetType.ONE;
                     break;
                 case FIRE_STRIKE:
                     cardIconFileName = "3.png";
                     name = "Fire Strike";
                     damage = 9;
                     hits = 1;
-                    hitType = HitType.ONE;
+                    targetType = TargetType.ONE;
                     break;
                 default:
                     System.out.println("Why was an ability almost generated with no matching type name? abilityTypeName:  " + abilityTypeName);
@@ -112,8 +113,8 @@ public class AbilityData {
             return hits;
         }
 
-        public HitType getHitType() {
-            return hitType;
+        public TargetType getTargetType() {
+            return targetType;
         }
     }
 }

@@ -20,6 +20,7 @@ import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.characters.Character;
 import com.roguelikedeckbuilder.mygame.combat.CombatHandler;
 import com.roguelikedeckbuilder.mygame.combat.Enemy;
+import com.roguelikedeckbuilder.mygame.combat.TargetType;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
@@ -257,11 +258,16 @@ public class CombatMenuStage extends GenericStage {
             Array<Enemy> enemies = new Array<>();
             for (Enemy enemy : currentEnemies) {
                 if (enemy.isPointWithinRange(mousePosition)) {
-                    // For now, it'll just be an array of 1 until I add AOE cards
+                    // Check for TargetType.ALL first, so players can cancel attacking all enemies, by not hovering any enemy.
+                    if (Player.getPotentialAbilityTargetType() == TargetType.ALL) {
+                        enemies = currentEnemies;
+                        break;
+                    }
                     enemies.add(enemy);
                     break;
                 }
             }
+
             CombatHandler.setEnemiesThePlayerIsHoveringOver(enemies);
         }
     }
