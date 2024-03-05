@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.characters.CharacterData;
 import com.roguelikedeckbuilder.mygame.combat.AbilityData;
 import com.roguelikedeckbuilder.mygame.combat.EnemyData;
+import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 public class MyGame extends ApplicationAdapter {
@@ -50,8 +51,9 @@ public class MyGame extends ApplicationAdapter {
         CharacterData.initialize();
         EnemyData.initialize();
         AbilityData.initialize();
-        Player.initialize();
+        LabelMaker.initialize();
         UseLine.initialize();
+        Player.initialize();
 
         menuController = new MenuController();
         menuController.create(camera);

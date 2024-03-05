@@ -38,6 +38,11 @@ public class GenericStage {
         stage.draw();
     }
 
+    public void addActor(Actor actor) {
+        actor.setScale(SCALE_FACTOR);
+        getStage().addActor(actor);
+    }
+
     public Stage getStage() {
         return stage;
     }
