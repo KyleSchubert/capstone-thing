@@ -29,7 +29,7 @@ This will be a roguelike deckbuilder made in Java using libGDX
 
   <details><summary>Shop</summary>
     
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/62f91856-634b-4d3d-a3a2-72774699c2a8)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/02bf3c96-6d4f-41bd-b923-9c62daafee03)
   </details>
 
   <details><summary>Rest Area</summary>
