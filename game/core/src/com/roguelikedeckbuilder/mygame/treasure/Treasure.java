@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
+import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 
 import java.util.Random;
 
@@ -20,6 +21,7 @@ public class Treasure {
 
     public Treasure() {
         treasureGroup = new Group();
+        treasureGroup.setUserObject(UserObjectOptions.TREASURE_GROUP);
         treasureGroup.setScale(SCALE_FACTOR);
 
         random = new Random();

@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.treasure.Treasure;
 
 public class TreasureMenuStage extends GenericStage {
@@ -14,9 +15,14 @@ public class TreasureMenuStage extends GenericStage {
         this.getStage().getActors().get(0).setPosition(16, 1.6f);
         exitButton.setPosition(42, 3);
         this.getStage().addActor(exitButton);
+        treasureGroup = new Group();
+        treasureGroup.setUserObject("");
     }
 
     public void testing() {
+        if (treasureGroup.getUserObject().equals(UserObjectOptions.TREASURE_GROUP)) {
+            treasureGroup.remove();
+        }
         Treasure treasure = new Treasure();
         treasure.addTreasure(Treasure.TreasureType.CARDS);
         treasure.addTreasure(Treasure.TreasureType.PERSISTENT_CURRENCY);
