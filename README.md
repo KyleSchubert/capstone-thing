@@ -14,7 +14,12 @@ This will be a roguelike deckbuilder made in Java using libGDX
 
   <details><summary>Combat</summary>
 
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/9e5b4642-386e-4086-a210-48842ee23014)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/e3e42a16-e4b0-4b3d-bd1f-165777436ac9)
+  </details>
+
+  <details><summary>Rewards</summary>
+  
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/12f80e6c-a681-46da-bed9-8d7b410c589c)
   </details>
 
   <details><summary>"Start with an item" panel</summary>
@@ -89,8 +94,8 @@ I am using IntelliJ IDEA.
 
 
 <b>Cards</b>
-- [ ] Player spends energy to play cards unless a card is free
-- [ ] Can be made to target a specific enemy or hit all enemies
+- [x] Player spends energy to play cards unless a card is free
+- [x] Can be made to target a specific enemy or hit all enemies
 - [ ] Deal damage to enemies, inflict a debuff on enemies, heal the player, do nothing, or buff the player
 - [x] Go into the discard pile once used
 - [x] Discard pile shuffled into draw pile once the draw pile is empty
@@ -104,7 +109,7 @@ I am using IntelliJ IDEA.
 
  
 <b>After Battles</b>
-- [ ] Player receives in-game currency to spend at shops
+- [x] Player receives in-game currency to spend at shops
 - [ ] Player receives a choice of 3 cards to add to their deck
 - [ ] If it was an elite battle, player receives a random artifact item and more in-game currency
 - [ ] If it was a boss battle, player receives a choice of 3 high-tier artifact items, more in-game currency, and in-game currency that persists between runs
