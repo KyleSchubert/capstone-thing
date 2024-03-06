@@ -37,9 +37,7 @@ public class Treasure {
                 amount = generateRandomPersistentCurrencyAmount();
                 label = LabelMaker.newLabel(amount + " SUPER Coins", LabelMaker.getLarge());
             }
-            case CARDS -> {
-                label = LabelMaker.newLabel("1 of 3 Cards", LabelMaker.getLarge());
-            }
+            case CARDS -> label = LabelMaker.newLabel("1 of 3 Cards", LabelMaker.getLarge());
             default -> label = LabelMaker.newLabel("$100 (REAL)", LabelMaker.getMediumHpAndDamage());
         }
 
@@ -102,12 +100,8 @@ public class Treasure {
 
     private void triggerTreasure(TreasureType treasureType, int amount) {
         switch (treasureType) {
-            case CURRENCY -> {
-                Player.changeMoney(amount);
-            }
-            case PERSISTENT_CURRENCY -> {
-                Player.changePersistentMoney(amount);
-            }
+            case CURRENCY -> Player.changeMoney(amount);
+            case PERSISTENT_CURRENCY -> Player.changePersistentMoney(amount);
             case CARDS -> {
             }
         }

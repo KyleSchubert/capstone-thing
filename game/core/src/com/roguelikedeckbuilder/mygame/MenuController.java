@@ -211,6 +211,11 @@ public class MenuController {
         if (this.isDrawCombatMenuStage) {
             tooltip.setUsingTooltipLingerTime(true);
             combatMenuStage.batch(elapsedTime, batch);
+            if (combatMenuStage.isVictory()) {
+                combatMenuStage.setVictory(false);
+                setMenuState(MenuState.MAP);
+                setMenuState(MenuState.TREASURE);
+            }
         }
         batch.end();
         batch.begin();

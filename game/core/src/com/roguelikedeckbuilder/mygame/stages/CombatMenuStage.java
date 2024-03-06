@@ -37,7 +37,8 @@ public class CombatMenuStage extends GenericStage {
     private final int drawPileAmountTextIndex;
     private final int shufflePileAmountTextIndex;
     private final Array<Enemy> mustRemoveBecauseDead;
-    private Label energyLabel;
+    private final Label energyLabel;
+    private boolean victory = false;
 
     public CombatMenuStage(ScreenViewport viewportForStage, ImageButton exitButtonForTesting) {
         super(viewportForStage, "combat background");
@@ -126,11 +127,26 @@ public class CombatMenuStage extends GenericStage {
         }
 
         for (Enemy enemy : mustRemoveBecauseDead) {
-            enemy.removeFromStage(getStage());
-            currentEnemies.removeValue(enemy, true);
+            removeEnemy(enemy);
         }
         Player.getCombatInformation().drawHpBar(batch);
         energyLabel.setText(String.valueOf(Player.getEnergy()));
+    }
+
+    private void removeEnemy(Enemy enemy) {
+        enemy.removeFromStage(getStage());
+        currentEnemies.removeValue(enemy, true);
+        if (currentEnemies.isEmpty()) {
+            victory = true;
+        }
+    }
+
+    public boolean isVictory() {
+        return victory;
+    }
+
+    public void setVictory(boolean victory) {
+        this.victory = victory;
     }
 
     public void addEnemy(Character.CharacterTypeName characterTypeName) {
@@ -156,6 +172,8 @@ public class CombatMenuStage extends GenericStage {
     public void reset() {
         removeActorsByType(UserObjectOptions.ENEMY);
         removeActorsByType(UserObjectOptions.CARD);
+
+        victory = false;
 
         Player.combatStart();
 
