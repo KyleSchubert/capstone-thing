@@ -73,12 +73,12 @@ public class MenuController {
         upgradesMenuStage = new Stage(viewportForStage);
         settingsMenuStage = new Stage(viewportForStage);
 
-        restMenuStage = new RestMenuStage(viewportForStage, makeClickListenerThatCallsSetMenuState(MenuState.MAP));
-        treasureMenuStage = new TreasureMenuStage(viewportForStage);
+        restMenuStage = new RestMenuStage(viewportForStage, makeClickListenerTriggeringMapMenuState());
+        treasureMenuStage = new TreasureMenuStage(viewportForStage, newImageButtonFrom("exit", MenuState.MAP));
         shopMenuStage = new ShopMenuStage(viewportForStage, newImageButtonFrom("exit", MenuState.MAP));
         combatMenuStage = new CombatMenuStage(viewportForStage, newImageButtonFrom("exit", MenuState.MAP));
 
-        tooltip = new Tooltip(viewportForStage, makeClickListenerThatCallsSetMenuState(MenuState.MAP));
+        tooltip = new Tooltip(viewportForStage, makeClickListenerTriggeringMapMenuState());
 
         ClickListener hoverAndClickListener = makeHoverAndClickListener();
         map = new Map(viewportForStage, hoverAndClickListener);
@@ -441,11 +441,11 @@ public class MenuController {
         };
     }
 
-    private ClickListener makeClickListenerThatCallsSetMenuState(MenuState menuState) {
+    private ClickListener makeClickListenerTriggeringMapMenuState() {
         return new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                setMenuState(menuState);
+                setMenuState(MenuState.MAP);
             }
         };
     }
@@ -542,6 +542,9 @@ public class MenuController {
             case TREASURE -> {
                 currentMenuState = MenuState.TREASURE;
                 setDrawTreasureMenu(true);
+                setDrawDarkTransparentScreen(true);
+                Gdx.input.setInputProcessor(treasureMenuStage.getStage());
+                treasureMenuStage.testing();
             }
             case SHOP -> {
                 currentMenuState = MenuState.SHOP;
