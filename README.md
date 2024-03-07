@@ -110,7 +110,7 @@ I am using IntelliJ IDEA.
  
 <b>After Battles</b>
 - [x] Player receives in-game currency to spend at shops
-- [ ] Player receives a choice of 3 cards to add to their deck
+- [x] Player receives a choice of 3 cards to add to their deck
 - [ ] If it was an elite battle, player receives a random artifact item and more in-game currency
 - [ ] If it was a boss battle, player receives a choice of 3 high-tier artifact items, more in-game currency, and in-game currency that persists between runs
 
