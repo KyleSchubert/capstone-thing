@@ -27,7 +27,7 @@ public class RestMenuStage extends GenericStage {
 
         Image upgradeButton = new Image(new Texture(Gdx.files.internal("MENU BUTTONS/rest area/Upgrade.png")));
         float upgradeButtonXPosition = backgroundXPosition + (getStageBackgroundActor().getWidth() - upgradeButton.getWidth()) / 2 * SCALE_FACTOR;
-        upgradeButton.setPosition(restButtonXPosition, 6);
+        upgradeButton.setPosition(upgradeButtonXPosition, 6);
         upgradeButton.setScale(SCALE_FACTOR);
         upgradeButton.addListener(clickListener);
         getStage().addActor(upgradeButton);
