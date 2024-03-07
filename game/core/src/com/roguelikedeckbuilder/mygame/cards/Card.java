@@ -120,6 +120,10 @@ public class Card {
         }
     }
 
+    public boolean isUpgraded() {
+        return isUpgraded;
+    }
+
     public ClickListener getClickListener() {
         return new ClickListener() {
             @Override

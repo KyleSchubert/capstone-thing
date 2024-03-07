@@ -18,13 +18,16 @@ import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 public class Treasure {
     private final Group treasureGroup;
     private final Random random;
+    private final ClickListener cardChoiceClickListener;
 
-    public Treasure() {
+    public Treasure(ClickListener cardChoiceClickListener) {
         treasureGroup = new Group();
         treasureGroup.setUserObject(UserObjectOptions.TREASURE_GROUP);
         treasureGroup.setScale(SCALE_FACTOR);
 
         random = new Random();
+
+        this.cardChoiceClickListener = cardChoiceClickListener;
     }
 
     public void addTreasure(TreasureType treasureType) {
@@ -49,11 +52,10 @@ public class Treasure {
         label.setPosition(120, 20);
         group.addActor(label);
         group.addCaptureListener(getTreasureClickListener(treasureType, amount));
-    }
 
-    public void addGenericWinTreasureSet() {
-        addTreasure(TreasureType.CURRENCY);
-        addTreasure(TreasureType.CARDS);
+        if (treasureType == TreasureType.CARDS) {
+            group.addCaptureListener(cardChoiceClickListener);
+        }
     }
 
     private Group prepareGenericTreasureWrapper(TreasureType treasureType) {

@@ -67,11 +67,15 @@ public class Player {
         if (money > cardValue) {
             changeMoney(-cardValue);
 
-            Card boughtCard = new Card(cardData, false);
-            boughtCard.setUpgraded(isUpgraded);
-            boughtCard.getGroup().addCaptureListener(boughtCard.getClickListener());
-            ownedCards.add(boughtCard);
+            obtainCard(cardData, isUpgraded);
         }
+    }
+
+    public static void obtainCard(Card.CardData cardData, boolean isUpgraded) {
+        Card card = new Card(cardData, false);
+        card.setUpgraded(isUpgraded);
+        card.getGroup().addCaptureListener(card.getClickListener());
+        ownedCards.add(card);
     }
 
     public static Character getCharacter() {

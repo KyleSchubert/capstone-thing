@@ -32,6 +32,7 @@ public class MenuController {
     private Stage resultsMenuStage;
     private Stage upgradesMenuStage;
     private Stage settingsMenuStage;
+    private CardChoiceStage cardChoiceMenuStage;
     private RestMenuStage restMenuStage;
     private TreasureMenuStage treasureMenuStage;
     private ShopMenuStage shopMenuStage;
@@ -57,6 +58,7 @@ public class MenuController {
     private boolean isDrawTooltipMenu;
     private boolean isDrawRestMenu;
     private boolean isDrawTreasureMenuStage;
+    private boolean isDrawCardChoiceMenuStage;
     private boolean isDrawShopMenuStage;
     private boolean isDrawCombatMenuStage;
     private float runningAnimationAddClock = 0;
@@ -73,12 +75,28 @@ public class MenuController {
         upgradesMenuStage = new Stage(viewportForStage);
         settingsMenuStage = new Stage(viewportForStage);
 
-        restMenuStage = new RestMenuStage(viewportForStage, makeClickListenerTriggeringMapMenuState());
-        treasureMenuStage = new TreasureMenuStage(viewportForStage, newImageButtonFrom("exit", MenuState.MAP));
+        cardChoiceMenuStage = new CardChoiceStage(viewportForStage, makeClickListenerTriggeringMenuState(MenuState.TREASURE));
+        restMenuStage = new RestMenuStage(viewportForStage, makeClickListenerTriggeringMenuState(MenuState.MAP));
+        treasureMenuStage = new TreasureMenuStage(
+                viewportForStage,
+                newImageButtonFrom("exit", MenuState.MAP),
+                makeClickListenerTriggeringMenuState(MenuState.CARD_CHOICE),
+                new ClickListener() {
+                    @Override
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        return true;
+                    }
+
+                    @Override
+                    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                        cardChoiceMenuStage.prepareThreeCardChoice();
+                    }
+                }
+        );
         shopMenuStage = new ShopMenuStage(viewportForStage, newImageButtonFrom("exit", MenuState.MAP));
         combatMenuStage = new CombatMenuStage(viewportForStage, newImageButtonFrom("exit", MenuState.MAP));
 
-        tooltip = new Tooltip(viewportForStage, makeClickListenerTriggeringMapMenuState());
+        tooltip = new Tooltip(viewportForStage, makeClickListenerTriggeringMenuState(MenuState.MAP));
 
         ClickListener hoverAndClickListener = makeHoverAndClickListener();
         map = new Map(viewportForStage, hoverAndClickListener);
@@ -213,6 +231,9 @@ public class MenuController {
             combatMenuStage.batch(elapsedTime, batch);
             if (combatMenuStage.isVictory()) {
                 combatMenuStage.setVictory(false);
+
+                treasureMenuStage.addGenericWinTreasureSet();
+
                 setMenuState(MenuState.MAP);
                 setMenuState(MenuState.TREASURE);
             }
@@ -297,6 +318,9 @@ public class MenuController {
 
         batch.end();
         batch.begin();
+        if (this.isDrawCardChoiceMenuStage) {
+            cardChoiceMenuStage.batch(elapsedTime);
+        }
         if (this.isDrawTooltipMenu || (tooltip.isUsingTooltipLingerTime() && tooltip.getTooltipLingerTime() > 0)) {
             tooltip.batch(elapsedTime);
         }
@@ -360,6 +384,7 @@ public class MenuController {
         settingsMenuStage.dispose();
         tooltip.dispose();
         map.dispose();
+        cardChoiceMenuStage.dispose();
         restMenuStage.dispose();
         combatMenuStage.dispose();
         shopMenuStage.dispose();
@@ -434,6 +459,7 @@ public class MenuController {
                         }
                         case REST -> setMenuState(MenuState.REST_AREA);
                         case TREASURE -> {
+                            treasureMenuStage.testing();
                             setMenuState(MenuState.TREASURE);
                         }
                     }
@@ -446,11 +472,16 @@ public class MenuController {
         };
     }
 
-    private ClickListener makeClickListenerTriggeringMapMenuState() {
+    private ClickListener makeClickListenerTriggeringMenuState(MenuState menuState) {
         return new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                setMenuState(MenuState.MAP);
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                setMenuState(menuState);
             }
         };
     }
@@ -547,9 +578,14 @@ public class MenuController {
             case TREASURE -> {
                 currentMenuState = MenuState.TREASURE;
                 setDrawTreasureMenu(true);
+                setDrawCardChoiceMenu(false);
                 setDrawDarkTransparentScreen(true);
                 Gdx.input.setInputProcessor(treasureMenuStage.getStage());
-                treasureMenuStage.testing();
+            }
+            case CARD_CHOICE -> {
+                currentMenuState = MenuState.CARD_CHOICE;
+                setDrawCardChoiceMenu(true);
+                Gdx.input.setInputProcessor(cardChoiceMenuStage.getStage());
             }
             case SHOP -> {
                 currentMenuState = MenuState.SHOP;
@@ -628,6 +664,10 @@ public class MenuController {
         this.isDrawTreasureMenuStage = drawTreasureMenu;
     }
 
+    public void setDrawCardChoiceMenu(boolean drawCardChoiceMenu) {
+        this.isDrawCardChoiceMenuStage = drawCardChoiceMenu;
+    }
+
     public void setDrawShopMenu(boolean drawShopMenu) {
         this.isDrawShopMenuStage = drawShopMenu;
     }
@@ -692,6 +732,6 @@ public class MenuController {
     }
 
     public enum MenuState {
-        MAIN_MENU, MAP, PAUSED, RESULTS, UPGRADES, SETTINGS_BACK, RESUME, SETTINGS, START_REWARDS, REST_AREA, TREASURE, SHOP, STAGE_RESULTS, COMBAT
+        MAIN_MENU, MAP, PAUSED, RESULTS, UPGRADES, SETTINGS_BACK, RESUME, SETTINGS, START_REWARDS, REST_AREA, TREASURE, SHOP, STAGE_RESULTS, COMBAT, CARD_CHOICE
     }
 }
