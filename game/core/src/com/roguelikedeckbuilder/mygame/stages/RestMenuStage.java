@@ -2,9 +2,12 @@ package com.roguelikedeckbuilder.mygame.stages;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.roguelikedeckbuilder.mygame.Player;
+import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
@@ -19,6 +22,7 @@ public class RestMenuStage extends GenericStage {
         restButton.setPosition(restButtonXPosition, 26);
         restButton.setScale(SCALE_FACTOR);
         restButton.addListener(clickListener);
+        restButton.addListener(getClickListenerForHealing());
         getStage().addActor(restButton);
 
         Image upgradeButton = new Image(new Texture(Gdx.files.internal("MENU BUTTONS/rest area/Upgrade.png")));
@@ -27,6 +31,21 @@ public class RestMenuStage extends GenericStage {
         upgradeButton.setScale(SCALE_FACTOR);
         upgradeButton.addListener(clickListener);
         getStage().addActor(upgradeButton);
+    }
+
+    private ClickListener getClickListenerForHealing() {
+        return new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                int healAmount = Math.round(Player.getCombatInformation().getMaxHp() * 0.35f);
+                Player.getCombatInformation().changeHp(healAmount);
+            }
+        };
     }
 
     public void batch(float elapsedTime) {
