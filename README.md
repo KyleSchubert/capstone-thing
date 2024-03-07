@@ -77,11 +77,14 @@ I am using IntelliJ IDEA.
 - [x] Is highlighted when it can be traveled to
 - [x] Lines exist to show paths between nodes
 - [x] Completing the boss node creates a new map
-- [ ] Clicking a node starts its event
+- [x] Clicking a node starts its event
+- [ ] Elite combat node starts that event
+- [ ] Boss combat node starts that event
+- [ ] Node depth (further along in the game) controls the type of enemies that are spawned in battle
 
 
 <b>During Battles</b>
-- [ ] Player has by default 3 energy refreshed at the start of each turn
+- [x] Player has by default 3 energy refreshed at the start of each turn
 - [x] Player draws by default 5 cards at the start of each turn
 - [x] HP persists across battles
 
@@ -123,7 +126,7 @@ I am using IntelliJ IDEA.
 
 
 <b>Rest area</b>
-- [ ] Player can rest to restore HP
+- [x] Player can rest to restore HP
 - [ ] Player can upgrade 1 cards in their deck
 - [ ] Player can double the rewards of the next elite or boss battle but make it more difficult
 
