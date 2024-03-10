@@ -127,7 +127,7 @@ I am using IntelliJ IDEA.
 
 <b>Rest area</b>
 - [x] Player can rest to restore HP
-- [ ] Player can upgrade 1 cards in their deck
+- [x] Player can upgrade 1 cards in their deck
 - [ ] Player can double the rewards of the next elite or boss battle but make it more difficult
 
 
