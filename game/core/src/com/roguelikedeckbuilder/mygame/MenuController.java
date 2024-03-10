@@ -32,7 +32,7 @@ public class MenuController {
     private Stage resultsMenuStage;
     private Stage upgradesMenuStage;
     private Stage settingsMenuStage;
-    private CardChoiceStage cardChoiceMenuStage;
+    private CardChangeStage cardChangeMenuStage;
     private RestMenuStage restMenuStage;
     private TreasureMenuStage treasureMenuStage;
     private ShopMenuStage shopMenuStage;
@@ -48,6 +48,7 @@ public class MenuController {
     private Image upgradesBackground;
     private MenuState currentMenuState;
     private MenuState previousImportantMenuState;
+    public static MenuState previousNonimportantMenuState;
     private boolean isDrawMainMenu;
     private boolean isDrawDarkTransparentScreen;
     private boolean isDrawPauseMenu;
@@ -58,7 +59,7 @@ public class MenuController {
     private boolean isDrawTooltipMenu;
     private boolean isDrawRestMenu;
     private boolean isDrawTreasureMenuStage;
-    private boolean isDrawCardChoiceMenuStage;
+    private boolean isDrawCardChangeMenuStage;
     private boolean isDrawShopMenuStage;
     private boolean isDrawCombatMenuStage;
     private float runningAnimationAddClock = 0;
@@ -75,8 +76,22 @@ public class MenuController {
         upgradesMenuStage = new Stage(viewportForStage);
         settingsMenuStage = new Stage(viewportForStage);
 
-        cardChoiceMenuStage = new CardChoiceStage(viewportForStage, makeClickListenerTriggeringMenuState(MenuState.TREASURE));
-        restMenuStage = new RestMenuStage(viewportForStage, makeClickListenerTriggeringMenuState(MenuState.MAP));
+        cardChangeMenuStage = new CardChangeStage(viewportForStage, makeClickListenerTriggeringMenuState(MenuState.TREASURE));
+        restMenuStage = new RestMenuStage(
+                viewportForStage,
+                makeClickListenerTriggeringMenuState(MenuState.MAP),
+                makeClickListenerTriggeringMenuState(MenuState.CARD_CHOICE),
+                new ClickListener() {
+                    @Override
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        return true;
+                    }
+
+                    @Override
+                    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                        cardChangeMenuStage.prepareUpgradePlayerCards();
+                    }
+                });
         treasureMenuStage = new TreasureMenuStage(
                 viewportForStage,
                 newImageButtonFrom("exit", MenuState.MAP),
@@ -89,7 +104,7 @@ public class MenuController {
 
                     @Override
                     public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                        cardChoiceMenuStage.prepareThreeCardChoice();
+                        cardChangeMenuStage.prepareThreeCardChoice();
                     }
                 }
         );
@@ -104,6 +119,7 @@ public class MenuController {
         Gdx.input.setInputProcessor(mainMenuStage);
         currentMenuState = MenuState.MAIN_MENU;
         previousImportantMenuState = MenuState.MAIN_MENU;
+        previousNonimportantMenuState = currentMenuState;
 
         // Load the in-game currency counter
         Image persistentCurrencyCounterImage = new Image(new Texture(Gdx.files.internal("ITEMS/persistent coin.png")));
@@ -223,6 +239,12 @@ public class MenuController {
     }
 
     public void batch(float elapsedTime, String timeText) {
+        if (Player.isFlagGoBackToPreviousMenuState()) {
+            Player.setFlagGoBackToPreviousMenuState(false);
+            setMenuState(previousNonimportantMenuState);
+            System.out.println(previousNonimportantMenuState);
+        }
+
         if (this.isDrawMapMenu) {
             map.drawMap(batch);
         }
@@ -318,8 +340,8 @@ public class MenuController {
 
         batch.end();
         batch.begin();
-        if (this.isDrawCardChoiceMenuStage) {
-            cardChoiceMenuStage.batch(elapsedTime);
+        if (this.isDrawCardChangeMenuStage) {
+            cardChangeMenuStage.batch(elapsedTime);
         }
         if (this.isDrawTooltipMenu || (tooltip.isUsingTooltipLingerTime() && tooltip.getTooltipLingerTime() > 0)) {
             tooltip.batch(elapsedTime);
@@ -384,7 +406,7 @@ public class MenuController {
         settingsMenuStage.dispose();
         tooltip.dispose();
         map.dispose();
-        cardChoiceMenuStage.dispose();
+        cardChangeMenuStage.dispose();
         restMenuStage.dispose();
         combatMenuStage.dispose();
         shopMenuStage.dispose();
@@ -487,6 +509,8 @@ public class MenuController {
     }
 
     public void setMenuState(MenuState menuState) {
+        previousNonimportantMenuState = currentMenuState;
+
         switch (menuState) {
             case MAIN_MENU -> {
                 // GAME STARTS IN THIS STATE
@@ -523,6 +547,7 @@ public class MenuController {
                 setDrawTreasureMenu(false);
                 setDrawShopMenu(false);
                 setDrawCombatMenu(false);
+                setDrawCardChangeMenu(false);
             }
             case UPGRADES -> {
                 currentMenuState = MenuState.UPGRADES;
@@ -578,14 +603,19 @@ public class MenuController {
             case TREASURE -> {
                 currentMenuState = MenuState.TREASURE;
                 setDrawTreasureMenu(true);
-                setDrawCardChoiceMenu(false);
+                setDrawCardChangeMenu(false);
                 setDrawDarkTransparentScreen(true);
                 Gdx.input.setInputProcessor(treasureMenuStage.getStage());
             }
             case CARD_CHOICE -> {
                 currentMenuState = MenuState.CARD_CHOICE;
-                setDrawCardChoiceMenu(true);
-                Gdx.input.setInputProcessor(cardChoiceMenuStage.getStage());
+                setDrawCardChangeMenu(true);
+                Gdx.input.setInputProcessor(cardChangeMenuStage.getStage());
+            }
+            case CARD_UPGRADE -> {
+                currentMenuState = MenuState.CARD_UPGRADE;
+                setDrawCardChangeMenu(true);
+                Gdx.input.setInputProcessor(cardChangeMenuStage.getStage());
             }
             case SHOP -> {
                 currentMenuState = MenuState.SHOP;
@@ -593,8 +623,6 @@ public class MenuController {
                 tooltip.setUsingTooltipLingerTime(true);
                 setDrawTooltipMenu(false);
                 setDrawShopMenu(true);
-            }
-            case STAGE_RESULTS -> {
             }
             case COMBAT -> {
                 currentMenuState = MenuState.COMBAT;
@@ -605,6 +633,7 @@ public class MenuController {
                 setDrawPauseMenu(false);
                 setDrawCombatMenu(true);
                 setDrawMapMenu(false);
+                setDrawCardChangeMenu(false);
 
                 // Reset and then add 4 random enemies for testing
                 Random random = new Random();
@@ -618,6 +647,7 @@ public class MenuController {
 
             default -> throw new IllegalStateException("Unexpected value: " + menuState);
         }
+        System.out.println("PREVIOUS: " + previousNonimportantMenuState + "  |  Current: " + currentMenuState);
     }
 
     private void setDrawMainMenu(boolean drawMainMenu) {
@@ -664,8 +694,8 @@ public class MenuController {
         this.isDrawTreasureMenuStage = drawTreasureMenu;
     }
 
-    public void setDrawCardChoiceMenu(boolean drawCardChoiceMenu) {
-        this.isDrawCardChoiceMenuStage = drawCardChoiceMenu;
+    public void setDrawCardChangeMenu(boolean drawCardChangeMenu) {
+        this.isDrawCardChangeMenuStage = drawCardChangeMenu;
     }
 
     public void setDrawShopMenu(boolean drawShopMenu) {
@@ -732,6 +762,6 @@ public class MenuController {
     }
 
     public enum MenuState {
-        MAIN_MENU, MAP, PAUSED, RESULTS, UPGRADES, SETTINGS_BACK, RESUME, SETTINGS, START_REWARDS, REST_AREA, TREASURE, SHOP, STAGE_RESULTS, COMBAT, CARD_CHOICE
+        MAIN_MENU, MAP, PAUSED, RESULTS, UPGRADES, SETTINGS_BACK, RESUME, SETTINGS, START_REWARDS, REST_AREA, TREASURE, SHOP, CARD_UPGRADE, COMBAT, CARD_CHOICE
     }
 }

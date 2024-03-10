@@ -7,12 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Player;
-import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class RestMenuStage extends GenericStage {
-    public RestMenuStage(ScreenViewport viewportForStage, ClickListener clickListener) {
+    public RestMenuStage(ScreenViewport viewportForStage, ClickListener clickListener, ClickListener cardChangeStageTrigger, ClickListener cardUpgradePreparerClickListener) {
         super(viewportForStage, "gray background");
         float backgroundXPosition = 13.5f;
         super.getStageBackgroundActor().setPosition(backgroundXPosition, 4);
@@ -30,6 +29,8 @@ public class RestMenuStage extends GenericStage {
         upgradeButton.setPosition(upgradeButtonXPosition, 6);
         upgradeButton.setScale(SCALE_FACTOR);
         upgradeButton.addListener(clickListener);
+        upgradeButton.addListener(cardChangeStageTrigger);
+        upgradeButton.addListener(cardUpgradePreparerClickListener);
         getStage().addActor(upgradeButton);
     }
 

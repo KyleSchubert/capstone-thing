@@ -14,6 +14,7 @@ public class Player {
     private static Array<Card> ownedCards;
     private static int energy;
     private static TargetType potentialAbilityTargetType;
+    private static boolean flagGoBackToPreviousMenuState;
 
     public static void initialize() {
         persistentMoney = 200;
@@ -21,6 +22,7 @@ public class Player {
         character.faceRight();
         ownedCards = new Array<>();
         combatInformation = new CombatInformation();
+        flagGoBackToPreviousMenuState = false;
         reset();
     }
 
@@ -28,6 +30,7 @@ public class Player {
         money = 1500;
         combatInformation.setPositions(character.getCharacterCenter());
         combatInformation.loadPlayerStats();
+        flagGoBackToPreviousMenuState = false;
 
         ownedCards.clear();
         for (int i = 0; i < 5; i++) {
@@ -45,6 +48,13 @@ public class Player {
             card.getGroup().addCaptureListener(card.getClickListener());
             ownedCards.add(card);
         }
+        for (int i = 0; i < 3; i++) {
+            Card card = new Card(Card.CardData.FIRE_STRIKE, false);
+            card.getGroup().addCaptureListener(card.getClickListener());
+            card.setUpgraded(true);
+            ownedCards.add(card);
+        }
+        ownedCards.shuffle();
     }
 
     public static void changeMoney(int change) {
@@ -76,6 +86,17 @@ public class Player {
         card.setUpgraded(isUpgraded);
         card.getGroup().addCaptureListener(card.getClickListener());
         ownedCards.add(card);
+    }
+
+    public static void removeCard(Card.CardData cardData) {
+        for (Card card : ownedCards) {
+            if (card.getCardType() == cardData) {
+                ownedCards.removeValue(card, true);
+                return;
+            }
+        }
+
+        System.out.println("Tried to remove a card that wasn't owned by the player: " + cardData);
     }
 
     public static Character getCharacter() {
@@ -124,4 +145,13 @@ public class Player {
     public static void combatEnd() {
         combatInformation.setHpBarVisibility(false);
     }
+
+    public static void setFlagGoBackToPreviousMenuState(boolean flag) {
+        flagGoBackToPreviousMenuState = flag;
+    }
+
+    public static boolean isFlagGoBackToPreviousMenuState() {
+        return flagGoBackToPreviousMenuState;
+    }
+
 }

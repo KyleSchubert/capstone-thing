@@ -81,10 +81,13 @@ public class Card {
 
         // Final things
         width = background.getWidth() * SCALE_FACTOR;
-        height = background.getWidth() * SCALE_FACTOR;
+        height = background.getHeight() * SCALE_FACTOR;
 
         group.setScale(SCALE_FACTOR);
         group.setUserObject(UserObjectOptions.CARD);
+
+        group.setWidth(width);
+        group.setHeight(height);
     }
 
     public Group getGroup() {
@@ -138,7 +141,7 @@ public class Card {
                 UseLine.setPosition(
                         new XYPair<>(
                                 getGroup().getX() + width / 2,
-                                getGroup().getY() + height),
+                                getGroup().getY() + height / 2),
                         getMousePosition());
             }
 
@@ -153,6 +156,11 @@ public class Card {
 
     public void setUpgraded(boolean upgraded) {
         isUpgraded = upgraded;
+
+        // A star symbol, to show it is upgraded
+        Image upgradedImage = new Image(new Texture(Gdx.files.internal("CARDS/upgraded star.png")));
+        upgradedImage.setPosition(25, 190);
+        group.addActor(upgradedImage);
     }
 
     public enum CardData {
