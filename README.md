@@ -9,33 +9,44 @@ This will be a roguelike deckbuilder made in Java using libGDX
    
    <details><summary>Map</summary>
    
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/80d70c27-6eb1-41ae-a9c3-edb77b734331)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/3e9039cf-b9a9-424e-b219-0b54ecbb5a7b)
    </details>
 
   <details><summary>Combat</summary>
 
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/e3e42a16-e4b0-4b3d-bd1f-165777436ac9)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/81bb0239-c1c2-4163-87db-9e2fd61770f0)
   </details>
 
+  <details><summary>Viewing Draw Pile in Combat</summary>
+
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/f957b7d3-f22d-47c9-a594-8fc91c7cddfc)
+  </details>
+  
   <details><summary>Rewards</summary>
   
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/12f80e6c-a681-46da-bed9-8d7b410c589c)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/9b7ac4d3-12ba-4176-b6b6-06224947bec2)
   </details>
 
   <details><summary>"Start with an item" panel</summary>
    
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/f9aa7acf-3c20-4e2e-9405-71b1b8cb1c1c)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/1abf1c5f-7722-40dc-8474-f3d427e65bf3)
   </details>
 
   <details><summary>Shop</summary>
     
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/02bf3c96-6d4f-41bd-b923-9c62daafee03)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/63acf698-290a-4732-86e2-dc8744d5b9a9)
   </details>
 
   <details><summary>Rest Area</summary>
     
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/05e850d9-0c90-4d57-8a75-21d04d2e1615)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/6b4150a1-ed8c-4478-8dc2-4a3064f2eb77)
   </details>
+  
+  <details><summary>Viewing Deck</summary>
+    
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/0ec10387-8ecc-48c5-8078-ceb536b67fad)
+  </details>
+
   
 </details>
 
