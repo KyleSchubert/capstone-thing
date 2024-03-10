@@ -87,13 +87,14 @@ I am using IntelliJ IDEA.
 - [x] Player has by default 3 energy refreshed at the start of each turn
 - [x] Player draws by default 5 cards at the start of each turn
 - [x] HP persists across battles
+- [x] The player can click on something to view their draw pile
 
 
 <b>Not in battles</b>
 - [x] Amount of temporary currency the player has is visible
 - [x] The time elapsed in the current round is visible
 - [x] The player can see how much health their character has
-- [ ] The player can click on something to view their deck
+- [x] The player can click on something to view their deck
 
 
 <b>Cards</b>
@@ -121,8 +122,8 @@ I am using IntelliJ IDEA.
 <b>Shops</b>
 - [x] Player can pick from 8 cards to buy
 - [ ] Player can pick from 3 artifacts to buy
-- [ ] Player can pay to remove a card from their deck
-- [ ] Player can pay to upgrade a card in their deck
+- [x] Player can pay to remove a card from their deck
+- [x] Player can pay to upgrade a card in their deck
 
 
 <b>Rest area</b>

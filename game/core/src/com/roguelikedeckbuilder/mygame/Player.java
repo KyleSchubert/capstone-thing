@@ -88,15 +88,8 @@ public class Player {
         ownedCards.add(card);
     }
 
-    public static void removeCard(Card.CardData cardData) {
-        for (Card card : ownedCards) {
-            if (card.getCardType() == cardData) {
-                ownedCards.removeValue(card, true);
-                return;
-            }
-        }
-
-        System.out.println("Tried to remove a card that wasn't owned by the player: " + cardData);
+    public static void removeCard(int cardIndex) {
+        ownedCards.removeIndex(cardIndex);
     }
 
     public static Character getCharacter() {
@@ -140,10 +133,6 @@ public class Player {
 
     public static TargetType getPotentialAbilityTargetType() {
         return potentialAbilityTargetType;
-    }
-
-    public static void combatEnd() {
-        combatInformation.setHpBarVisibility(false);
     }
 
     public static void setFlagGoBackToPreviousMenuState(boolean flag) {

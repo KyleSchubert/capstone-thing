@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.MenuController;
@@ -40,7 +41,7 @@ public class CombatMenuStage extends GenericStage {
     private final Label energyLabel;
     private boolean victory = false;
 
-    public CombatMenuStage(ScreenViewport viewportForStage, ImageButton exitButtonForTesting) {
+    public CombatMenuStage(ScreenViewport viewportForStage, ImageButton exitButtonForTesting, CardChangeStage cardChangeMenuStage, ClickListener cardChangeStageTrigger) {
         super(viewportForStage, "combat background");
 
         // Reposition the background
@@ -58,6 +59,18 @@ public class CombatMenuStage extends GenericStage {
         drawPile.setPosition(4, 3);
         drawPile.setScale(SCALE_FACTOR);
         this.getStage().addActor(drawPile);
+        drawPile.addCaptureListener(new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                cardChangeMenuStage.prepareViewDrawPile(drawPileContents);
+            }
+        });
+        drawPile.addCaptureListener(cardChangeStageTrigger);
 
         Image shufflePile = new Image(new Texture(Gdx.files.internal("CARDS/shuffle pile.png")));
         shufflePile.setPosition(64, 3);

@@ -24,7 +24,6 @@ public class Card {
     private final int cardValue;
     private final Group group;
     private boolean isUpgraded = false;
-    private boolean isInShop = false;
     private final float width;
     private final float height;
 
@@ -110,19 +109,6 @@ public class Card {
         return cardType;
     }
 
-    public void setInShop(boolean inShop) {
-        isInShop = inShop;
-
-        if (inShop) {
-            group.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    Player.buyCard(cardValue, cardType, isUpgraded);
-                }
-            });
-        }
-    }
-
     public boolean isUpgraded() {
         return isUpgraded;
     }
@@ -157,10 +143,12 @@ public class Card {
     public void setUpgraded(boolean upgraded) {
         isUpgraded = upgraded;
 
-        // A star symbol, to show it is upgraded
-        Image upgradedImage = new Image(new Texture(Gdx.files.internal("CARDS/upgraded star.png")));
-        upgradedImage.setPosition(25, 190);
-        group.addActor(upgradedImage);
+        if (isUpgraded) {
+            // A star symbol, to show it is upgraded
+            Image upgradedImage = new Image(new Texture(Gdx.files.internal("CARDS/upgraded star.png")));
+            upgradedImage.setPosition(25, 190);
+            group.addActor(upgradedImage);
+        }
     }
 
     public enum CardData {
