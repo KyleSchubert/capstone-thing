@@ -34,7 +34,7 @@ public class Player {
 
         ownedCards.clear();
         for (int i = 0; i < 5; i++) {
-            Card card = new Card(Card.CardData.VORTEX, false);
+            Card card = new Card(Card.CardData.ENERGY_SLICES, false);
             card.getGroup().addCaptureListener(card.getClickListener());
             ownedCards.add(card);
         }

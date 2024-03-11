@@ -152,8 +152,8 @@ public class Card {
     }
 
     public enum CardData {
-        VORTEX(
-                Ability.AbilityTypeName.VORTEX,
+        ENERGY_SLICES(
+                Ability.AbilityTypeName.ENERGY_SLICES,
                 110,
                 2
         ),

@@ -1,6 +1,10 @@
 package com.roguelikedeckbuilder.mygame.combat;
 
 import com.badlogic.gdx.utils.Array;
+import com.roguelikedeckbuilder.mygame.helpers.XYPair;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AbilityData {
     private static Array<IndividualAbilityData> data;
@@ -47,11 +51,11 @@ public class AbilityData {
     }
 
     public static int getDamage(Ability.AbilityTypeName typeName) {
-        return data.get(typeName.ordinal()).getDamage();
+        return data.get(typeName.ordinal()).getEffectiveness();
     }
 
     public static int getHits(Ability.AbilityTypeName typeName) {
-        return data.get(typeName.ordinal()).getHits();
+        return data.get(typeName.ordinal()).getRepetitions();
     }
 
     public static TargetType getTargetType(Ability.AbilityTypeName typeName) {
@@ -61,34 +65,81 @@ public class AbilityData {
     private static class IndividualAbilityData {
         private String cardIconPath;
         private String name;
-        private int damage;
-        private int hits;
+        private int effectiveness;
+        private int repetitions;
         private TargetType targetType;
+        private XYPair<Float> dimensions;
+        private XYPair<Float> origin;
+        private ArrayList<Float> animationFrameDelays;
+        private float lifetime;
 
         public IndividualAbilityData(Ability.AbilityTypeName abilityTypeName) {
             String cardIconFileName;
             switch (abilityTypeName) {
-                case VORTEX:
+                case ENERGY_SLICES:
                     cardIconFileName = "1.png";
-                    name = "Vortex";
-                    damage = 1;
-                    hits = 8;
+                    name = "Energy Slices";
+                    effectiveness = 1;
+                    repetitions = 8;
                     targetType = TargetType.ALL;
+                    dimensions = new XYPair<>(759f, 339f);
+                    origin = new XYPair<>(425f, 254f);
+                    animationFrameDelays = new ArrayList<>(Arrays.asList(0.06f, 0.09f, 0.06f, 0.09f, 0.06f, 0.06f, 0.06f, 0.09f, 0.06f, 0.06f, 0.06f, 0.06f));
+                    lifetime = 0.81f;
+                    /*
+                    // HIT STUFF:
+                    dimensions = new XYPair<>(417f, 370f);
+                    origin = new XYPair<>(208.5f, 185.0f);
+                    animationFrameDelays = new ArrayList<>(Arrays.asList(0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f));
+                    lifetime = 0.54f;
+                     */
                     break;
                 case FLAME:
                     cardIconFileName = "2.png";
                     name = "Flame";
-                    damage = 5;
-                    hits = 1;
+                    effectiveness = 5;
+                    repetitions = 1;
                     targetType = TargetType.ONE;
+                    dimensions = new XYPair<>(104f, 63f);
+                    origin = new XYPair<>(40f, 32f);
+                    animationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f));
+                    lifetime = 0.360f;
+                    /*
+                    // HIT INFO:
+                    dimensions = new XYPair<>(160f, 130f);
+                    origin = new XYPair<>(80f, 65f);
+                    animationFrameDelays = new ArrayList<>(Arrays.asList(0.090f, 0.090f, 0.090f, 0.090f, 0.090f));
+                    lifetime = 0.450f;
+                     */
                     break;
                 case FIRE_STRIKE:
                     cardIconFileName = "3.png";
                     name = "Fire Strike";
-                    damage = 9;
-                    hits = 1;
+                    effectiveness = 9;
+                    repetitions = 1;
                     targetType = TargetType.ONE;
+                    dimensions = new XYPair<>(227f, 331f);
+                    origin = new XYPair<>(129f, 194f);
+                    animationFrameDelays = new ArrayList<>(Arrays.asList(0.18f, 0.09f, 0.09f, 0.09f, 0.09f));
+                    lifetime = 0.54f;
+                    /*
+                    // HIT INFO:
+                    dimensions = new XYPair<>(151f, 178f);
+                    origin = new XYPair<>(75.5f, 89.0f);
+                    animationFrameDelays = new ArrayList<>(Arrays.asList(0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f));
+                    lifetime = 0.36f;
+                     */
                     break;
+                case DEFEND:
+                    cardIconFileName = "4.png";
+                    name = "Defend";
+                    effectiveness = 5;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                    dimensions = new XYPair<>(186f, 272f);
+                    origin = new XYPair<>(94f, 220f);
+                    animationFrameDelays = new ArrayList<>(Arrays.asList(0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f));
+                    lifetime = 1.8f;
                 default:
                     System.out.println("Why was an ability almost generated with no matching type name? abilityTypeName:  " + abilityTypeName);
                     return;
@@ -105,12 +156,12 @@ public class AbilityData {
             return name;
         }
 
-        public int getDamage() {
-            return damage;
+        public int getEffectiveness() {
+            return effectiveness;
         }
 
-        public int getHits() {
-            return hits;
+        public int getRepetitions() {
+            return repetitions;
         }
 
         public TargetType getTargetType() {
