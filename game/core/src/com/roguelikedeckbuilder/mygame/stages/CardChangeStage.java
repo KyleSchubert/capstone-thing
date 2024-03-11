@@ -167,9 +167,10 @@ public class CardChangeStage extends GenericStage {
             if (addUpgradingClick) {
                 cardWithClickListener.setUpgraded(true);
                 cardWithClickListener.getGroup().addCaptureListener(getClickListenerForUpgradingCard(i, card.getCardType()));
+            } else {
+                cardWithClickListener.setUpgraded(card.isUpgraded());
             }
             if (addRemovingClick) {
-                cardWithClickListener.setUpgraded(card.isUpgraded());
                 cardWithClickListener.getGroup().addCaptureListener(getClickListenerForRemovingCard(i));
             }
 
