@@ -285,17 +285,23 @@ public class CombatMenuStage extends GenericStage {
             for (Enemy enemy : currentEnemies) {
                 enemy.setTargeted(false);
             }
+            Player.getCharacter().setTargeted(false);
 
             Array<Enemy> enemies = new Array<>();
-            for (Enemy enemy : currentEnemies) {
-                if (enemy.isPointWithinRange(mousePosition)) {
-                    // Check for TargetType.ALL first, so players can cancel attacking all enemies, by not hovering any enemy.
-                    if (Player.getPotentialAbilityTargetType() == TargetType.ALL) {
-                        enemies = currentEnemies;
+            if (Player.getPotentialAbilityTargetType() == TargetType.SELF) {
+                CombatHandler.setIsTargetingPlayer(Player.isPointWithinRange(mousePosition));
+            } else {
+                for (Enemy enemy : currentEnemies) {
+                    if (Enemy.isPointWithinRange(mousePosition, enemy.getPositionOnStage())) {
+                        CombatHandler.setIsTargetingPlayer(false);
+                        // Check for TargetType.ALL first, so players can cancel attacking all enemies, by not hovering any enemy.
+                        if (Player.getPotentialAbilityTargetType() == TargetType.ALL) {
+                            enemies = currentEnemies;
+                            break;
+                        }
+                        enemies.add(enemy);
                         break;
                     }
-                    enemies.add(enemy);
-                    break;
                 }
             }
 

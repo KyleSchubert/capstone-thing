@@ -5,6 +5,8 @@ import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.characters.Character;
 import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
+import com.roguelikedeckbuilder.mygame.helpers.GenericHelpers;
+import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 public class Player {
     private static Character character;
@@ -15,10 +17,12 @@ public class Player {
     private static int energy;
     private static TargetType potentialAbilityTargetType;
     private static boolean flagGoBackToPreviousMenuState;
+    private static XYPair<Float> positionOnStage;
 
     public static void initialize() {
+        positionOnStage = new XYPair<>(18f, 22.8f);
         persistentMoney = 200;
-        character = new Character(Character.CharacterTypeName.HELMET_PENGUIN, 18f, 22.8f);
+        character = new Character(Character.CharacterTypeName.HELMET_PENGUIN, positionOnStage.x(), positionOnStage.y());
         character.faceRight();
         ownedCards = new Array<>();
         combatInformation = new CombatInformation();
@@ -113,6 +117,7 @@ public class Player {
 
     public static void startTurn() {
         energy = 3;
+        Player.getCombatInformation().clearDefense();
     }
 
     public static int getEnergy() {
@@ -144,4 +149,7 @@ public class Player {
         return flagGoBackToPreviousMenuState;
     }
 
+    public static boolean isPointWithinRange(XYPair<Float> point) {
+        return GenericHelpers.isPointWithinRange(point, positionOnStage);
+    }
 }

@@ -11,6 +11,7 @@ import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 public class CombatInformation {
     private int hp;
     private int maxHp;
+    private int defense;
     private final HpBar hpBar;
     private XYPair<Float> damageNumberCenter;
     private final BitmapFont font;
@@ -21,18 +22,20 @@ public class CombatInformation {
         font = new BitmapFont(Gdx.files.internal("hp_and_damage.fnt"));
         font.setUseIntegerPositions(false);
         font.getData().setScale(SCALE_FACTOR / 6);
+
+        defense = 0;
     }
 
     public void loadEnemyStats(Character.CharacterTypeName characterTypeName) {
         maxHp = EnemyData.getMaxHp(characterTypeName);
         hp = maxHp;
-        hpBar.update(hp, maxHp);
+        updateHpBar();
     }
 
     public void loadPlayerStats() {
         maxHp = 70;
         hp = maxHp;
-        hpBar.update(hp, maxHp);
+        updateHpBar();
     }
 
     public void changeHp(int change) {
@@ -41,7 +44,7 @@ public class CombatInformation {
         } else {
             hp = 0;
         }
-        hpBar.update(hp, maxHp);
+        updateHpBar();
     }
 
     public void changeMaxHp(int change) {
@@ -51,7 +54,7 @@ public class CombatInformation {
         } else {
             maxHp = 1;
             hp = 1;
-            hpBar.update(hp, maxHp);
+            updateHpBar();
         }
     }
 
@@ -59,9 +62,31 @@ public class CombatInformation {
         if (hp == 0) {
             return true;
         }
-        createHpChangeNumbers(-amount);
-        changeHp(-amount);
+        createHpChangeNumbers(amount);
+        int excessDamage = changeDefense(-amount);
+        changeHp(excessDamage);
         return false;
+    }
+
+    public void grantDefense(int amount) {
+        changeDefense(amount);
+    }
+
+    private int changeDefense(int change) {
+        int excessDamage = 0;
+        defense += change;
+
+        if (defense < 0) {
+            excessDamage = defense;
+            defense = 0;
+        }
+
+        updateHpBar();
+        return excessDamage;
+    }
+
+    private void updateHpBar() {
+        hpBar.update(hp, maxHp, defense);
     }
 
     private void createHpChangeNumbers(int amount) {
@@ -87,5 +112,9 @@ public class CombatInformation {
 
     public void drawHpBar(SpriteBatch batch) {
         hpBar.draw(batch);
+    }
+
+    public void clearDefense() {
+        changeDefense(-defense);
     }
 }

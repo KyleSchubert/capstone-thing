@@ -118,9 +118,9 @@ public class AbilityData {
                     cardIconFileName = "2.png";
                     name = "Flame";
                     effectType = EffectType.ATTACK;
-                    effectiveness = 5;
-                    repetitions = 1;
-                    targetType = TargetType.ONE;
+                    effectiveness = 3;
+                    repetitions = 7;
+                    targetType = TargetType.SELF;
                     dimensions = new XYPair<>(104f, 63f);
                     origin = new XYPair<>(40f, 32f);
                     animationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f));

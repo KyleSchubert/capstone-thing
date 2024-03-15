@@ -249,7 +249,7 @@ public class MenuController {
         if (Player.isFlagGoBackToPreviousMenuState()) {
             Player.setFlagGoBackToPreviousMenuState(false);
             System.out.println("Going back to PREVIOUS: " + previousNonimportantMenuState);
-            
+
             if (previousNonimportantMenuState == MenuState.SHOP) {
                 shopMenuStage.useCorrectButtons();
             }
@@ -791,7 +791,6 @@ public class MenuController {
     public MenuState getCurrentMenuState() {
         return currentMenuState;
     }
-
 
     private void animateRandomRunningCharacter() {
         float startX = 80;

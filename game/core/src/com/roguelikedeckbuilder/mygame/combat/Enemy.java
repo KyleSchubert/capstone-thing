@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.roguelikedeckbuilder.mygame.characters.Character;
+import com.roguelikedeckbuilder.mygame.helpers.GenericHelpers;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.stages.CombatMenuStage;
@@ -36,21 +37,12 @@ public class Enemy {
         stage.getActors().removeValue(character, true);
     }
 
-    public boolean isPointWithinRange(XYPair<Float> point) {
-        float width = 9;
-        float height = 20;
-        float heightBottomOffset = 6;
+    public XYPair<Float> getPositionOnStage() {
+        return positionOnStage;
+    }
 
-        float left = positionOnStage.x() - width / 2;
-        float right = positionOnStage.x() + width / 2;
-
-        float bottom = positionOnStage.y() - height / 2 + heightBottomOffset;
-        float top = positionOnStage.y() + height / 2 + heightBottomOffset;
-
-        return (point.x() < right
-                && point.x() > left
-                && point.y() < top
-                && point.y() > bottom);
+    public static boolean isPointWithinRange(XYPair<Float> point, XYPair<Float> positionOfEnemy) {
+        return GenericHelpers.isPointWithinRange(point, positionOfEnemy);
     }
 
     public void setTargeted(boolean targeted) {
