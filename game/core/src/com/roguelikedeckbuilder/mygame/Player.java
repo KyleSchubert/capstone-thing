@@ -33,27 +33,28 @@ public class Player {
         flagGoBackToPreviousMenuState = false;
 
         ownedCards.clear();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 3; i++) {
             Card card = new Card(Card.CardData.ENERGY_SLICES, false);
             card.getGroup().addCaptureListener(card.getClickListener());
             ownedCards.add(card);
         }
-        for (int i = 0; i < 3; i++) {
-            Card card = new Card(Card.CardData.FLAME, false);
-            card.getGroup().addCaptureListener(card.getClickListener());
-            ownedCards.add(card);
-        }
-        for (int i = 0; i < 3; i++) {
-            Card card = new Card(Card.CardData.FIRE_STRIKE, false);
-            card.getGroup().addCaptureListener(card.getClickListener());
-            ownedCards.add(card);
-        }
-        for (int i = 0; i < 3; i++) {
-            Card card = new Card(Card.CardData.FIRE_STRIKE, false);
-            card.getGroup().addCaptureListener(card.getClickListener());
-            card.setUpgraded(true);
-            ownedCards.add(card);
-        }
+        Card card = new Card(Card.CardData.FLAME, false);
+        card.getGroup().addCaptureListener(card.getClickListener());
+        ownedCards.add(card);
+
+        card = new Card(Card.CardData.FIRE_STRIKE, false);
+        card.getGroup().addCaptureListener(card.getClickListener());
+        ownedCards.add(card);
+
+        card = new Card(Card.CardData.FIRE_STRIKE, false);
+        card.getGroup().addCaptureListener(card.getClickListener());
+        card.setUpgraded(true);
+        ownedCards.add(card);
+
+        card = new Card(Card.CardData.DEFEND, false);
+        card.getGroup().addCaptureListener(card.getClickListener());
+        ownedCards.add(card);
+
         ownedCards.shuffle();
     }
 

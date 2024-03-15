@@ -5,6 +5,7 @@ import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class AbilityData {
     private static Array<IndividualAbilityData> data;
@@ -27,34 +28,51 @@ public class AbilityData {
 
     public static String getDescription(Ability.AbilityTypeName typeName) {
         //"Deals [RED]1 Damage[] to an enemy [CYAN]4 times[]."
-        int damage = getDamage(typeName);
-        String damageText = String.format("[RED]%d Damage[]", damage);
+        EffectType effectType = getEffectType(typeName);
+        int effectiveness = getEffectiveness(typeName);
+
+        String effectText;
+        switch (effectType) {
+            case ATTACK -> effectText = String.format("Deals [RED]%d Damage[]", effectiveness);
+            case DEFEND -> effectText = String.format("Grants [YELLOW]%d Defense[]", effectiveness);
+            default ->
+                    throw new IllegalStateException("Unexpected value for effectType in getDescription(): " + effectType);
+        }
 
         TargetType targetType = getTargetType(typeName);
-        String hitTypeText;
+        String targetTypeText;
         switch (targetType) {
-            case ONE -> hitTypeText = "to an enemy";
-            case ALL -> hitTypeText = "to [LIME]all[] enemies";
+            case ONE -> targetTypeText = "to an enemy";
+            case ALL -> targetTypeText = "to [LIME]all[] enemies";
+            case SELF -> targetTypeText = "to yourself";
             default ->
                     throw new IllegalStateException("Unexpected value for hitType in getDescription(): " + targetType);
         }
 
-        int hits = getHits(typeName);
-        String hitsText;
-        if (hits == 1) {
-            hitsText = String.format("[CYAN]%d time[]", hits);
+        int repetitions = getRepetitions(typeName);
+        String repetitionsText;
+        if (repetitions == 1) {
+            repetitionsText = "";
         } else {
-            hitsText = String.format("[CYAN]%d times[]", hits);
+            repetitionsText = String.format("[CYAN]%d times[]", repetitions);
         }
 
-        return String.format("Deals %s %s %s.", damageText, hitTypeText, hitsText);
+        if (Objects.equals(repetitionsText, "")) {
+            return String.format("%s %s.", effectText, targetTypeText);
+        } else {
+            return String.format("%s %s %s.", effectText, targetTypeText, repetitionsText);
+        }
     }
 
-    public static int getDamage(Ability.AbilityTypeName typeName) {
+    public static EffectType getEffectType(Ability.AbilityTypeName typeName) {
+        return data.get(typeName.ordinal()).getEffectType();
+    }
+
+    public static int getEffectiveness(Ability.AbilityTypeName typeName) {
         return data.get(typeName.ordinal()).getEffectiveness();
     }
 
-    public static int getHits(Ability.AbilityTypeName typeName) {
+    public static int getRepetitions(Ability.AbilityTypeName typeName) {
         return data.get(typeName.ordinal()).getRepetitions();
     }
 
@@ -65,6 +83,7 @@ public class AbilityData {
     private static class IndividualAbilityData {
         private String cardIconPath;
         private String name;
+        private EffectType effectType;
         private int effectiveness;
         private int repetitions;
         private TargetType targetType;
@@ -76,9 +95,10 @@ public class AbilityData {
         public IndividualAbilityData(Ability.AbilityTypeName abilityTypeName) {
             String cardIconFileName;
             switch (abilityTypeName) {
-                case ENERGY_SLICES:
+                case ENERGY_SLICES -> {
                     cardIconFileName = "1.png";
                     name = "Energy Slices";
+                    effectType = EffectType.ATTACK;
                     effectiveness = 1;
                     repetitions = 8;
                     targetType = TargetType.ALL;
@@ -93,10 +113,11 @@ public class AbilityData {
                     animationFrameDelays = new ArrayList<>(Arrays.asList(0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f));
                     lifetime = 0.54f;
                      */
-                    break;
-                case FLAME:
+                }
+                case FLAME -> {
                     cardIconFileName = "2.png";
                     name = "Flame";
+                    effectType = EffectType.ATTACK;
                     effectiveness = 5;
                     repetitions = 1;
                     targetType = TargetType.ONE;
@@ -111,10 +132,11 @@ public class AbilityData {
                     animationFrameDelays = new ArrayList<>(Arrays.asList(0.090f, 0.090f, 0.090f, 0.090f, 0.090f));
                     lifetime = 0.450f;
                      */
-                    break;
-                case FIRE_STRIKE:
+                }
+                case FIRE_STRIKE -> {
                     cardIconFileName = "3.png";
                     name = "Fire Strike";
+                    effectType = EffectType.ATTACK;
                     effectiveness = 9;
                     repetitions = 1;
                     targetType = TargetType.ONE;
@@ -129,10 +151,11 @@ public class AbilityData {
                     animationFrameDelays = new ArrayList<>(Arrays.asList(0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f));
                     lifetime = 0.36f;
                      */
-                    break;
-                case DEFEND:
+                }
+                case DEFEND -> {
                     cardIconFileName = "4.png";
                     name = "Defend";
+                    effectType = EffectType.DEFEND;
                     effectiveness = 5;
                     repetitions = 1;
                     targetType = TargetType.SELF;
@@ -140,9 +163,11 @@ public class AbilityData {
                     origin = new XYPair<>(94f, 220f);
                     animationFrameDelays = new ArrayList<>(Arrays.asList(0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f));
                     lifetime = 1.8f;
-                default:
+                }
+                default -> {
                     System.out.println("Why was an ability almost generated with no matching type name? abilityTypeName:  " + abilityTypeName);
                     return;
+                }
             }
 
             cardIconPath = "ABILITIES/" + cardIconFileName;
@@ -154,6 +179,10 @@ public class AbilityData {
 
         public String getName() {
             return name;
+        }
+
+        public EffectType getEffectType() {
+            return effectType;
         }
 
         public int getEffectiveness() {

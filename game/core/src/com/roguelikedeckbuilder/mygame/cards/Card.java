@@ -166,6 +166,11 @@ public class Card {
                 Ability.AbilityTypeName.FIRE_STRIKE,
                 80,
                 1
+        ),
+        DEFEND(
+                Ability.AbilityTypeName.DEFEND,
+                80,
+                1
         );
 
         private final String name;

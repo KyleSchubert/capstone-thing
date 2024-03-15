@@ -16,8 +16,8 @@ public class CombatHandler {
     }
 
     private static void useAbility(Ability.AbilityTypeName abilityTypeName) {
-        int hits = AbilityData.getHits(abilityTypeName);
-        int damage = AbilityData.getDamage(abilityTypeName);
+        int hits = AbilityData.getRepetitions(abilityTypeName);
+        int damage = AbilityData.getEffectiveness(abilityTypeName);
         boolean stopEarly;
 
         for (CombatInformation combatInformation : targets) {
