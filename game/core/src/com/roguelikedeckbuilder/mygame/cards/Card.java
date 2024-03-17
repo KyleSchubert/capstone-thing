@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.UseLine;
-import com.roguelikedeckbuilder.mygame.combat.Ability;
 import com.roguelikedeckbuilder.mygame.combat.AbilityData;
 import com.roguelikedeckbuilder.mygame.combat.CombatHandler;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
@@ -20,20 +19,22 @@ import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 
 public class Card {
-    private final CardData cardType;
-    private final int cardValue;
+    private final CardData.CardTypeName cardTypeName;
     private final Group group;
     private boolean isUpgraded = false;
     private final float width;
     private final float height;
+    private final Label cardName;
+    private final Label cardEffectDescription;
+    private final Label energyCostLabel;
 
-    public Card(CardData cardType, boolean showValue) {
-        this.cardType = cardType;
+    public Card(CardData.CardTypeName cardTypeName, boolean showValue) {
+        this.cardTypeName = cardTypeName;
 
         Image background = new Image(new Texture(Gdx.files.internal("CARDS/background.png")));
         background.setPosition(0, 0);
 
-        Image image = new Image(new Texture(Gdx.files.internal(cardType.imagePath)));
+        Image image = new Image(new Texture(Gdx.files.internal(CardData.getImagePath(cardTypeName))));
         image.setScale(2);
         XYPair<Float> imagePosition = new XYPair<>(
                 (background.getWidth() - image.getWidth() * 2) / 2,
@@ -41,13 +42,10 @@ public class Card {
         );
         image.setPosition(imagePosition.x(), imagePosition.y());
 
-
-        cardValue = cardType.value;
-
-        Label cardName = LabelMaker.newLabel(cardType.name, LabelMaker.getMedium());
+        cardName = LabelMaker.newLabel(AbilityData.getName(getUsedAbilityTypeName()), LabelMaker.getMedium());
         cardName.setPosition(72, 266);
 
-        Label cardEffectDescription = LabelMaker.newLabel(cardType.description, LabelMaker.getSmall());
+        cardEffectDescription = LabelMaker.newLabel(AbilityData.getDescription(getUsedAbilityTypeName()), LabelMaker.getSmall());
         cardEffectDescription.setPosition(16, 120);
 
 
@@ -63,7 +61,7 @@ public class Card {
             coinImage.setPosition(144, 6);
             group.addActor(coinImage);
 
-            Label cardValueLabel = LabelMaker.newLabel("Price: " + cardValue, LabelMaker.getSmall());
+            Label cardValueLabel = LabelMaker.newLabel("Price: " + CardData.getValue(cardTypeName), LabelMaker.getSmall());
             cardValueLabel.setPosition(background.getWidth() / 2 - 60, 10);
             group.addActor(cardValueLabel);
         }
@@ -73,7 +71,9 @@ public class Card {
         energyImage.setPosition(4, 234);
         group.addActor(energyImage);
 
-        Label energyCostLabel = LabelMaker.newLabel(String.valueOf(cardType.energyCost), LabelMaker.getMediumHpAndDamage());
+        energyCostLabel = LabelMaker.newLabel(
+                String.valueOf(AbilityData.getEnergyCost(getUsedAbilityTypeName())),
+                LabelMaker.getMediumHpAndDamage());
         energyCostLabel.setPosition(28, 248);
         energyCostLabel.setWidth(90);
         group.addActor(energyCostLabel);
@@ -89,24 +89,21 @@ public class Card {
         group.setHeight(height);
     }
 
+    public CardData.CardTypeName getCardTypeName() {
+        return cardTypeName;
+    }
+
+    public AbilityData.AbilityTypeName getUsedAbilityTypeName() {
+        if (Card.this.isUpgraded) {
+            return CardData.getUpgradedAbilityTypeName(Card.this.getCardTypeName());
+        } else {
+            return CardData.getAbilityTypeName(Card.this.getCardTypeName());
+        }
+    }
+
+
     public Group getGroup() {
         return group;
-    }
-
-    public int getCardValue() {
-        return cardValue;
-    }
-
-    public Ability.AbilityTypeName getAbilityTypeName() {
-        return cardType.abilityTypeName;
-    }
-
-    public int getAbilityEnergyCost() {
-        return cardType.energyCost;
-    }
-
-    public CardData getCardType() {
-        return cardType;
     }
 
     public boolean isUpgraded() {
@@ -123,7 +120,7 @@ public class Card {
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
                 UseLine.setVisibility(true);
-                Player.setPotentialAbilityTargetType(AbilityData.getTargetType(Card.this.getAbilityTypeName()));
+                Player.setPotentialAbilityTargetType(AbilityData.getTargetType(getUsedAbilityTypeName()));
                 UseLine.setPosition(
                         new XYPair<>(
                                 getGroup().getX() + width / 2,
@@ -149,44 +146,9 @@ public class Card {
             upgradedImage.setPosition(25, 190);
             group.addActor(upgradedImage);
         }
-    }
 
-    public enum CardData {
-        ENERGY_SLICES(
-                Ability.AbilityTypeName.ENERGY_SLICES,
-                110,
-                2
-        ),
-        FLAME(
-                Ability.AbilityTypeName.FLAME,
-                70,
-                1
-        ),
-        FIRE_STRIKE(
-                Ability.AbilityTypeName.FIRE_STRIKE,
-                80,
-                1
-        ),
-        DEFEND(
-                Ability.AbilityTypeName.DEFEND,
-                80,
-                1
-        );
-
-        private final String name;
-        private final String description;
-        private final int value;
-        private final String imagePath;
-        private final Ability.AbilityTypeName abilityTypeName;
-        private final int energyCost;
-
-        CardData(Ability.AbilityTypeName abilityTypeName, int value, int energyCost) {
-            this.name = AbilityData.getName(abilityTypeName);
-            this.description = AbilityData.getDescription(abilityTypeName);
-            this.value = value;
-            this.imagePath = AbilityData.getCardIconPath(abilityTypeName);
-            this.abilityTypeName = abilityTypeName;
-            this.energyCost = energyCost;
-        }
+        cardName.setText(AbilityData.getName(getUsedAbilityTypeName()));
+        cardEffectDescription.setText(AbilityData.getDescription(getUsedAbilityTypeName()));
+        energyCostLabel.setText(AbilityData.getEnergyCost(getUsedAbilityTypeName()));
     }
 }

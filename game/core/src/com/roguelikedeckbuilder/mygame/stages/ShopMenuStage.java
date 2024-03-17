@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.cards.Card;
+import com.roguelikedeckbuilder.mygame.cards.CardData;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 
 import java.util.Random;
@@ -78,8 +79,8 @@ public class ShopMenuStage extends GenericStage {
         int randomNumber;
 
         for (int i = 0; i < 8; i++) {
-            randomNumber = random.nextInt(Card.CardData.values().length);
-            Card card = new Card(Card.CardData.values()[randomNumber], true);
+            randomNumber = random.nextInt(CardData.CardTypeName.values().length);
+            Card card = new Card(CardData.CardTypeName.values()[randomNumber], true);
             card.getGroup().addCaptureListener(getClickListenerForBuyingCard(card));
             addCard(card);
         }
@@ -176,7 +177,7 @@ public class ShopMenuStage extends GenericStage {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Player.buyCard(card.getCardValue(), card.getCardType(), card.isUpgraded());
+                Player.buyCard(CardData.getValue(card.getCardTypeName()), card.getCardTypeName(), card.isUpgraded());
                 useCorrectButtons();
             }
         };

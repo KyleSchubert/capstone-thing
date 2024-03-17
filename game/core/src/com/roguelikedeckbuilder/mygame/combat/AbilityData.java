@@ -1,10 +1,7 @@
 package com.roguelikedeckbuilder.mygame.combat;
 
 import com.badlogic.gdx.utils.Array;
-import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class AbilityData {
@@ -13,23 +10,62 @@ public class AbilityData {
     public static void initialize() {
         data = new Array<>();
 
-        for (Ability.AbilityTypeName name : Ability.AbilityTypeName.values()) {
+        for (AbilityTypeName name : AbilityTypeName.values()) {
             data.add(new IndividualAbilityData(name));
         }
     }
 
-    public static String getCardIconPath(Ability.AbilityTypeName typeName) {
-        return data.get(typeName.ordinal()).getCardIconPath();
-    }
-
-    public static String getName(Ability.AbilityTypeName typeName) {
+    public static String getName(AbilityTypeName typeName) {
         return data.get(typeName.ordinal()).getName();
     }
 
-    public static String getDescription(Ability.AbilityTypeName typeName) {
+    public static int getEnergyCost(AbilityTypeName typeName) {
+        return data.get(typeName.ordinal()).getEnergyCost();
+    }
+
+    public static TargetType getTargetType(AbilityTypeName typeName) {
+        return data.get(typeName.ordinal()).getTargetType();
+    }
+
+    public static EffectData.EffectName getPreEffect(AbilityTypeName typeName) {
+        return data.get(typeName.ordinal()).getPreEffect();
+    }
+
+    public static EffectData.EffectName getEffect(AbilityTypeName typeName) {
+        return data.get(typeName.ordinal()).getEffect();
+    }
+
+    public static EffectData.EffectName getPostEffect(AbilityTypeName typeName) {
+        return data.get(typeName.ordinal()).getPostEffect();
+    }
+
+    public static String getDescription(AbilityTypeName typeName) {
+        String preEffectText = "";
+        String effectText = "";
+        String postEffectText = "";
+
+        EffectData.EffectName preEffect = getPreEffect(typeName);
+        if (preEffect != EffectData.EffectName.NOTHING) {
+            preEffectText = prepareOneEffectDescription(typeName, preEffect);
+        }
+
+        EffectData.EffectName effect = getEffect(typeName);
+        if (effect != EffectData.EffectName.NOTHING) {
+            effectText = prepareOneEffectDescription(typeName, effect);
+        }
+
+        EffectData.EffectName postEffect = getPostEffect(typeName);
+        if (postEffect != EffectData.EffectName.NOTHING) {
+            postEffectText = prepareOneEffectDescription(typeName, postEffect);
+        }
+
+        return String.join("", preEffectText, effectText, postEffectText);
+    }
+
+    private static String prepareOneEffectDescription(AbilityTypeName typeName, EffectData.EffectName effectName) {
         //"Deals [RED]1 Damage[] to an enemy [CYAN]4 times[]."
-        EffectType effectType = getEffectType(typeName);
-        int effectiveness = getEffectiveness(typeName);
+        EffectData.EffectType effectType = EffectData.getEffectType(effectName);
+        int effectiveness = EffectData.getEffectiveness(effectName);
 
         String effectText;
         switch (effectType) {
@@ -49,7 +85,7 @@ public class AbilityData {
                     throw new IllegalStateException("Unexpected value for hitType in getDescription(): " + targetType);
         }
 
-        int repetitions = getRepetitions(typeName);
+        int repetitions = EffectData.getRepetitions(effectName);
         String repetitionsText;
         if (repetitions == 1) {
             repetitionsText = "";
@@ -58,143 +94,115 @@ public class AbilityData {
         }
 
         if (Objects.equals(repetitionsText, "")) {
-            return String.format("%s %s.", effectText, targetTypeText);
+            return String.format("%s %s. ", effectText, targetTypeText);
         } else {
-            return String.format("%s %s %s.", effectText, targetTypeText, repetitionsText);
+            return String.format("%s %s %s. ", effectText, targetTypeText, repetitionsText);
         }
     }
 
-    public static EffectType getEffectType(Ability.AbilityTypeName typeName) {
-        return data.get(typeName.ordinal()).getEffectType();
-    }
-
-    public static int getEffectiveness(Ability.AbilityTypeName typeName) {
-        return data.get(typeName.ordinal()).getEffectiveness();
-    }
-
-    public static int getRepetitions(Ability.AbilityTypeName typeName) {
-        return data.get(typeName.ordinal()).getRepetitions();
-    }
-
-    public static TargetType getTargetType(Ability.AbilityTypeName typeName) {
-        return data.get(typeName.ordinal()).getTargetType();
+    public static void useAbility(AbilityTypeName abilityTypeName, Array<CombatInformation> targets) {
+        EffectData.useEffect(AbilityData.getPreEffect(abilityTypeName), targets);
+        EffectData.useEffect(AbilityData.getEffect(abilityTypeName), targets);
+        EffectData.useEffect(AbilityData.getPostEffect(abilityTypeName), targets);
     }
 
     private static class IndividualAbilityData {
-        private String cardIconPath;
         private String name;
-        private EffectType effectType;
-        private int effectiveness;
-        private int repetitions;
+        private int energyCost;
         private TargetType targetType;
-        private XYPair<Float> dimensions;
-        private XYPair<Float> origin;
-        private ArrayList<Float> animationFrameDelays;
-        private float lifetime;
+        private EffectData.EffectName preEffect;
+        private EffectData.EffectName effect;
+        private EffectData.EffectName postEffect;
 
-        public IndividualAbilityData(Ability.AbilityTypeName abilityTypeName) {
-            String cardIconFileName;
+        public IndividualAbilityData(AbilityTypeName abilityTypeName) {
+            preEffect = EffectData.EffectName.NOTHING;
+            postEffect = EffectData.EffectName.NOTHING;
+
             switch (abilityTypeName) {
                 case ENERGY_SLICES -> {
-                    cardIconFileName = "1.png";
                     name = "Energy Slices";
-                    effectType = EffectType.ATTACK;
-                    effectiveness = 1;
-                    repetitions = 8;
+                    energyCost = 2;
                     targetType = TargetType.ALL;
-                    dimensions = new XYPair<>(759f, 339f);
-                    origin = new XYPair<>(425f, 254f);
-                    animationFrameDelays = new ArrayList<>(Arrays.asList(0.06f, 0.09f, 0.06f, 0.09f, 0.06f, 0.06f, 0.06f, 0.09f, 0.06f, 0.06f, 0.06f, 0.06f));
-                    lifetime = 0.81f;
-                    /*
-                    // HIT STUFF:
-                    dimensions = new XYPair<>(417f, 370f);
-                    origin = new XYPair<>(208.5f, 185.0f);
-                    animationFrameDelays = new ArrayList<>(Arrays.asList(0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f));
-                    lifetime = 0.54f;
-                     */
+                    effect = EffectData.EffectName.DAMAGE_MANY_TIMES;
+                }
+                case ENERGY_SLICES_UPGRADED -> {
+                    name = "Energy Slices+";
+                    energyCost = 1;
+                    targetType = TargetType.ALL;
+                    effect = EffectData.EffectName.DAMAGE_MANY_TIMES;
                 }
                 case FLAME -> {
-                    cardIconFileName = "2.png";
                     name = "Flame";
-                    effectType = EffectType.ATTACK;
-                    effectiveness = 3;
-                    repetitions = 7;
+                    energyCost = 1;
                     targetType = TargetType.SELF;
-                    dimensions = new XYPair<>(104f, 63f);
-                    origin = new XYPair<>(40f, 32f);
-                    animationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f));
-                    lifetime = 0.360f;
-                    /*
-                    // HIT INFO:
-                    dimensions = new XYPair<>(160f, 130f);
-                    origin = new XYPair<>(80f, 65f);
-                    animationFrameDelays = new ArrayList<>(Arrays.asList(0.090f, 0.090f, 0.090f, 0.090f, 0.090f));
-                    lifetime = 0.450f;
-                     */
+                    effect = EffectData.EffectName.HIGH_DAMAGE_MANY_TIMES;
+                }
+                case FLAME_UPGRADED -> {
+                    name = "Double Flame";
+                    energyCost = 1;
+                    targetType = TargetType.SELF;
+                    effect = EffectData.EffectName.DAMAGE_MANY_TIMES;
+                    postEffect = EffectData.EffectName.DAMAGE_A_BIT;
                 }
                 case FIRE_STRIKE -> {
-                    cardIconFileName = "3.png";
                     name = "Fire Strike";
-                    effectType = EffectType.ATTACK;
-                    effectiveness = 9;
-                    repetitions = 1;
+                    energyCost = 1;
                     targetType = TargetType.ONE;
-                    dimensions = new XYPair<>(227f, 331f);
-                    origin = new XYPair<>(129f, 194f);
-                    animationFrameDelays = new ArrayList<>(Arrays.asList(0.18f, 0.09f, 0.09f, 0.09f, 0.09f));
-                    lifetime = 0.54f;
-                    /*
-                    // HIT INFO:
-                    dimensions = new XYPair<>(151f, 178f);
-                    origin = new XYPair<>(75.5f, 89.0f);
-                    animationFrameDelays = new ArrayList<>(Arrays.asList(0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f));
-                    lifetime = 0.36f;
-                     */
+                    effect = EffectData.EffectName.HIGH_DAMAGE_MANY_TIMES;
+                }
+                case FIRE_STRIKE_UPGRADED -> {
+                    name = "Fire Strike+";
+                    energyCost = 1;
+                    targetType = TargetType.ONE;
+                    effect = EffectData.EffectName.HIGH_DAMAGE_MANY_TIMES;
+                    postEffect = EffectData.EffectName.DEFEND_SOME;
                 }
                 case DEFEND -> {
-                    cardIconFileName = "4.png";
                     name = "Defend";
-                    effectType = EffectType.DEFEND;
-                    effectiveness = 5;
-                    repetitions = 1;
+                    energyCost = 1;
                     targetType = TargetType.SELF;
-                    dimensions = new XYPair<>(186f, 272f);
-                    origin = new XYPair<>(94f, 220f);
-                    animationFrameDelays = new ArrayList<>(Arrays.asList(0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f));
-                    lifetime = 1.8f;
+                    effect = EffectData.EffectName.DEFEND_SOME;
                 }
-                default -> {
-                    System.out.println("Why was an ability almost generated with no matching type name? abilityTypeName:  " + abilityTypeName);
-                    return;
+                case DEFEND_UPGRADED -> {
+                    name = "Defend";
+                    energyCost = 1;
+                    targetType = TargetType.SELF;
+                    effect = EffectData.EffectName.DEFEND_TWICE_A_BIT;
                 }
+                default ->
+                        System.out.println("Why was an ability almost generated with no matching type name? abilityTypeName:  " + abilityTypeName);
             }
-
-            cardIconPath = "ABILITIES/" + cardIconFileName;
-        }
-
-        public String getCardIconPath() {
-            return cardIconPath;
         }
 
         public String getName() {
             return name;
         }
 
-        public EffectType getEffectType() {
-            return effectType;
-        }
-
-        public int getEffectiveness() {
-            return effectiveness;
-        }
-
-        public int getRepetitions() {
-            return repetitions;
+        public int getEnergyCost() {
+            return energyCost;
         }
 
         public TargetType getTargetType() {
             return targetType;
         }
+
+        public EffectData.EffectName getPreEffect() {
+            return preEffect;
+        }
+
+        public EffectData.EffectName getEffect() {
+            return effect;
+        }
+
+        public EffectData.EffectName getPostEffect() {
+            return postEffect;
+        }
+    }
+
+    public enum AbilityTypeName {
+        ENERGY_SLICES, ENERGY_SLICES_UPGRADED,
+        FLAME, FLAME_UPGRADED,
+        FIRE_STRIKE, FIRE_STRIKE_UPGRADED,
+        DEFEND, DEFEND_UPGRADED
     }
 }

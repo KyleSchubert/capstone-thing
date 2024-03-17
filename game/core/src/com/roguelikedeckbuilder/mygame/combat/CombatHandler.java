@@ -10,45 +10,23 @@ public class CombatHandler {
     private static Array<Enemy> enemiesThePlayerIsHoveringOver = new Array<>();
     private static boolean isTargetingPlayer = false;
 
-    public static void enemyUsesAbility(Ability.AbilityTypeName abilityTypeName) {
+    public static void enemyUsesAbility(AbilityData.AbilityTypeName abilityTypeName) {
         // do any additional PRE effects of the enemy --> an effect on them triggers?
-        useAbility(abilityTypeName);
+        AbilityData.useAbility(abilityTypeName, targets);
         // do any additional POST effects of the enemy --> they self-destruct?
     }
 
-    private static void useAbility(Ability.AbilityTypeName abilityTypeName) {
-        int repetitions = AbilityData.getRepetitions(abilityTypeName);
-        int effectiveness = AbilityData.getEffectiveness(abilityTypeName);
-        EffectType effectType = AbilityData.getEffectType(abilityTypeName);
-
-        boolean stopEarly = false;
-
-        for (CombatInformation combatInformation : targets) {
-            for (int i = 0; i < repetitions; i++) {
-                if (effectType == EffectType.ATTACK) {
-                    stopEarly = combatInformation.takeDamage(effectiveness);
-                } else if (effectType == EffectType.DEFEND) {
-                    combatInformation.grantDefense(effectiveness);
-                }
-
-                if (stopEarly) {
-                    break;
-                }
-            }
-        }
-    }
-
     public static void playerUsesCard(Card card) {
-        System.out.println("Player used this card: " + card.getCardType());
+        System.out.println("Player used this card: " + AbilityData.getName(card.getUsedAbilityTypeName()));
         for (Enemy enemy : enemiesThePlayerIsHoveringOver) {
             enemy.setTargeted(false);
         }
         Player.getCharacter().setTargeted(false);
 
         if (targets.size > 0) {
-            if (Player.tryToSpendEnergy(card.getAbilityEnergyCost())) {
+            if (Player.tryToSpendEnergy(AbilityData.getEnergyCost(card.getUsedAbilityTypeName()))) {
                 // do any additional PRE effects of card/player
-                useAbility(card.getAbilityTypeName());
+                AbilityData.useAbility(card.getUsedAbilityTypeName(), targets);
                 // do any additional POST effects of card/player
                 // send card to shuffle pile
             }

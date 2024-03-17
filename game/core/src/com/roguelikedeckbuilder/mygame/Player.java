@@ -2,6 +2,7 @@ package com.roguelikedeckbuilder.mygame;
 
 import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.cards.Card;
+import com.roguelikedeckbuilder.mygame.cards.CardData;
 import com.roguelikedeckbuilder.mygame.characters.Character;
 import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
@@ -37,27 +38,17 @@ public class Player {
         flagGoBackToPreviousMenuState = false;
 
         ownedCards.clear();
-        for (int i = 0; i < 3; i++) {
-            Card card = new Card(Card.CardData.ENERGY_SLICES, false);
+
+        for (CardData.CardTypeName cardTypeName : CardData.CardTypeName.values()) {
+            Card card = new Card(cardTypeName, false);
             card.getGroup().addCaptureListener(card.getClickListener());
             ownedCards.add(card);
+
+            Card cardUpgraded = new Card(cardTypeName, false);
+            cardUpgraded.setUpgraded(true);
+            cardUpgraded.getGroup().addCaptureListener(cardUpgraded.getClickListener());
+            ownedCards.add(cardUpgraded);
         }
-        Card card = new Card(Card.CardData.FLAME, false);
-        card.getGroup().addCaptureListener(card.getClickListener());
-        ownedCards.add(card);
-
-        card = new Card(Card.CardData.FIRE_STRIKE, false);
-        card.getGroup().addCaptureListener(card.getClickListener());
-        ownedCards.add(card);
-
-        card = new Card(Card.CardData.FIRE_STRIKE, false);
-        card.getGroup().addCaptureListener(card.getClickListener());
-        card.setUpgraded(true);
-        ownedCards.add(card);
-
-        card = new Card(Card.CardData.DEFEND, false);
-        card.getGroup().addCaptureListener(card.getClickListener());
-        ownedCards.add(card);
 
         ownedCards.shuffle();
     }
@@ -78,16 +69,16 @@ public class Player {
         return persistentMoney;
     }
 
-    public static void buyCard(int cardValue, Card.CardData cardData, boolean isUpgraded) {
+    public static void buyCard(int cardValue, CardData.CardTypeName cardTypeName, boolean isUpgraded) {
         if (money > cardValue) {
             changeMoney(-cardValue);
 
-            obtainCard(cardData, isUpgraded);
+            obtainCard(cardTypeName, isUpgraded);
         }
     }
 
-    public static void obtainCard(Card.CardData cardData, boolean isUpgraded) {
-        Card card = new Card(cardData, false);
+    public static void obtainCard(CardData.CardTypeName cardTypeName, boolean isUpgraded) {
+        Card card = new Card(cardTypeName, false);
         card.setUpgraded(isUpgraded);
         card.getGroup().addCaptureListener(card.getClickListener());
         ownedCards.add(card);

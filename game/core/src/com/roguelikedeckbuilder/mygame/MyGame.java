@@ -9,8 +9,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.roguelikedeckbuilder.mygame.cards.CardData;
 import com.roguelikedeckbuilder.mygame.characters.CharacterData;
 import com.roguelikedeckbuilder.mygame.combat.AbilityData;
+import com.roguelikedeckbuilder.mygame.combat.EffectData;
 import com.roguelikedeckbuilder.mygame.combat.EnemyData;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
@@ -50,7 +52,9 @@ public class MyGame extends ApplicationAdapter {
 
         CharacterData.initialize();
         EnemyData.initialize();
+        EffectData.initialize();
         AbilityData.initialize();
+        CardData.initialize();
         LabelMaker.initialize();
         UseLine.initialize();
         Player.initialize();

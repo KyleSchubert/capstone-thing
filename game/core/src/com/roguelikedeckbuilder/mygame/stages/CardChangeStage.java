@@ -12,6 +12,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.cards.Card;
+import com.roguelikedeckbuilder.mygame.cards.CardData;
+import com.roguelikedeckbuilder.mygame.combat.AbilityData;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 
@@ -24,7 +26,7 @@ public class CardChangeStage extends GenericStage {
     private Group cardChoiceGroup;
     private final ScrollPane.ScrollPaneStyle scrollPaneStyle;
     private final ClickListener clickListenerToGoBackToTreasure;
-    private final Array<Card.CardData> allCards;
+    private final Array<CardData.CardTypeName> allCardTypeNames;
     private final Random random;
     private final Label textAtTop;
 
@@ -33,7 +35,7 @@ public class CardChangeStage extends GenericStage {
         super.getStageBackgroundActor().setPosition(13.5f, 4);
         resetCardChoiceGroup();
         this.clickListenerToGoBackToTreasure = clickListenerToGoBackToTreasure;
-        allCards = new Array<>(Card.CardData.values());
+        allCardTypeNames = new Array<>(CardData.CardTypeName.values());
         random = new Random();
 
         textAtTop = new Label("", LabelMaker.getLarge());
@@ -72,10 +74,10 @@ public class CardChangeStage extends GenericStage {
 
         textAtTop.setText("Choose 1 Card to Obtain");
 
-        allCards.shuffle();
-        Card card1 = new Card(allCards.get(0), false);
-        Card card2 = new Card(allCards.get(1), false);
-        Card card3 = new Card(allCards.get(2), false);
+        allCardTypeNames.shuffle();
+        Card card1 = new Card(allCardTypeNames.get(0), false);
+        Card card2 = new Card(allCardTypeNames.get(1), false);
+        Card card3 = new Card(allCardTypeNames.get(2), false);
 
         card1.getGroup().setPosition(17.3f, 18);
         card2.getGroup().setPosition(30.3f, 18);
@@ -95,7 +97,7 @@ public class CardChangeStage extends GenericStage {
         }
 
         card.getGroup().addCaptureListener(clickListenerToGoBackToTreasure);
-        card.getGroup().addCaptureListener(getClickListenerForObtainingCard(card.getCardType(), card.isUpgraded()));
+        card.getGroup().addCaptureListener(getClickListenerForObtainingCard(card.getCardTypeName(), card.isUpgraded()));
         cardChoiceGroup.addActor(card.getGroup());
     }
 
@@ -163,10 +165,10 @@ public class CardChangeStage extends GenericStage {
                 continue;
             }
 
-            Card cardWithClickListener = new Card(card.getCardType(), false);
+            Card cardWithClickListener = new Card(card.getCardTypeName(), false);
             if (addUpgradingClick) {
                 cardWithClickListener.setUpgraded(true);
-                cardWithClickListener.getGroup().addCaptureListener(getClickListenerForUpgradingCard(i, card.getCardType()));
+                cardWithClickListener.getGroup().addCaptureListener(getClickListenerForUpgradingCard(i, card.getCardTypeName()));
             } else {
                 cardWithClickListener.setUpgraded(card.isUpgraded());
             }
@@ -191,7 +193,7 @@ public class CardChangeStage extends GenericStage {
         for (int i = 0; i < drawPileCards.size; i++) {
             Card card = drawPileCards.get(i);
 
-            Card cardCopy = new Card(card.getCardType(), false);
+            Card cardCopy = new Card(card.getCardTypeName(), false);
             cardCopy.setUpgraded(card.isUpgraded());
             scrollTable.add(cardCopy.getGroup());
 
@@ -204,7 +206,7 @@ public class CardChangeStage extends GenericStage {
         return scrollTable;
     }
 
-    private ClickListener getClickListenerForObtainingCard(Card.CardData cardData, boolean isUpgraded) {
+    private ClickListener getClickListenerForObtainingCard(CardData.CardTypeName cardTypeName, boolean isUpgraded) {
         return new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -213,13 +215,19 @@ public class CardChangeStage extends GenericStage {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("Player chose card: " + cardData.name());
-                Player.obtainCard(cardData, isUpgraded);
+                String cardName;
+                if (isUpgraded) {
+                    cardName = AbilityData.getName(CardData.getUpgradedAbilityTypeName(cardTypeName));
+                } else {
+                    cardName = AbilityData.getName(CardData.getAbilityTypeName(cardTypeName));
+                }
+                System.out.println("Player chose card: " + cardName);
+                Player.obtainCard(cardTypeName, isUpgraded);
             }
         };
     }
 
-    private ClickListener getClickListenerForUpgradingCard(int cardIndex, Card.CardData cardData) {
+    private ClickListener getClickListenerForUpgradingCard(int cardIndex, CardData.CardTypeName cardTypeName) {
         return new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -228,9 +236,11 @@ public class CardChangeStage extends GenericStage {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("Player upgraded card: " + cardData.name());
+                String cardName = AbilityData.getName(CardData.getUpgradedAbilityTypeName(cardTypeName));
+
+                System.out.println("Player upgraded card into: " + cardName);
                 Player.removeCard(cardIndex);
-                Player.obtainCard(cardData, true);
+                Player.obtainCard(cardTypeName, true);
                 Player.setFlagGoBackToPreviousMenuState(true);
             }
         };
