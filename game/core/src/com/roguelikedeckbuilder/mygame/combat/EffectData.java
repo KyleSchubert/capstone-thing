@@ -1,6 +1,7 @@
 package com.roguelikedeckbuilder.mygame.combat;
 
 import com.badlogic.gdx.utils.Array;
+import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 
 public class EffectData {
     private static Array<IndividualEffectData> data;
@@ -41,8 +42,10 @@ public class EffectData {
             for (int i = 0; i < repetitions; i++) {
                 if (effectType == EffectData.EffectType.ATTACK) {
                     stopEarly = combatInformation.takeDamage(effectiveness);
+                    SoundManager.playHitSound();
                 } else if (effectType == EffectData.EffectType.DEFEND) {
                     combatInformation.grantDefense(effectiveness);
+                    SoundManager.playDefendSound();
                 }
 
                 if (stopEarly) {

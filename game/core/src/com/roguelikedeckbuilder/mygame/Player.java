@@ -7,6 +7,7 @@ import com.roguelikedeckbuilder.mygame.characters.Character;
 import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
 import com.roguelikedeckbuilder.mygame.helpers.GenericHelpers;
+import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 public class Player {
@@ -55,10 +56,16 @@ public class Player {
 
     public static void changeMoney(int change) {
         money += change;
+        if (change > 0) {
+            SoundManager.playGetCoinsSound();
+        }
     }
 
     public static void changePersistentMoney(int change) {
         persistentMoney += change;
+        if (change > 0) {
+            SoundManager.playGetCoinsSound();
+        }
     }
 
     public static int getMoney() {

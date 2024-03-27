@@ -1,21 +1,19 @@
 package com.roguelikedeckbuilder.mygame.combat;
 
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.characters.Character;
 import com.roguelikedeckbuilder.mygame.helpers.GenericHelpers;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.stages.CombatMenuStage;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
-
 public class Enemy {
     private final Character character;
     private final CombatInformation combatInformation;
-    private AbilityData nextAbility;
+    private Array<AbilityData.AbilityTypeName> abilityOptions;
+    private AbilityData.AbilityTypeName nextAbility = AbilityData.AbilityTypeName.DEFEND;
     private final XYPair<Float> positionOnStage;
 
     public Enemy(Character.CharacterTypeName characterTypeName, CombatMenuStage.EnemyPositions position) {
@@ -27,6 +25,8 @@ public class Enemy {
         combatInformation.setPositions(character.getCharacterCenter());
         combatInformation.loadEnemyStats(characterTypeName);
         combatInformation.setHpBarVisibility(true);
+
+        abilityOptions = EnemyData.getAbilityOptions(characterTypeName);
     }
 
     public void putOnStage(Stage stage) {
@@ -55,5 +55,14 @@ public class Enemy {
 
     public Character getCharacter() {
         return character;
+    }
+
+    public void beginTurn() {
+        System.out.println("An enemy is using: " + nextAbility.name());
+        CombatHandler.enemyUsesAbility(nextAbility, combatInformation);
+    }
+
+    public void endTurn() {
+        nextAbility = abilityOptions.random();
     }
 }

@@ -14,7 +14,9 @@ import com.roguelikedeckbuilder.mygame.characters.CharacterData;
 import com.roguelikedeckbuilder.mygame.combat.AbilityData;
 import com.roguelikedeckbuilder.mygame.combat.EffectData;
 import com.roguelikedeckbuilder.mygame.combat.EnemyData;
+import com.roguelikedeckbuilder.mygame.helpers.DelayScheduler;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
+import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 public class MyGame extends ApplicationAdapter {
@@ -58,6 +60,7 @@ public class MyGame extends ApplicationAdapter {
         LabelMaker.initialize();
         UseLine.initialize();
         Player.initialize();
+        SoundManager.initialize();
 
         menuController = new MenuController();
         menuController.create(camera);
@@ -112,6 +115,8 @@ public class MyGame extends ApplicationAdapter {
                 } else {
                     timeText = minutes + ":" + seconds;
                 }
+
+                DelayScheduler.changeAllDelays(-STEP_TIME);
             }
             // Check for ESCAPE key -- Toggle pause menu
             if (menuController.getCurrentMenuState() == MenuController.MenuState.MAP || menuController.getCurrentMenuState() == MenuController.MenuState.COMBAT) {

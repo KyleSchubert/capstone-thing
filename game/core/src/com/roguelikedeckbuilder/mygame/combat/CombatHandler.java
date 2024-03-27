@@ -10,10 +10,18 @@ public class CombatHandler {
     private static Array<Enemy> enemiesThePlayerIsHoveringOver = new Array<>();
     private static boolean isTargetingPlayer = false;
 
-    public static void enemyUsesAbility(AbilityData.AbilityTypeName abilityTypeName) {
-        // do any additional PRE effects of the enemy --> an effect on them triggers?
+    public static void enemyUsesAbility(AbilityData.AbilityTypeName abilityTypeName, CombatInformation self) {
+        // Convert the targetType to make sense since the enemy is using it
+        TargetType targetType = AbilityData.getTargetType(abilityTypeName);
+        if (targetType == TargetType.SELF) {
+            targets.clear();
+            targets.add(self);
+        } else if (targetType == TargetType.ALL || targetType == TargetType.ONE) {
+            targets.clear();
+            targets.add(Player.getCombatInformation());
+        }
+
         AbilityData.useAbility(abilityTypeName, targets);
-        // do any additional POST effects of the enemy --> they self-destruct?
     }
 
     public static void playerUsesCard(Card card) {
@@ -25,10 +33,7 @@ public class CombatHandler {
 
         if (targets.size > 0) {
             if (Player.tryToSpendEnergy(AbilityData.getEnergyCost(card.getUsedAbilityTypeName()))) {
-                // do any additional PRE effects of card/player
                 AbilityData.useAbility(card.getUsedAbilityTypeName(), targets);
-                // do any additional POST effects of card/player
-                // send card to shuffle pile
             }
         }
         isTargetingPlayer = false;

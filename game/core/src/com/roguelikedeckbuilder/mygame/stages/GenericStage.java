@@ -6,13 +6,16 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.roguelikedeckbuilder.mygame.helpers.DelayScheduler;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class GenericStage {
     private final Stage stage;
     private final BitmapFont stageFont;
+    private final Array<DelayScheduler.Delay> scheduledDelays = new Array<>();
 
     public GenericStage(ScreenViewport viewportForStage, String stageBackgroundFilename) {
         stage = new Stage(viewportForStage);
@@ -47,11 +50,20 @@ public class GenericStage {
         return stage;
     }
 
-    public BitmapFont getStageFont() {
-        return stageFont;
-    }
-
     public Actor getStageBackgroundActor() {
         return stage.getActors().get(0);
+    }
+
+    public Array<DelayScheduler.Delay> getScheduledDelays() {
+        return scheduledDelays;
+    }
+
+    public void scheduleNewDelay(float remainingTime, String additionalInformation) {
+        scheduledDelays.add(DelayScheduler.scheduleNewDelay(remainingTime, additionalInformation));
+    }
+
+    public void deleteDelay(DelayScheduler.Delay delay) {
+        scheduledDelays.removeValue(delay, true);
+        DelayScheduler.deleteDelay(delay);
     }
 }

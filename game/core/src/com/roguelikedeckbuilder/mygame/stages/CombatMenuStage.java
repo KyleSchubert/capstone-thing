@@ -22,6 +22,7 @@ import com.roguelikedeckbuilder.mygame.characters.Character;
 import com.roguelikedeckbuilder.mygame.combat.CombatHandler;
 import com.roguelikedeckbuilder.mygame.combat.Enemy;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
+import com.roguelikedeckbuilder.mygame.helpers.DelayScheduler;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
@@ -30,6 +31,8 @@ import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 
 public class CombatMenuStage extends GenericStage {
     private final Array<Enemy> currentEnemies = new Array<>();
+    private int currentAttackingEnemyIndex = 0;
+    private boolean isPlayerTurn = true;
     private final Array<Card> drawPileContents = new Array<>();
     private final Array<Card> shufflePileContents = new Array<>();
     private final Array<Card> handContents = new Array<>();
@@ -98,7 +101,10 @@ public class CombatMenuStage extends GenericStage {
         endTurnButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                endTurn();
+                if (isPlayerTurn) {
+                    isPlayerTurn = false;
+                    endTurn();
+                }
             }
 
             @Override
@@ -129,6 +135,7 @@ public class CombatMenuStage extends GenericStage {
 
     public void batch(float elapsedTime, SpriteBatch batch) {
         super.batch(elapsedTime);
+        delayHandler();
         targetHoverListener();
         for (Enemy enemy : currentEnemies) {
             enemy.getCombatInformation().drawHpBar(batch);
@@ -142,13 +149,54 @@ public class CombatMenuStage extends GenericStage {
         for (Enemy enemy : mustRemoveBecauseDead) {
             removeEnemy(enemy);
         }
+        mustRemoveBecauseDead.clear();
+
         Player.getCombatInformation().drawHpBar(batch);
         energyLabel.setText(String.valueOf(Player.getEnergy()));
+    }
+
+    private void delayHandler() {
+        Array<DelayScheduler.Delay> delaysCopy = new Array<>();
+        delaysCopy.addAll(getScheduledDelays());
+
+        for (DelayScheduler.Delay delay : delaysCopy) {
+            if (delay.getAdditionalInformation().equals("enemyTurnStart")) {
+                if (delay.isDone()) {
+                    doNextEnemyAttack();
+                    deleteDelay(delay);
+                }
+            } else if (delay.getAdditionalInformation().equals("enemyTurnEnd")) {
+                if (delay.isDone()) {
+                    for (Enemy enemy : currentEnemies) {
+                        enemy.endTurn();
+                    }
+
+                    drawCards(5);
+
+                    isPlayerTurn = true;
+                    Player.startTurn();
+
+                    deleteDelay(delay);
+                }
+            }
+        }
+    }
+
+    private void doNextEnemyAttack() {
+        if (currentAttackingEnemyIndex == currentEnemies.size) {
+            scheduleNewDelay(0.8f, "enemyTurnEnd");
+        } else {
+            currentEnemies.get(currentAttackingEnemyIndex).beginTurn();
+            currentAttackingEnemyIndex++;
+            scheduleNewDelay(0.8f, "enemyTurnStart");
+        }
     }
 
     private void removeEnemy(Enemy enemy) {
         enemy.removeFromStage(getStage());
         currentEnemies.removeValue(enemy, true);
+
+        currentAttackingEnemyIndex--;
         if (currentEnemies.isEmpty()) {
             victory = true;
         }
@@ -185,6 +233,9 @@ public class CombatMenuStage extends GenericStage {
     public void reset() {
         removeActorsByType(UserObjectOptions.ENEMY);
         removeActorsByType(UserObjectOptions.CARD);
+
+        getScheduledDelays().clear();
+        isPlayerTurn = true;
 
         victory = false;
 
@@ -232,6 +283,7 @@ public class CombatMenuStage extends GenericStage {
 
     private void endTurn() {
         // TODO: when enemies can fight, make this end the player's turn and prevent this button from being spammed
+
         System.out.println("Ended turn.");
 
         removeActorsByType(UserObjectOptions.CARD);
@@ -239,9 +291,12 @@ public class CombatMenuStage extends GenericStage {
         shufflePileContents.addAll(handContents);
         handContents.clear();
 
-        drawCards(5);
+        currentAttackingEnemyIndex = 0;
 
-        Player.startTurn();
+        for (Enemy enemy : currentEnemies) {
+            enemy.getCombatInformation().clearDefense();
+        }
+        scheduleNewDelay(0.8f, "enemyTurnStart");
     }
 
     private void drawCards(int amount) {
