@@ -13,6 +13,7 @@ import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.cards.CardData;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
+import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 
 import java.util.Random;
 
@@ -144,6 +145,7 @@ public class ShopMenuStage extends GenericStage {
                     Player.changeMoney(-upgradeCost);
                     upgradeCost += 50;
                     upgradeCostLabel.setText("Price: " + upgradeCost);
+                    SoundManager.playBuyInShopSound();
                     return true;
                 } else {
                     return false;
@@ -160,6 +162,7 @@ public class ShopMenuStage extends GenericStage {
                     Player.changeMoney(-removeCardCost);
                     removeCardCost += 50;
                     removeCardCostLabel.setText("Price: " + removeCardCost);
+                    SoundManager.playBuyInShopSound();
                     return true;
                 } else {
                     return false;
@@ -178,6 +181,7 @@ public class ShopMenuStage extends GenericStage {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Player.buyCard(CardData.getValue(card.getCardTypeName()), card.getCardTypeName(), card.isUpgraded());
+                SoundManager.playBuyInShopSound();
                 useCorrectButtons();
             }
         };

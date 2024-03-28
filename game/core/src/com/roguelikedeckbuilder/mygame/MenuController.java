@@ -1,7 +1,6 @@
 package com.roguelikedeckbuilder.mygame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,13 +17,14 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.characters.Character;
+import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.stages.*;
 
 import java.util.Random;
 
-import static com.roguelikedeckbuilder.mygame.stages.Map.MapNodeType.RANDOM_EVENT;
 import static com.roguelikedeckbuilder.mygame.MyGame.*;
+import static com.roguelikedeckbuilder.mygame.stages.Map.MapNodeType.RANDOM_EVENT;
 
 public class MenuController {
     protected boolean isGameplayPaused;
@@ -78,34 +78,34 @@ public class MenuController {
         upgradesMenuStage = new Stage(viewportForStage);
         settingsMenuStage = new Stage(viewportForStage);
 
-        cardChangeMenuStage = new CardChangeStage(viewportForStage, makeClickListenerTriggeringMenuState(MenuState.TREASURE));
+        cardChangeMenuStage = new CardChangeStage(viewportForStage, makeClickListenerTriggeringMenuState(MenuState.TREASURE, MenuSoundType.OPEN));
         restMenuStage = new RestMenuStage(
                 viewportForStage,
-                makeClickListenerTriggeringMenuState(MenuState.MAP),
-                makeClickListenerTriggeringMenuState(MenuState.CARD_CHOICE),
+                makeClickListenerTriggeringMenuState(MenuState.MAP, MenuSoundType.CLOSE),
+                makeClickListenerTriggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN),
                 getClickListenerForPreparingCardUpgradeMenu()
         );
         treasureMenuStage = new TreasureMenuStage(
                 viewportForStage,
-                newImageButtonFrom("exit", MenuState.MAP),
-                makeClickListenerTriggeringMenuState(MenuState.CARD_CHOICE),
+                newImageButtonFrom("exit", MenuState.MAP, MenuSoundType.CLOSE),
+                makeClickListenerTriggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN),
                 getCardChoicePreparerClickListener()
         );
         shopMenuStage = new ShopMenuStage(
                 viewportForStage,
-                newImageButtonFrom("exit", MenuState.MAP),
-                makeClickListenerTriggeringMenuState(MenuState.CARD_CHOICE),
+                newImageButtonFrom("exit", MenuState.MAP, MenuSoundType.CLOSE),
+                makeClickListenerTriggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN),
                 getClickListenerForPreparingCardUpgradeMenu(),
                 getClickListenerForPreparingCardRemoveMenu()
         );
         combatMenuStage = new CombatMenuStage(
                 viewportForStage,
-                newImageButtonFrom("exit", MenuState.MAP),
+                newImageButtonFrom("exit", MenuState.MAP, MenuSoundType.CLOSE),
                 cardChangeMenuStage,
-                makeClickListenerTriggeringMenuState(MenuState.CARD_CHOICE)
+                makeClickListenerTriggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN)
         );
 
-        tooltip = new Tooltip(viewportForStage, makeClickListenerTriggeringMenuState(MenuState.MAP));
+        tooltip = new Tooltip(viewportForStage, makeClickListenerTriggeringMenuState(MenuState.MAP, MenuSoundType.CLOSE));
 
         ClickListener hoverAndClickListener = makeHoverAndClickListener();
         map = new Map(viewportForStage, hoverAndClickListener);
@@ -124,15 +124,15 @@ public class MenuController {
 
         // Menu buttons below
         // PLAY button
-        ImageButton playButton = newImageButtonFrom("play", MenuState.START_REWARDS);
+        ImageButton playButton = newImageButtonFrom("play", MenuState.START_REWARDS, MenuSoundType.SILENT);
         mainMenuStage.addActor(playButton);
 
         // UPGRADES button
-        ImageButton upgradesButton = newImageButtonFrom("upgrades", MenuState.UPGRADES);
+        ImageButton upgradesButton = newImageButtonFrom("upgrades", MenuState.UPGRADES, MenuSoundType.OPEN);
         mainMenuStage.addActor(upgradesButton);
 
         // SETTINGS button
-        ImageButton settingsButton = newImageButtonFrom("settings", MenuState.SETTINGS);
+        ImageButton settingsButton = newImageButtonFrom("settings", MenuState.SETTINGS, MenuSoundType.OPEN);
         mainMenuStage.addActor(settingsButton);
 
         // EXIT button
@@ -169,7 +169,7 @@ public class MenuController {
         topBarDeckIcon.setScale(SCALE_FACTOR);
         topBarDeckIcon.setPosition(46.2f, 42.9f);
         topBarDeckIcon.addCaptureListener(getClickListenerForViewingPlayerCards());
-        topBarDeckIcon.addCaptureListener(makeClickListenerTriggeringMenuState(MenuState.CARD_CHOICE));
+        topBarDeckIcon.addCaptureListener(makeClickListenerTriggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN));
 
         topBarStage = new Stage(viewportForStage);
         topBarStage.addActor(topBarBackground);
@@ -200,36 +200,36 @@ public class MenuController {
 
         // Pause menu buttons
         // Resume button
-        ImageButton resumeButton = newImageButtonFrom("resume", MenuState.RESUME);
+        ImageButton resumeButton = newImageButtonFrom("resume", MenuState.RESUME, MenuSoundType.CLOSE);
         pauseMenuStage.addActor(resumeButton);
 
         // Settings button
-        ImageButton pauseSettingsButton = newImageButtonFrom("settings", MenuState.SETTINGS);
+        ImageButton pauseSettingsButton = newImageButtonFrom("settings", MenuState.SETTINGS, MenuSoundType.OPEN);
         pauseMenuStage.addActor(pauseSettingsButton);
 
         // Give up button
-        ImageButton giveUpButton = newImageButtonFrom("give up", MenuState.RESULTS);
+        ImageButton giveUpButton = newImageButtonFrom("give up", MenuState.RESULTS, MenuSoundType.SILENT);
         pauseMenuStage.addActor(giveUpButton);
 
         // Results menu buttons
         // Main menu button
-        ImageButton mainMenuButton = newImageButtonFrom("main menu", MenuState.MAIN_MENU);
+        ImageButton mainMenuButton = newImageButtonFrom("main menu", MenuState.MAIN_MENU, MenuSoundType.CLOSE);
         resultsMenuStage.addActor(mainMenuButton);
 
         // Upgrades menu buttons
         // Back button
-        ImageButton upgradesBackButton = newImageButtonFrom("back", MenuState.MAIN_MENU);
+        ImageButton upgradesBackButton = newImageButtonFrom("back", MenuState.MAIN_MENU, MenuSoundType.CLOSE);
         upgradesMenuStage.addActor(upgradesBackButton);
 
         // Settings menu buttons
         // Back button
         // TODO: this will need additional code to discard the changed settings
-        ImageButton settingsBackButton = newImageButtonFrom("back", MenuState.SETTINGS_BACK);
+        ImageButton settingsBackButton = newImageButtonFrom("back", MenuState.SETTINGS_BACK, MenuSoundType.CLOSE);
         settingsMenuStage.addActor(settingsBackButton);
 
         // confirm button
         // TODO: this will need additional code to save and apply the changed settings
-        ImageButton settingsConfirmButton = newImageButtonFrom("confirm", MenuState.SETTINGS_BACK);
+        ImageButton settingsConfirmButton = newImageButtonFrom("confirm", MenuState.SETTINGS_BACK, MenuSoundType.CLOSE);
         settingsMenuStage.addActor(settingsConfirmButton);
 
         // Characters on main menu
@@ -495,6 +495,8 @@ public class MenuController {
 
                 // Check if the node is a valid choice
                 if (map.isValidChoice(data.stageNumberOfSelf(), data.indexOfSelf())) {
+                    SoundManager.playTravelSound();
+                    
                     // Make ??? (RANDOM_EVENT) nodes act like a random map node type
                     Map.MapNodeType nodeType;
                     if (data.nodeType() == RANDOM_EVENT) {
@@ -533,7 +535,7 @@ public class MenuController {
         };
     }
 
-    private ClickListener makeClickListenerTriggeringMenuState(MenuState menuState) {
+    private ClickListener makeClickListenerTriggeringMenuState(MenuState menuState, MenuSoundType menuSoundType) {
         return new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -543,6 +545,11 @@ public class MenuController {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 setMenuState(menuState);
+                if (menuSoundType == MenuSoundType.OPEN) {
+                    SoundManager.playMenuOpenSound();
+                } else if (menuSoundType == MenuSoundType.CLOSE) {
+                    SoundManager.playMenuCloseSound();
+                }
             }
         };
     }
@@ -760,12 +767,17 @@ public class MenuController {
         this.isDrawCombatMenuStage = drawCombatMenu;
     }
 
-    private ImageButton newImageButtonFrom(String buttonInternalFolderName, MenuState menuState) {
+    private ImageButton newImageButtonFrom(String buttonInternalFolderName, MenuState menuState, MenuSoundType menuSoundType) {
         ImageButton button = getImageButton(buttonInternalFolderName);
         button.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 setMenuState(menuState);
+                if (menuSoundType == MenuSoundType.OPEN) {
+                    SoundManager.playMenuOpenSound();
+                } else if (menuSoundType == MenuSoundType.CLOSE) {
+                    SoundManager.playMenuCloseSound();
+                }
             }
 
             @Override
@@ -824,6 +836,7 @@ public class MenuController {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 cardChangeMenuStage.prepareViewPlayerCards();
+                SoundManager.playMenuOpenSound();
             }
         };
     }
@@ -838,6 +851,7 @@ public class MenuController {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 cardChangeMenuStage.prepareRemovePlayerCards();
+                SoundManager.playMenuOpenSound();
             }
         };
     }
@@ -852,6 +866,7 @@ public class MenuController {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 cardChangeMenuStage.prepareUpgradePlayerCards();
+                SoundManager.playMenuOpenSound();
             }
         };
     }
@@ -866,11 +881,16 @@ public class MenuController {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 cardChangeMenuStage.prepareThreeCardChoice();
+                SoundManager.playMenuOpenSound();
             }
         };
     }
 
     public enum MenuState {
         MAIN_MENU, MAP, PAUSED, RESULTS, UPGRADES, SETTINGS_BACK, RESUME, SETTINGS, START_REWARDS, REST_AREA, TREASURE, SHOP, CARD_UPGRADE, COMBAT, CARD_CHOICE
+    }
+
+    public enum MenuSoundType {
+        OPEN, CLOSE, SILENT
     }
 }

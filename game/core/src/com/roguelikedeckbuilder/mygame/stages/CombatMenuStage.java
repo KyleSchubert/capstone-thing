@@ -23,6 +23,7 @@ import com.roguelikedeckbuilder.mygame.combat.CombatHandler;
 import com.roguelikedeckbuilder.mygame.combat.Enemy;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
 import com.roguelikedeckbuilder.mygame.helpers.DelayScheduler;
+import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
@@ -71,6 +72,7 @@ public class CombatMenuStage extends GenericStage {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 cardChangeMenuStage.prepareViewDrawPile(drawPileContents);
+                SoundManager.playMenuOpenSound();
             }
         });
         drawPile.addCaptureListener(cardChangeStageTrigger);
@@ -199,6 +201,7 @@ public class CombatMenuStage extends GenericStage {
         currentAttackingEnemyIndex--;
         if (currentEnemies.isEmpty()) {
             victory = true;
+            SoundManager.playFunnyTadaSound();
         }
     }
 

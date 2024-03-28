@@ -115,12 +115,14 @@ public class MyGame extends ApplicationAdapter {
                 } else {
                     timeText = minutes + ":" + seconds;
                 }
-
-                DelayScheduler.changeAllDelays(-STEP_TIME);
             }
+
+            DelayScheduler.changeAllDelays(-STEP_TIME);
+
             // Check for ESCAPE key -- Toggle pause menu
             if (menuController.getCurrentMenuState() == MenuController.MenuState.MAP || menuController.getCurrentMenuState() == MenuController.MenuState.COMBAT) {
                 if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+                    SoundManager.playMenuOpenSound();
                     menuController.setMenuState(MenuController.MenuState.PAUSED);
                 }
             }

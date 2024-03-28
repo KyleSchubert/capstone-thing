@@ -15,6 +15,7 @@ import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.cards.CardData;
 import com.roguelikedeckbuilder.mygame.combat.AbilityData;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
+import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 
 import java.util.Random;
@@ -223,6 +224,7 @@ public class CardChangeStage extends GenericStage {
                 }
                 System.out.println("Player chose card: " + cardName);
                 Player.obtainCard(cardTypeName, isUpgraded);
+                SoundManager.playGetCardSound();
             }
         };
     }
@@ -242,6 +244,7 @@ public class CardChangeStage extends GenericStage {
                 Player.removeCard(cardIndex);
                 Player.obtainCard(cardTypeName, true);
                 Player.setFlagGoBackToPreviousMenuState(true);
+                SoundManager.playGetCardSound();
             }
         };
     }
@@ -258,6 +261,7 @@ public class CardChangeStage extends GenericStage {
                 System.out.println("Player removed card at index: " + cardIndex);
                 Player.removeCard(cardIndex);
                 Player.setFlagGoBackToPreviousMenuState(true);
+                SoundManager.playGetCardSound(); // but this doesn't make super sense
             }
         };
     }
@@ -272,6 +276,7 @@ public class CardChangeStage extends GenericStage {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Player.setFlagGoBackToPreviousMenuState(true);
+                SoundManager.playMenuCloseSound();
             }
         };
     }

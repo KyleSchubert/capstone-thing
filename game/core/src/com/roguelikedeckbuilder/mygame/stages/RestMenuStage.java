@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Player;
+import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
@@ -45,6 +46,7 @@ public class RestMenuStage extends GenericStage {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 int healAmount = Math.round(Player.getCombatInformation().getMaxHp() * 0.35f);
                 Player.getCombatInformation().changeHp(healAmount);
+                SoundManager.playNotSureWhatThisCouldBeUsedForSound();
             }
         };
     }
