@@ -185,10 +185,12 @@ public class CombatMenuStage extends GenericStage {
     }
 
     private void doNextEnemyAttack() {
-        if (currentAttackingEnemyIndex == currentEnemies.size) {
+        if (currentAttackingEnemyIndex >= currentEnemies.size) {
             scheduleNewDelay(0.8f, "enemyTurnEnd");
         } else {
-            currentEnemies.get(currentAttackingEnemyIndex).beginTurn();
+            if (currentEnemies.get(currentAttackingEnemyIndex).getCharacter().getState() != Character.CharacterState.DYING) {
+                currentEnemies.get(currentAttackingEnemyIndex).beginTurn();
+            }
             currentAttackingEnemyIndex++;
             scheduleNewDelay(0.8f, "enemyTurnStart");
         }
@@ -196,9 +198,12 @@ public class CombatMenuStage extends GenericStage {
 
     private void removeEnemy(Enemy enemy) {
         enemy.removeFromStage(getStage());
+        int indexOfDeadEnemy = currentEnemies.indexOf(enemy, true);
         currentEnemies.removeValue(enemy, true);
 
-        currentAttackingEnemyIndex--;
+        if (indexOfDeadEnemy < currentAttackingEnemyIndex) {
+            currentAttackingEnemyIndex--;
+        }
         if (currentEnemies.isEmpty()) {
             victory = true;
             SoundManager.playFunnyTadaSound();

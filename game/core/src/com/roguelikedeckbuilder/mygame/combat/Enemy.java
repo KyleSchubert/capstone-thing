@@ -14,7 +14,7 @@ public class Enemy {
     private final Character character;
     private final CombatInformation combatInformation;
     private Array<AbilityData.AbilityTypeName> abilityOptions;
-    private AbilityData.AbilityTypeName nextAbility = AbilityData.AbilityTypeName.DEFEND;
+    private AbilityData.AbilityTypeName nextAbility;
     private final XYPair<Float> positionOnStage;
 
     public Enemy(Character.CharacterTypeName characterTypeName, CombatMenuStage.EnemyPositions position) {
@@ -29,6 +29,8 @@ public class Enemy {
         combatInformation.setHpBarVisibility(true);
 
         abilityOptions = EnemyData.getAbilityOptions(characterTypeName);
+
+        nextAbility = abilityOptions.random();
     }
 
     public void putOnStage(Stage stage) {
