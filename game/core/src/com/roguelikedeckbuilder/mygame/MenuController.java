@@ -4,10 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -496,7 +493,7 @@ public class MenuController {
                 // Check if the node is a valid choice
                 if (map.isValidChoice(data.stageNumberOfSelf(), data.indexOfSelf())) {
                     SoundManager.playTravelSound();
-                    
+
                     // Make ??? (RANDOM_EVENT) nodes act like a random map node type
                     Map.MapNodeType nodeType;
                     if (data.nodeType() == RANDOM_EVENT) {
@@ -806,8 +803,8 @@ public class MenuController {
 
     private void animateRandomRunningCharacter() {
         float startX = 80;
-        float startY = 34;
-        float endXOffset = -160;
+        float startY = 31;
+        float endXOffset = -640;
 
         float randomX = random.nextFloat(15) - 7;
         float randomY = random.nextFloat(15) - 7;
@@ -817,12 +814,13 @@ public class MenuController {
 
         mainMenuStage.addActor(new Character(randomType, startX + randomX, startY + randomY));
         Character character = (Character) mainMenuStage.getActors().get(mainMenuStage.getActors().size - 1);
+        character.setTouchable(Touchable.disabled);
         character.setUserObject(UserObjectOptions.RUNNING_ANIMATION_CHARACTER);
         character.setState(Character.CharacterState.MOVING);
 
         MoveToAction moveAction = new MoveToAction();
         moveAction.setPosition(character.getX() + endXOffset, character.getY());
-        moveAction.setDuration(20f);
+        moveAction.setDuration(90f);
         character.addAction(moveAction);
     }
 

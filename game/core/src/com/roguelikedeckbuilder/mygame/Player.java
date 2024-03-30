@@ -1,5 +1,6 @@
 package com.roguelikedeckbuilder.mygame;
 
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.cards.CardData;
@@ -25,6 +26,7 @@ public class Player {
         positionOnStage = new XYPair<>(18f, 22.8f);
         persistentMoney = 200;
         character = new Character(Character.CharacterTypeName.HELMET_PENGUIN, positionOnStage.x(), positionOnStage.y());
+        character.setTouchable(Touchable.disabled);
         character.faceRight();
         ownedCards = new Array<>();
         combatInformation = new CombatInformation();

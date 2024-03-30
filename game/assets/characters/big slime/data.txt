@@ -1,0 +1,7 @@
+this.internalName = "";
+dyingAnimationFrameDelays = new ArrayList<>(80, 80, 80, 130, 130, 130, 140, 150);
+movingAnimationFrameDelays = new ArrayList<>(200, 50, 150, 150, 100, 100, 300);
+standingAnimationFrameDelays = new ArrayList<>(300, 250);
+this.origin = new XYPair<>(277, 679);
+this.dimensions = new XYPair<>(554, 1119);
+break;
