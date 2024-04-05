@@ -27,6 +27,7 @@ public class Card {
     private final Label cardName;
     private final Label cardEffectDescription;
     private final Label energyCostLabel;
+    private boolean toGoToShufflePile = false;
 
     public Card(CardData.CardTypeName cardTypeName, boolean showValue) {
         this.cardTypeName = cardTypeName;
@@ -150,5 +151,13 @@ public class Card {
         cardName.setText(AbilityData.getName(getUsedAbilityTypeName()));
         cardEffectDescription.setText(AbilityData.getDescription(getUsedAbilityTypeName()));
         energyCostLabel.setText(AbilityData.getEnergyCost(getUsedAbilityTypeName()));
+    }
+
+    public boolean isToGoToShufflePile() {
+        return toGoToShufflePile;
+    }
+
+    public void setToGoToShufflePile(boolean toGoToShufflePile) {
+        this.toGoToShufflePile = toGoToShufflePile;
     }
 }

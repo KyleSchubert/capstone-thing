@@ -119,15 +119,20 @@ public class MyGame extends ApplicationAdapter {
                 } else {
                     timeText = minutes + ":" + seconds;
                 }
-            }
 
-            DelayScheduler.changeAllDelays(-STEP_TIME);
+                DelayScheduler.changeAllDelays(-STEP_TIME);
+            }
 
             // Check for ESCAPE key -- Toggle pause menu
             if (menuController.getCurrentMenuState() == MenuController.MenuState.MAP || menuController.getCurrentMenuState() == MenuController.MenuState.COMBAT) {
-                if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                     SoundManager.playMenuOpenSound();
                     menuController.setMenuState(MenuController.MenuState.PAUSED);
+                }
+            } else if (menuController.getCurrentMenuState() == MenuController.MenuState.PAUSED) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+                    SoundManager.playMenuCloseSound();
+                    menuController.setMenuState(MenuController.MenuState.RESUME);
                 }
             }
 

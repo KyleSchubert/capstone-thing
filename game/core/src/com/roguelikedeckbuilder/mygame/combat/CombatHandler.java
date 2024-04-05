@@ -34,6 +34,7 @@ public class CombatHandler {
         if (targets.size > 0) {
             if (Player.tryToSpendEnergy(AbilityData.getEnergyCost(card.getUsedAbilityTypeName()))) {
                 AbilityData.useAbility(card.getUsedAbilityTypeName(), targets);
+                card.setToGoToShufflePile(true);
             }
         }
         isTargetingPlayer = false;

@@ -155,6 +155,16 @@ public class CombatMenuStage extends GenericStage {
 
         Player.getCombatInformation().drawHpBar(batch);
         energyLabel.setText(String.valueOf(Player.getEnergy()));
+
+        for (Card card : handContents) {
+            if (card.isToGoToShufflePile()) {
+                card.setToGoToShufflePile(false);
+                shufflePileContents.add(card);
+                handContents.removeValue(card, true);
+                card.getGroup().remove();
+                updatePileText();
+            }
+        }
     }
 
     private void delayHandler() {
@@ -252,6 +262,9 @@ public class CombatMenuStage extends GenericStage {
         currentEnemies.clear();
 
         drawPileContents.clear();
+        for (Card card : Player.getOwnedCards()) {
+            card.setToGoToShufflePile(false);
+        }
         drawPileContents.addAll(Player.getOwnedCards());
         drawPileContents.shuffle();
 
@@ -298,6 +311,7 @@ public class CombatMenuStage extends GenericStage {
 
         shufflePileContents.addAll(handContents);
         handContents.clear();
+        updatePileText();
 
         currentAttackingEnemyIndex = 0;
 

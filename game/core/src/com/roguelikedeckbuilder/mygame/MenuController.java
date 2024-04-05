@@ -594,6 +594,7 @@ public class MenuController {
                 setDrawShopMenu(false);
                 setDrawCombatMenu(false);
                 setDrawCardChangeMenu(false);
+                UseLine.setVisibility(false);
             }
             case UPGRADES -> {
                 currentMenuState = MenuState.UPGRADES;
@@ -654,6 +655,7 @@ public class MenuController {
             }
             case TREASURE -> {
                 currentMenuState = MenuState.TREASURE;
+                UseLine.setVisibility(false);
                 setDrawTreasureMenu(true);
                 setDrawCardChangeMenu(false);
                 setDrawDarkTransparentScreen(true);
@@ -692,15 +694,21 @@ public class MenuController {
                 setDrawCombatMenu(true);
                 setDrawMapMenu(false);
                 setDrawCardChangeMenu(false);
+                setGameplayPaused(false);
+                setDrawDarkTransparentScreen(false);
 
                 // Reset and then add 4 random enemies for testing
-                Random random = new Random();
-                combatMenuStage.reset();
-                for (int i = 0; i < 4; i++) {
-                    int randomNumber = random.nextInt(Character.CharacterTypeName.values().length);
-                    combatMenuStage.addEnemy(Character.CharacterTypeName.values()[randomNumber]);
+                if (previousImportantMenuState != MenuState.COMBAT) {
+                    Random random = new Random();
+                    combatMenuStage.reset();
+                    for (int i = 0; i < 4; i++) {
+                        int randomNumber = random.nextInt(Character.CharacterTypeName.values().length);
+                        combatMenuStage.addEnemy(Character.CharacterTypeName.values()[randomNumber]);
 
+                    }
                 }
+
+                previousImportantMenuState = MenuState.COMBAT;
             }
 
             default -> throw new IllegalStateException("Unexpected value: " + menuState);
