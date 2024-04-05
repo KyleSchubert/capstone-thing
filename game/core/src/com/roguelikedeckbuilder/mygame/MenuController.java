@@ -632,7 +632,7 @@ public class MenuController {
                 setDrawTooltipMenu(false);
             }
             case START_REWARDS -> {
-                tooltip.artifactReward();
+                tooltip.itemReward();
                 currentMenuState = MenuState.START_REWARDS;
                 Gdx.input.setInputProcessor(tooltip.tooltipStage);
                 currentInputProcessor = tooltip.tooltipStage;

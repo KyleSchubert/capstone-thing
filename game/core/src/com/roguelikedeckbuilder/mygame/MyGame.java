@@ -12,12 +12,14 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.cards.CardData;
 import com.roguelikedeckbuilder.mygame.characters.CharacterData;
 import com.roguelikedeckbuilder.mygame.combat.AbilityData;
+import com.roguelikedeckbuilder.mygame.combat.BuffOrDebuffData;
 import com.roguelikedeckbuilder.mygame.combat.EffectData;
 import com.roguelikedeckbuilder.mygame.combat.EnemyData;
 import com.roguelikedeckbuilder.mygame.helpers.DelayScheduler;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
+import com.roguelikedeckbuilder.mygame.items.ItemData;
 
 public class MyGame extends ApplicationAdapter {
     public static final float SCALE_FACTOR = 0.05f;
@@ -59,6 +61,8 @@ public class MyGame extends ApplicationAdapter {
         CardData.initialize();
         LabelMaker.initialize();
         UseLine.initialize();
+        ItemData.initialize();
+        BuffOrDebuffData.initialize();
         Player.initialize();
         SoundManager.initialize();
 

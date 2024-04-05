@@ -10,7 +10,7 @@ public class SoundManager {
     private static Sound defendSound;
     private static Sound funnyTadaSound;
     private static Sound getItemSound;
-    private static Sound notSureWhatThisCouldBeUsedForSound;
+    private static Sound healSound;
     private static Sound buyInShopSound;
     private static Sound getCardSound;
     private static Sound menuCloseSound;
@@ -26,7 +26,7 @@ public class SoundManager {
         defendSound = newSound("defend_freesound.org");
         funnyTadaSound = newSound("funny_tada_freesound.org");
         getItemSound = newSound("get_item_freesound.org");
-        notSureWhatThisCouldBeUsedForSound = newSound("not sure");
+        healSound = newSound("heal_sound");
         buyInShopSound = newSound("buy_in_shop_freesound.org");
         getCardSound = newSound("get_card_freesound.org");
         menuCloseSound = newSound("menu_close");
@@ -70,37 +70,37 @@ public class SoundManager {
 
     public static void playHitSound() {
         if (noSoundOfSameTypeIsPlaying("hitSound")) {
-            playSound(hitSound);
+            playSound(hitSound, 1.3f);
         }
     }
 
     public static void playGetCoinsSound() {
         if (noSoundOfSameTypeIsPlaying("getCoinsSound")) {
-            playSound(getCoinsSound, 4);
+            playSound(getCoinsSound, 6);
         }
     }
 
     public static void playDefendSound() {
         if (noSoundOfSameTypeIsPlaying("defendSound")) {
-            playSound(defendSound);
+            playSound(defendSound, 1.6f);
         }
     }
 
     public static void playFunnyTadaSound() {
         if (noSoundOfSameTypeIsPlaying("funnyTadaSound")) {
-            playSound(funnyTadaSound);
+            playSound(funnyTadaSound, 1.5f);
         }
     }
 
     public static void playGetItemSound() {
         if (noSoundOfSameTypeIsPlaying("getItemSound")) {
-            playSound(getItemSound);
+            playSound(getItemSound, 0.5f);
         }
     }
 
-    public static void playNotSureWhatThisCouldBeUsedForSound() {
-        if (noSoundOfSameTypeIsPlaying("notSureWhatThisCouldBeUsedForSound")) {
-            playSound(notSureWhatThisCouldBeUsedForSound);
+    public static void playHealSound() {
+        if (noSoundOfSameTypeIsPlaying("healSound")) {
+            playSound(healSound, 1.3f);
         }
     }
 
@@ -118,13 +118,13 @@ public class SoundManager {
 
     public static void playMenuCloseSound() {
         if (noSoundOfSameTypeIsPlaying("menuCloseSound")) {
-            playSound(menuCloseSound);
+            playSound(menuCloseSound, 2f);
         }
     }
 
     public static void playMenuOpenSound() {
         if (noSoundOfSameTypeIsPlaying("menuOpenSound")) {
-            playSound(menuOpenSound);
+            playSound(menuOpenSound, 2f);
         }
     }
 

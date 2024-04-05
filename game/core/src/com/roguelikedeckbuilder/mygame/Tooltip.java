@@ -4,11 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
+import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
+import com.roguelikedeckbuilder.mygame.items.ItemData;
 import com.roguelikedeckbuilder.mygame.stages.Map;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.*;
@@ -20,6 +25,7 @@ public class Tooltip {
     private static final XYPair<Float> offScreen = new XYPair<>(9999f, 9999f);
     public final Stage tooltipStage;
     private final BitmapFont tooltipFont;
+    private final ClickListener clickListenerExitingToMap;
     private float tooltipLingerTime;
     private String tooltipTitleText;
     private String tooltipBodyText;
@@ -27,7 +33,7 @@ public class Tooltip {
     private Location location;
     private boolean isUsingTooltipLingerTime = false;
 
-    Tooltip(ScreenViewport viewportForStage, ClickListener clickListenerForItems) {
+    Tooltip(ScreenViewport viewportForStage, ClickListener clickListenerExitingToMap) {
         tooltipStage = new Stage(viewportForStage);
         size = Size.SMALL;
         location = Location.LEFT;
@@ -56,14 +62,7 @@ public class Tooltip {
         smallTooltipBackground.setPosition(offScreen.x(), offScreen.y());
         tooltipStage.addActor(smallTooltipBackground);
 
-        // 3 Items
-        for (int i = 0; i < 3; i++) {
-            Image item = new Image(new Texture(Gdx.files.internal("ITEMS/default.png")));
-            item.setSize(29 * SCALE_FACTOR * 2, 31 * SCALE_FACTOR * 2);
-            item.setPosition(offScreen.x(), offScreen.y());
-            item.addListener(clickListenerForItems);
-            tooltipStage.addActor(item);
-        }
+        this.clickListenerExitingToMap = clickListenerExitingToMap;
     }
 
     public void batch(float elapsedTime) {
@@ -150,7 +149,10 @@ public class Tooltip {
         this.location = location;
     }
 
-    public void artifactReward() {
+    public void itemReward() {
+        resetItemRewards();
+        generateItemRewards();
+
         resetPositionsOffscreen();
         setSize(Tooltip.Size.LARGE);
         setLocation(Tooltip.Location.MIDDLE);
@@ -163,6 +165,35 @@ public class Tooltip {
         tooltipStage.getActors().get(5).setPosition(pos.x() + 2, pos.y() + 3); // Item 3
     }
 
+    private void resetItemRewards() {
+        Array<Actor> mustRemove = new Array<>();
+
+        for (Actor actor : tooltipStage.getActors()) {
+            UserObjectOptions actorType = (UserObjectOptions) actor.getUserObject();
+            if (actorType == UserObjectOptions.ITEM) {
+                mustRemove.add(actor);
+            }
+        }
+
+        for (Actor actor : mustRemove) {
+            tooltipStage.getActors().removeValue(actor, true);
+        }
+    }
+
+    private void generateItemRewards() {
+        Array<ItemData.ItemName> itemNames = ItemData.getSomeRandomItemNamesByTier(ItemData.ItemTier.COMMON, 3);
+
+        for (ItemData.ItemName itemName : itemNames) {
+            Image item = new Image(new Texture(Gdx.files.internal(ItemData.getImagePath(itemName))));
+            item.setScale(SCALE_FACTOR * 2);
+            item.setPosition(offScreen.x(), offScreen.y());
+            item.addListener(clickListenerExitingToMap);
+            item.addListener(getClickListenerForObtainingItem(itemName));
+            item.setUserObject(UserObjectOptions.ITEM);
+            tooltipStage.addActor(item);
+        }
+    }
+
     public void dispose() {
         tooltipStage.dispose();
         tooltipFont.dispose();
@@ -172,6 +203,22 @@ public class Tooltip {
         for (Actor actor : tooltipStage.getActors()) {
             actor.setPosition(offScreen.x(), offScreen.y());
         }
+    }
+
+    private ClickListener getClickListenerForObtainingItem(ItemData.ItemName itemName) {
+        return new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                System.out.println("Player gained item: " + itemName);
+                Player.obtainItem(itemName);
+                SoundManager.playGetItemSound();
+            }
+        };
     }
 
     public enum Size {

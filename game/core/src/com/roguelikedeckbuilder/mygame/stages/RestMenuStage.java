@@ -46,7 +46,7 @@ public class RestMenuStage extends GenericStage {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 int healAmount = Math.round(Player.getCombatInformation().getMaxHp() * 0.35f);
                 Player.getCombatInformation().changeHp(healAmount);
-                SoundManager.playNotSureWhatThisCouldBeUsedForSound();
+                SoundManager.playHealSound();
             }
         };
     }

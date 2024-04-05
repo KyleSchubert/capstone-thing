@@ -10,6 +10,8 @@ import com.roguelikedeckbuilder.mygame.combat.TargetType;
 import com.roguelikedeckbuilder.mygame.helpers.GenericHelpers;
 import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
+import com.roguelikedeckbuilder.mygame.items.Item;
+import com.roguelikedeckbuilder.mygame.items.ItemData;
 
 public class Player {
     private static Character character;
@@ -21,6 +23,7 @@ public class Player {
     private static TargetType potentialAbilityTargetType;
     private static boolean flagGoBackToPreviousMenuState;
     private static XYPair<Float> positionOnStage;
+    private static Array<Item> ownedItems;
 
     public static void initialize() {
         positionOnStage = new XYPair<>(18f, 22.8f);
@@ -31,6 +34,7 @@ public class Player {
         ownedCards = new Array<>();
         combatInformation = new CombatInformation();
         flagGoBackToPreviousMenuState = false;
+        ownedItems = new Array<>();
         reset();
     }
 
@@ -54,6 +58,8 @@ public class Player {
         }
 
         ownedCards.shuffle();
+
+        ownedItems.clear();
     }
 
     public static void changeMoney(int change) {
@@ -151,5 +157,10 @@ public class Player {
 
     public static boolean isPointWithinRange(XYPair<Float> point) {
         return GenericHelpers.isPointWithinRange(point, positionOnStage);
+    }
+
+    public static void obtainItem(ItemData.ItemName itemName) {
+        Item item = new Item(itemName);
+        ownedItems.add(item);
     }
 }
