@@ -111,14 +111,15 @@ public class MyGame extends ApplicationAdapter {
             if (Player.getCombatInformation().getHp() == 0 && menuController.getCurrentMenuState() != MenuController.MenuState.RESULTS) {
                 menuController.setMenuState(MenuController.MenuState.RESULTS);
             }
-            if (!menuController.isGameplayPaused) {
+            if (!menuController.isGameplayPaused || menuController.getCurrentMenuState() == MenuController.MenuState.MAIN_MENU) {
                 timeElapsedInGame += STEP_TIME;
-                int minutes = (int) timeElapsedInGame / 60;
-                int seconds = (int) timeElapsedInGame - minutes * 60;
-                if (seconds < 10) {
-                    timeText = minutes + ":0" + seconds;
+                int hours = (int) timeElapsedInGame / 3600;
+                int minutes = (int) (timeElapsedInGame % 3600) / 60;
+                int seconds = (int) timeElapsedInGame % 60;
+                if (timeElapsedInGame > 3600) {
+                    timeText = String.format("%02d:%02d:%02d", hours, minutes, seconds);
                 } else {
-                    timeText = minutes + ":" + seconds;
+                    timeText = String.format("%02d:%02d", minutes, seconds);
                 }
 
                 DelayScheduler.changeAllDelays(-STEP_TIME);
@@ -138,6 +139,7 @@ public class MyGame extends ApplicationAdapter {
             } else if (menuController.getCurrentMenuState() == MenuController.MenuState.MAIN_MENU) {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {
                     isSomeDebugOn = !isSomeDebugOn;
+                    System.out.println(isSomeDebugOn);
                     if (isSomeDebugOn) {
                         SoundManager.playHealSound();
                     } else {

@@ -340,7 +340,7 @@ public class MenuController {
             topBarStage.draw();
             topBarStage.act();
             font.draw(batch, "Deck", 46, 45);
-            font.draw(batch, timeText, 68, 45); // text for time elapsed in game
+            font.draw(batch, timeText, 65, 45); // text for time elapsed in game
             font.draw(batch, "HP: " + Player.getCombatInformation().getHp() + " / " + Player.getCombatInformation().getMaxHp(), 2, 45);
             font.draw(batch, Integer.toString(Player.getMoney()), 55, 45);
         }
