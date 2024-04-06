@@ -18,6 +18,7 @@ import com.roguelikedeckbuilder.mygame.items.ItemData;
 import com.roguelikedeckbuilder.mygame.stages.Map;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.*;
+import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 
 public class Tooltip {
     private static final XYPair<Float> leftPosition = new XYPair<>(1f, 8f);
@@ -33,6 +34,7 @@ public class Tooltip {
     private Array<String> chooseOneItemText = new Array<>();
     private Size size;
     private Location location;
+    private boolean isAbove;
     private boolean isUsingTooltipLingerTime = false;
     private boolean showChooseOneItemDetails = false;
 
@@ -40,6 +42,7 @@ public class Tooltip {
         tooltipStage = new Stage(viewportForStage);
         size = Size.SMALL;
         location = Location.LEFT;
+        isAbove = true;
 
         tooltipFont = new BitmapFont(Gdx.files.internal("font2.fnt"), false);
         tooltipFont.setUseIntegerPositions(false);
@@ -72,7 +75,7 @@ public class Tooltip {
 
     public void batch(float elapsedTime) {
         XYPair<Float> pos;
-        float titleX = 0, bodyX = 0;
+        float titleX = 0, bodyX = 0, titleY = 0, bodyY = 0;
         float usedTooltipWidth = tooltipStage.getActors().get(size.ordinal()).getWidth();
         float usedTooltipHeight = tooltipStage.getActors().get(size.ordinal()).getHeight();
 
@@ -82,14 +85,14 @@ public class Tooltip {
         }
 
         switch (location) {
-            case LEFT -> {
-                pos = leftPosition;
+            case RIGHT -> {
+                pos = getMousePosition();
                 tooltipStage.getActors().get(2).setScaleX(1);
                 titleX = 1 + pos.x();
                 bodyX = pos.x() + usedTooltipWidth - 2.3f;
             }
-            case RIGHT -> {
-                pos = rightPosition;
+            case LEFT -> {
+                pos = getMousePosition();
                 tooltipStage.getActors().get(2).setScaleX(-1);
                 titleX = 1 + pos.x() - usedTooltipWidth;
                 bodyX = pos.x() - 2.3f;
@@ -102,7 +105,16 @@ public class Tooltip {
             }
             default -> pos = new XYPair<>(0f, 0f);
         }
-        float titleY = pos.y() + usedTooltipHeight - 1;
+        if (isAbove) {
+            tooltipStage.getActors().get(2).setScaleY(1);
+            titleY = pos.y() + usedTooltipHeight - 1;
+            bodyY = 1.6f + pos.y();
+        } else {
+            tooltipStage.getActors().get(2).setScaleY(-1);
+            titleY = pos.y() - 1;
+            bodyY = 1.6f + pos.y() - usedTooltipHeight;
+        }
+
 
         tooltipStage.getActors().get(size.ordinal()).setPosition(pos.x(), pos.y()); // Tooltip background
         tooltipStage.getViewport().apply();
@@ -115,7 +127,7 @@ public class Tooltip {
             tooltipFont.draw(batch, chooseOneItemText.get(1), pos.x() + 6, pos.y() + 13);
             tooltipFont.draw(batch, chooseOneItemText.get(2), pos.x() + 6, pos.y() + 6);
         } else {
-            tooltipFont.draw(batch, tooltipBodyText, bodyX, 1.6f + pos.y()); // Text for tooltip body
+            tooltipFont.draw(batch, tooltipBodyText, bodyX, bodyY); // Text for tooltip body
         }
     }
 
@@ -158,6 +170,8 @@ public class Tooltip {
 
     public void setLocation(Location location) {
         this.location = location;
+        System.out.println(getMousePosition());
+        isAbove = getMousePosition().y() < 25;
     }
 
     public void itemReward() {
