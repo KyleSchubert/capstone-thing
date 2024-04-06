@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.MenuController;
 import com.roguelikedeckbuilder.mygame.Player;
@@ -133,6 +135,8 @@ public class CombatMenuStage extends GenericStage {
         energyLabel.setWrap(true);
         energyLabel.setPosition(5, 9.3f);
         this.getStage().addActor(energyLabel);
+
+        this.getStage().addListener(getCardHoverListener());
     }
 
     public void batch(float elapsedTime, SpriteBatch batch) {
@@ -384,6 +388,22 @@ public class CombatMenuStage extends GenericStage {
 
             CombatHandler.setEnemiesThePlayerIsHoveringOver(enemies);
         }
+    }
+
+    private ClickListener getCardHoverListener() {
+        return new ClickListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, @Null Actor fromActor) {
+                Group target = event.getTarget().getParent();
+                UserObjectOptions actorType = (UserObjectOptions) target.getUserObject();
+                if (actorType == UserObjectOptions.CARD) {
+                    int index = getStage().getActors().indexOf(target, true);
+                    if (index != -1) {
+                        target.setZIndex(99);
+                    }
+                }
+            }
+        };
     }
 
     public enum EnemyPositions {
