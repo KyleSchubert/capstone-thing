@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.cards.CardData;
-import com.roguelikedeckbuilder.mygame.combat.AbilityData;
+import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
@@ -98,7 +98,7 @@ public class CardChangeStage extends GenericStage {
         }
 
         card.getGroup().addCaptureListener(clickListenerToGoBackToTreasure);
-        card.getGroup().addCaptureListener(getClickListenerForObtainingCard(card.getCardTypeName(), card.isUpgraded()));
+        card.getGroup().addCaptureListener(ClickListenerManager.obtainingCard(card.getCardTypeName(), card.isUpgraded()));
         cardChoiceGroup.addActor(card.getGroup());
     }
 
@@ -169,12 +169,12 @@ public class CardChangeStage extends GenericStage {
             Card cardWithClickListener = new Card(card.getCardTypeName(), false);
             if (addUpgradingClick) {
                 cardWithClickListener.setUpgraded(true);
-                cardWithClickListener.getGroup().addCaptureListener(getClickListenerForUpgradingCard(i, card.getCardTypeName()));
+                cardWithClickListener.getGroup().addCaptureListener(ClickListenerManager.upgradingCard(i, card.getCardTypeName()));
             } else {
                 cardWithClickListener.setUpgraded(card.isUpgraded());
             }
             if (addRemovingClick) {
-                cardWithClickListener.getGroup().addCaptureListener(getClickListenerForRemovingCard(i));
+                cardWithClickListener.getGroup().addCaptureListener(ClickListenerManager.removingCard(i));
             }
 
             scrollTable.add(cardWithClickListener.getGroup());
@@ -205,65 +205,6 @@ public class CardChangeStage extends GenericStage {
             }
         }
         return scrollTable;
-    }
-
-    private ClickListener getClickListenerForObtainingCard(CardData.CardTypeName cardTypeName, boolean isUpgraded) {
-        return new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                String cardName;
-                if (isUpgraded) {
-                    cardName = AbilityData.getName(CardData.getUpgradedAbilityTypeName(cardTypeName));
-                } else {
-                    cardName = AbilityData.getName(CardData.getAbilityTypeName(cardTypeName));
-                }
-                System.out.println("Player chose card: " + cardName);
-                Player.obtainCard(cardTypeName, isUpgraded);
-                SoundManager.playGetCardSound();
-            }
-        };
-    }
-
-    private ClickListener getClickListenerForUpgradingCard(int cardIndex, CardData.CardTypeName cardTypeName) {
-        return new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                String cardName = AbilityData.getName(CardData.getUpgradedAbilityTypeName(cardTypeName));
-
-                System.out.println("Player upgraded card into: " + cardName);
-                Player.removeCard(cardIndex);
-                Player.obtainCard(cardTypeName, true);
-                Player.setFlagGoBackToPreviousMenuState(true);
-                SoundManager.playGetCardSound();
-            }
-        };
-    }
-
-    private ClickListener getClickListenerForRemovingCard(int cardIndex) {
-        return new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("Player removed card at index: " + cardIndex);
-                Player.removeCard(cardIndex);
-                Player.setFlagGoBackToPreviousMenuState(true);
-                SoundManager.playGetCardSound(); // but this doesn't make super sense
-            }
-        };
     }
 
     private InputListener getClickListenerForBackButton() {

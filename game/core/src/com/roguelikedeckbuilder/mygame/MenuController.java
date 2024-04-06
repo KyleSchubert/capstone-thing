@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.characters.Character;
+import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.stages.*;
@@ -24,7 +25,7 @@ import static com.roguelikedeckbuilder.mygame.MyGame.*;
 import static com.roguelikedeckbuilder.mygame.stages.Map.MapNodeType.RANDOM_EVENT;
 
 public class MenuController {
-    protected boolean isGameplayPaused;
+    protected static boolean isGameplayPaused;
     private Stage mainMenuStage;
     private Stage pauseMenuStage;
     private Stage resultsMenuStage;
@@ -75,34 +76,34 @@ public class MenuController {
         upgradesMenuStage = new Stage(viewportForStage);
         settingsMenuStage = new Stage(viewportForStage);
 
-        cardChangeMenuStage = new CardChangeStage(viewportForStage, makeClickListenerTriggeringMenuState(MenuState.TREASURE, MenuSoundType.OPEN));
+        cardChangeMenuStage = new CardChangeStage(viewportForStage, ClickListenerManager.triggeringMenuState(MenuState.TREASURE, MenuSoundType.OPEN));
         restMenuStage = new RestMenuStage(
                 viewportForStage,
-                makeClickListenerTriggeringMenuState(MenuState.MAP, MenuSoundType.CLOSE),
-                makeClickListenerTriggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN),
-                getClickListenerForPreparingCardUpgradeMenu()
+                ClickListenerManager.triggeringMenuState(MenuState.MAP, MenuSoundType.CLOSE),
+                ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN),
+                ClickListenerManager.preparingCardUpgradeMenu()
         );
         treasureMenuStage = new TreasureMenuStage(
                 viewportForStage,
                 newImageButtonFrom("exit", MenuState.MAP, MenuSoundType.CLOSE),
-                makeClickListenerTriggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN),
-                getCardChoicePreparerClickListener()
+                ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN),
+                ClickListenerManager.preparingCardChoiceMenu()
         );
         shopMenuStage = new ShopMenuStage(
                 viewportForStage,
                 newImageButtonFrom("exit", MenuState.MAP, MenuSoundType.CLOSE),
-                makeClickListenerTriggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN),
-                getClickListenerForPreparingCardUpgradeMenu(),
-                getClickListenerForPreparingCardRemoveMenu()
+                ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN),
+                ClickListenerManager.preparingCardUpgradeMenu(),
+                ClickListenerManager.preparingCardRemoveMenu()
         );
         combatMenuStage = new CombatMenuStage(
                 viewportForStage,
                 newImageButtonFrom("exit", MenuState.MAP, MenuSoundType.CLOSE),
                 cardChangeMenuStage,
-                makeClickListenerTriggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN)
+                ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN)
         );
 
-        tooltip = new Tooltip(viewportForStage, makeClickListenerTriggeringMenuState(MenuState.MAP, MenuSoundType.CLOSE));
+        tooltip = new Tooltip(viewportForStage, ClickListenerManager.triggeringMenuState(MenuState.MAP, MenuSoundType.CLOSE));
 
         ClickListener hoverAndClickListener = makeHoverAndClickListener();
         map = new Map(viewportForStage, hoverAndClickListener);
@@ -165,8 +166,8 @@ public class MenuController {
         Image topBarDeckIcon = new Image(new Texture(Gdx.files.internal("OTHER UI/deck.png")));
         topBarDeckIcon.setScale(SCALE_FACTOR);
         topBarDeckIcon.setPosition(46.2f, 42.9f);
-        topBarDeckIcon.addCaptureListener(getClickListenerForViewingPlayerCards());
-        topBarDeckIcon.addCaptureListener(makeClickListenerTriggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN));
+        topBarDeckIcon.addCaptureListener(ClickListenerManager.viewingPlayerCards());
+        topBarDeckIcon.addCaptureListener(ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN));
 
         topBarStage = new Stage(viewportForStage);
         topBarStage.addActor(topBarBackground);
@@ -526,25 +527,6 @@ public class MenuController {
         };
     }
 
-    private ClickListener makeClickListenerTriggeringMenuState(MenuState menuState, MenuSoundType menuSoundType) {
-        return new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                setMenuState(menuState);
-                if (menuSoundType == MenuSoundType.OPEN) {
-                    SoundManager.playMenuOpenSound();
-                } else if (menuSoundType == MenuSoundType.CLOSE) {
-                    SoundManager.playMenuCloseSound();
-                }
-            }
-        };
-    }
-
     public void setMenuState(MenuState menuState) {
         previousNonimportantMenuState = currentMenuState;
         previousInputProcessor = currentInputProcessor;
@@ -730,7 +712,7 @@ public class MenuController {
     }
 
     private void setGameplayPaused(boolean gameplayPaused) {
-        this.isGameplayPaused = gameplayPaused;
+        isGameplayPaused = gameplayPaused;
     }
 
     public void setDrawMapMenu(boolean drawMapMenu) {
@@ -821,72 +803,20 @@ public class MenuController {
         character.addAction(moveAction);
     }
 
-    private ClickListener getClickListenerForViewingPlayerCards() {
-        return new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                cardChangeMenuStage.prepareViewPlayerCards();
-                SoundManager.playMenuOpenSound();
-            }
-        };
-    }
-
-    private ClickListener getClickListenerForPreparingCardRemoveMenu() {
-        return new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                cardChangeMenuStage.prepareRemovePlayerCards();
-                SoundManager.playMenuOpenSound();
-            }
-        };
-    }
-
-    private ClickListener getClickListenerForPreparingCardUpgradeMenu() {
-        return new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                cardChangeMenuStage.prepareUpgradePlayerCards();
-                SoundManager.playMenuOpenSound();
-            }
-        };
-    }
-
-    private ClickListener getCardChoicePreparerClickListener() {
-        return new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                cardChangeMenuStage.prepareThreeCardChoice();
-                SoundManager.playMenuOpenSound();
-            }
-        };
-    }
-
     public TreasureMenuStage getTreasureMenuStage() {
         return treasureMenuStage;
     }
 
     public ShopMenuStage getShopMenuStage() {
         return shopMenuStage;
+    }
+
+    public CardChangeStage getCardChangeMenuStage() {
+        return cardChangeMenuStage;
+    }
+
+    public static boolean getIsGameplayPaused() {
+        return isGameplayPaused;
     }
 
     public enum MenuState {

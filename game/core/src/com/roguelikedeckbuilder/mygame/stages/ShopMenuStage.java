@@ -3,7 +3,6 @@ package com.roguelikedeckbuilder.mygame.stages;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -12,8 +11,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.cards.CardData;
+import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
-import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 
 import java.util.Random;
 
@@ -49,12 +48,12 @@ public class ShopMenuStage extends GenericStage {
 
         upgradeButton = new Image(new Texture(Gdx.files.internal("MENU BUTTONS/shop area/Upgrade.png")));
         upgradeButton.setPosition(1110, 550);
-        upgradeButton.addListener(getClickListenerForIncreasingCost(upgradeCost, upgradeCostLabel));
+        upgradeButton.addListener(ClickListenerManager.increasingCostInShop(upgradeCost, upgradeCostLabel));
         upgradeButton.addListener(cardChangeStageTrigger);
         upgradeButton.addListener(cardUpgradePreparerClickListener);
 
         upgradeButtonNoInteraction = new Image(new Texture(Gdx.files.internal("MENU BUTTONS/shop area/Upgrade.png")));
-        upgradeButtonNoInteraction.setPosition(1110, 650);
+        upgradeButtonNoInteraction.setPosition(1110, 550);
 
         removeCardCostLabel = LabelMaker.newLabel("Price: 200", LabelMaker.getMedium());
         removeCardCostLabel.setPosition(1160, 420);
@@ -62,7 +61,7 @@ public class ShopMenuStage extends GenericStage {
 
         removeCardButton = new Image(new Texture(Gdx.files.internal("MENU BUTTONS/shop area/Remove card.png")));
         removeCardButton.setPosition(1120, 450);
-        removeCardButton.addListener(getClickListenerForIncreasingCost(removeCardCost, removeCardCostLabel));
+        removeCardButton.addListener(ClickListenerManager.increasingCostInShop(removeCardCost, removeCardCostLabel));
         removeCardButton.addListener(cardChangeStageTrigger);
         removeCardButton.addListener(cardRemovePreparerClickListener);
 
@@ -82,7 +81,7 @@ public class ShopMenuStage extends GenericStage {
         for (int i = 0; i < 8; i++) {
             randomNumber = random.nextInt(CardData.CardTypeName.values().length);
             Card card = new Card(CardData.CardTypeName.values()[randomNumber], true);
-            card.getGroup().addCaptureListener(getClickListenerForBuyingCard(card));
+            card.getGroup().addCaptureListener(ClickListenerManager.buyingCard(card));
             addCard(card);
         }
 
@@ -135,39 +134,6 @@ public class ShopMenuStage extends GenericStage {
         } else {
             nonCardShopUI.addActor(removeCardButtonNoInteraction);
         }
-    }
-
-    private ClickListener getClickListenerForIncreasingCost(Integer[] cost, Label label) {
-        return new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (Player.getMoney() >= cost[0]) {
-                    Player.changeMoney(-cost[0]);
-                    cost[0] += 50;
-                    label.setText("Price: " + cost[0]);
-                    SoundManager.playBuyInShopSound();
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        };
-    }
-
-    private ClickListener getClickListenerForBuyingCard(Card card) {
-        return new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Player.buyCard(CardData.getValue(card.getCardTypeName()), card.getCardTypeName(), card.isUpgraded());
-                SoundManager.playBuyInShopSound();
-                useCorrectButtons();
-            }
-        };
     }
 
     public enum ShopPositions {

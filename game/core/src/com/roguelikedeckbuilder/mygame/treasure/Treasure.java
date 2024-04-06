@@ -3,11 +3,11 @@ package com.roguelikedeckbuilder.mygame.treasure;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.roguelikedeckbuilder.mygame.Player;
+import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 
@@ -51,7 +51,7 @@ public class Treasure {
 
         label.setPosition(120, 20);
         group.addActor(label);
-        group.addCaptureListener(getTreasureClickListener(treasureType, amount));
+        group.addCaptureListener(ClickListenerManager.triggerTreasure(treasureType, amount, group));
 
         if (treasureType == TreasureType.CARDS) {
             group.addCaptureListener(cardChoiceClickListener);
@@ -102,28 +102,13 @@ public class Treasure {
         return random.nextInt(2) + 2;
     }
 
-    private void triggerTreasure(TreasureType treasureType, int amount) {
+    public static void triggerTreasure(TreasureType treasureType, int amount) {
         switch (treasureType) {
             case CURRENCY -> Player.changeMoney(amount);
             case PERSISTENT_CURRENCY -> Player.changePersistentMoney(amount);
             case CARDS -> {
             }
         }
-    }
-
-    public ClickListener getTreasureClickListener(TreasureType treasureType, int amount) {
-        return new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                triggerTreasure(treasureType, amount);
-                event.getTarget().getParent().remove();
-            }
-        };
     }
 
     public Group getGroup() {

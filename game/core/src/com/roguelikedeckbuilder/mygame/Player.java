@@ -161,6 +161,8 @@ public class Player {
 
     public static void obtainItem(ItemData.ItemName itemName) {
         Item item = new Item(itemName);
+        System.out.println("Player gained item: " + itemName);
         ownedItems.add(item);
+        SoundManager.playGetItemSound();
     }
 }

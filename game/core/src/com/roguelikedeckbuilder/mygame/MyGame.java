@@ -15,10 +15,7 @@ import com.roguelikedeckbuilder.mygame.combat.AbilityData;
 import com.roguelikedeckbuilder.mygame.combat.BuffOrDebuffData;
 import com.roguelikedeckbuilder.mygame.combat.EffectData;
 import com.roguelikedeckbuilder.mygame.combat.EnemyData;
-import com.roguelikedeckbuilder.mygame.helpers.DelayScheduler;
-import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
-import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
-import com.roguelikedeckbuilder.mygame.helpers.XYPair;
+import com.roguelikedeckbuilder.mygame.helpers.*;
 import com.roguelikedeckbuilder.mygame.items.ItemData;
 
 public class MyGame extends ApplicationAdapter {
@@ -69,6 +66,8 @@ public class MyGame extends ApplicationAdapter {
 
         menuController = new MenuController();
         menuController.create(camera);
+
+        ClickListenerManager.initialize(menuController);
     }
 
     @Override
@@ -139,10 +138,16 @@ public class MyGame extends ApplicationAdapter {
             } else if (menuController.getCurrentMenuState() == MenuController.MenuState.MAIN_MENU) {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {
                     isSomeDebugOn = !isSomeDebugOn;
-                    System.out.println(isSomeDebugOn);
                     if (isSomeDebugOn) {
+                        System.out.println("DEBUG: ON");
+                        System.out.println("- 1 : Shop");
+                        System.out.println("- 2 : Treasure");
+                        System.out.println("- 3 : Combat");
+                        System.out.println("- 4 : Rest");
+                        System.out.println("- 5 : Combat");
                         SoundManager.playHealSound();
                     } else {
+                        System.out.println("DEBUG: OFF");
                         SoundManager.playDefendSound();
                     }
                 }

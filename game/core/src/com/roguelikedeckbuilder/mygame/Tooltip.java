@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -12,14 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.combat.AbilityData;
-import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
+import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.items.ItemData;
 import com.roguelikedeckbuilder.mygame.stages.Map;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.*;
-import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 
 public class Tooltip {
     private static final XYPair<Float> leftPosition = new XYPair<>(1f, 8f);
@@ -76,6 +74,9 @@ public class Tooltip {
     }
 
     public void batch(float elapsedTime) {
+        if (MenuController.getIsGameplayPaused()) {
+            return;
+        }
         XYPair<Float> pos;
         float titleX = 0, bodyX = 0, titleY, bodyY;
         float usedTooltipWidth = tooltipStage.getActors().get(size.ordinal()).getWidth();
@@ -151,7 +152,6 @@ public class Tooltip {
 
     public void setLocation(Location location) {
         this.location = location;
-        System.out.println(getMousePosition());
         isAbove = getMousePosition().y() < 25;
     }
 
@@ -198,7 +198,7 @@ public class Tooltip {
             item.setScale(SCALE_FACTOR * 2);
             item.setPosition(offScreen.x(), offScreen.y());
             item.addListener(clickListenerExitingToMap);
-            item.addListener(getClickListenerForObtainingItem(itemName));
+            item.addListener(ClickListenerManager.obtainingItem(itemName));
             item.setUserObject(UserObjectOptions.ITEM);
             tooltipStage.addActor(item);
         }
@@ -213,22 +213,6 @@ public class Tooltip {
         for (Actor actor : tooltipStage.getActors()) {
             actor.setPosition(offScreen.x(), offScreen.y());
         }
-    }
-
-    private ClickListener getClickListenerForObtainingItem(ItemData.ItemName itemName) {
-        return new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("Player gained item: " + itemName);
-                Player.obtainItem(itemName);
-                SoundManager.playGetItemSound();
-            }
-        };
     }
 
     public void setShowChooseOneItemDetails(boolean showChooseOneItemDetails) {

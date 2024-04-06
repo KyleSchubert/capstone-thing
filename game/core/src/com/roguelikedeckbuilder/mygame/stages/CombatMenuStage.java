@@ -24,10 +24,7 @@ import com.roguelikedeckbuilder.mygame.characters.Character;
 import com.roguelikedeckbuilder.mygame.combat.CombatHandler;
 import com.roguelikedeckbuilder.mygame.combat.Enemy;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
-import com.roguelikedeckbuilder.mygame.helpers.DelayScheduler;
-import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
-import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
-import com.roguelikedeckbuilder.mygame.helpers.XYPair;
+import com.roguelikedeckbuilder.mygame.helpers.*;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
@@ -65,18 +62,7 @@ public class CombatMenuStage extends GenericStage {
         drawPile.setPosition(4, 3);
         drawPile.setScale(SCALE_FACTOR);
         this.getStage().addActor(drawPile);
-        drawPile.addCaptureListener(new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                cardChangeMenuStage.prepareViewDrawPile(drawPileContents);
-                SoundManager.playMenuOpenSound();
-            }
-        });
+        drawPile.addCaptureListener(ClickListenerManager.lookingAtDrawPile(drawPileContents));
         drawPile.addCaptureListener(cardChangeStageTrigger);
 
         Image shufflePile = new Image(new Texture(Gdx.files.internal("CARDS/shuffle pile.png")));

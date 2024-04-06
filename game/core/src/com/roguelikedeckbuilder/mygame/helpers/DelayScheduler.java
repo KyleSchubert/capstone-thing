@@ -22,8 +22,8 @@ public class DelayScheduler {
     }
 
     public static class Delay {
-        private float remainingTime = 0;
-        private boolean isDone = true;
+        private float remainingTime;
+        private boolean isDone;
         private final String additionalInformation;
 
 
