@@ -34,9 +34,9 @@ public class ShopMenuStage extends GenericStage {
 
     public ShopMenuStage(ScreenViewport viewportForStage, ImageButton exitButton, ClickListener cardChangeStageTrigger, ClickListener cardUpgradePreparerClickListener, ClickListener cardRemovePreparerClickListener) {
         super(viewportForStage, "shop");
-        super.getStageBackgroundActor().setPosition(4.5f, 1.5f);
+        super.getStageBackgroundActor().setPosition(5, 3);
 
-        exitButton.setPosition(56.8f, 38);
+        exitButton.setPosition(56.8f, 32);
         getStage().addActor(exitButton);
 
         nonCardShopUI = new Group();
@@ -44,11 +44,11 @@ public class ShopMenuStage extends GenericStage {
         getStage().addActor(nonCardShopUI);
 
         upgradeCostLabel = LabelMaker.newLabel("Price: 150", LabelMaker.getMedium());
-        upgradeCostLabel.setPosition(1160, 620);
+        upgradeCostLabel.setPosition(1160, 520);
         nonCardShopUI.addActor(upgradeCostLabel);
 
         upgradeButton = new Image(new Texture(Gdx.files.internal("MENU BUTTONS/shop area/Upgrade.png")));
-        upgradeButton.setPosition(1110, 650);
+        upgradeButton.setPosition(1110, 550);
         upgradeButton.addListener(getClickListenerForIncreasingCost(upgradeCost, upgradeCostLabel));
         upgradeButton.addListener(cardChangeStageTrigger);
         upgradeButton.addListener(cardUpgradePreparerClickListener);
@@ -171,14 +171,14 @@ public class ShopMenuStage extends GenericStage {
     }
 
     public enum ShopPositions {
-        CARD1(6, 25),
-        CARD2(18, 25),
-        CARD3(30, 25),
-        CARD4(42, 25),
-        CARD5(6, 4.5f),
-        CARD6(18, 4.5f),
-        CARD7(30, 4.5f),
-        CARD8(42, 4.5f);
+        CARD1(6, 20.6f),
+        CARD2(18, 20.6f),
+        CARD3(30, 20.6f),
+        CARD4(42, 20.6f),
+        CARD5(6, 4.1f),
+        CARD6(18, 4.1f),
+        CARD7(30, 4.1f),
+        CARD8(42, 4.1f);
 
         private final float x;
         private final float y;
