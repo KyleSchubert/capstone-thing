@@ -508,10 +508,12 @@ public class MenuController {
                             setMenuState(MenuState.COMBAT);
                         }
                         case SHOP -> {
+                            shopMenuStage.generateShop();
                             setMenuState(MenuState.SHOP);
                         }
                         case REST -> setMenuState(MenuState.REST_AREA);
                         case TREASURE -> {
+                            treasureMenuStage.aLotOfTreasure();
                             setMenuState(MenuState.TREASURE);
                         }
                     }
@@ -643,7 +645,6 @@ public class MenuController {
                 setDrawRestMenu(true);
             }
             case TREASURE -> {
-                treasureMenuStage.testing();
                 currentMenuState = MenuState.TREASURE;
                 UseLine.setVisibility(false);
                 setDrawTreasureMenu(true);
@@ -665,7 +666,6 @@ public class MenuController {
                 currentInputProcessor = cardChangeMenuStage.getStage();
             }
             case SHOP -> {
-                shopMenuStage.generateShop();
                 currentMenuState = MenuState.SHOP;
                 Gdx.input.setInputProcessor(shopMenuStage.getStage());
                 currentInputProcessor = shopMenuStage.getStage();
@@ -879,6 +879,14 @@ public class MenuController {
                 SoundManager.playMenuOpenSound();
             }
         };
+    }
+
+    public TreasureMenuStage getTreasureMenuStage() {
+        return treasureMenuStage;
+    }
+
+    public ShopMenuStage getShopMenuStage() {
+        return shopMenuStage;
     }
 
     public enum MenuState {

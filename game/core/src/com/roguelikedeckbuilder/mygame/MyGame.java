@@ -153,12 +153,14 @@ public class MyGame extends ApplicationAdapter {
                     menuController.setMenuState(MenuController.MenuState.MAIN_MENU);
                     menuController.setMenuState(MenuController.MenuState.START_REWARDS);
                     menuController.setMenuState(MenuController.MenuState.MAP);
+                    menuController.getShopMenuStage().generateShop();
                     menuController.setMenuState(MenuController.MenuState.SHOP);
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
                     menuController.setMenuState(MenuController.MenuState.RESULTS);
                     menuController.setMenuState(MenuController.MenuState.MAIN_MENU);
                     menuController.setMenuState(MenuController.MenuState.START_REWARDS);
                     menuController.setMenuState(MenuController.MenuState.MAP);
+                    menuController.getTreasureMenuStage().aLotOfTreasure();
                     menuController.setMenuState(MenuController.MenuState.TREASURE);
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
                     menuController.setMenuState(MenuController.MenuState.RESULTS);

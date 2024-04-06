@@ -25,7 +25,7 @@ public class TreasureMenuStage extends GenericStage {
         this.cardChoicePreparerClickListener = cardChoicePreparerClickListener;
     }
 
-    public void testing() {
+    public void aLotOfTreasure() {
         if (treasureGroup.getUserObject().equals(UserObjectOptions.TREASURE_GROUP)) {
             treasureGroup.remove();
         }
