@@ -286,7 +286,6 @@ public class MenuController {
             map.drawMap(batch);
         }
         if (this.isDrawCombatMenuStage) {
-            tooltip.setUsingTooltipLingerTime(true);
             combatMenuStage.batch(elapsedTime, batch);
             if (combatMenuStage.isVictory()) {
                 combatMenuStage.setVictory(false);
@@ -365,14 +364,12 @@ public class MenuController {
         batch.begin();
 
         if (this.isDrawRestMenu) {
-            tooltip.setUsingTooltipLingerTime(true);
             restMenuStage.batch(elapsedTime);
         }
         if (this.isDrawTreasureMenuStage) {
             treasureMenuStage.batch(elapsedTime);
         }
         if (this.isDrawShopMenuStage) {
-            tooltip.setUsingTooltipLingerTime(true);
             shopMenuStage.batch(elapsedTime);
         }
 
@@ -381,7 +378,7 @@ public class MenuController {
         if (this.isDrawCardChangeMenuStage) {
             cardChangeMenuStage.batch(elapsedTime);
         }
-        if (this.isDrawTooltipMenu || (tooltip.isUsingTooltipLingerTime() && tooltip.getTooltipLingerTime() > 0)) {
+        if (this.isDrawTooltipMenu) {
             tooltip.batch(elapsedTime);
         }
         if (this.isDrawPauseMenu) { // JUST for the pause menu background texture
@@ -472,7 +469,6 @@ public class MenuController {
                 tooltip.setLocation(data.tooltipLocation());
 
                 // Draw the tooltip
-                tooltip.setUsingTooltipLingerTime(false);
                 setDrawTooltipMenu(true);
             }
 
@@ -480,8 +476,6 @@ public class MenuController {
             public void exit(InputEvent event, float x, float y, int pointer, @Null Actor toActor) {
                 if (currentMenuState != MenuState.START_REWARDS) {
                     setDrawTooltipMenu(false);
-                    tooltip.setUsingTooltipLingerTime(true);
-                    tooltip.refreshTooltipLingerTime();
                 }
             }
 
@@ -564,7 +558,6 @@ public class MenuController {
                 Gdx.input.setInputProcessor(mainMenuStage);
                 currentInputProcessor = mainMenuStage;
                 UseLine.setVisibility(false);
-                tooltip.setUsingTooltipLingerTime(false);
                 setTimeElapsedInGame(0f);
                 setGameplayPaused(true);
                 setDrawMainMenu(true);
@@ -580,7 +573,6 @@ public class MenuController {
             }
             case MAP -> {
                 setDrawMapMenu(true);
-                tooltip.setUsingTooltipLingerTime(true);
                 setDrawTooltipMenu(false);
                 currentMenuState = MenuState.MAP;
                 Gdx.input.setInputProcessor(map.mapStage);
@@ -638,7 +630,6 @@ public class MenuController {
                 Gdx.input.setInputProcessor(tooltip.tooltipStage);
                 currentInputProcessor = tooltip.tooltipStage;
                 setDrawTooltipMenu(true);
-                tooltip.setUsingTooltipLingerTime(false);
                 setDrawDarkTransparentScreen(true);
                 setGameplayPaused(false);
                 setDrawMainMenu(false);
@@ -649,7 +640,6 @@ public class MenuController {
                 currentMenuState = MenuState.REST_AREA;
                 Gdx.input.setInputProcessor(restMenuStage.getStage());
                 currentInputProcessor = restMenuStage.getStage();
-                tooltip.setUsingTooltipLingerTime(true);
                 setDrawTooltipMenu(false);
                 setDrawRestMenu(true);
             }
@@ -678,7 +668,6 @@ public class MenuController {
                 currentMenuState = MenuState.SHOP;
                 Gdx.input.setInputProcessor(shopMenuStage.getStage());
                 currentInputProcessor = shopMenuStage.getStage();
-                tooltip.setUsingTooltipLingerTime(true);
                 setDrawTooltipMenu(false);
                 setDrawShopMenu(true);
                 setDrawCardChangeMenu(false);
@@ -687,7 +676,6 @@ public class MenuController {
                 currentMenuState = MenuState.COMBAT;
                 Gdx.input.setInputProcessor(combatMenuStage.getStage());
                 currentInputProcessor = combatMenuStage.getStage();
-                tooltip.setUsingTooltipLingerTime(true);
                 setDrawTooltipMenu(false);
                 isGameplayPaused = false;
                 setDrawPauseMenu(false);

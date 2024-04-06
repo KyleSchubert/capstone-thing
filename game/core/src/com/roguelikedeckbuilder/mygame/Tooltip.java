@@ -28,14 +28,12 @@ public class Tooltip {
     public final Stage tooltipStage;
     private final BitmapFont tooltipFont;
     private final ClickListener clickListenerExitingToMap;
-    private float tooltipLingerTime;
     private String tooltipTitleText;
     private String tooltipBodyText;
     private Array<String> chooseOneItemText = new Array<>();
     private Size size;
     private Location location;
     private boolean isAbove;
-    private boolean isUsingTooltipLingerTime = false;
     private boolean showChooseOneItemDetails = false;
 
     Tooltip(ScreenViewport viewportForStage, ClickListener clickListenerExitingToMap) {
@@ -78,11 +76,6 @@ public class Tooltip {
         float titleX = 0, bodyX = 0, titleY = 0, bodyY = 0;
         float usedTooltipWidth = tooltipStage.getActors().get(size.ordinal()).getWidth();
         float usedTooltipHeight = tooltipStage.getActors().get(size.ordinal()).getHeight();
-
-        this.tooltipLingerTime -= elapsedTime;
-        if (tooltipLingerTime < 0 && isUsingTooltipLingerTime) {
-            return;
-        }
 
         switch (location) {
             case RIGHT -> {
@@ -146,22 +139,6 @@ public class Tooltip {
         }
         this.tooltipTitleText = String.format("%s", typeText);
         this.tooltipBodyText = String.format("%d-%d", stageNumber, index);
-    }
-
-    public float getTooltipLingerTime() {
-        return tooltipLingerTime;
-    }
-
-    public void refreshTooltipLingerTime() {
-        this.tooltipLingerTime = 0.15f;
-    }
-
-    public boolean isUsingTooltipLingerTime() {
-        return isUsingTooltipLingerTime;
-    }
-
-    public void setUsingTooltipLingerTime(boolean usingTooltipLingerTime) {
-        isUsingTooltipLingerTime = usingTooltipLingerTime;
     }
 
     public void setSize(Size size) {
