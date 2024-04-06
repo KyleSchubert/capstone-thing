@@ -508,12 +508,10 @@ public class MenuController {
                             setMenuState(MenuState.COMBAT);
                         }
                         case SHOP -> {
-                            shopMenuStage.generateShop();
                             setMenuState(MenuState.SHOP);
                         }
                         case REST -> setMenuState(MenuState.REST_AREA);
                         case TREASURE -> {
-                            treasureMenuStage.testing();
                             setMenuState(MenuState.TREASURE);
                         }
                     }
@@ -587,6 +585,7 @@ public class MenuController {
                 setDrawCombatMenu(false);
                 setDrawCardChangeMenu(false);
                 UseLine.setVisibility(false);
+                tooltip.setShowChooseOneItemDetails(false);
             }
             case UPGRADES -> {
                 currentMenuState = MenuState.UPGRADES;
@@ -644,6 +643,7 @@ public class MenuController {
                 setDrawRestMenu(true);
             }
             case TREASURE -> {
+                treasureMenuStage.testing();
                 currentMenuState = MenuState.TREASURE;
                 UseLine.setVisibility(false);
                 setDrawTreasureMenu(true);
@@ -665,6 +665,7 @@ public class MenuController {
                 currentInputProcessor = cardChangeMenuStage.getStage();
             }
             case SHOP -> {
+                shopMenuStage.generateShop();
                 currentMenuState = MenuState.SHOP;
                 Gdx.input.setInputProcessor(shopMenuStage.getStage());
                 currentInputProcessor = shopMenuStage.getStage();

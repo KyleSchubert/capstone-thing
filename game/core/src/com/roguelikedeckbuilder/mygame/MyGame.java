@@ -36,6 +36,7 @@ public class MyGame extends ApplicationAdapter {
     MenuController menuController;
     float accumulator = 0;
     private String timeText = "0:00";
+    private boolean isSomeDebugOn = false;
 
     public static void setTimeElapsedInGame(float newTime) {
         timeElapsedInGame = newTime;
@@ -133,6 +134,45 @@ public class MyGame extends ApplicationAdapter {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                     SoundManager.playMenuCloseSound();
                     menuController.setMenuState(MenuController.MenuState.RESUME);
+                }
+            } else if (menuController.getCurrentMenuState() == MenuController.MenuState.MAIN_MENU) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {
+                    isSomeDebugOn = !isSomeDebugOn;
+                    if (isSomeDebugOn) {
+                        SoundManager.playHealSound();
+                    } else {
+                        SoundManager.playDefendSound();
+                    }
+                }
+            }
+            if (isSomeDebugOn) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
+                    menuController.setMenuState(MenuController.MenuState.RESULTS);
+                    menuController.setMenuState(MenuController.MenuState.MAIN_MENU);
+                    menuController.setMenuState(MenuController.MenuState.START_REWARDS);
+                    menuController.setMenuState(MenuController.MenuState.MAP);
+                    menuController.setMenuState(MenuController.MenuState.SHOP);
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
+                    menuController.setMenuState(MenuController.MenuState.RESULTS);
+                    menuController.setMenuState(MenuController.MenuState.MAIN_MENU);
+                    menuController.setMenuState(MenuController.MenuState.START_REWARDS);
+                    menuController.setMenuState(MenuController.MenuState.MAP);
+                    menuController.setMenuState(MenuController.MenuState.TREASURE);
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
+                    menuController.setMenuState(MenuController.MenuState.RESULTS);
+                    menuController.setMenuState(MenuController.MenuState.MAIN_MENU);
+                    menuController.setMenuState(MenuController.MenuState.START_REWARDS);
+                    menuController.setMenuState(MenuController.MenuState.MAP);
+                    menuController.setMenuState(MenuController.MenuState.REST_AREA);
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)) {
+                    menuController.setMenuState(MenuController.MenuState.RESULTS);
+                    menuController.setMenuState(MenuController.MenuState.MAIN_MENU);
+                    menuController.setMenuState(MenuController.MenuState.START_REWARDS);
+                    menuController.setMenuState(MenuController.MenuState.MAP);
+                    menuController.setMenuState(MenuController.MenuState.COMBAT);
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_5)) {
+                    menuController.setMenuState(MenuController.MenuState.RESULTS);
+                    menuController.setMenuState(MenuController.MenuState.MAIN_MENU);
                 }
             }
 

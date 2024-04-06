@@ -156,6 +156,7 @@ public class Tooltip {
     }
 
     public void itemReward() {
+        setShowChooseOneItemDetails(true);
         resetItemRewards();
         generateItemRewards();
 
@@ -188,7 +189,6 @@ public class Tooltip {
 
     private void generateItemRewards() {
         Array<ItemData.ItemName> itemNames = ItemData.getSomeRandomItemNamesByTier(ItemData.ItemTier.COMMON, 3);
-        showChooseOneItemDetails = true;
 
         for (int i = 0; i < itemNames.size; i++) {
             ItemData.ItemName itemName = itemNames.get(i);
@@ -227,9 +227,12 @@ public class Tooltip {
                 System.out.println("Player gained item: " + itemName);
                 Player.obtainItem(itemName);
                 SoundManager.playGetItemSound();
-                showChooseOneItemDetails = false;
             }
         };
+    }
+
+    public void setShowChooseOneItemDetails(boolean showChooseOneItemDetails) {
+        this.showChooseOneItemDetails = showChooseOneItemDetails;
     }
 
     public enum Size {
