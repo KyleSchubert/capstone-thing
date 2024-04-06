@@ -28,8 +28,8 @@ public class ShopMenuStage extends GenericStage {
     private final Image removeCardButton;
     private final Image removeCardButtonNoInteraction;
     private final Label removeCardCostLabel;
-    private int upgradeCost = 150;
-    private int removeCardCost = 200;
+    private final Integer[] upgradeCost = new Integer[]{150};
+    private final Integer[] removeCardCost = new Integer[]{200};
     private int numberOfCards = 0;
 
     public ShopMenuStage(ScreenViewport viewportForStage, ImageButton exitButton, ClickListener cardChangeStageTrigger, ClickListener cardUpgradePreparerClickListener, ClickListener cardRemovePreparerClickListener) {
@@ -43,31 +43,31 @@ public class ShopMenuStage extends GenericStage {
         nonCardShopUI.setScale(SCALE_FACTOR);
         getStage().addActor(nonCardShopUI);
 
+        upgradeCostLabel = LabelMaker.newLabel("Price: 150", LabelMaker.getMedium());
+        upgradeCostLabel.setPosition(1160, 620);
+        nonCardShopUI.addActor(upgradeCostLabel);
+
         upgradeButton = new Image(new Texture(Gdx.files.internal("MENU BUTTONS/shop area/Upgrade.png")));
         upgradeButton.setPosition(1110, 650);
-        upgradeButton.addListener(getClickListenerForPayingUpgradeCost());
+        upgradeButton.addListener(getClickListenerForIncreasingCost(upgradeCost, upgradeCostLabel));
         upgradeButton.addListener(cardChangeStageTrigger);
         upgradeButton.addListener(cardUpgradePreparerClickListener);
 
         upgradeButtonNoInteraction = new Image(new Texture(Gdx.files.internal("MENU BUTTONS/shop area/Upgrade.png")));
         upgradeButtonNoInteraction.setPosition(1110, 650);
 
-        upgradeCostLabel = LabelMaker.newLabel("Price: 150", LabelMaker.getMedium());
-        upgradeCostLabel.setPosition(1160, 620);
-        nonCardShopUI.addActor(upgradeCostLabel);
+        removeCardCostLabel = LabelMaker.newLabel("Price: 200", LabelMaker.getMedium());
+        removeCardCostLabel.setPosition(1160, 420);
+        nonCardShopUI.addActor(removeCardCostLabel);
 
         removeCardButton = new Image(new Texture(Gdx.files.internal("MENU BUTTONS/shop area/Remove card.png")));
         removeCardButton.setPosition(1120, 450);
-        removeCardButton.addListener(getClickListenerForPayingRemoveCost());
+        removeCardButton.addListener(getClickListenerForIncreasingCost(removeCardCost, removeCardCostLabel));
         removeCardButton.addListener(cardChangeStageTrigger);
         removeCardButton.addListener(cardRemovePreparerClickListener);
 
         removeCardButtonNoInteraction = new Image(new Texture(Gdx.files.internal("MENU BUTTONS/shop area/Remove card.png")));
         removeCardButtonNoInteraction.setPosition(1120, 450);
-
-        removeCardCostLabel = LabelMaker.newLabel("Price: 200", LabelMaker.getMedium());
-        removeCardCostLabel.setPosition(1160, 420);
-        nonCardShopUI.addActor(removeCardCostLabel);
     }
 
     public void batch(float elapsedTime) {
@@ -86,11 +86,11 @@ public class ShopMenuStage extends GenericStage {
             addCard(card);
         }
 
-        upgradeCost = 150;
-        upgradeCostLabel.setText("Price: " + upgradeCost);
+        upgradeCost[0] = 150;
+        upgradeCostLabel.setText("Price: " + upgradeCost[0]);
 
-        removeCardCost = 200;
-        removeCardCostLabel.setText("Price: " + removeCardCost);
+        removeCardCost[0] = 200;
+        removeCardCostLabel.setText("Price: " + removeCardCost[0]);
 
         useCorrectButtons();
     }
@@ -121,7 +121,7 @@ public class ShopMenuStage extends GenericStage {
         upgradeButton.remove();
         upgradeButtonNoInteraction.remove();
 
-        if (Player.getMoney() >= upgradeCost) {
+        if (Player.getMoney() >= upgradeCost[0]) {
             nonCardShopUI.addActor(upgradeButton);
         } else {
             nonCardShopUI.addActor(upgradeButtonNoInteraction);
@@ -130,38 +130,21 @@ public class ShopMenuStage extends GenericStage {
         removeCardButton.remove();
         removeCardButtonNoInteraction.remove();
 
-        if (Player.getMoney() >= removeCardCost) {
+        if (Player.getMoney() >= removeCardCost[0]) {
             nonCardShopUI.addActor(removeCardButton);
         } else {
             nonCardShopUI.addActor(removeCardButtonNoInteraction);
         }
     }
 
-    private ClickListener getClickListenerForPayingUpgradeCost() {
+    private ClickListener getClickListenerForIncreasingCost(Integer[] cost, Label label) {
         return new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (Player.getMoney() >= upgradeCost) {
-                    Player.changeMoney(-upgradeCost);
-                    upgradeCost += 50;
-                    upgradeCostLabel.setText("Price: " + upgradeCost);
-                    SoundManager.playBuyInShopSound();
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        };
-    }
-
-    private ClickListener getClickListenerForPayingRemoveCost() {
-        return new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (Player.getMoney() >= removeCardCost) {
-                    Player.changeMoney(-removeCardCost);
-                    removeCardCost += 50;
-                    removeCardCostLabel.setText("Price: " + removeCardCost);
+                if (Player.getMoney() >= cost[0]) {
+                    Player.changeMoney(-cost[0]);
+                    cost[0] += 50;
+                    label.setText("Price: " + cost[0]);
                     SoundManager.playBuyInShopSound();
                     return true;
                 } else {

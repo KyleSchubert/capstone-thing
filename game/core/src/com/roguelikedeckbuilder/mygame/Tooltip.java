@@ -31,7 +31,7 @@ public class Tooltip {
     private final ClickListener clickListenerExitingToMap;
     private String tooltipTitleText;
     private String tooltipBodyText;
-    private Array<String> chooseOneItemText = new Array<>();
+    private final Array<String> chooseOneItemText = new Array<>();
     private Size size;
     private Location location;
     private boolean isAbove;
@@ -77,7 +77,7 @@ public class Tooltip {
 
     public void batch(float elapsedTime) {
         XYPair<Float> pos;
-        float titleX = 0, bodyX = 0, titleY = 0, bodyY = 0;
+        float titleX = 0, bodyX = 0, titleY, bodyY;
         float usedTooltipWidth = tooltipStage.getActors().get(size.ordinal()).getWidth();
         float usedTooltipHeight = tooltipStage.getActors().get(size.ordinal()).getHeight();
 
