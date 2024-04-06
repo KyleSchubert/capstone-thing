@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Tooltip;
-import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 import java.util.Comparator;
@@ -361,8 +360,8 @@ public class Map {
     public class MapNode {
         private static final float POS_X_MIN = 4;
         private static final float POS_X_MAX = 68;
-        private static final float POS_Y_MIN = 5;
-        private static final float POS_Y_MAX = 38;
+        private static final float POS_Y_MIN = 4;
+        private static final float POS_Y_MAX = 36;
         private final XYPair<Float> pos;
         private final Array<Integer> nextConnections;
         private final Array<Integer> previousConnections;

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
@@ -56,16 +57,19 @@ public class Tooltip {
         Image tooltipBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/tooltip.png")));
         tooltipBackground.setSize(580 * SCALE_FACTOR, 490 * SCALE_FACTOR);
         tooltipBackground.setPosition(offScreen.x(), offScreen.y());
+        tooltipBackground.setTouchable(Touchable.disabled);
         tooltipStage.addActor(tooltipBackground);
 
         Image mediumTooltipBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/medium tooltip.png")));
         mediumTooltipBackground.setSize(435 * SCALE_FACTOR, 368 * SCALE_FACTOR);
         mediumTooltipBackground.setPosition(offScreen.x(), offScreen.y());
+        mediumTooltipBackground.setTouchable(Touchable.disabled);
         tooltipStage.addActor(mediumTooltipBackground);
 
         Image smallTooltipBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/small tooltip.png")));
         smallTooltipBackground.setSize(290 * SCALE_FACTOR, 245 * SCALE_FACTOR);
         smallTooltipBackground.setPosition(offScreen.x(), offScreen.y());
+        smallTooltipBackground.setTouchable(Touchable.disabled);
         tooltipStage.addActor(smallTooltipBackground);
 
         this.clickListenerExitingToMap = clickListenerExitingToMap;
