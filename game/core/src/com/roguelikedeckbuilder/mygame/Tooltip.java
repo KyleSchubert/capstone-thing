@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.roguelikedeckbuilder.mygame.combat.AbilityData;
 import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
@@ -29,9 +30,11 @@ public class Tooltip {
     private float tooltipLingerTime;
     private String tooltipTitleText;
     private String tooltipBodyText;
+    private Array<String> chooseOneItemText = new Array<>();
     private Size size;
     private Location location;
     private boolean isUsingTooltipLingerTime = false;
+    private boolean showChooseOneItemDetails = false;
 
     Tooltip(ScreenViewport viewportForStage, ClickListener clickListenerExitingToMap) {
         tooltipStage = new Stage(viewportForStage);
@@ -41,10 +44,12 @@ public class Tooltip {
         tooltipFont = new BitmapFont(Gdx.files.internal("font2.fnt"), false);
         tooltipFont.setUseIntegerPositions(false);
         tooltipFont.getData().setScale(SCALE_FACTOR, SCALE_FACTOR);
+        tooltipFont.getData().markupEnabled = true;
 
         // Tooltip text
         tooltipTitleText = "";
         tooltipBodyText = "";
+        chooseOneItemText.add("", "", "");
 
         // Tooltip backgrounds
         Image tooltipBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/tooltip.png")));
@@ -105,7 +110,13 @@ public class Tooltip {
         tooltipStage.draw();
 
         font.draw(batch, tooltipTitleText, titleX, titleY); // Text for tooltip title
-        tooltipFont.draw(batch, tooltipBodyText, bodyX, 1.6f + pos.y()); // Text for tooltip body
+        if (showChooseOneItemDetails) {
+            tooltipFont.draw(batch, chooseOneItemText.get(0), pos.x() + 6, pos.y() + 20);
+            tooltipFont.draw(batch, chooseOneItemText.get(1), pos.x() + 6, pos.y() + 13);
+            tooltipFont.draw(batch, chooseOneItemText.get(2), pos.x() + 6, pos.y() + 6);
+        } else {
+            tooltipFont.draw(batch, tooltipBodyText, bodyX, 1.6f + pos.y()); // Text for tooltip body
+        }
     }
 
     public void useMapNodeData(Map.MapNodeType mapNodeType, int stageNumber, int index) {
@@ -182,9 +193,13 @@ public class Tooltip {
 
     private void generateItemRewards() {
         Array<ItemData.ItemName> itemNames = ItemData.getSomeRandomItemNamesByTier(ItemData.ItemTier.COMMON, 3);
+        showChooseOneItemDetails = true;
 
-        for (ItemData.ItemName itemName : itemNames) {
+        for (int i = 0; i < itemNames.size; i++) {
+            ItemData.ItemName itemName = itemNames.get(i);
             Image item = new Image(new Texture(Gdx.files.internal(ItemData.getImagePath(itemName))));
+            chooseOneItemText.removeIndex(i);
+            chooseOneItemText.insert(i, ItemData.getName(itemName) + "\n   " + AbilityData.getDescription(ItemData.getAbilityTypeName(itemName)));
             item.setScale(SCALE_FACTOR * 2);
             item.setPosition(offScreen.x(), offScreen.y());
             item.addListener(clickListenerExitingToMap);
@@ -217,6 +232,7 @@ public class Tooltip {
                 System.out.println("Player gained item: " + itemName);
                 Player.obtainItem(itemName);
                 SoundManager.playGetItemSound();
+                showChooseOneItemDetails = false;
             }
         };
     }

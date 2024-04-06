@@ -164,10 +164,28 @@ public class AbilityData {
                     effect = EffectData.EffectName.DEFEND_SOME;
                 }
                 case DEFEND_UPGRADED -> {
-                    name = "Defend";
+                    name = "Defend+";
                     energyCost = 1;
                     targetType = TargetType.SELF;
                     effect = EffectData.EffectName.DEFEND_TWICE_A_BIT;
+                }
+                case ITEM_SWORD_ABILITY -> {
+                    name = "";
+                    energyCost = 0;
+                    targetType = TargetType.ALL;
+                    effect = EffectData.EffectName.DAMAGE_A_BIT;
+                }
+                case ITEM_SWORD_2_ABILITY -> {
+                    name = "";
+                    energyCost = 0;
+                    targetType = TargetType.ONE;
+                    effect = EffectData.EffectName.DAMAGE_A_BIT;
+                }
+                case ITEM_SHIELD_ABILITY -> {
+                    name = "";
+                    energyCost = 0;
+                    targetType = TargetType.SELF;
+                    effect = EffectData.EffectName.DEFEND_SOME;
                 }
                 default ->
                         System.out.println("Why was an ability almost generated with no matching type name? abilityTypeName:  " + abilityTypeName);
