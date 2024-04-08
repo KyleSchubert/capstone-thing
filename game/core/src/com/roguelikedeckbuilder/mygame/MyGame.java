@@ -61,12 +61,13 @@ public class MyGame extends ApplicationAdapter {
         UseLine.initialize();
         ItemData.initialize();
         BuffOrDebuffData.initialize();
-        Player.initialize();
         SoundManager.initialize();
+        Player.initialize();
 
         menuController = new MenuController();
         menuController.create(camera);
 
+        Player.referenceMenuController(menuController);
         ClickListenerManager.initialize(menuController);
     }
 
@@ -110,7 +111,7 @@ public class MyGame extends ApplicationAdapter {
             if (Player.getCombatInformation().getHp() == 0 && menuController.getCurrentMenuState() != MenuController.MenuState.RESULTS) {
                 menuController.setMenuState(MenuController.MenuState.RESULTS);
             }
-            if (!menuController.isGameplayPaused || menuController.getCurrentMenuState() == MenuController.MenuState.MAIN_MENU) {
+            if (!MenuController.getIsGameplayPaused() || menuController.getCurrentMenuState() == MenuController.MenuState.MAIN_MENU) {
                 timeElapsedInGame += STEP_TIME;
                 int hours = (int) timeElapsedInGame / 3600;
                 int minutes = (int) (timeElapsedInGame % 3600) / 60;
@@ -140,11 +141,16 @@ public class MyGame extends ApplicationAdapter {
                     isSomeDebugOn = !isSomeDebugOn;
                     if (isSomeDebugOn) {
                         System.out.println("DEBUG: ON");
+                        System.out.println("- Q : Exit Combat");
                         System.out.println("- 1 : Shop");
                         System.out.println("- 2 : Treasure");
                         System.out.println("- 3 : Combat");
                         System.out.println("- 4 : Rest");
                         System.out.println("- 5 : Combat");
+                        System.out.println("- 6 : Give random at, if on the Map, Rest Area, Treasure, or Shop");
+                        System.out.println("- 7 : +1000 persistent coins");
+                        System.out.println("- 8 : +1000 coins");
+                        System.out.println("- 9 : Full heal");
                         SoundManager.playHealSound();
                     } else {
                         System.out.println("DEBUG: OFF");
@@ -182,6 +188,24 @@ public class MyGame extends ApplicationAdapter {
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_5)) {
                     menuController.setMenuState(MenuController.MenuState.RESULTS);
                     menuController.setMenuState(MenuController.MenuState.MAIN_MENU);
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_6)) {
+                    if (menuController.getCurrentMenuState() == MenuController.MenuState.MAP ||
+                            menuController.getCurrentMenuState() == MenuController.MenuState.REST_AREA ||
+                            menuController.getCurrentMenuState() == MenuController.MenuState.TREASURE ||
+                            menuController.getCurrentMenuState() == MenuController.MenuState.SHOP) {
+                        Player.obtainItem(ItemData.getSomeRandomItemNamesByTier(ItemData.ItemTier.ANY, 1, false).get(0));
+                    }
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_7)) {
+                    Player.changePersistentMoney(1000);
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8)) {
+                    Player.changeMoney(1000);
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_9)) {
+                    Player.getCombatInformation().changeHp(Player.getCombatInformation().getMaxHp());
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
+                    if (menuController.getCurrentMenuState() == MenuController.MenuState.COMBAT) {
+                        menuController.setMenuState(MenuController.MenuState.MAP);
+                        SoundManager.playMenuCloseSound();
+                    }
                 }
             }
 

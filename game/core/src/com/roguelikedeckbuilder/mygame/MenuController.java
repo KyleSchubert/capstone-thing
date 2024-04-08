@@ -98,8 +98,6 @@ public class MenuController {
         );
         combatMenuStage = new CombatMenuStage(
                 viewportForStage,
-                newImageButtonFrom("exit", MenuState.MAP, MenuSoundType.CLOSE),
-                cardChangeMenuStage,
                 ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN)
         );
 
@@ -266,7 +264,7 @@ public class MenuController {
 
         // For letting the player click things on the topBar no matter the current stage they are on
         if (currentMenuState == MenuState.MAP || currentMenuState == MenuState.SHOP || currentMenuState == MenuState.COMBAT) {
-            if (getMousePosition().y() > 43) {
+            if (getMousePosition().y() > 40) {
                 if (currentInputProcessor != topBarStage) {
                     Gdx.input.setInputProcessor(topBarStage);
                     previousInputProcessor = currentInputProcessor;
@@ -813,6 +811,10 @@ public class MenuController {
 
     public CardChangeStage getCardChangeMenuStage() {
         return cardChangeMenuStage;
+    }
+
+    public Stage getTopBarStage() {
+        return topBarStage;
     }
 
     public static boolean getIsGameplayPaused() {

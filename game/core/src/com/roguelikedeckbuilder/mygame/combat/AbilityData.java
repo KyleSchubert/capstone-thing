@@ -187,6 +187,12 @@ public class AbilityData {
                     targetType = TargetType.SELF;
                     effect = EffectData.EffectName.DEFEND_SOME;
                 }
+                case NOTHING -> {
+                    name = "";
+                    energyCost = 0;
+                    targetType = TargetType.SELF;
+                    effect = EffectData.EffectName.NOTHING;
+                }
                 default ->
                         System.out.println("Why was an ability almost generated with no matching type name? abilityTypeName:  " + abilityTypeName);
             }
@@ -224,6 +230,7 @@ public class AbilityData {
         DEFEND, DEFEND_UPGRADED,
         ITEM_SWORD_ABILITY,
         ITEM_SWORD_2_ABILITY,
-        ITEM_SHIELD_ABILITY
+        ITEM_SHIELD_ABILITY,
+        NOTHING
     }
 }

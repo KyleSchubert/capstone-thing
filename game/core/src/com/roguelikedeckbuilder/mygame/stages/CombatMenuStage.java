@@ -44,15 +44,11 @@ public class CombatMenuStage extends GenericStage {
     private final Label energyLabel;
     private boolean victory = false;
 
-    public CombatMenuStage(ScreenViewport viewportForStage, ImageButton exitButtonForTesting, CardChangeStage cardChangeMenuStage, ClickListener cardChangeStageTrigger) {
+    public CombatMenuStage(ScreenViewport viewportForStage, ClickListener cardChangeStageTrigger) {
         super(viewportForStage, "combat background");
 
         // Reposition the background
         getStageBackgroundActor().setPosition(-7, -5);
-
-        // TODO: REMOVE THIS AFTER COMBAT IS IMPLEMENTED
-        exitButtonForTesting.setPosition(33, 36);
-        this.getStage().addActor(exitButtonForTesting);
 
         // Add the player
         this.getStage().addActor(Player.getCharacter());

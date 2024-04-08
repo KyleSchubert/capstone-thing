@@ -1,6 +1,7 @@
 package com.roguelikedeckbuilder.mygame.items;
 
 import com.badlogic.gdx.utils.Array;
+import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.combat.AbilityData;
 
 public class ItemData {
@@ -18,17 +19,32 @@ public class ItemData {
 
     }
 
-    public static Array<ItemName> getSomeRandomItemNamesByTier(ItemTier itemTier, int amount) {
+    public static Array<ItemName> getSomeRandomItemNamesByTier(ItemTier itemTier, int amount, boolean allowDuplicates) {
         Array<ItemName> results = new Array<>();
-        allItemNames.shuffle();
+        Array<ItemName> copy = new Array<>();
+        copy.addAll(allItemNames);
+        copy.shuffle();
 
-        for (ItemName itemName : allItemNames) {
-            if (getItemTier(itemName).equals(itemTier)) {
-                results.add(itemName);
-                if (results.size == amount) {
-                    break;
+
+        if (!allowDuplicates) {
+            for (Item item : Player.getOwnedItems()) {
+                copy.removeValue(item.getItemName(), true);
+            }
+        }
+
+        for (ItemName itemName : copy) {
+            if (itemTier == ItemTier.ANY || getItemTier(itemName).equals(itemTier)) {
+                if (getItemTier(itemName) != ItemTier.JUNK) {
+                    results.add(itemName);
+                    if (results.size == amount) {
+                        break;
+                    }
                 }
             }
+        }
+
+        if (results.size == 0) {
+            results.add(ItemName.JUNK);
         }
 
         while (results.size < amount) {
@@ -83,6 +99,12 @@ public class ItemData {
                     abilityTypeName = AbilityData.AbilityTypeName.ITEM_SWORD_2_ABILITY;
                     itemTier = ItemTier.COMMON;
                 }
+                case JUNK -> {
+                    iconFileName = "junk.png";
+                    name = "Junk";
+                    abilityTypeName = AbilityData.AbilityTypeName.NOTHING;
+                    itemTier = ItemTier.JUNK;
+                }
             }
 
             imagePath = "ITEMS/" + iconFileName;
@@ -106,10 +128,10 @@ public class ItemData {
     }
 
     public enum ItemName {
-        TEST_SWORD, TEST_SHIELD, TEST_SWORD_2
+        TEST_SWORD, TEST_SHIELD, TEST_SWORD_2, JUNK
     }
 
     public enum ItemTier {
-        COMMON, UNCOMMON, RARE, BOSS
+        COMMON, UNCOMMON, RARE, BOSS, ANY, JUNK
     }
 }

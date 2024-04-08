@@ -188,7 +188,7 @@ public class Tooltip {
     }
 
     private void generateItemRewards() {
-        Array<ItemData.ItemName> itemNames = ItemData.getSomeRandomItemNamesByTier(ItemData.ItemTier.COMMON, 3);
+        Array<ItemData.ItemName> itemNames = ItemData.getSomeRandomItemNamesByTier(ItemData.ItemTier.COMMON, 3, false);
 
         for (int i = 0; i < itemNames.size; i++) {
             ItemData.ItemName itemName = itemNames.get(i);

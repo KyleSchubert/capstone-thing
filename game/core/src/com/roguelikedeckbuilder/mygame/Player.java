@@ -1,5 +1,6 @@
 package com.roguelikedeckbuilder.mygame;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.cards.Card;
@@ -9,6 +10,7 @@ import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
 import com.roguelikedeckbuilder.mygame.helpers.GenericHelpers;
 import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
+import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.items.Item;
 import com.roguelikedeckbuilder.mygame.items.ItemData;
@@ -24,6 +26,7 @@ public class Player {
     private static boolean flagGoBackToPreviousMenuState;
     private static XYPair<Float> positionOnStage;
     private static Array<Item> ownedItems;
+    private static MenuController menuController;
 
     public static void initialize() {
         positionOnStage = new XYPair<>(18f, 22.8f);
@@ -36,6 +39,10 @@ public class Player {
         flagGoBackToPreviousMenuState = false;
         ownedItems = new Array<>();
         reset();
+    }
+
+    public static void referenceMenuController(MenuController _menuController) {
+        menuController = _menuController;
     }
 
     public static void reset() {
@@ -60,6 +67,21 @@ public class Player {
         ownedCards.shuffle();
 
         ownedItems.clear();
+
+        Array<Actor> mustRemove = new Array<>();
+
+        if (menuController != null) {
+            for (Actor actor : menuController.getTopBarStage().getActors()) {
+                UserObjectOptions actorType = (UserObjectOptions) actor.getUserObject();
+                if (actorType == UserObjectOptions.ITEM) {
+                    mustRemove.add(actor);
+                }
+            }
+        }
+
+        for (Actor actor : mustRemove) {
+            actor.remove();
+        }
     }
 
     public static void changeMoney(int change) {
@@ -159,9 +181,29 @@ public class Player {
         return GenericHelpers.isPointWithinRange(point, positionOnStage);
     }
 
+    public static Array<Item> getOwnedItems() {
+        return ownedItems;
+    }
+
     public static void obtainItem(ItemData.ItemName itemName) {
         Item item = new Item(itemName);
         System.out.println("Player gained item: " + itemName);
+
+        item.getGroup().setPosition(0.5f + ownedItems.size * 3, 40.1f);
+
+        for (Item ownedItem : ownedItems) {
+            if (ownedItem.getItemName() == itemName) {
+                item.getGroup().clear();
+                if (itemName == ItemData.ItemName.JUNK) {
+                    Player.changePersistentMoney(5);
+                }
+                SoundManager.playFunnyTadaSound();
+                return;
+            }
+        }
+
+        menuController.getTopBarStage().addActor(item.getGroup());
+
         ownedItems.add(item);
         SoundManager.playGetItemSound();
     }
