@@ -43,14 +43,10 @@ public class ItemData {
             }
         }
 
-        if (results.size == 0) {
+        while (results.size < amount) {
             results.add(ItemName.JUNK);
         }
-
-        while (results.size < amount) {
-            results.add(results.first());
-            results.shuffle();
-        }
+        results.shuffle();
 
         return results;
     }
