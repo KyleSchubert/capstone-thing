@@ -17,6 +17,7 @@ import com.roguelikedeckbuilder.mygame.combat.EffectData;
 import com.roguelikedeckbuilder.mygame.combat.EnemyData;
 import com.roguelikedeckbuilder.mygame.helpers.*;
 import com.roguelikedeckbuilder.mygame.items.ItemData;
+import com.roguelikedeckbuilder.mygame.tracking.Statistics;
 
 public class MyGame extends ApplicationAdapter {
     public static final float SCALE_FACTOR = 0.05f;
@@ -25,7 +26,6 @@ public class MyGame extends ApplicationAdapter {
     private static final float windowHeight = 920;
     private static final float viewWidth = windowWidth * SCALE_FACTOR;
     private static final float viewHeight = windowHeight * SCALE_FACTOR;
-    public static float timeElapsedInGame = 0.0f;
     static SpriteBatch batch;
     static BitmapFont font;
     static ScreenViewport viewport;
@@ -34,10 +34,6 @@ public class MyGame extends ApplicationAdapter {
     float accumulator = 0;
     private String timeText = "0:00";
     private boolean isSomeDebugOn = false;
-
-    public static void setTimeElapsedInGame(float newTime) {
-        timeElapsedInGame = newTime;
-    }
 
     @Override
     public void create() {
@@ -63,6 +59,7 @@ public class MyGame extends ApplicationAdapter {
         BuffOrDebuffData.initialize();
         SoundManager.initialize();
         Player.initialize();
+        Statistics.resetVariables();
 
         menuController = new MenuController();
         menuController.create(camera);
@@ -112,11 +109,12 @@ public class MyGame extends ApplicationAdapter {
                 menuController.setMenuState(MenuController.MenuState.RESULTS);
             }
             if (!MenuController.getIsGameplayPaused() || menuController.getCurrentMenuState() == MenuController.MenuState.MAIN_MENU) {
-                timeElapsedInGame += STEP_TIME;
-                int hours = (int) timeElapsedInGame / 3600;
-                int minutes = (int) (timeElapsedInGame % 3600) / 60;
-                int seconds = (int) timeElapsedInGame % 60;
-                if (timeElapsedInGame > 3600) {
+                float currentTime = Statistics.getSecondsIntoRun();
+                Statistics.setSecondsIntoRun(currentTime + STEP_TIME);
+                int hours = (int) currentTime / 3600;
+                int minutes = (int) (currentTime % 3600) / 60;
+                int seconds = (int) currentTime % 60;
+                if (currentTime > 3600) {
                     timeText = String.format("%02d:%02d:%02d", hours, minutes, seconds);
                 } else {
                     timeText = String.format("%02d:%02d", minutes, seconds);

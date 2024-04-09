@@ -25,6 +25,7 @@ import com.roguelikedeckbuilder.mygame.combat.CombatHandler;
 import com.roguelikedeckbuilder.mygame.combat.Enemy;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
 import com.roguelikedeckbuilder.mygame.helpers.*;
+import com.roguelikedeckbuilder.mygame.tracking.Statistics;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
@@ -243,6 +244,7 @@ public class CombatMenuStage extends GenericStage {
 
         victory = false;
 
+        Statistics.setTurnNumber(1);
         Player.combatStart();
 
         currentEnemies.clear();
@@ -292,6 +294,7 @@ public class CombatMenuStage extends GenericStage {
         // TODO: when enemies can fight, make this end the player's turn and prevent this button from being spammed
 
         System.out.println("Ended turn.");
+        Statistics.setTurnNumber(Statistics.getTurnNumber() + 1);
 
         removeActorsByType(UserObjectOptions.CARD);
 

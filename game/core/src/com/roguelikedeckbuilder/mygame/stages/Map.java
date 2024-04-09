@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Tooltip;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
+import com.roguelikedeckbuilder.mygame.tracking.Statistics;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -326,6 +327,7 @@ public class Map {
         // If the node that was just completed was the last node
         if (currentNodeStage == MAX_STAGES - 1) {
             reset();
+            Statistics.setZoneNumber(Statistics.getZoneNumber() + 1);
         }
     }
 

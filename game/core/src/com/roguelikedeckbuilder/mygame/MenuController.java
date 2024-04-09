@@ -18,6 +18,7 @@ import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.stages.*;
+import com.roguelikedeckbuilder.mygame.tracking.Statistics;
 
 import java.util.Random;
 
@@ -464,6 +465,8 @@ public class MenuController {
 
                 // Use the data
                 tooltip.useMapNodeData(data.nodeType(), data.stageNumberOfSelf(), data.indexOfSelf());
+                Statistics.setStageNumber(data.stageNumberOfSelf());
+                Statistics.setNodeNumber(data.indexOfSelf());
                 tooltip.setSize(data.tooltipSize());
                 tooltip.setLocation(data.tooltipLocation());
 
@@ -538,7 +541,7 @@ public class MenuController {
                 Gdx.input.setInputProcessor(mainMenuStage);
                 currentInputProcessor = mainMenuStage;
                 UseLine.setVisibility(false);
-                setTimeElapsedInGame(0f);
+                Statistics.resetVariables();
                 setGameplayPaused(true);
                 setDrawMainMenu(true);
                 setDrawDarkTransparentScreen(false);
