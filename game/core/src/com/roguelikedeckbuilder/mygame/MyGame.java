@@ -141,8 +141,8 @@ public class MyGame extends ApplicationAdapter {
                         System.out.println("- 2 : Treasure");
                         System.out.println("- 3 : Combat");
                         System.out.println("- 4 : Rest");
-                        System.out.println("- 5 : Combat");
-                        System.out.println("- 6 : Give random at, if on the Map, Rest Area, Treasure, or Shop");
+                        System.out.println("- 5 : Results");
+                        System.out.println("- 6 : Give random item, if on the Map, Rest Area, Treasure, or Shop");
                         System.out.println("- 7 : +1000 persistent coins");
                         System.out.println("- 8 : +1000 coins");
                         System.out.println("- 9 : Full heal");
