@@ -23,6 +23,7 @@ import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.characters.Character;
 import com.roguelikedeckbuilder.mygame.combat.CombatHandler;
 import com.roguelikedeckbuilder.mygame.combat.Enemy;
+import com.roguelikedeckbuilder.mygame.combat.HpChangeNumberHandler;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
 import com.roguelikedeckbuilder.mygame.helpers.*;
 import com.roguelikedeckbuilder.mygame.tracking.Statistics;
@@ -123,6 +124,10 @@ public class CombatMenuStage extends GenericStage {
     }
 
     public void batch(float elapsedTime, SpriteBatch batch) {
+        while (HpChangeNumberHandler.size() > 0) {
+            this.getStage().addActor(HpChangeNumberHandler.pop().getGroup());
+        }
+
         super.batch(elapsedTime);
         delayHandler();
         targetHoverListener();

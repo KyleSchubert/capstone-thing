@@ -5,18 +5,17 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.*;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.characters.Character;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
-import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.stages.*;
 import com.roguelikedeckbuilder.mygame.tracking.Statistics;
 
@@ -64,7 +63,6 @@ public class MenuController {
     private boolean isDrawShopMenuStage;
     private boolean isDrawCombatMenuStage;
     private float runningAnimationAddClock = 0;
-    private float runningAnimationRemovalClock = 0;
     private final Random random = new Random();
 
     public void create(OrthographicCamera camera) {
@@ -316,26 +314,6 @@ public class MenuController {
             if (runningAnimationAddClock > 0.2f) {
                 runningAnimationAddClock -= 0.2f;
                 animateRandomRunningCharacter();
-            }
-
-            runningAnimationRemovalClock += elapsedTime;
-            if (runningAnimationRemovalClock > 3) {
-                runningAnimationRemovalClock -= 3;
-
-                Array<Actor> mustRemove = new Array<>();
-
-                for (Actor actor : mainMenuStage.getActors()) {
-                    UserObjectOptions actorType = (UserObjectOptions) actor.getUserObject();
-                    if (actorType == UserObjectOptions.RUNNING_ANIMATION_CHARACTER) {
-                        if (actor.getX() < -15) {
-                            mustRemove.add(actor);
-                        }
-                    }
-                }
-
-                for (Actor actor : mustRemove) {
-                    actor.remove();
-                }
             }
         } else {
             topBarStage.draw();
@@ -785,9 +763,9 @@ public class MenuController {
     }
 
     private void animateRandomRunningCharacter() {
-        float startX = 80;
+        float startX = 90;
         float startY = 31;
-        float endXOffset = -640;
+        float endXOffset = -130;
 
         float randomX = random.nextFloat(15) - 7;
         float randomY = random.nextFloat(15) - 7;
@@ -798,13 +776,13 @@ public class MenuController {
         mainMenuStage.addActor(new Character(randomType, startX + randomX, startY + randomY));
         Character character = (Character) mainMenuStage.getActors().get(mainMenuStage.getActors().size - 1);
         character.setTouchable(Touchable.disabled);
-        character.setUserObject(UserObjectOptions.RUNNING_ANIMATION_CHARACTER);
         character.setState(Character.CharacterState.MOVING);
 
-        MoveToAction moveAction = new MoveToAction();
-        moveAction.setPosition(character.getX() + endXOffset, character.getY());
-        moveAction.setDuration(90f);
-        character.addAction(moveAction);
+        SequenceAction sequenceAction = new SequenceAction(
+                Actions.moveBy(endXOffset, 0, 26),
+                Actions.removeActor()
+        );
+        character.addAction(sequenceAction);
     }
 
     public TreasureMenuStage getTreasureMenuStage() {

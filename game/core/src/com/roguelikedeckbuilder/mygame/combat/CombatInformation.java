@@ -1,13 +1,10 @@
 package com.roguelikedeckbuilder.mygame.combat;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.roguelikedeckbuilder.mygame.characters.Character;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.tracking.Statistics;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class CombatInformation {
     private int hp;
@@ -16,15 +13,9 @@ public class CombatInformation {
     private final HpBar hpBar;
     private boolean isPlayerInformation = false;
     private XYPair<Float> damageNumberCenter;
-    private final BitmapFont font;
 
     public CombatInformation() {
         hpBar = new HpBar();
-
-        font = new BitmapFont(Gdx.files.internal("hp_and_damage.fnt"));
-        font.setUseIntegerPositions(false);
-        font.getData().setScale(SCALE_FACTOR / 6);
-
         defense = 0;
     }
 
@@ -90,13 +81,16 @@ public class CombatInformation {
             return true;
         }
 
+        int totalDamageTaken = Math.min(defense + hp, amount);
+
         if (isPlayerInformation) {
-            Statistics.playerTookDamage(amount);
+            Statistics.playerTookDamage(totalDamageTaken);
         } else {
-            Statistics.enemyTookDamage(amount);
+            Statistics.enemyTookDamage(totalDamageTaken);
         }
 
-        createHpChangeNumbers(amount);
+        createHpChangeNumbers(totalDamageTaken);
+
         int excessDamage = changeDefense(-amount);
         changeHp(excessDamage);
         return false;
@@ -132,11 +126,11 @@ public class CombatInformation {
     }
 
     private void createHpChangeNumbers(int amount) {
-        // The numbers should be move-able too, though
+        HpChangeNumberHandler.create(damageNumberCenter, amount);
     }
 
     public void setPositions(XYPair<Float> position) {
-        damageNumberCenter = position;
+        damageNumberCenter = new XYPair<>(position.x(), position.y() + 6);
         hpBar.setPosition(new XYPair<>(position.x() - 4.1f, position.y() - 1.5f));
     }
 
