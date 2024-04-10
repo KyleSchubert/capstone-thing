@@ -14,6 +14,7 @@ import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.items.Item;
 import com.roguelikedeckbuilder.mygame.items.ItemData;
+import com.roguelikedeckbuilder.mygame.tracking.Statistics;
 
 public class Player {
     private static Character character;
@@ -36,6 +37,7 @@ public class Player {
         character.faceRight();
         ownedCards = new Array<>();
         combatInformation = new CombatInformation();
+        combatInformation.setPlayerInformation(true);
         flagGoBackToPreviousMenuState = false;
         ownedItems = new Array<>();
         reset();
@@ -88,6 +90,9 @@ public class Player {
         money += change;
         if (change > 0) {
             SoundManager.playGetCoinsSound();
+            Statistics.gainedCoins(change);
+        } else {
+            Statistics.spentCoins(Math.abs(change));
         }
     }
 
@@ -95,6 +100,7 @@ public class Player {
         persistentMoney += change;
         if (change > 0) {
             SoundManager.playGetCoinsSound();
+            Statistics.gainedPersistentCoins(change);
         }
     }
 
@@ -118,11 +124,12 @@ public class Player {
         Card card = new Card(cardTypeName, false);
         card.setUpgraded(isUpgraded);
         card.getGroup().addCaptureListener(card.getClickListener());
+        Statistics.gainedCard(card);
         ownedCards.add(card);
     }
 
     public static void removeCard(int cardIndex) {
-        ownedCards.removeIndex(cardIndex);
+        Statistics.removedCard(ownedCards.removeIndex(cardIndex));
     }
 
     public static Character getCharacter() {
@@ -144,7 +151,9 @@ public class Player {
     }
 
     public static void startTurn() {
+        int oldEnergyAmount = energy;
         energy = 3;
+        Statistics.restoredEnergy(energy - oldEnergyAmount);
         Player.getCombatInformation().clearDefense();
     }
 
@@ -155,6 +164,7 @@ public class Player {
     public static boolean tryToSpendEnergy(int amount) {
         if (energy >= amount) {
             energy -= amount;
+            Statistics.spentEnergy(amount);
             return true;
         } else {
             return false;
@@ -205,6 +215,7 @@ public class Player {
         menuController.getTopBarStage().addActor(item.getGroup());
 
         ownedItems.add(item);
+        Statistics.gainedItem(itemName);
         SoundManager.playGetItemSound();
     }
 }

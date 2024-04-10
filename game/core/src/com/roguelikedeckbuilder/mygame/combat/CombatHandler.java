@@ -4,21 +4,22 @@ import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.characters.Character;
+import com.roguelikedeckbuilder.mygame.tracking.Statistics;
 
 public class CombatHandler {
     private static Array<CombatInformation> targets = new Array<>();
     private static Array<Enemy> enemiesThePlayerIsHoveringOver = new Array<>();
     private static boolean isTargetingPlayer = false;
 
-    public static void enemyUsesAbility(AbilityData.AbilityTypeName abilityTypeName, CombatInformation self) {
+    public static void enemyUsesAbility(AbilityData.AbilityTypeName abilityTypeName, CombatInformation self, TargetType targetType) {
         // Convert the targetType to make sense since the enemy is using it
-        TargetType targetType = AbilityData.getTargetType(abilityTypeName);
         if (targetType == TargetType.SELF) {
             targets.clear();
             targets.add(self);
         } else if (targetType == TargetType.ALL || targetType == TargetType.ONE) {
             targets.clear();
             targets.add(Player.getCombatInformation());
+            Statistics.playerWasTargeted();
         }
 
         AbilityData.useAbility(abilityTypeName, targets);
@@ -35,6 +36,7 @@ public class CombatHandler {
             if (Player.tryToSpendEnergy(AbilityData.getEnergyCost(card.getUsedAbilityTypeName()))) {
                 AbilityData.useAbility(card.getUsedAbilityTypeName(), targets);
                 card.setToGoToShufflePile(true);
+                Statistics.playedCard(card);
             }
         }
         isTargetingPlayer = false;

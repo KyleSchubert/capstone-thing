@@ -149,6 +149,7 @@ public class CombatMenuStage extends GenericStage {
                 shufflePileContents.add(card);
                 handContents.removeValue(card, true);
                 card.getGroup().remove();
+                Statistics.discardedCard(Statistics.DiscardReason.PLAYED_CARD);
                 updatePileText();
             }
         }
@@ -169,7 +170,9 @@ public class CombatMenuStage extends GenericStage {
                     for (Enemy enemy : currentEnemies) {
                         enemy.endTurn();
                     }
-
+                    Statistics.turnEnded();
+                    Statistics.setTurnNumber(Statistics.getTurnNumber() + 1);
+                    Statistics.turnStarted();
                     drawCards(5);
 
                     isPlayerTurn = true;
@@ -245,6 +248,7 @@ public class CombatMenuStage extends GenericStage {
         victory = false;
 
         Statistics.setTurnNumber(1);
+        Statistics.turnStarted();
         Player.combatStart();
 
         currentEnemies.clear();
@@ -291,14 +295,14 @@ public class CombatMenuStage extends GenericStage {
     }
 
     private void endTurn() {
-        // TODO: when enemies can fight, make this end the player's turn and prevent this button from being spammed
-
         System.out.println("Ended turn.");
-        Statistics.setTurnNumber(Statistics.getTurnNumber() + 1);
 
         removeActorsByType(UserObjectOptions.CARD);
 
         shufflePileContents.addAll(handContents);
+        for (int i = 0; i < handContents.size; i++) {
+            Statistics.discardedCard(Statistics.DiscardReason.END_TURN);
+        }
         handContents.clear();
         updatePileText();
 
@@ -319,6 +323,7 @@ public class CombatMenuStage extends GenericStage {
                 System.out.println("Shuffled in.");
                 System.out.println("AMOUNT: " + amount + " sizes: draw: " + drawPileContents.size + " shuffle: " + shufflePileContents.size);
 
+                Statistics.shuffledIn(shufflePileContents.size);
                 drawPileContents.addAll(shufflePileContents);
                 drawPileContents.shuffle();
                 shufflePileContents.clear();
@@ -326,6 +331,7 @@ public class CombatMenuStage extends GenericStage {
             drawPileContents.get(0).getGroup().setPosition(12 + getAmountOfCardsInHand() * 7, 0);
             this.getStage().addActor(drawPileContents.get(0).getGroup());
             handContents.add(drawPileContents.get(0));
+            Statistics.drewCard(drawPileContents.get(0));
             drawPileContents.removeIndex(0);
         }
         updatePileText();
@@ -342,6 +348,10 @@ public class CombatMenuStage extends GenericStage {
         }
 
         return total;
+    }
+
+    public Array<Enemy> getCurrentEnemies() {
+        return currentEnemies;
     }
 
     private void targetHoverListener() {

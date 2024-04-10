@@ -14,6 +14,7 @@ import com.roguelikedeckbuilder.mygame.combat.CombatHandler;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
+import com.roguelikedeckbuilder.mygame.tracking.Statistics;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
@@ -139,14 +140,15 @@ public class Card {
 
 
     public void setUpgraded(boolean upgraded) {
-        isUpgraded = upgraded;
-
-        if (isUpgraded) {
+        if (upgraded) {
             // A star symbol, to show it is upgraded
             Image upgradedImage = new Image(new Texture(Gdx.files.internal("CARDS/upgraded star.png")));
             upgradedImage.setPosition(25, 190);
             group.addActor(upgradedImage);
+            Statistics.upgradedCard(this);
         }
+
+        isUpgraded = upgraded;
 
         cardName.setText(AbilityData.getName(getUsedAbilityTypeName()));
         cardEffectDescription.setText(AbilityData.getDescription(getUsedAbilityTypeName()));

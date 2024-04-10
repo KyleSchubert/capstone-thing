@@ -288,6 +288,7 @@ public class MenuController {
         if (this.isDrawCombatMenuStage) {
             combatMenuStage.batch(elapsedTime, batch);
             if (combatMenuStage.isVictory()) {
+                Statistics.combatEnded();
                 combatMenuStage.setVictory(false);
 
                 treasureMenuStage.addGenericWinTreasureSet();
@@ -599,6 +600,7 @@ public class MenuController {
             }
             case RESUME -> setMenuState(previousImportantMenuState);
             case RESULTS -> {
+                Statistics.runEnded();
                 currentMenuState = MenuState.RESULTS;
                 Gdx.input.setInputProcessor(resultsMenuStage);
                 currentInputProcessor = resultsMenuStage;
@@ -609,6 +611,8 @@ public class MenuController {
                 setDrawTooltipMenu(false);
             }
             case START_REWARDS -> {
+                Statistics.setRunNumber(Statistics.getRunNumber() + 1);
+                Statistics.runStarted();
                 tooltip.itemReward();
                 currentMenuState = MenuState.START_REWARDS;
                 Gdx.input.setInputProcessor(tooltip.tooltipStage);
@@ -676,10 +680,9 @@ public class MenuController {
                     for (int i = 0; i < 4; i++) {
                         int randomNumber = random.nextInt(Character.CharacterTypeName.values().length);
                         combatMenuStage.addEnemy(Character.CharacterTypeName.values()[randomNumber]);
-
                     }
                 }
-
+                Statistics.combatStarted(combatMenuStage.getCurrentEnemies());
                 previousImportantMenuState = MenuState.COMBAT;
             }
 

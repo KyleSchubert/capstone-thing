@@ -9,11 +9,12 @@ import com.roguelikedeckbuilder.mygame.helpers.GenericHelpers;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.stages.CombatMenuStage;
+import com.roguelikedeckbuilder.mygame.tracking.Statistics;
 
 public class Enemy {
     private final Character character;
     private final CombatInformation combatInformation;
-    private Array<AbilityData.AbilityTypeName> abilityOptions;
+    private final Array<AbilityData.AbilityTypeName> abilityOptions;
     private AbilityData.AbilityTypeName nextAbility;
     private final XYPair<Float> positionOnStage;
 
@@ -63,7 +64,13 @@ public class Enemy {
 
     public void beginTurn() {
         System.out.println("An enemy is using: " + nextAbility.name());
-        CombatHandler.enemyUsesAbility(nextAbility, combatInformation);
+        Statistics.enemyUsedAbility(nextAbility);
+
+        TargetType targetType = AbilityData.getTargetType(nextAbility);
+        if (targetType == TargetType.SELF) {
+            Statistics.enemyWasTargeted(this);
+        }
+        CombatHandler.enemyUsesAbility(nextAbility, combatInformation, targetType);
     }
 
     public void endTurn() {

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.roguelikedeckbuilder.mygame.characters.Character;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
+import com.roguelikedeckbuilder.mygame.tracking.Statistics;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
@@ -13,6 +14,7 @@ public class CombatInformation {
     private int maxHp;
     private int defense;
     private final HpBar hpBar;
+    private boolean isPlayerInformation = false;
     private XYPair<Float> damageNumberCenter;
     private final BitmapFont font;
 
@@ -24,6 +26,10 @@ public class CombatInformation {
         font.getData().setScale(SCALE_FACTOR / 6);
 
         defense = 0;
+    }
+
+    public void setPlayerInformation(boolean playerInformation) {
+        isPlayerInformation = playerInformation;
     }
 
     public void loadEnemyStats(Character.CharacterTypeName characterTypeName) {
@@ -39,10 +45,25 @@ public class CombatInformation {
     }
 
     public void changeHp(int change) {
+        int hpBefore = hp;
+
         if (hp + change >= 1) {
             hp = Math.min(hp + change, maxHp);
         } else {
             hp = 0;
+            if (isPlayerInformation) {
+                Statistics.playerDied();
+            } else {
+                Statistics.enemyDied();
+            }
+        }
+
+        if (change > 0) {
+            if (isPlayerInformation) {
+                Statistics.playerHealed(hp - hpBefore);
+            } else {
+                Statistics.enemyHealed(hp - hpBefore);
+            }
         }
         updateHpBar();
     }
@@ -51,6 +72,12 @@ public class CombatInformation {
         if (maxHp + change >= 1) {
             maxHp += change;
             changeHp(change);
+
+            if (isPlayerInformation) {
+                Statistics.playerMaxHpChanged(change);
+            } else {
+                Statistics.enemyMaxHpChanged(change);
+            }
         } else {
             maxHp = 1;
             hp = 1;
@@ -62,6 +89,13 @@ public class CombatInformation {
         if (hp == 0) {
             return true;
         }
+
+        if (isPlayerInformation) {
+            Statistics.playerTookDamage(amount);
+        } else {
+            Statistics.enemyTookDamage(amount);
+        }
+
         createHpChangeNumbers(amount);
         int excessDamage = changeDefense(-amount);
         changeHp(excessDamage);
@@ -75,6 +109,14 @@ public class CombatInformation {
     private int changeDefense(int change) {
         int excessDamage = 0;
         defense += change;
+
+        if (change > 0) {
+            if (isPlayerInformation) {
+                Statistics.playerGainedDefense(change);
+            } else {
+                Statistics.enemyGainedDefense(change);
+            }
+        }
 
         if (defense < 0) {
             excessDamage = defense;
