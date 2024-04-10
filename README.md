@@ -3,8 +3,8 @@ This will be a roguelike deckbuilder made in Java using libGDX
 
 <h1>Images of parts of the game so far</h1>
   <details><summary>Menu</summary>
-   
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/dd08cae3-18ab-42e8-b5f2-6b22e3e1558c)
+
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/5db96ae7-433e-4d68-bba8-7eb26a76ce11)
    </details>
    
    <details><summary>Map</summary>
@@ -14,37 +14,37 @@ This will be a roguelike deckbuilder made in Java using libGDX
 
   <details><summary>Combat</summary>
 
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/81bb0239-c1c2-4163-87db-9e2fd61770f0)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/c202479c-40da-492a-b725-827091e9dc03)
   </details>
 
   <details><summary>Viewing Draw Pile in Combat</summary>
 
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/f957b7d3-f22d-47c9-a594-8fc91c7cddfc)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/dccd17f1-2841-4d39-97b5-2bdf7590a5cf)
   </details>
   
   <details><summary>Rewards</summary>
   
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/9b7ac4d3-12ba-4176-b6b6-06224947bec2)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/8d174f0b-fb3b-4a45-a090-e3e480c00001)
   </details>
 
   <details><summary>"Start with an item" panel</summary>
    
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/1abf1c5f-7722-40dc-8474-f3d427e65bf3)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/7cc02ef9-cd7e-4f1c-976f-d5852ad11bea)
   </details>
 
   <details><summary>Shop</summary>
     
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/63acf698-290a-4732-86e2-dc8744d5b9a9)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/aa7e2f6c-a3f2-4ada-b04a-f2c72828fc14)
   </details>
 
   <details><summary>Rest Area</summary>
     
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/6b4150a1-ed8c-4478-8dc2-4a3064f2eb77)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/d0b1ea64-d1c0-4933-9d7f-575fe06fc107)
   </details>
   
   <details><summary>Viewing Deck</summary>
     
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/0ec10387-8ecc-48c5-8078-ceb536b67fad)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/35f88dc7-60fa-48f0-925d-4e1b5e7006da)
   </details>
 
   
