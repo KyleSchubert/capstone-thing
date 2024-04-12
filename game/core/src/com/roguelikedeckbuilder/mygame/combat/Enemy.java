@@ -64,11 +64,11 @@ public class Enemy {
 
     public void beginTurn() {
         System.out.println("An enemy is using: " + nextAbility.name());
-        Statistics.enemyUsedAbility(nextAbility);
+        Statistics.enemyUsedAbility();
 
         TargetType targetType = AbilityData.getTargetType(nextAbility);
         if (targetType == TargetType.SELF) {
-            Statistics.enemyWasTargeted(this);
+            Statistics.enemyWasTargeted();
         }
         CombatHandler.enemyUsesAbility(nextAbility, combatInformation, targetType);
     }

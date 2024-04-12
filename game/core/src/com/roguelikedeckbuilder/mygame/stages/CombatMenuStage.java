@@ -154,7 +154,7 @@ public class CombatMenuStage extends GenericStage {
                 shufflePileContents.add(card);
                 handContents.removeValue(card, true);
                 card.getGroup().remove();
-                Statistics.discardedCard(Statistics.DiscardReason.PLAYED_CARD);
+                Statistics.discardedCard();
                 updatePileText();
             }
         }
@@ -306,7 +306,7 @@ public class CombatMenuStage extends GenericStage {
 
         shufflePileContents.addAll(handContents);
         for (int i = 0; i < handContents.size; i++) {
-            Statistics.discardedCard(Statistics.DiscardReason.END_TURN);
+            Statistics.discardedCard();
         }
         handContents.clear();
         updatePileText();
@@ -336,7 +336,7 @@ public class CombatMenuStage extends GenericStage {
             drawPileContents.get(0).getGroup().setPosition(12 + getAmountOfCardsInHand() * 7, 0);
             this.getStage().addActor(drawPileContents.get(0).getGroup());
             handContents.add(drawPileContents.get(0));
-            Statistics.drewCard(drawPileContents.get(0));
+            Statistics.drewCard();
             drawPileContents.removeIndex(0);
         }
         updatePileText();

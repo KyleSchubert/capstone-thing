@@ -124,16 +124,17 @@ public class Player {
         Card card = new Card(cardTypeName, false);
         card.setUpgraded(isUpgraded);
         if (isUpgraded) {
-            Statistics.upgradedCard(card);
+            Statistics.upgradedCard();
         }
         card.getGroup().addCaptureListener(card.getClickListener());
-        Statistics.gainedCard(card);
+        Statistics.gainedCard();
         ownedCards.add(card);
     }
 
     public static void removeCard(int cardIndex, boolean track) {
         if (track) {
-            Statistics.removedCard(ownedCards.removeIndex(cardIndex));
+            ownedCards.removeIndex(cardIndex);
+            Statistics.removedCard();
         } else {
             ownedCards.removeIndex(cardIndex);
         }
@@ -222,7 +223,7 @@ public class Player {
         menuController.getTopBarStage().addActor(item.getGroup());
 
         ownedItems.add(item);
-        Statistics.gainedItem(itemName);
+        Statistics.gainedItem();
         SoundManager.playGetItemSound();
     }
 }

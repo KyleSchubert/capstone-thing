@@ -660,7 +660,7 @@ public class MenuController {
                         combatMenuStage.addEnemy(Character.CharacterTypeName.values()[randomNumber]);
                     }
                 }
-                Statistics.combatStarted(combatMenuStage.getCurrentEnemies());
+                Statistics.combatStarted();
                 previousImportantMenuState = MenuState.COMBAT;
             }
 

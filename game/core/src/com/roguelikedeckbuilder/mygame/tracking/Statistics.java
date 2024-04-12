@@ -1,17 +1,11 @@
 package com.roguelikedeckbuilder.mygame.tracking;
 
 import com.badlogic.gdx.utils.Array;
-import com.roguelikedeckbuilder.mygame.cards.Card;
-import com.roguelikedeckbuilder.mygame.combat.AbilityData;
-import com.roguelikedeckbuilder.mygame.combat.BuffOrDebuffData;
-import com.roguelikedeckbuilder.mygame.combat.Enemy;
-import com.roguelikedeckbuilder.mygame.items.ItemData;
 
 public class Statistics {
     private static final Array<StatisticsRow> fullStatistics = new Array<>();
     // 😏 I think I'll just write this class, profile the performance, and if it's bad then I'll change it.
     // But it'll be in this very-likely naively-done way until then.
-    // TODO: Also, wouldn't some of these like the ones that use Card need to make a copy and not just use the original?
     public static float secondsIntoRun = 0.0f;
     private static int zoneNumber = 1;
     private static int stageNumber = 1;
@@ -30,6 +24,7 @@ public class Statistics {
     }
 
     public static void printAll() {
+        // For debugging
         for (StatisticsRow row : fullStatistics) {
             System.out.printf("[%s] Value: %s, %s seconds, zone %s, stage %s, node %s, turn %s %n",
                     row.statisticsType(),
@@ -40,6 +35,18 @@ public class Statistics {
                     row.nodeNumber(),
                     row.turnNumber());
         }
+    }
+
+    public static int getSizeOfFullStatistics() {
+        return fullStatistics.size;
+    }
+
+    public static Object getValue(int index) {
+        return fullStatistics.get(index).value();
+    }
+
+    public static Object getType(int index) {
+        return fullStatistics.get(index).statisticsType();
     }
 
     public static int getStageNumber() {
@@ -94,8 +101,8 @@ public class Statistics {
         fullStatistics.add(new StatisticsRow(statisticsType, value, getSecondsIntoRun(), getZoneNumber(), getStageNumber(), getNodeNumber(), getTurnNumber()));
     }
 
-    public static void combatStarted(Array<Enemy> initialEnemies) {
-        add(StatisticsType.COMBAT_STARTED, initialEnemies);
+    public static void combatStarted() {
+        add(StatisticsType.COMBAT_STARTED, "");
     }
 
     public static void combatEnded() {
@@ -110,16 +117,16 @@ public class Statistics {
         add(StatisticsType.TURN_ENDED, "");
     }
 
-    public static void playedCard(Card usedCard) {
-        add(StatisticsType.PLAYED_CARD, usedCard);
+    public static void playedCard() {
+        add(StatisticsType.PLAYED_CARD, "");
     }
 
-    public static void discardedCard(DiscardReason discardReason) {
-        add(StatisticsType.DISCARDED_CARD, discardReason);
+    public static void discardedCard() {
+        add(StatisticsType.DISCARDED_CARD, "");
     }
 
-    public static void drewCard(Card drawnCard) {
-        add(StatisticsType.DREW_CARD, drawnCard);
+    public static void drewCard() {
+        add(StatisticsType.DREW_CARD, "");
     }
 
     public static void shuffledIn(int amountOfCardsThatWereInTheShufflePile) {
@@ -134,8 +141,8 @@ public class Statistics {
         add(StatisticsType.RESTORED_ENERGY, amount);
     }
 
-    public static void enemyWasTargeted(Enemy enemy) {
-        add(StatisticsType.ENEMY_WAS_TARGETED, enemy);
+    public static void enemyWasTargeted() {
+        add(StatisticsType.ENEMY_WAS_TARGETED, "");
     }
 
     public static void enemyTookDamage(int amount) {
@@ -182,16 +189,16 @@ public class Statistics {
         add(StatisticsType.PLAYER_GAINED_DEFENSE, amount);
     }
 
-    public static void buffOrDebuffTriggered(BuffOrDebuffData.BuffOrDebuffName buffOrDebuffName) {
-        add(StatisticsType.BUFF_OR_DEBUFF_TRIGGERED, buffOrDebuffName);
+    public static void buffOrDebuffTriggered() {
+        add(StatisticsType.BUFF_OR_DEBUFF_TRIGGERED, "");
     }
 
-    public static void itemTriggered(ItemData.ItemName itemName) {
-        add(StatisticsType.ITEM_TRIGGERED, itemName);
+    public static void itemTriggered() {
+        add(StatisticsType.ITEM_TRIGGERED, "");
     }
 
-    public static void enemyUsedAbility(AbilityData.AbilityTypeName usedAbilityTypeName) {
-        add(StatisticsType.ENEMY_USED_ABILITY, usedAbilityTypeName);
+    public static void enemyUsedAbility() {
+        add(StatisticsType.ENEMY_USED_ABILITY, "");
     }
 
     public static void gainedPersistentCoins(int amount) {
@@ -202,24 +209,24 @@ public class Statistics {
         add(StatisticsType.GAINED_COINS, amount);
     }
 
-    public static void gainedItem(ItemData.ItemName itemName) {
-        add(StatisticsType.GAINED_ITEM, itemName);
+    public static void gainedItem() {
+        add(StatisticsType.GAINED_ITEM, "");
     }
 
     public static void spentCoins(int amount) {
         add(StatisticsType.SPENT_COINS, amount);
     }
 
-    public static void gainedCard(Card gainedCard) {
-        add(StatisticsType.GAINED_CARD, gainedCard);
+    public static void gainedCard() {
+        add(StatisticsType.GAINED_CARD, "");
     }
 
-    public static void upgradedCard(Card cardThatWasUpgraded) {
-        add(StatisticsType.UPGRADED_CARD, cardThatWasUpgraded);
+    public static void upgradedCard() {
+        add(StatisticsType.UPGRADED_CARD, "");
     }
 
-    public static void removedCard(Card cardThatWasRemoved) {
-        add(StatisticsType.REMOVED_CARD, cardThatWasRemoved);
+    public static void removedCard() {
+        add(StatisticsType.REMOVED_CARD, "");
     }
 
     public static void runStarted() {
@@ -231,17 +238,17 @@ public class Statistics {
     }
 
     public enum StatisticsType {
-        COMBAT_STARTED, // value: Array<Enemy> (initial enemies)
+        COMBAT_STARTED, // value: None
         COMBAT_ENDED, // value: int (turns)
         TURN_STARTED, // value: None
         TURN_ENDED, // value: None
-        PLAYED_CARD, // value: Card (the used card)
-        DISCARDED_CARD, // value: reason it was discarded | played card - other card - item - end turn
-        DREW_CARD, // value: Card (the drawn card)
+        PLAYED_CARD, // value: None
+        DISCARDED_CARD, // value: None
+        DREW_CARD, // value: None
         SHUFFLED_IN, // value: int (amount of cards that were in the shuffle pile)
         SPENT_ENERGY, // value: int (amount)
         RESTORED_ENERGY, // value: int (amount)
-        ENEMY_WAS_TARGETED, // value: Enemy TODO: I wonder if doing this makes it never be able to be garbage-collected
+        ENEMY_WAS_TARGETED, // value: None
         ENEMY_TOOK_DAMAGE, // value: int (amount)
         ENEMY_DIED, // value: None
         ENEMY_HEALED, // value: int (amount)
@@ -253,25 +260,21 @@ public class Statistics {
         PLAYER_HEALED, // value: int (amount)
         PLAYER_MAX_HP_CHANGED, // value: int (amount)
         PLAYER_GAINED_DEFENSE, // value: int (amount)
-        BUFF_OR_DEBUFF_TRIGGERED, // value: BuffOrDebuffName (the triggered buff or debuff)
-        ITEM_TRIGGERED, // value: ItemName (the triggered item)
-        ENEMY_USED_ABILITY, // value: AbilityTypeName (the used ability)
+        BUFF_OR_DEBUFF_TRIGGERED, // value: None
+        ITEM_TRIGGERED, // value: None
+        ENEMY_USED_ABILITY, // value: None
         GAINED_PERSISTENT_COINS, // value: int (amount)
         GAINED_COINS, // value: int (amount)
-        GAINED_ITEM, // value: ItemName (the gained item)
+        GAINED_ITEM, // value: None
         SPENT_COINS, // value: int (amount)
-        GAINED_CARD, // value: Card (the gained card)
-        UPGRADED_CARD, // value: Card (the card that was upgraded)
-        REMOVED_CARD, // value: Card (the removed card)
+        GAINED_CARD, // value: None
+        UPGRADED_CARD, // value: None
+        REMOVED_CARD, // value: None
         RUN_STARTED, // value: int (run number)
         RUN_ENDED, // value: int (run number)
     }
 
-    public enum DiscardReason {
-        OTHER_CARD, ITEM, PLAYED_CARD, END_TURN
-    }
-
-    private record StatisticsRow(StatisticsType statisticsType, Object value, float secondsIntoRun, int zoneNumber,
-                                 int stageNumber, int nodeNumber, int turnNumber) {
+    public record StatisticsRow(StatisticsType statisticsType, Object value, float secondsIntoRun, int zoneNumber,
+                                int stageNumber, int nodeNumber, int turnNumber) {
     }
 }
