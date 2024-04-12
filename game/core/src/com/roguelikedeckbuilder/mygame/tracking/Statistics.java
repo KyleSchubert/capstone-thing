@@ -41,11 +41,11 @@ public class Statistics {
         return fullStatistics.size;
     }
 
-    public static Object getValue(int index) {
+    public static int getValue(int index) {
         return fullStatistics.get(index).value();
     }
 
-    public static Object getType(int index) {
+    public static StatisticsType getType(int index) {
         return fullStatistics.get(index).statisticsType();
     }
 
@@ -97,12 +97,12 @@ public class Statistics {
         Statistics.runNumber = runNumber;
     }
 
-    private static void add(StatisticsType statisticsType, Object value) {
+    private static void add(StatisticsType statisticsType, int value) {
         fullStatistics.add(new StatisticsRow(statisticsType, value, getSecondsIntoRun(), getZoneNumber(), getStageNumber(), getNodeNumber(), getTurnNumber()));
     }
 
     public static void combatStarted() {
-        add(StatisticsType.COMBAT_STARTED, "");
+        add(StatisticsType.COMBAT_STARTED, Integer.MIN_VALUE);
     }
 
     public static void combatEnded() {
@@ -110,23 +110,23 @@ public class Statistics {
     }
 
     public static void turnStarted() {
-        add(StatisticsType.TURN_STARTED, "");
+        add(StatisticsType.TURN_STARTED, Integer.MIN_VALUE);
     }
 
     public static void turnEnded() {
-        add(StatisticsType.TURN_ENDED, "");
+        add(StatisticsType.TURN_ENDED, Integer.MIN_VALUE);
     }
 
     public static void playedCard() {
-        add(StatisticsType.PLAYED_CARD, "");
+        add(StatisticsType.PLAYED_CARD, Integer.MIN_VALUE);
     }
 
     public static void discardedCard() {
-        add(StatisticsType.DISCARDED_CARD, "");
+        add(StatisticsType.DISCARDED_CARD, Integer.MIN_VALUE);
     }
 
     public static void drewCard() {
-        add(StatisticsType.DREW_CARD, "");
+        add(StatisticsType.DREW_CARD, Integer.MIN_VALUE);
     }
 
     public static void shuffledIn(int amountOfCardsThatWereInTheShufflePile) {
@@ -142,7 +142,7 @@ public class Statistics {
     }
 
     public static void enemyWasTargeted() {
-        add(StatisticsType.ENEMY_WAS_TARGETED, "");
+        add(StatisticsType.ENEMY_WAS_TARGETED, Integer.MIN_VALUE);
     }
 
     public static void enemyTookDamage(int amount) {
@@ -150,7 +150,7 @@ public class Statistics {
     }
 
     public static void enemyDied() {
-        add(StatisticsType.ENEMY_DIED, "");
+        add(StatisticsType.ENEMY_DIED, Integer.MIN_VALUE);
     }
 
     public static void enemyHealed(int amount) {
@@ -166,7 +166,7 @@ public class Statistics {
     }
 
     public static void playerWasTargeted() {
-        add(StatisticsType.PLAYER_WAS_TARGETED, "");
+        add(StatisticsType.PLAYER_WAS_TARGETED, Integer.MIN_VALUE);
     }
 
     public static void playerTookDamage(int amount) {
@@ -174,7 +174,7 @@ public class Statistics {
     }
 
     public static void playerDied() {
-        add(StatisticsType.PLAYER_DIED, "");
+        add(StatisticsType.PLAYER_DIED, Integer.MIN_VALUE);
     }
 
     public static void playerHealed(int amount) {
@@ -190,15 +190,15 @@ public class Statistics {
     }
 
     public static void buffOrDebuffTriggered() {
-        add(StatisticsType.BUFF_OR_DEBUFF_TRIGGERED, "");
+        add(StatisticsType.BUFF_OR_DEBUFF_TRIGGERED, Integer.MIN_VALUE);
     }
 
     public static void itemTriggered() {
-        add(StatisticsType.ITEM_TRIGGERED, "");
+        add(StatisticsType.ITEM_TRIGGERED, Integer.MIN_VALUE);
     }
 
     public static void enemyUsedAbility() {
-        add(StatisticsType.ENEMY_USED_ABILITY, "");
+        add(StatisticsType.ENEMY_USED_ABILITY, Integer.MIN_VALUE);
     }
 
     public static void gainedPersistentCoins(int amount) {
@@ -210,7 +210,7 @@ public class Statistics {
     }
 
     public static void gainedItem() {
-        add(StatisticsType.GAINED_ITEM, "");
+        add(StatisticsType.GAINED_ITEM, Integer.MIN_VALUE);
     }
 
     public static void spentCoins(int amount) {
@@ -218,15 +218,15 @@ public class Statistics {
     }
 
     public static void gainedCard() {
-        add(StatisticsType.GAINED_CARD, "");
+        add(StatisticsType.GAINED_CARD, Integer.MIN_VALUE);
     }
 
     public static void upgradedCard() {
-        add(StatisticsType.UPGRADED_CARD, "");
+        add(StatisticsType.UPGRADED_CARD, Integer.MIN_VALUE);
     }
 
     public static void removedCard() {
-        add(StatisticsType.REMOVED_CARD, "");
+        add(StatisticsType.REMOVED_CARD, Integer.MIN_VALUE);
     }
 
     public static void runStarted() {
@@ -237,6 +237,7 @@ public class Statistics {
         add(StatisticsType.RUN_ENDED, getRunNumber());
     }
 
+    // When it says  "None"  that means it'll always return `Integer.MIN_VALUE`
     public enum StatisticsType {
         COMBAT_STARTED, // value: None
         COMBAT_ENDED, // value: int (turns)
@@ -274,7 +275,7 @@ public class Statistics {
         RUN_ENDED, // value: int (run number)
     }
 
-    public record StatisticsRow(StatisticsType statisticsType, Object value, float secondsIntoRun, int zoneNumber,
+    public record StatisticsRow(StatisticsType statisticsType, int value, float secondsIntoRun, int zoneNumber,
                                 int stageNumber, int nodeNumber, int turnNumber) {
     }
 }
