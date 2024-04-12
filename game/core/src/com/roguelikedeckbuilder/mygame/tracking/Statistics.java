@@ -29,6 +29,19 @@ public class Statistics {
         turnNumber = 1;
     }
 
+    public static void printAll() {
+        for (StatisticsRow row : fullStatistics) {
+            System.out.printf("[%s] Value: %s, %s seconds, zone %s, stage %s, node %s, turn %s %n",
+                    row.statisticsType(),
+                    row.value(),
+                    row.secondsIntoRun(),
+                    row.zoneNumber(),
+                    row.stageNumber(),
+                    row.nodeNumber(),
+                    row.turnNumber());
+        }
+    }
+
     public static int getStageNumber() {
         return stageNumber;
     }

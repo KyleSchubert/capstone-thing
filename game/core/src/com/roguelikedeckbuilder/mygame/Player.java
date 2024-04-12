@@ -123,13 +123,20 @@ public class Player {
     public static void obtainCard(CardData.CardTypeName cardTypeName, boolean isUpgraded) {
         Card card = new Card(cardTypeName, false);
         card.setUpgraded(isUpgraded);
+        if (isUpgraded) {
+            Statistics.upgradedCard(card);
+        }
         card.getGroup().addCaptureListener(card.getClickListener());
         Statistics.gainedCard(card);
         ownedCards.add(card);
     }
 
-    public static void removeCard(int cardIndex) {
-        Statistics.removedCard(ownedCards.removeIndex(cardIndex));
+    public static void removeCard(int cardIndex, boolean track) {
+        if (track) {
+            Statistics.removedCard(ownedCards.removeIndex(cardIndex));
+        } else {
+            ownedCards.removeIndex(cardIndex);
+        }
     }
 
     public static Character getCharacter() {

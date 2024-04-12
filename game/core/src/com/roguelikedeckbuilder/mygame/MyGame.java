@@ -146,6 +146,7 @@ public class MyGame extends ApplicationAdapter {
                         System.out.println("- 7 : +1000 persistent coins");
                         System.out.println("- 8 : +1000 coins");
                         System.out.println("- 9 : Full heal");
+                        System.out.println("- L : Print all Statistics");
                         SoundManager.playHealSound();
                     } else {
                         System.out.println("DEBUG: OFF");
@@ -201,6 +202,9 @@ public class MyGame extends ApplicationAdapter {
                         menuController.setMenuState(MenuController.MenuState.MAP);
                         SoundManager.playMenuCloseSound();
                     }
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+                    SoundManager.playFunnyTadaSound();
+                    Statistics.printAll();
                 }
             }
 

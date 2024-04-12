@@ -145,7 +145,6 @@ public class Card {
             Image upgradedImage = new Image(new Texture(Gdx.files.internal("CARDS/upgraded star.png")));
             upgradedImage.setPosition(25, 190);
             group.addActor(upgradedImage);
-            Statistics.upgradedCard(this);
         }
 
         isUpgraded = upgraded;

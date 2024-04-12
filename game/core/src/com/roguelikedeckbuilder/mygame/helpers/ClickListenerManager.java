@@ -107,7 +107,7 @@ public class ClickListenerManager {
             String cardName = AbilityData.getName(CardData.getUpgradedAbilityTypeName(cardTypeName));
 
             System.out.println("Player upgraded card into: " + cardName);
-            Player.removeCard(cardIndex);
+            Player.removeCard(cardIndex, false);
             Player.obtainCard(cardTypeName, true);
             Player.setFlagGoBackToPreviousMenuState(true);
             SoundManager.playGetCardSound();
@@ -117,7 +117,7 @@ public class ClickListenerManager {
     public static ClickListener removingCard(int cardIndex) {
         return getClickListenerForTouchUp(() -> {
             System.out.println("Player removed card at index: " + cardIndex);
-            Player.removeCard(cardIndex);
+            Player.removeCard(cardIndex, true);
             Player.setFlagGoBackToPreviousMenuState(true);
             SoundManager.playGetCardSound(); // but this doesn't make super sense
         });
