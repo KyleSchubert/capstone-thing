@@ -132,9 +132,15 @@ public class ClickListenerManager {
 
     public static ClickListener buyingCard(Card card) {
         return getClickListenerForTouchUp(() -> {
-            Player.buyCard(CardData.getValue(card.getCardTypeName()), card.getCardTypeName(), card.isUpgraded());
-            SoundManager.playBuyInShopSound();
-            menuController.getShopMenuStage().useCorrectButtons();
+            if (card.getCardTypeName() == CardData.CardTypeName.OUT_OF_STOCK) {
+                return;
+            }
+            boolean success = Player.buyCard(CardData.getValue(card.getCardTypeName()), card.getCardTypeName(), card.isUpgraded());
+            if (success) {
+                SoundManager.playBuyInShopSound();
+                menuController.getShopMenuStage().useCorrectButtons();
+                menuController.getShopMenuStage().setCardSold(card);
+            }
         });
     }
 

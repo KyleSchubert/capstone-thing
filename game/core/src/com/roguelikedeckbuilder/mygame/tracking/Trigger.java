@@ -8,17 +8,20 @@ public class Trigger {
     private final Statistics.StatisticsType whenToCheck;
     private final Statistics.StatisticsType whenToReset;
     private final int howManyMostRecentToConsider;
+    private final boolean alwaysResetWhenPossible;
     private boolean needsToReset = false;
     private int indexOfCutoff; // Inclusive. Everything before it is ignored
 
     public Trigger(Statistics.StatisticsType typeOfTrackedStatistic, WhatToLookAt whatToLookAt, ActivationComparison activationComparison,
-                   int activationValue, Statistics.StatisticsType whenToCheck, Statistics.StatisticsType whenToReset, int howManyMostRecentToConsider) {
+                   int activationValue, Statistics.StatisticsType whenToCheck, Statistics.StatisticsType whenToReset, boolean alwaysResetWhenPossible,
+                   int howManyMostRecentToConsider) {
         this.typeOfTrackedStatistic = typeOfTrackedStatistic;
         this.whatToLookAt = whatToLookAt;
         this.activationComparison = activationComparison;
         this.activationValue = activationValue;
         this.whenToCheck = whenToCheck;
         this.whenToReset = whenToReset;
+        this.alwaysResetWhenPossible = alwaysResetWhenPossible;
 
         if (whatToLookAt == WhatToLookAt.OCCURRENCES) {
             // The point is to see how many there are, so it should get them all.
@@ -27,7 +30,11 @@ public class Trigger {
             this.howManyMostRecentToConsider = howManyMostRecentToConsider;
         }
 
-        this.indexOfCutoff = Statistics.getSizeOfFullStatistics() - 1;
+        reset();
+    }
+
+    public void reset() {
+        this.indexOfCutoff = Math.max(Statistics.getSizeOfFullStatistics() - 1, 0);
     }
 
     public boolean check(Statistics.StatisticsRow newRow, int indexOfThisNewOne) {
@@ -39,7 +46,7 @@ public class Trigger {
                 needsToReset = true;
             }
         }
-        if (needsToReset && newRow.statisticsType() == whenToReset) {
+        if (alwaysResetWhenPossible || (needsToReset && newRow.statisticsType() == whenToReset)) {
             indexOfCutoff = indexOfThisNewOne;
             needsToReset = false;
         }

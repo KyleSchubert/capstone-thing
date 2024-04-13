@@ -2,17 +2,20 @@ package com.roguelikedeckbuilder.mygame.stages;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.cards.CardData;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
+import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 
 import java.util.Random;
 
@@ -74,13 +77,25 @@ public class ShopMenuStage extends GenericStage {
     }
 
     public void generateShop() {
+        reset();
+
         numberOfCards = 0;
         Random random = new Random();
-        int randomNumber;
 
+        int howManyCardsWillBeUpgraded = random.nextInt(3) + 2;
+        Array<Boolean> whichAreUpgraded = new Array<>();
+        for (int i = 0; i < howManyCardsWillBeUpgraded; i++) {
+            whichAreUpgraded.add(true);
+        }
+        while (whichAreUpgraded.size < 8) {
+            whichAreUpgraded.add(false);
+        }
+        whichAreUpgraded.shuffle();
+
+        Array<CardData.CardTypeName> cardTypeNames = CardData.getSomeRandomCards(8, true);
         for (int i = 0; i < 8; i++) {
-            randomNumber = random.nextInt(CardData.CardTypeName.values().length);
-            Card card = new Card(CardData.CardTypeName.values()[randomNumber], true);
+            Card card = new Card(cardTypeNames.get(i), true);
+            card.setUpgraded(whichAreUpgraded.get(i));
             card.getGroup().addCaptureListener(ClickListenerManager.buyingCard(card));
             addCard(card);
         }
@@ -92,6 +107,15 @@ public class ShopMenuStage extends GenericStage {
         removeCardCostLabel.setText("Price: " + removeCardCost[0]);
 
         useCorrectButtons();
+    }
+
+    private void reset() {
+        for (int i = getStage().getActors().size - 1; i >= 0; i--) {
+            Actor someActor = getStage().getActors().get(i);
+            if (someActor.getUserObject() == UserObjectOptions.CARD) {
+                someActor.remove();
+            }
+        }
     }
 
     public void addCard(Card card) {
@@ -134,6 +158,15 @@ public class ShopMenuStage extends GenericStage {
         } else {
             nonCardShopUI.addActor(removeCardButtonNoInteraction);
         }
+    }
+
+    public void setCardSold(Card card) {
+        float posX = card.getGroup().getX();
+        float posY = card.getGroup().getY();
+        getStage().getActors().removeValue(card.getGroup(), true);
+        Card newCard = new Card(CardData.CardTypeName.OUT_OF_STOCK, false);
+        newCard.getGroup().setPosition(posX, posY);
+        getStage().addActor(newCard.getGroup());
     }
 
     public enum ShopPositions {

@@ -5,6 +5,7 @@ import com.roguelikedeckbuilder.mygame.combat.AbilityData;
 
 public class CardData {
     private static Array<IndividualCardData> data;
+    private static Array<CardTypeName> allCardTypeNames;
 
     public static void initialize() {
         data = new Array<>();
@@ -12,6 +13,33 @@ public class CardData {
         for (CardTypeName name : CardTypeName.values()) {
             data.add(new IndividualCardData(name));
         }
+
+        allCardTypeNames = new Array<>(CardTypeName.values());
+    }
+
+    public static Array<CardTypeName> getSomeRandomCards(int amount, boolean allowDuplicates) {
+        Array<CardTypeName> results = new Array<>();
+        Array<CardTypeName> copy = new Array<>();
+        copy.addAll(allCardTypeNames);
+        copy.shuffle();
+
+        while (results.size < amount) {
+            if (allowDuplicates) {
+                if (copy.get(0) != CardTypeName.OUT_OF_STOCK) {
+                    results.add(copy.get(0));
+                } else {
+                    results.add(copy.get(1));
+                }
+                copy.shuffle();
+            } else {
+                results.add(copy.pop());
+                if (copy.isEmpty()) {
+                    copy.addAll(allCardTypeNames);
+                }
+            }
+        }
+
+        return results;
     }
 
     public static AbilityData.AbilityTypeName getAbilityTypeName(CardTypeName cardTypeName) {
@@ -64,6 +92,12 @@ public class CardData {
                     value = 80;
                     iconFileName = "4.png";
                 }
+                case OUT_OF_STOCK -> {
+                    abilityTypeName = AbilityData.AbilityTypeName.NOTHING;
+                    upgradedAbilityTypeName = AbilityData.AbilityTypeName.NOTHING;
+                    iconFileName = "sold.png";
+                    value = 999999;
+                }
                 default ->
                         System.out.println("Why was an ability almost generated with no matching type name? abilityTypeName:  " + cardTypeName);
             }
@@ -93,6 +127,7 @@ public class CardData {
         ENERGY_SLICES,
         FLAME,
         FIRE_STRIKE,
-        DEFEND
+        DEFEND,
+        OUT_OF_STOCK
     }
 }

@@ -112,12 +112,14 @@ public class Player {
         return persistentMoney;
     }
 
-    public static void buyCard(int cardValue, CardData.CardTypeName cardTypeName, boolean isUpgraded) {
+    public static boolean buyCard(int cardValue, CardData.CardTypeName cardTypeName, boolean isUpgraded) {
         if (money > cardValue) {
             changeMoney(-cardValue);
 
             obtainCard(cardTypeName, isUpgraded);
+            return true;
         }
+        return false;
     }
 
     public static void obtainCard(CardData.CardTypeName cardTypeName, boolean isUpgraded) {

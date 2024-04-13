@@ -3,6 +3,7 @@ package com.roguelikedeckbuilder.mygame.items;
 import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.combat.AbilityData;
+import com.roguelikedeckbuilder.mygame.tracking.TriggerData;
 
 public class ItemData {
     private static Array<IndividualItemData> data;
@@ -51,6 +52,16 @@ public class ItemData {
         return results;
     }
 
+    public static String getFullDescription(ItemName itemName) {
+        String color = "ORANGE";
+
+        String name = getName(itemName);
+        String effect = "[" + color + "]Effect[]: " + AbilityData.getDescription(getAbilityTypeName(itemName));
+        String triggerExplanation = "[" + color + "]Activation[]: " + TriggerData.getExplanationString(getTriggerName(itemName));
+
+        return String.format("%s\n    %s\n    %s", name, effect, triggerExplanation);
+    }
+
     public static String getImagePath(ItemName itemName) {
         return data.get(itemName.ordinal()).getImagePath();
     }
@@ -67,11 +78,16 @@ public class ItemData {
         return data.get(itemName.ordinal()).getItemTier();
     }
 
+    public static TriggerData.TriggerName getTriggerName(ItemName itemName) {
+        return data.get(itemName.ordinal()).getTriggerName();
+    }
+
     private static class IndividualItemData {
         private final String imagePath;
         private String name;
         private AbilityData.AbilityTypeName abilityTypeName;
         private ItemTier itemTier;
+        private TriggerData.TriggerName triggerName;
 
         public IndividualItemData(ItemName itemName) {
             String iconFileName = "default.png";
@@ -82,18 +98,21 @@ public class ItemData {
                     name = "Test Sword";
                     abilityTypeName = AbilityData.AbilityTypeName.ITEM_SWORD_ABILITY;
                     itemTier = ItemTier.COMMON;
+                    triggerName = TriggerData.TriggerName.EVERY_START_OF_BATTLE;
                 }
                 case TEST_SHIELD -> {
                     iconFileName = "shield1.png";
                     name = "Test Shield";
                     abilityTypeName = AbilityData.AbilityTypeName.ITEM_SHIELD_ABILITY;
                     itemTier = ItemTier.COMMON;
+                    triggerName = TriggerData.TriggerName.LAST_THREE_DAMAGE_DEALT_GREATER_THAN_30;
                 }
                 case TEST_SWORD_2 -> {
                     iconFileName = "sword2.png";
                     name = "Test Sword 2";
                     abilityTypeName = AbilityData.AbilityTypeName.ITEM_SWORD_2_ABILITY;
                     itemTier = ItemTier.COMMON;
+                    triggerName = TriggerData.TriggerName.ONCE_PER_TURN_AFTER_ENEMY_USES_ABILITY;
                 }
                 case JUNK -> {
                     iconFileName = "junk.png";
@@ -120,6 +139,10 @@ public class ItemData {
 
         public ItemTier getItemTier() {
             return itemTier;
+        }
+
+        public TriggerData.TriggerName getTriggerName() {
+            return triggerName;
         }
     }
 

@@ -15,6 +15,7 @@ import com.roguelikedeckbuilder.mygame.combat.*;
 import com.roguelikedeckbuilder.mygame.helpers.*;
 import com.roguelikedeckbuilder.mygame.items.ItemData;
 import com.roguelikedeckbuilder.mygame.tracking.Statistics;
+import com.roguelikedeckbuilder.mygame.tracking.TriggerData;
 
 public class MyGame extends ApplicationAdapter {
     public static final float SCALE_FACTOR = 0.05f;
@@ -52,6 +53,7 @@ public class MyGame extends ApplicationAdapter {
         CardData.initialize();
         LabelMaker.initialize();
         UseLine.initialize();
+        TriggerData.initialize();
         ItemData.initialize();
         BuffOrDebuffData.initialize();
         SoundManager.initialize();

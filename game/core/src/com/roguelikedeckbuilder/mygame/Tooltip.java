@@ -7,11 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.roguelikedeckbuilder.mygame.combat.AbilityData;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
+import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.items.ItemData;
@@ -29,7 +31,9 @@ public class Tooltip {
     private final ClickListener clickListenerExitingToMap;
     private String tooltipTitleText;
     private String tooltipBodyText;
-    private final Array<String> chooseOneItemText = new Array<>();
+    private Label itemChoiceLabel1 = LabelMaker.newLabel("", LabelMaker.getSmall());
+    private Label itemChoiceLabel2 = LabelMaker.newLabel("", LabelMaker.getSmall());
+    private Label itemChoiceLabel3 = LabelMaker.newLabel("", LabelMaker.getSmall());
     private Size size;
     private Location location;
     private boolean isAbove;
@@ -49,7 +53,6 @@ public class Tooltip {
         // Tooltip text
         tooltipTitleText = "";
         tooltipBodyText = "";
-        chooseOneItemText.add("", "", "");
 
         // Tooltip backgrounds
         Image tooltipBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/tooltip.png")));
@@ -69,6 +72,23 @@ public class Tooltip {
         smallTooltipBackground.setPosition(offScreen.x(), offScreen.y());
         smallTooltipBackground.setTouchable(Touchable.disabled);
         tooltipStage.addActor(smallTooltipBackground);
+
+        // 3 labels for the "Choose one of these 3 items" screen
+        itemChoiceLabel1.setFontScale(SCALE_FACTOR);
+        itemChoiceLabel2.setFontScale(SCALE_FACTOR);
+        itemChoiceLabel3.setFontScale(SCALE_FACTOR);
+
+        itemChoiceLabel1.setWidth(21);
+        itemChoiceLabel2.setWidth(21);
+        itemChoiceLabel3.setWidth(21);
+
+        itemChoiceLabel1.setAlignment(Align.topLeft);
+        itemChoiceLabel2.setAlignment(Align.topLeft);
+        itemChoiceLabel3.setAlignment(Align.topLeft);
+
+        tooltipStage.addActor(itemChoiceLabel1);
+        tooltipStage.addActor(itemChoiceLabel2);
+        tooltipStage.addActor(itemChoiceLabel3);
 
         this.clickListenerExitingToMap = clickListenerExitingToMap;
     }
@@ -120,11 +140,7 @@ public class Tooltip {
         tooltipStage.draw();
 
         font.draw(batch, tooltipTitleText, titleX, titleY); // Text for tooltip title
-        if (showChooseOneItemDetails) {
-            tooltipFont.draw(batch, chooseOneItemText.get(0), pos.x() + 6, pos.y() + 20);
-            tooltipFont.draw(batch, chooseOneItemText.get(1), pos.x() + 6, pos.y() + 13);
-            tooltipFont.draw(batch, chooseOneItemText.get(2), pos.x() + 6, pos.y() + 6);
-        } else {
+        if (!showChooseOneItemDetails) {
             tooltipFont.draw(batch, tooltipBodyText, bodyX, bodyY); // Text for tooltip body
         }
     }
@@ -167,9 +183,13 @@ public class Tooltip {
 
         XYPair<Float> pos = middlePosition;
 
-        tooltipStage.getActors().get(3).setPosition(pos.x() + 2, pos.y() + 17); // Item 1
-        tooltipStage.getActors().get(4).setPosition(pos.x() + 2, pos.y() + 10); // Item 2
-        tooltipStage.getActors().get(5).setPosition(pos.x() + 2, pos.y() + 3); // Item 3
+        itemChoiceLabel1.setPosition(pos.x() + 6, pos.y() + 21);
+        itemChoiceLabel2.setPosition(pos.x() + 6, pos.y() + 14);
+        itemChoiceLabel3.setPosition(pos.x() + 6, pos.y() + 7);
+
+        tooltipStage.getActors().get(6).setPosition(pos.x() + 2, pos.y() + 17); // Item 1
+        tooltipStage.getActors().get(7).setPosition(pos.x() + 2, pos.y() + 10); // Item 2
+        tooltipStage.getActors().get(8).setPosition(pos.x() + 2, pos.y() + 3); // Item 3
     }
 
     private void resetItemRewards() {
@@ -190,11 +210,18 @@ public class Tooltip {
     private void generateItemRewards() {
         Array<ItemData.ItemName> itemNames = ItemData.getSomeRandomItemNamesByTier(ItemData.ItemTier.COMMON, 3, false);
 
-        for (int i = 0; i < itemNames.size; i++) {
+        for (int i = 0; i < 3; i++) {
             ItemData.ItemName itemName = itemNames.get(i);
             Image item = new Image(new Texture(Gdx.files.internal(ItemData.getImagePath(itemName))));
-            chooseOneItemText.removeIndex(i);
-            chooseOneItemText.insert(i, ItemData.getName(itemName) + "\n   " + AbilityData.getDescription(ItemData.getAbilityTypeName(itemName)));
+
+            if (i == 0) {
+                itemChoiceLabel1.setText(ItemData.getFullDescription(itemName));
+            } else if (i == 1) {
+                itemChoiceLabel2.setText(ItemData.getFullDescription(itemName));
+            } else {
+                itemChoiceLabel3.setText(ItemData.getFullDescription(itemName));
+            }
+
             item.setScale(SCALE_FACTOR * 2);
             item.setPosition(offScreen.x(), offScreen.y());
             item.addListener(clickListenerExitingToMap);
@@ -217,6 +244,11 @@ public class Tooltip {
 
     public void setShowChooseOneItemDetails(boolean showChooseOneItemDetails) {
         this.showChooseOneItemDetails = showChooseOneItemDetails;
+        if (!showChooseOneItemDetails) {
+            itemChoiceLabel1.setPosition(offScreen.x(), offScreen.y());
+            itemChoiceLabel2.setPosition(offScreen.x(), offScreen.y());
+            itemChoiceLabel3.setPosition(offScreen.x(), offScreen.y());
+        }
     }
 
     public enum Size {

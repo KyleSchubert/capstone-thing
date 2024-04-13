@@ -27,7 +27,6 @@ public class CardChangeStage extends GenericStage {
     private Group cardChoiceGroup;
     private final ScrollPane.ScrollPaneStyle scrollPaneStyle;
     private final ClickListener clickListenerToGoBackToTreasure;
-    private final Array<CardData.CardTypeName> allCardTypeNames;
     private final Random random;
     private final Label textAtTop;
 
@@ -36,7 +35,6 @@ public class CardChangeStage extends GenericStage {
         super.getStageBackgroundActor().setPosition(13.5f, 4);
         resetCardChoiceGroup();
         this.clickListenerToGoBackToTreasure = clickListenerToGoBackToTreasure;
-        allCardTypeNames = new Array<>(CardData.CardTypeName.values());
         random = new Random();
 
         textAtTop = new Label("", LabelMaker.getLarge());
@@ -75,10 +73,10 @@ public class CardChangeStage extends GenericStage {
 
         textAtTop.setText("Choose 1 Card to Obtain");
 
-        allCardTypeNames.shuffle();
-        Card card1 = new Card(allCardTypeNames.get(0), false);
-        Card card2 = new Card(allCardTypeNames.get(1), false);
-        Card card3 = new Card(allCardTypeNames.get(2), false);
+        Array<CardData.CardTypeName> cardTypeNames = CardData.getSomeRandomCards(3, false);
+        Card card1 = new Card(cardTypeNames.get(0), false);
+        Card card2 = new Card(cardTypeNames.get(1), false);
+        Card card3 = new Card(cardTypeNames.get(2), false);
 
         card1.getGroup().setPosition(17.3f, 18);
         card2.getGroup().setPosition(30.3f, 18);

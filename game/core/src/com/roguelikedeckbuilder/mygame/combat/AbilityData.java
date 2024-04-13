@@ -188,7 +188,7 @@ public class AbilityData {
                     effect = EffectData.EffectName.DEFEND_SOME;
                 }
                 case NOTHING -> {
-                    name = "";
+                    name = "Sold";
                     energyCost = 0;
                     targetType = TargetType.SELF;
                     effect = EffectData.EffectName.NOTHING;
