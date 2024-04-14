@@ -32,7 +32,7 @@ import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 
 public class CombatMenuStage extends GenericStage {
-    private final Array<Enemy> currentEnemies = new Array<>();
+    private static final Array<Enemy> currentEnemies = new Array<>();
     private int currentAttackingEnemyIndex = 0;
     private boolean isPlayerTurn = true;
     private final Array<Card> drawPileContents = new Array<>();
@@ -355,7 +355,7 @@ public class CombatMenuStage extends GenericStage {
         return total;
     }
 
-    public Array<Enemy> getCurrentEnemies() {
+    public static Array<Enemy> getCurrentEnemies() {
         return currentEnemies;
     }
 

@@ -12,22 +12,20 @@ public class Trigger {
     private boolean needsToReset = false;
     private int indexOfCutoff; // Inclusive. Everything before it is ignored
 
-    public Trigger(Statistics.StatisticsType typeOfTrackedStatistic, WhatToLookAt whatToLookAt, ActivationComparison activationComparison,
-                   int activationValue, Statistics.StatisticsType whenToCheck, Statistics.StatisticsType whenToReset, boolean alwaysResetWhenPossible,
-                   int howManyMostRecentToConsider) {
-        this.typeOfTrackedStatistic = typeOfTrackedStatistic;
-        this.whatToLookAt = whatToLookAt;
-        this.activationComparison = activationComparison;
-        this.activationValue = activationValue;
-        this.whenToCheck = whenToCheck;
-        this.whenToReset = whenToReset;
-        this.alwaysResetWhenPossible = alwaysResetWhenPossible;
+    public Trigger(TriggerData.TriggerName triggerName) {
+        this.typeOfTrackedStatistic = TriggerData.getTypeOfTrackedStatistic(triggerName);
+        this.whatToLookAt = TriggerData.getWhatToLookAt(triggerName);
+        this.activationComparison = TriggerData.getActivationComparison(triggerName);
+        this.activationValue = TriggerData.getActivationValue(triggerName);
+        this.whenToCheck = TriggerData.getWhenToCheck(triggerName);
+        this.whenToReset = TriggerData.getWhenToReset(triggerName);
+        this.alwaysResetWhenPossible = TriggerData.isAlwaysResetWhenPossible(triggerName);
 
         if (whatToLookAt == WhatToLookAt.OCCURRENCES) {
             // The point is to see how many there are, so it should get them all.
             this.howManyMostRecentToConsider = 999999999;
         } else {
-            this.howManyMostRecentToConsider = howManyMostRecentToConsider;
+            this.howManyMostRecentToConsider = TriggerData.getHowManyMostRecentToConsider(triggerName);
         }
 
         reset();
@@ -37,7 +35,7 @@ public class Trigger {
         this.indexOfCutoff = Math.max(Statistics.getSizeOfFullStatistics() - 1, 0);
     }
 
-    public boolean check(Statistics.StatisticsRow newRow, int indexOfThisNewOne) {
+    public boolean check(Statistics.StatisticsRow newRow, int indexOfThisNewRow) {
         // Resetting and triggering is possible at the same time
         boolean activated = false;
         if (newRow.statisticsType() == whenToCheck) {
@@ -47,7 +45,7 @@ public class Trigger {
             }
         }
         if (alwaysResetWhenPossible || (needsToReset && newRow.statisticsType() == whenToReset)) {
-            indexOfCutoff = indexOfThisNewOne;
+            indexOfCutoff = indexOfThisNewRow;
             needsToReset = false;
         }
         return activated;

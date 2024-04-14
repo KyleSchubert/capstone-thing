@@ -203,6 +203,7 @@ public class MyGame extends ApplicationAdapter {
                     Player.getCombatInformation().changeHp(Player.getCombatInformation().getMaxHp());
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
                     if (menuController.getCurrentMenuState() == MenuController.MenuState.COMBAT) {
+                        Statistics.combatEnded();
                         menuController.setMenuState(MenuController.MenuState.MAP);
                         SoundManager.playMenuCloseSound();
                     }

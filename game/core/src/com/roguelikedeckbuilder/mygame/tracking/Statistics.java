@@ -1,6 +1,8 @@
 package com.roguelikedeckbuilder.mygame.tracking;
 
 import com.badlogic.gdx.utils.Array;
+import com.roguelikedeckbuilder.mygame.Player;
+import com.roguelikedeckbuilder.mygame.items.Item;
 
 public class Statistics {
     private static final Array<StatisticsRow> fullStatistics = new Array<>();
@@ -98,7 +100,16 @@ public class Statistics {
     }
 
     private static void add(StatisticsType statisticsType, int value) {
+        int indexOfThisNewRow = fullStatistics.size;
         fullStatistics.add(new StatisticsRow(statisticsType, value, getSecondsIntoRun(), getZoneNumber(), getStageNumber(), getNodeNumber(), getTurnNumber()));
+        recheckAllTriggers(fullStatistics.get(indexOfThisNewRow), indexOfThisNewRow);
+    }
+
+    private static void recheckAllTriggers(Statistics.StatisticsRow newRow, int indexOfThisNewRow) {
+        int amountOfItems = Player.getOwnedItems().size;
+        for (int i = 0; i < amountOfItems; i++) {
+            Player.getOwnedItems().get(i).checkTrigger(newRow, indexOfThisNewRow);
+        }
     }
 
     public static void combatStarted() {
