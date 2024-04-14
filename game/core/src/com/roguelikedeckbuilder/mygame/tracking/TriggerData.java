@@ -100,6 +100,15 @@ public class TriggerData {
                     howManyMostRecentToConsider = 3;
                     explanationString = "If you have dealt 30+ damage in the last 3 hits of your turn";
                 }
+                case NOTHING -> {
+                    typeOfTrackedStatistic = Statistics.StatisticsType.RUN_ENDED;
+                    whatToLookAt = Trigger.WhatToLookAt.OCCURRENCES;
+                    activationComparison = Trigger.ActivationComparison.GREATER_THAN_OR_EQUAL;
+                    activationValue = 1;
+                    whenToCheck = Statistics.StatisticsType.RUN_ENDED;
+                    whenToReset = Statistics.StatisticsType.RUN_ENDED;
+                    explanationString = "Does nothing.";
+                }
             }
         }
 
@@ -141,6 +150,7 @@ public class TriggerData {
     }
 
     public enum TriggerName {
+        NOTHING,
         EVERY_START_OF_BATTLE, ONCE_PER_TURN_AFTER_ENEMY_USES_ABILITY, EVERY_TURN_AFTER_TAKING_20_DAMAGE,
         LAST_THREE_DAMAGE_DEALT_GREATER_THAN_30
     }

@@ -37,7 +37,7 @@ public class MenuController {
     private ShopMenuStage shopMenuStage;
     private CombatMenuStage combatMenuStage;
     private Map map;
-    private Tooltip tooltip;
+    private TooltipStage tooltipStage;
     private Stage topBarStage;
     private Image darkTransparentScreen;
     private Image pauseBackground;
@@ -56,7 +56,7 @@ public class MenuController {
     private boolean isDrawUpgradesMenu;
     private boolean isDrawSettingsMenu;
     private boolean isDrawMapMenu;
-    private boolean isDrawTooltipMenu;
+    private static boolean isDrawTooltipMenu;
     private boolean isDrawRestMenu;
     private boolean isDrawTreasureMenuStage;
     private boolean isDrawCardChangeMenuStage;
@@ -100,7 +100,7 @@ public class MenuController {
                 ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN)
         );
 
-        tooltip = new Tooltip(viewportForStage, ClickListenerManager.triggeringMenuState(MenuState.MAP, MenuSoundType.CLOSE));
+        tooltipStage = new TooltipStage(viewportForStage, ClickListenerManager.triggeringMenuState(MenuState.MAP, MenuSoundType.CLOSE));
 
         ClickListener hoverAndClickListener = makeHoverAndClickListener();
         map = new Map(viewportForStage, hoverAndClickListener);
@@ -357,8 +357,8 @@ public class MenuController {
         if (this.isDrawCardChangeMenuStage) {
             cardChangeMenuStage.batch(elapsedTime);
         }
-        if (this.isDrawTooltipMenu) {
-            tooltip.batch(elapsedTime);
+        if (isDrawTooltipMenu) {
+            tooltipStage.batch(elapsedTime);
         }
         if (this.isDrawPauseMenu) { // JUST for the pause menu background texture
             pauseBackground.setPosition(29.5f, 20);
@@ -418,7 +418,7 @@ public class MenuController {
         resultsMenuStage.dispose();
         upgradesMenuStage.dispose();
         settingsMenuStage.dispose();
-        tooltip.dispose();
+        tooltipStage.dispose();
         map.dispose();
         cardChangeMenuStage.dispose();
         restMenuStage.dispose();
@@ -443,13 +443,13 @@ public class MenuController {
                 Map.MapNode.MapNodeData data = (Map.MapNode.MapNodeData) event.getTarget().getUserObject();
 
                 // Use the data
-                tooltip.useMapNodeData(data.nodeType(), data.stageNumberOfSelf(), data.indexOfSelf());
+                tooltipStage.useMapNodeData(data.nodeType(), data.stageNumberOfSelf(), data.indexOfSelf());
                 Statistics.setStageNumber(data.stageNumberOfSelf());
                 Statistics.setNodeNumber(data.indexOfSelf());
-                tooltip.setSize(data.tooltipSize());
-                tooltip.setLocation(data.tooltipLocation());
+                tooltipStage.setSize(data.tooltipSize());
+                tooltipStage.setLocation(data.tooltipLocation());
 
-                // Draw the tooltip
+                // Draw the tooltipStage
                 setDrawTooltipMenu(true);
             }
 
@@ -549,7 +549,7 @@ public class MenuController {
                 setDrawCombatMenu(false);
                 setDrawCardChangeMenu(false);
                 UseLine.setVisibility(false);
-                tooltip.setShowChooseOneItemDetails(false);
+                tooltipStage.setShowChooseOneItemDetails(false);
             }
             case UPGRADES -> {
                 currentMenuState = MenuState.UPGRADES;
@@ -591,10 +591,10 @@ public class MenuController {
             case START_REWARDS -> {
                 Statistics.setRunNumber(Statistics.getRunNumber() + 1);
                 Statistics.runStarted();
-                tooltip.itemReward();
+                tooltipStage.itemReward();
                 currentMenuState = MenuState.START_REWARDS;
-                Gdx.input.setInputProcessor(tooltip.tooltipStage);
-                currentInputProcessor = tooltip.tooltipStage;
+                Gdx.input.setInputProcessor(tooltipStage.getStage());
+                currentInputProcessor = tooltipStage.getStage();
                 setDrawTooltipMenu(true);
                 setDrawDarkTransparentScreen(true);
                 setGameplayPaused(false);
@@ -701,8 +701,8 @@ public class MenuController {
         this.isDrawMapMenu = drawMapMenu;
     }
 
-    public void setDrawTooltipMenu(boolean drawTooltipMenu) {
-        this.isDrawTooltipMenu = drawTooltipMenu;
+    public static void setDrawTooltipMenu(boolean drawTooltipMenu) {
+        isDrawTooltipMenu = drawTooltipMenu;
     }
 
     public void setDrawRestMenu(boolean drawRestMenu) {
@@ -795,6 +795,10 @@ public class MenuController {
 
     public CardChangeStage getCardChangeMenuStage() {
         return cardChangeMenuStage;
+    }
+
+    public TooltipStage getTooltipStage() {
+        return tooltipStage;
     }
 
     public Stage getTopBarStage() {

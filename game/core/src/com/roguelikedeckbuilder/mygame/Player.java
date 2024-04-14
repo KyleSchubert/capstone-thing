@@ -205,16 +205,16 @@ public class Player {
         return ownedItems;
     }
 
-    public static void obtainItem(ItemData.ItemName itemName) {
-        Item item = new Item(itemName);
-        System.out.println("Player gained item: " + itemName);
+    public static void obtainItem(ItemData.ItemTypeName itemTypeName) {
+        Item item = new Item(itemTypeName);
+        System.out.println("Player gained item: " + itemTypeName);
 
         item.getGroup().setPosition(0.5f + ownedItems.size * 3, 40.1f);
 
         for (Item ownedItem : ownedItems) {
-            if (ownedItem.getItemName() == itemName) {
+            if (ownedItem.getItemTypeName() == itemTypeName) {
                 item.getGroup().clear();
-                if (itemName == ItemData.ItemName.JUNK) {
+                if (itemTypeName == ItemData.ItemTypeName.JUNK) {
                     Player.changePersistentMoney(5);
                 }
                 SoundManager.playFunnyTadaSound();

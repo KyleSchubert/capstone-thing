@@ -7,36 +7,36 @@ import com.roguelikedeckbuilder.mygame.tracking.TriggerData;
 
 public class ItemData {
     private static Array<IndividualItemData> data;
-    private static Array<ItemData.ItemName> allItemNames;
+    private static Array<ItemTypeName> allItemNames;
 
     public static void initialize() {
         data = new Array<>();
 
-        for (ItemName name : ItemName.values()) {
+        for (ItemTypeName name : ItemTypeName.values()) {
             data.add(new IndividualItemData(name));
         }
 
-        allItemNames = new Array<>(ItemData.ItemName.values());
+        allItemNames = new Array<>(ItemTypeName.values());
 
     }
 
-    public static Array<ItemName> getSomeRandomItemNamesByTier(ItemTier itemTier, int amount, boolean allowDuplicates) {
-        Array<ItemName> results = new Array<>();
-        Array<ItemName> copy = new Array<>();
+    public static Array<ItemTypeName> getSomeRandomItemNamesByTier(ItemTier itemTier, int amount, boolean allowDuplicates) {
+        Array<ItemTypeName> results = new Array<>();
+        Array<ItemTypeName> copy = new Array<>();
         copy.addAll(allItemNames);
         copy.shuffle();
 
 
         if (!allowDuplicates) {
             for (Item item : Player.getOwnedItems()) {
-                copy.removeValue(item.getItemName(), true);
+                copy.removeValue(item.getItemTypeName(), true);
             }
         }
 
-        for (ItemName itemName : copy) {
-            if (itemTier == ItemTier.ANY || getItemTier(itemName).equals(itemTier)) {
-                if (getItemTier(itemName) != ItemTier.JUNK) {
-                    results.add(itemName);
+        for (ItemTypeName itemTypeName : copy) {
+            if (itemTier == ItemTier.ANY || getItemTier(itemTypeName).equals(itemTier)) {
+                if (getItemTier(itemTypeName) != ItemTier.JUNK) {
+                    results.add(itemTypeName);
                     if (results.size == amount) {
                         break;
                     }
@@ -45,41 +45,44 @@ public class ItemData {
         }
 
         while (results.size < amount) {
-            results.add(ItemName.JUNK);
+            results.add(ItemTypeName.JUNK);
         }
         results.shuffle();
 
         return results;
     }
 
-    public static String getFullDescription(ItemName itemName) {
+    public static String getPartialDescription(ItemTypeName itemTypeName) {
         String color = "ORANGE";
 
-        String name = getName(itemName);
-        String effect = "[" + color + "]Effect[]: " + AbilityData.getDescription(getAbilityTypeName(itemName));
-        String triggerExplanation = "[" + color + "]Activation[]: " + TriggerData.getExplanationString(getTriggerName(itemName));
+        String effect = "[" + color + "]Effect[]: " + AbilityData.getDescription(getAbilityTypeName(itemTypeName));
+        String triggerExplanation = "[" + color + "]Activation[]: " + TriggerData.getExplanationString(getTriggerName(itemTypeName));
 
-        return String.format("%s\n    %s\n    %s", name, effect, triggerExplanation);
+        return String.format("\n    %s\n    %s", effect, triggerExplanation);
     }
 
-    public static String getImagePath(ItemName itemName) {
-        return data.get(itemName.ordinal()).getImagePath();
+    public static String getFullDescription(ItemTypeName itemTypeName) {
+        return getName(itemTypeName) + getPartialDescription(itemTypeName);
     }
 
-    public static String getName(ItemName itemName) {
-        return data.get(itemName.ordinal()).getName();
+    public static String getImagePath(ItemTypeName itemTypeName) {
+        return data.get(itemTypeName.ordinal()).getImagePath();
     }
 
-    public static AbilityData.AbilityTypeName getAbilityTypeName(ItemName itemName) {
-        return data.get(itemName.ordinal()).getAbilityTypeName();
+    public static String getName(ItemTypeName itemTypeName) {
+        return data.get(itemTypeName.ordinal()).getName();
     }
 
-    public static ItemTier getItemTier(ItemName itemName) {
-        return data.get(itemName.ordinal()).getItemTier();
+    public static AbilityData.AbilityTypeName getAbilityTypeName(ItemTypeName itemTypeName) {
+        return data.get(itemTypeName.ordinal()).getAbilityTypeName();
     }
 
-    public static TriggerData.TriggerName getTriggerName(ItemName itemName) {
-        return data.get(itemName.ordinal()).getTriggerName();
+    public static ItemTier getItemTier(ItemTypeName itemTypeName) {
+        return data.get(itemTypeName.ordinal()).getItemTier();
+    }
+
+    public static TriggerData.TriggerName getTriggerName(ItemTypeName itemTypeName) {
+        return data.get(itemTypeName.ordinal()).getTriggerName();
     }
 
     private static class IndividualItemData {
@@ -89,10 +92,10 @@ public class ItemData {
         private ItemTier itemTier;
         private TriggerData.TriggerName triggerName;
 
-        public IndividualItemData(ItemName itemName) {
+        public IndividualItemData(ItemTypeName itemTypeName) {
             String iconFileName = "default.png";
 
-            switch (itemName) {
+            switch (itemTypeName) {
                 case TEST_SWORD -> {
                     iconFileName = "sword1.png";
                     name = "Test Sword";
@@ -119,6 +122,7 @@ public class ItemData {
                     name = "Junk";
                     abilityTypeName = AbilityData.AbilityTypeName.NOTHING;
                     itemTier = ItemTier.JUNK;
+                    triggerName = TriggerData.TriggerName.NOTHING;
                 }
             }
 
@@ -146,7 +150,7 @@ public class ItemData {
         }
     }
 
-    public enum ItemName {
+    public enum ItemTypeName {
         TEST_SWORD, TEST_SHIELD, TEST_SWORD_2, JUNK
     }
 

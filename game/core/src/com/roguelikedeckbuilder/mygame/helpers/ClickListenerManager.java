@@ -1,16 +1,20 @@
 package com.roguelikedeckbuilder.mygame.helpers;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Null;
 import com.roguelikedeckbuilder.mygame.MenuController;
 import com.roguelikedeckbuilder.mygame.Player;
+import com.roguelikedeckbuilder.mygame.TooltipStage;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.cards.CardData;
 import com.roguelikedeckbuilder.mygame.combat.AbilityData;
 import com.roguelikedeckbuilder.mygame.items.ItemData;
+import com.roguelikedeckbuilder.mygame.tracking.Statistics;
 import com.roguelikedeckbuilder.mygame.treasure.Treasure;
 
 public class ClickListenerManager {
@@ -37,8 +41,8 @@ public class ClickListenerManager {
     }
 
 
-    public static ClickListener obtainingItem(ItemData.ItemName itemName) {
-        return getClickListenerForTouchUp(() -> Player.obtainItem(itemName));
+    public static ClickListener obtainingItem(ItemData.ItemTypeName itemTypeName) {
+        return getClickListenerForTouchUp(() -> Player.obtainItem(itemTypeName));
     }
 
     public static ClickListener viewingPlayerCards() {
@@ -160,5 +164,29 @@ public class ClickListenerManager {
                 SoundManager.playBuyInShopSound();
             }
         });
+    }
+
+    public static ClickListener hoverAndPutTextInTooltip(String title, String body, int runNumber) {
+        return new ClickListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, @Null Actor fromActor) {
+                menuController.getTooltipStage().setSize(TooltipStage.Size.SMALL);
+                menuController.getTooltipStage().setLocation();
+                menuController.getTooltipStage().setTitleText(title);
+                menuController.getTooltipStage().setBodyText(body);
+                menuController.getTooltipStage().resetPositionsOffscreen();
+                MenuController.setDrawTooltipMenu(true);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, @Null Actor toActor) {
+                int currentRun = Statistics.getRunNumber();
+                // Prevent going back to the main menu, storing this event, and triggering it in the next run
+                if (runNumber == currentRun) {
+                    menuController.getTooltipStage().resetPositionsOffscreen();
+                    MenuController.setDrawTooltipMenu(false);
+                }
+            }
+        };
     }
 }

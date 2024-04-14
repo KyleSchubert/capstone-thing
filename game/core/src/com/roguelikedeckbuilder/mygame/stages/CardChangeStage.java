@@ -38,9 +38,13 @@ public class CardChangeStage extends GenericStage {
         random = new Random();
 
         textAtTop = new Label("", LabelMaker.getLarge());
-        textAtTop.setFontScale(SCALE_FACTOR);
-        textAtTop.setPosition(17.3f, 40);
-        this.getStage().addActor(textAtTop);
+        textAtTop.setPosition(346, 800);
+
+        Group groupForTextAtTop = new Group();
+        groupForTextAtTop.setScale(SCALE_FACTOR);
+
+        groupForTextAtTop.addActor(textAtTop);
+        this.getStage().addActor(groupForTextAtTop);
 
         scrollPaneStyle = new ScrollPane.ScrollPaneStyle();
 

@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.roguelikedeckbuilder.mygame.Tooltip;
+import com.roguelikedeckbuilder.mygame.TooltipStage;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.tracking.Statistics;
 
@@ -501,18 +501,18 @@ public class Map {
         }
 
         public MapNodeData getMapNodeData() {
-            Tooltip.Location desiredLocation;
+            TooltipStage.Location desiredLocation;
             if (this.stageNumberOfSelf <= MAX_STAGES * 0.5) {
-                desiredLocation = Tooltip.Location.RIGHT;
+                desiredLocation = TooltipStage.Location.RIGHT;
             } else {
-                desiredLocation = Tooltip.Location.LEFT;
+                desiredLocation = TooltipStage.Location.LEFT;
             }
 
             return new MapNodeData(
                     this.stageNumberOfSelf,
                     this.indexOfSelf,
                     this.nodeType,
-                    Tooltip.Size.SMALL,
+                    TooltipStage.Size.SMALL,
                     desiredLocation
             );
         }
@@ -521,8 +521,8 @@ public class Map {
                 int stageNumberOfSelf,
                 int indexOfSelf,
                 Map.MapNodeType nodeType,
-                Tooltip.Size tooltipSize,
-                Tooltip.Location tooltipLocation
+                TooltipStage.Size tooltipSize,
+                TooltipStage.Location tooltipLocation
         ) {
         }
     }

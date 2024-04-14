@@ -2,6 +2,7 @@ package com.roguelikedeckbuilder.mygame.helpers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 public class LabelMaker {
@@ -12,16 +13,24 @@ public class LabelMaker {
     private static final Label.LabelStyle mediumHpAndDamage = new Label.LabelStyle();
 
     public static void initialize() {
-        large.font = new BitmapFont(Gdx.files.internal("font.fnt"));
-        large.font.setUseIntegerPositions(false);
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Arial.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.genMipMaps = true;
+        parameter.size = 32;
+        BitmapFont font32 = generator.generateFont(parameter);
+        parameter.size = 24;
+        BitmapFont font24 = generator.generateFont(parameter);
+        parameter.size = 18;
+        BitmapFont font18 = generator.generateFont(parameter);
+        generator.dispose();
+
+        large.font = font32;
         large.font.getData().markupEnabled = true;
 
-        medium.font = new BitmapFont(Gdx.files.internal("font3.fnt"));
-        medium.font.setUseIntegerPositions(false);
+        medium.font = font24;
         medium.font.getData().markupEnabled = true;
 
-        small.font = new BitmapFont(Gdx.files.internal("font2.fnt"));
-        small.font.setUseIntegerPositions(false);
+        small.font = font18;
         small.font.getData().markupEnabled = true;
 
         hpAndDamage.font = new BitmapFont(Gdx.files.internal("hp_and_damage.fnt"));
