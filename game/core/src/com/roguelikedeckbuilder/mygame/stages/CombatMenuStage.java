@@ -20,7 +20,7 @@ import com.roguelikedeckbuilder.mygame.MenuController;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.UseLine;
 import com.roguelikedeckbuilder.mygame.cards.Card;
-import com.roguelikedeckbuilder.mygame.characters.Character;
+import com.roguelikedeckbuilder.mygame.animated.Character;
 import com.roguelikedeckbuilder.mygame.combat.CombatHandler;
 import com.roguelikedeckbuilder.mygame.combat.Enemy;
 import com.roguelikedeckbuilder.mygame.combat.HpChangeNumberHandler;

@@ -1,7 +1,7 @@
 package com.roguelikedeckbuilder.mygame.combat;
 
 import com.badlogic.gdx.utils.Array;
-import com.roguelikedeckbuilder.mygame.characters.Character;
+import com.roguelikedeckbuilder.mygame.animated.Character;
 
 public class EnemyData {
     private static Array<IndividualEnemyData> data;

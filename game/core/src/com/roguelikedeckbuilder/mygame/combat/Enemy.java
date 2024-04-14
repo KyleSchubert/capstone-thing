@@ -4,7 +4,7 @@ package com.roguelikedeckbuilder.mygame.combat;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Array;
-import com.roguelikedeckbuilder.mygame.characters.Character;
+import com.roguelikedeckbuilder.mygame.animated.Character;
 import com.roguelikedeckbuilder.mygame.helpers.GenericHelpers;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;

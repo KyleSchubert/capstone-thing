@@ -3,7 +3,7 @@ package com.roguelikedeckbuilder.mygame.combat;
 import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.cards.Card;
-import com.roguelikedeckbuilder.mygame.characters.Character;
+import com.roguelikedeckbuilder.mygame.animated.Character;
 import com.roguelikedeckbuilder.mygame.tracking.Statistics;
 
 public class CombatHandler {

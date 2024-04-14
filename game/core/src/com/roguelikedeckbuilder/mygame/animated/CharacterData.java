@@ -1,4 +1,4 @@
-package com.roguelikedeckbuilder.mygame.characters;
+package com.roguelikedeckbuilder.mygame.animated;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

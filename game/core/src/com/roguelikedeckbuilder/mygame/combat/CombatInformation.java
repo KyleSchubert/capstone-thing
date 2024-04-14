@@ -1,7 +1,7 @@
 package com.roguelikedeckbuilder.mygame.combat;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.roguelikedeckbuilder.mygame.characters.Character;
+import com.roguelikedeckbuilder.mygame.animated.Character;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.tracking.Statistics;
 
