@@ -19,6 +19,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.MenuController;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.UseLine;
+import com.roguelikedeckbuilder.mygame.animated.VisualEffect;
+import com.roguelikedeckbuilder.mygame.animated.VisualEffectData;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.animated.Character;
 import com.roguelikedeckbuilder.mygame.combat.CombatHandler;
@@ -136,7 +138,15 @@ public class CombatMenuStage extends GenericStage {
             if (enemy.getCharacter().getState() == Character.CharacterState.DEAD) {
                 mustRemoveBecauseDead.add(enemy);
             } else if (enemy.getCombatInformation().getHp() == 0 && enemy.getCharacter().getState() != Character.CharacterState.DYING) {
-                enemy.getCharacter().setState(Character.CharacterState.DYING);
+                VisualEffect deathEffect = new VisualEffect(VisualEffectData.VisualEffectName.DIE,
+                        enemy.getPositionOnStage().x(),
+                        enemy.getPositionOnStage().y() + 2,
+                        SCALE_FACTOR);
+
+                getStage().addActor(deathEffect);
+
+                // To use a dying animation, this should be .DYING rather than .DEAD
+                enemy.getCharacter().setState(Character.CharacterState.DEAD);
             }
         }
 
@@ -165,25 +175,28 @@ public class CombatMenuStage extends GenericStage {
         delaysCopy.addAll(getScheduledDelays());
 
         for (DelayScheduler.Delay delay : delaysCopy) {
-            if (delay.getAdditionalInformation().equals("enemyTurnStart")) {
-                if (delay.isDone()) {
-                    doNextEnemyAttack();
-                    deleteDelay(delay);
-                }
-            } else if (delay.getAdditionalInformation().equals("enemyTurnEnd")) {
-                if (delay.isDone()) {
-                    for (Enemy enemy : currentEnemies) {
-                        enemy.endTurn();
+            if (delay.isDone()) {
+                switch (delay.getAdditionalInformation()) {
+                    case "enemyTurnStart" -> {
+                        doNextEnemyAttack();
+                        deleteDelay(delay);
                     }
-                    Statistics.turnEnded();
-                    Statistics.setTurnNumber(Statistics.getTurnNumber() + 1);
-                    Statistics.turnStarted();
-                    drawCards(5);
-
-                    isPlayerTurn = true;
-                    Player.startTurn();
-
-                    deleteDelay(delay);
+                    case "enemyTurnEnd" -> {
+                        for (Enemy enemy : currentEnemies) {
+                            enemy.endTurn();
+                        }
+                        Statistics.turnEnded();
+                        Statistics.setTurnNumber(Statistics.getTurnNumber() + 1);
+                        Statistics.turnStarted();
+                        drawCards(5);
+                        isPlayerTurn = true;
+                        Player.startTurn();
+                        deleteDelay(delay);
+                    }
+                    case "victoryPause" -> {
+                        setVictory(true);
+                        deleteDelay(delay);
+                    }
                 }
             }
         }
@@ -210,8 +223,7 @@ public class CombatMenuStage extends GenericStage {
             currentAttackingEnemyIndex--;
         }
         if (currentEnemies.isEmpty()) {
-            victory = true;
-            SoundManager.playFunnyTadaSound();
+            scheduleNewDelay(2f, "victoryPause");
         }
     }
 
@@ -221,6 +233,9 @@ public class CombatMenuStage extends GenericStage {
 
     public void setVictory(boolean victory) {
         this.victory = victory;
+        if (victory) {
+            SoundManager.playFunnyTadaSound();
+        }
     }
 
     public void addEnemy(Character.CharacterTypeName characterTypeName) {

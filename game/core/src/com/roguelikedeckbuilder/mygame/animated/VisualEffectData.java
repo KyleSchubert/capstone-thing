@@ -64,6 +64,13 @@ public class VisualEffectData {
                     this.dimensions = new XYPair<>(128, 128);
                     this.origin = new XYPair<>(64, 64);
                 }
+                case DIE -> {
+                    internalName = "die";
+                    this.totalFrameCount = 70;
+                    this.animationFrameDelays = new ArrayList<>(Collections.nCopies(totalFrameCount, 0.030f));
+                    this.dimensions = new XYPair<>(200, 200);
+                    this.origin = new XYPair<>(100, 100);
+                }
                 default ->
                         throw new IllegalStateException("Unexpected value for `visualEffectName`: " + visualEffectName);
             }
@@ -95,6 +102,6 @@ public class VisualEffectData {
     }
 
     public enum VisualEffectName {
-        ITEM_TRIGGERED, ITEM_TRIGGERED_2
+        ITEM_TRIGGERED, ITEM_TRIGGERED_2, DIE
     }
 }
