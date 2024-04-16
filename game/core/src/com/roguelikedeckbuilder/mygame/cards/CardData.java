@@ -22,14 +22,11 @@ public class CardData {
         Array<CardTypeName> copy = new Array<>();
         copy.addAll(allCardTypeNames);
         copy.shuffle();
+        copy.removeValue(CardTypeName.OUT_OF_STOCK, true);
 
         while (results.size < amount) {
             if (allowDuplicates) {
-                if (copy.get(0) != CardTypeName.OUT_OF_STOCK) {
-                    results.add(copy.get(0));
-                } else {
-                    results.add(copy.get(1));
-                }
+                results.add(copy.get(0));
                 copy.shuffle();
             } else {
                 results.add(copy.pop());
