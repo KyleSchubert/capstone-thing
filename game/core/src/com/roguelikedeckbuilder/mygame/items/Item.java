@@ -76,12 +76,13 @@ public class Item {
                 }
             }
 
-            VisualEffect visualEffect = new VisualEffect(VisualEffectData.VisualEffectName.ITEM_TRIGGERED,
-                    -group.getChild(0).getWidth(),
-                    -group.getChild(0).getHeight());
-            visualEffect.setScale(SCALE_FACTOR / this.group.getScaleX());
+            VisualEffect visualEffect = new VisualEffect(VisualEffectData.VisualEffectName.ITEM_TRIGGERED_2,
+                    group.getChild(0).getWidth() / 2,
+                    group.getChild(0).getHeight() / 2,
+                    SCALE_FACTOR / this.group.getScaleX());
 
-            this.group.addActorBefore(group.getChild(0), visualEffect);
+            this.group.addActor(visualEffect);
+
             AbilityData.useAbility(abilityTypeName, targets);
 
             Statistics.itemTriggered();

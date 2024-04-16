@@ -12,16 +12,16 @@ public class VisualEffect extends Group {
     private final VisualEffectData.VisualEffectName visualEffectName;
     private final int totalFrameCount;
 
-    public VisualEffect(VisualEffectData.VisualEffectName visualEffectName, float x, float y) {
+    public VisualEffect(VisualEffectData.VisualEffectName visualEffectName, float x, float y, float scaleAmount) {
         this.visualEffectName = visualEffectName;
         this.totalFrameCount = VisualEffectData.getTotalFrameCount(visualEffectName);
 
-        x -= VisualEffectData.getOrigin(visualEffectName).x() * SCALE_FACTOR;
-        y -= (VisualEffectData.getDimensions(visualEffectName).y() - VisualEffectData.getOrigin(visualEffectName).y()) * SCALE_FACTOR;
+        x -= VisualEffectData.getOrigin(visualEffectName).x() * scaleAmount;
+        y -= (VisualEffectData.getDimensions(visualEffectName).y() - VisualEffectData.getOrigin(visualEffectName).y()) * scaleAmount;
 
         this.setPosition(x, y);
         this.setSize(VisualEffectData.getDimensions(visualEffectName).x(), VisualEffectData.getDimensions(visualEffectName).y());
-        this.setScale(SCALE_FACTOR);
+        this.setScale(scaleAmount);
 
         setBounds(x, y,
                 VisualEffectData.getDimensions(visualEffectName).x(),
