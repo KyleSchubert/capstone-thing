@@ -617,6 +617,7 @@ public class MenuController {
                 setDrawDarkTransparentScreen(true);
                 Gdx.input.setInputProcessor(treasureMenuStage.getStage());
                 currentInputProcessor = treasureMenuStage.getStage();
+                setDrawTooltipMenu(false);
             }
             case CARD_CHOICE -> {
                 currentMenuState = MenuState.CARD_CHOICE;
