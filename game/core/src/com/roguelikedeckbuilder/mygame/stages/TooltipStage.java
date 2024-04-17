@@ -1,8 +1,7 @@
-package com.roguelikedeckbuilder.mygame;
+package com.roguelikedeckbuilder.mygame.stages;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -13,13 +12,12 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.roguelikedeckbuilder.mygame.MenuController;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.items.ItemData;
-import com.roguelikedeckbuilder.mygame.stages.GenericStage;
-import com.roguelikedeckbuilder.mygame.stages.Map;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.*;
 
@@ -38,7 +36,7 @@ public class TooltipStage extends GenericStage {
     private boolean isAbove;
     private boolean showChooseOneItemDetails = false;
 
-    TooltipStage(ScreenViewport viewportForStage, ClickListener clickListenerExitingToMap) {
+    public TooltipStage(ScreenViewport viewportForStage, ClickListener clickListenerExitingToMap) {
         super(viewportForStage, "tooltip");
         getStageBackgroundActor().setTouchable(Touchable.disabled);
         getStageBackgroundActor().setPosition(offScreen.x(), offScreen.y());
