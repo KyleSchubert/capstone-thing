@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Null;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.cards.Card;
@@ -152,9 +151,9 @@ public class ClickListenerManager {
         });
     }
 
-    public static ClickListener lookingAtDrawPile(Array<Card> drawPileContents) {
+    public static ClickListener lookingAtDrawPile() {
         return getClickListenerForTouchUp(() -> {
-            menuController.getCardChangeMenuStage().prepareViewDrawPile(drawPileContents);
+            menuController.getCardChangeMenuStage().prepareViewDrawPile(Player.getDrawPileContents());
             SoundManager.playMenuOpenSound();
         });
     }

@@ -52,12 +52,12 @@ public class CardChangeStage extends GenericStage {
 
         Image vScrollKnob = new Image(new Texture(Gdx.files.internal("OTHER UI/scrollbar.png")));
         scrollPaneStyle.vScrollKnob = vScrollKnob.getDrawable();
-        scrollPaneStyle.vScrollKnob.setMinWidth(1);
+        scrollPaneStyle.vScrollKnob.setMinWidth(vScrollKnob.getWidth() * SCALE_FACTOR);
         scrollPaneStyle.vScrollKnob.setMinHeight(0.2f);
 
         Image vScrollBackground = new Image(new Texture(Gdx.files.internal("OTHER UI/scrollbar background.png")));
         scrollPaneStyle.vScroll = vScrollBackground.getDrawable();
-        scrollPaneStyle.vScroll.setMinWidth(1);
+        scrollPaneStyle.vScroll.setMinWidth(vScrollBackground.getWidth() * SCALE_FACTOR);
         scrollPaneStyle.vScroll.setMinHeight(0.2f);
 
         ImageButton backButton = getImageButton("back");

@@ -36,9 +36,6 @@ import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 
 public class CombatMenuStage extends GenericStage {
     private static final Array<Enemy> currentEnemies = new Array<>();
-    private final Array<Card> drawPileContents = new Array<>();
-    private final Array<Card> shufflePileContents = new Array<>();
-    private final Array<Card> handContents = new Array<>();
     private final Label drawPileAmountText;
     private final Label shufflePileAmountText;
     private final Array<Enemy> mustRemoveBecauseDead;
@@ -61,7 +58,7 @@ public class CombatMenuStage extends GenericStage {
         drawPile.setPosition(4, 3);
         drawPile.setScale(SCALE_FACTOR);
         this.getStage().addActor(drawPile);
-        drawPile.addCaptureListener(ClickListenerManager.lookingAtDrawPile(drawPileContents));
+        drawPile.addCaptureListener(ClickListenerManager.lookingAtDrawPile());
         drawPile.addCaptureListener(cardChangeStageTrigger);
 
         Image shufflePile = new Image(new Texture(Gdx.files.internal("CARDS/shuffle pile.png")));
@@ -73,11 +70,11 @@ public class CombatMenuStage extends GenericStage {
         Group groupForLabels = new Group();
         groupForLabels.setScale(SCALE_FACTOR);
 
-        drawPileAmountText = LabelMaker.newLabel(Integer.toString(drawPileContents.size), LabelMaker.getLarge());
+        drawPileAmountText = LabelMaker.newLabel("", LabelMaker.getLarge());
         drawPileAmountText.setPosition(108, 20);
         groupForLabels.addActor(drawPileAmountText);
 
-        shufflePileAmountText = LabelMaker.newLabel(Integer.toString(shufflePileContents.size), LabelMaker.getLarge());
+        shufflePileAmountText = LabelMaker.newLabel("", LabelMaker.getLarge());
         shufflePileAmountText.setPosition(1308, 20);
         groupForLabels.addActor(shufflePileAmountText);
 
@@ -161,15 +158,21 @@ public class CombatMenuStage extends GenericStage {
         Player.getCombatInformation().drawHpBar(batch);
         energyLabel.setText(String.valueOf(Player.getEnergy()));
 
-        for (Card card : handContents) {
-            if (card.isToGoToShufflePile()) {
-                card.setToGoToShufflePile(false);
-                shufflePileContents.add(card);
-                handContents.removeValue(card, true);
-                card.getGroup().remove();
-                Statistics.discardedCard();
-                updatePileText();
+        Player.potentiallyDiscardCards();
+
+        if (Player.isCombatMenuStageMustAddCard()) {
+            for (Card card : Player.getHandContents()) {
+                if (card.isToBeAddedToCombatMenuStage()) {
+                    this.getStage().addActor(card.getGroup());
+                    card.setToBeAddedToCombatMenuStage(false);
+                }
             }
+            Player.setCombatMenuStageMustAddCard(false);
+        }
+
+        if (Player.combatMenuStageMustUpdatePileText) {
+            updatePileText();
+            Player.setCombatMenuStageMustUpdatePileText(false);
         }
     }
 
@@ -190,7 +193,6 @@ public class CombatMenuStage extends GenericStage {
                         }
                         Statistics.setTurnNumber(Statistics.getTurnNumber() + 1);
                         Statistics.turnStarted();
-                        drawCards(5);
                         isPlayerTurn = true;
                         Player.startTurn();
                         deleteDelay(delay);
@@ -275,18 +277,6 @@ public class CombatMenuStage extends GenericStage {
 
         currentEnemies.clear();
 
-        drawPileContents.clear();
-        for (Card card : Player.getOwnedCards()) {
-            card.setToGoToShufflePile(false);
-        }
-        drawPileContents.addAll(Player.getOwnedCards());
-        drawPileContents.shuffle();
-
-        shufflePileContents.clear();
-
-        handContents.clear();
-
-        drawCards(5);
         updatePileText();
 
         UseLine.setMainColor(Color.PURPLE);
@@ -309,8 +299,8 @@ public class CombatMenuStage extends GenericStage {
     }
 
     private void updatePileText() {
-        drawPileAmountText.setText(drawPileContents.size);
-        shufflePileAmountText.setText(shufflePileContents.size);
+        drawPileAmountText.setText(Player.getDrawPileContents().size);
+        shufflePileAmountText.setText(Player.getShufflePileContents().size);
     }
 
     private void endTurn() {
@@ -319,11 +309,8 @@ public class CombatMenuStage extends GenericStage {
 
         removeActorsByType(UserObjectOptions.CARD);
 
-        shufflePileContents.addAll(handContents);
-        for (int i = 0; i < handContents.size; i++) {
-            Statistics.discardedCard();
-        }
-        handContents.clear();
+        Player.endTurn();
+
         updatePileText();
 
         currentAttackingEnemyIndex = 0;
@@ -332,29 +319,6 @@ public class CombatMenuStage extends GenericStage {
             enemy.getCombatInformation().clearDefense();
         }
         scheduleNewDelay(0.8f, "enemyTurnStart");
-    }
-
-    public void drawCards(int amount) {
-        amount = Math.min(amount, drawPileContents.size + shufflePileContents.size);
-
-        for (int i = 0; i < amount; i++) {
-            if (drawPileContents.size == 0) {
-                // Shuffle the shuffle pile into the draw pile
-                System.out.println("Shuffled in.");
-                System.out.println("AMOUNT: " + amount + " sizes: draw: " + drawPileContents.size + " shuffle: " + shufflePileContents.size);
-
-                Statistics.shuffledIn(shufflePileContents.size);
-                drawPileContents.addAll(shufflePileContents);
-                drawPileContents.shuffle();
-                shufflePileContents.clear();
-            }
-            drawPileContents.get(0).getGroup().setPosition(12 + handContents.size * 7, 0);
-            this.getStage().addActor(drawPileContents.get(0).getGroup());
-            handContents.add(drawPileContents.get(0));
-            Statistics.drewCard();
-            drawPileContents.removeIndex(0);
-        }
-        updatePileText();
     }
 
     private void targetHoverListener() {

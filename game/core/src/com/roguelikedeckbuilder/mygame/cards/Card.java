@@ -31,6 +31,7 @@ public class Card {
     private final Label energyCostLabel;
     private boolean isUpgraded = false;
     private boolean toGoToShufflePile = false;
+    private boolean toBeAddedToCombatMenuStage;
 
     public Card(CardTypeName cardTypeName, boolean showValue) {
         this.cardTypeName = cardTypeName;
@@ -166,5 +167,13 @@ public class Card {
 
     public void setToGoToShufflePile(boolean toGoToShufflePile) {
         this.toGoToShufflePile = toGoToShufflePile;
+    }
+
+    public boolean isToBeAddedToCombatMenuStage() {
+        return toBeAddedToCombatMenuStage;
+    }
+
+    public void setToBeAddedToCombatMenuStage(boolean toBeAddedToCombatMenuStage) {
+        this.toBeAddedToCombatMenuStage = toBeAddedToCombatMenuStage;
     }
 }

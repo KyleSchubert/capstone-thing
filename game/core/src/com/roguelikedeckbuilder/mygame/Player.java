@@ -19,6 +19,8 @@ import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
 public class Player {
+    public static boolean combatMenuStageMustUpdatePileText;
+    public static boolean combatMenuStageMustAddCard;
     private static Character character;
     private static CombatInformation combatInformation;
     private static int money;
@@ -30,6 +32,9 @@ public class Player {
     private static XYPair<Float> positionOnStage;
     private static Array<Item> ownedItems;
     private static MenuController menuController;
+    private static Array<Card> drawPileContents;
+    private static Array<Card> shufflePileContents;
+    private static Array<Card> handContents;
 
     public static void initialize() {
         positionOnStage = new XYPair<>(18f, 22.8f);
@@ -42,6 +47,10 @@ public class Player {
         combatInformation.setPlayerInformation(true);
         flagGoBackToPreviousMenuState = false;
         ownedItems = new Array<>();
+        drawPileContents = new Array<>();
+        shufflePileContents = new Array<>();
+        handContents = new Array<>();
+        combatMenuStageMustUpdatePileText = false;
         reset();
     }
 
@@ -160,13 +169,27 @@ public class Player {
         combatInformation.setPositions(character.getCharacterCenter());
         combatInformation.setHpBarVisibility(true);
         startTurn();
+
+        drawPileContents.clear();
+        for (Card card : ownedCards) {
+            card.setToGoToShufflePile(false);
+        }
+        drawPileContents.addAll(ownedCards);
+        drawPileContents.shuffle();
+
+        shufflePileContents.clear();
+
+        handContents.clear();
+
+        drawCards(5);
     }
 
     public static void startTurn() {
         int oldEnergyAmount = energy;
+        drawCards(5);
         energy = 3;
         Statistics.restoredEnergy(energy - oldEnergyAmount);
-        Player.getCombatInformation().clearDefense();
+        combatInformation.clearDefense();
     }
 
     public static int getEnergy() {
@@ -221,7 +244,7 @@ public class Player {
             if (ownedItem.getItemTypeName() == itemTypeName) {
                 item.getGroup().clear();
                 if (itemTypeName == ItemTypeName.JUNK) {
-                    Player.changePersistentMoney(5);
+                    changePersistentMoney(5);
                 }
                 SoundManager.playFunnyTadaSound();
                 return;
@@ -233,5 +256,77 @@ public class Player {
         ownedItems.add(item);
         Statistics.gainedItem();
         SoundManager.playGetItemSound();
+    }
+
+    public static Array<Card> getDrawPileContents() {
+        return drawPileContents;
+    }
+
+    public static Array<Card> getShufflePileContents() {
+        return shufflePileContents;
+    }
+
+    public static Array<Card> getHandContents() {
+        return handContents;
+    }
+
+    public static void potentiallyDiscardCards() {
+        for (Card card : handContents) {
+            if (card.isToGoToShufflePile()) {
+                card.setToGoToShufflePile(false);
+                shufflePileContents.add(card);
+                handContents.removeValue(card, true);
+                card.getGroup().remove();
+                Statistics.discardedCard();
+                combatMenuStageMustUpdatePileText = true;
+            }
+        }
+    }
+
+    public static void endTurn() {
+        shufflePileContents.addAll(handContents);
+        for (int i = 0; i < handContents.size; i++) {
+            Statistics.discardedCard();
+        }
+        handContents.clear();
+    }
+
+    public static void drawCards(int amount) {
+        amount = Math.min(amount, drawPileContents.size + shufflePileContents.size);
+
+        for (int i = 0; i < amount; i++) {
+            if (drawPileContents.size == 0) {
+                // Shuffle the shuffle pile into the draw pile
+                System.out.println("Shuffled in.");
+                System.out.println("AMOUNT: " + amount + " sizes: draw: " + drawPileContents.size + " shuffle: " + shufflePileContents.size);
+
+                Statistics.shuffledIn(shufflePileContents.size);
+                drawPileContents.addAll(shufflePileContents);
+                drawPileContents.shuffle();
+                shufflePileContents.clear();
+            }
+            Card drawnCard = drawPileContents.get(0);
+            drawnCard.getGroup().setPosition(12 + handContents.size * 7, 0);
+
+            combatMenuStageMustUpdatePileText = true;
+            combatMenuStageMustAddCard = true;
+            drawnCard.setToBeAddedToCombatMenuStage(true);
+
+            handContents.add(drawnCard);
+            Statistics.drewCard();
+            drawPileContents.removeIndex(0);
+        }
+    }
+
+    public static void setCombatMenuStageMustUpdatePileText(boolean combatMenuStageMustUpdatePileText) {
+        Player.combatMenuStageMustUpdatePileText = combatMenuStageMustUpdatePileText;
+    }
+
+    public static boolean isCombatMenuStageMustAddCard() {
+        return combatMenuStageMustAddCard;
+    }
+
+    public static void setCombatMenuStageMustAddCard(boolean combatMenuStageMustAddCard) {
+        Player.combatMenuStageMustAddCard = combatMenuStageMustAddCard;
     }
 }
