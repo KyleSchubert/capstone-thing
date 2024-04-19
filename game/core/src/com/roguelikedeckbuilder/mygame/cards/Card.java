@@ -9,28 +9,29 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.roguelikedeckbuilder.mygame.Player;
-import com.roguelikedeckbuilder.mygame.UseLine;
-import com.roguelikedeckbuilder.mygame.combat.AbilityData;
 import com.roguelikedeckbuilder.mygame.combat.CombatHandler;
+import com.roguelikedeckbuilder.mygame.combat.ability.AbilityData;
+import com.roguelikedeckbuilder.mygame.combat.ability.AbilityTypeName;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
+import com.roguelikedeckbuilder.mygame.stages.combatmenu.UseLine;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 
 public class Card {
-    private final CardData.CardTypeName cardTypeName;
+    private final CardTypeName cardTypeName;
     private final Group group;
-    private boolean isUpgraded = false;
     private final float width;
     private final float height;
     private final Label cardName;
     private final Label cardEffectDescription;
     private final Label energyCostLabel;
+    private boolean isUpgraded = false;
     private boolean toGoToShufflePile = false;
 
-    public Card(CardData.CardTypeName cardTypeName, boolean showValue) {
+    public Card(CardTypeName cardTypeName, boolean showValue) {
         this.cardTypeName = cardTypeName;
 
         Image background = new Image(new Texture(Gdx.files.internal("CARDS/background.png")));
@@ -95,11 +96,11 @@ public class Card {
         group.setHeight(height);
     }
 
-    public CardData.CardTypeName getCardTypeName() {
+    public CardTypeName getCardTypeName() {
         return cardTypeName;
     }
 
-    public AbilityData.AbilityTypeName getUsedAbilityTypeName() {
+    public AbilityTypeName getUsedAbilityTypeName() {
         if (Card.this.isUpgraded) {
             return CardData.getUpgradedAbilityTypeName(Card.this.getCardTypeName());
         } else {
@@ -114,6 +115,21 @@ public class Card {
 
     public boolean isUpgraded() {
         return isUpgraded;
+    }
+
+    public void setUpgraded(boolean upgraded) {
+        if (upgraded) {
+            // A star symbol, to show it is upgraded
+            Image upgradedImage = new Image(new Texture(Gdx.files.internal("CARDS/upgraded star.png")));
+            upgradedImage.setPosition(25, 190);
+            group.addActor(upgradedImage);
+        }
+
+        isUpgraded = upgraded;
+
+        cardName.setText(AbilityData.getName(getUsedAbilityTypeName()));
+        cardEffectDescription.setText(AbilityData.getDescription(getUsedAbilityTypeName()));
+        energyCostLabel.setText(AbilityData.getEnergyCost(getUsedAbilityTypeName()));
     }
 
     public ClickListener getClickListener() {
@@ -140,22 +156,6 @@ public class Card {
                 CombatHandler.playerUsesCard(Card.this);
             }
         };
-    }
-
-
-    public void setUpgraded(boolean upgraded) {
-        if (upgraded) {
-            // A star symbol, to show it is upgraded
-            Image upgradedImage = new Image(new Texture(Gdx.files.internal("CARDS/upgraded star.png")));
-            upgradedImage.setPosition(25, 190);
-            group.addActor(upgradedImage);
-        }
-
-        isUpgraded = upgraded;
-
-        cardName.setText(AbilityData.getName(getUsedAbilityTypeName()));
-        cardEffectDescription.setText(AbilityData.getDescription(getUsedAbilityTypeName()));
-        energyCostLabel.setText(AbilityData.getEnergyCost(getUsedAbilityTypeName()));
     }
 
     public boolean isToGoToShufflePile() {

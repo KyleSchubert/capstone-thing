@@ -3,9 +3,10 @@ package com.roguelikedeckbuilder.mygame;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Array;
+import com.roguelikedeckbuilder.mygame.animated.character.Character;
+import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
 import com.roguelikedeckbuilder.mygame.cards.Card;
-import com.roguelikedeckbuilder.mygame.cards.CardData;
-import com.roguelikedeckbuilder.mygame.animated.Character;
+import com.roguelikedeckbuilder.mygame.cards.CardTypeName;
 import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
 import com.roguelikedeckbuilder.mygame.helpers.GenericHelpers;
@@ -13,8 +14,9 @@ import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.items.Item;
-import com.roguelikedeckbuilder.mygame.items.ItemData;
-import com.roguelikedeckbuilder.mygame.tracking.Statistics;
+import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
+import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
+import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
 public class Player {
     private static Character character;
@@ -32,7 +34,7 @@ public class Player {
     public static void initialize() {
         positionOnStage = new XYPair<>(18f, 22.8f);
         persistentMoney = 200;
-        character = new Character(Character.CharacterTypeName.HELMET_PENGUIN, positionOnStage.x(), positionOnStage.y());
+        character = new Character(CharacterTypeName.HELMET_PENGUIN, positionOnStage.x(), positionOnStage.y());
         character.setTouchable(Touchable.disabled);
         character.faceRight();
         ownedCards = new Array<>();
@@ -55,7 +57,7 @@ public class Player {
 
         ownedCards.clear();
 
-        for (CardData.CardTypeName cardTypeName : CardData.CardTypeName.values()) {
+        for (CardTypeName cardTypeName : CardTypeName.values()) {
             Card card = new Card(cardTypeName, false);
             card.getGroup().addCaptureListener(card.getClickListener());
             ownedCards.add(card);
@@ -112,7 +114,7 @@ public class Player {
         return persistentMoney;
     }
 
-    public static boolean buyCard(int cardValue, CardData.CardTypeName cardTypeName, boolean isUpgraded) {
+    public static boolean buyCard(int cardValue, CardTypeName cardTypeName, boolean isUpgraded) {
         if (money > cardValue) {
             changeMoney(-cardValue);
 
@@ -122,7 +124,7 @@ public class Player {
         return false;
     }
 
-    public static void obtainCard(CardData.CardTypeName cardTypeName, boolean isUpgraded) {
+    public static void obtainCard(CardTypeName cardTypeName, boolean isUpgraded) {
         Card card = new Card(cardTypeName, false);
         card.setUpgraded(isUpgraded);
         if (isUpgraded) {
@@ -181,20 +183,20 @@ public class Player {
         }
     }
 
-    public static void setPotentialAbilityTargetType(TargetType potentialAbilityTargetType) {
-        Player.potentialAbilityTargetType = potentialAbilityTargetType;
-    }
-
     public static TargetType getPotentialAbilityTargetType() {
         return potentialAbilityTargetType;
     }
 
-    public static void setFlagGoBackToPreviousMenuState(boolean flag) {
-        flagGoBackToPreviousMenuState = flag;
+    public static void setPotentialAbilityTargetType(TargetType potentialAbilityTargetType) {
+        Player.potentialAbilityTargetType = potentialAbilityTargetType;
     }
 
     public static boolean isFlagGoBackToPreviousMenuState() {
         return flagGoBackToPreviousMenuState;
+    }
+
+    public static void setFlagGoBackToPreviousMenuState(boolean flag) {
+        flagGoBackToPreviousMenuState = flag;
     }
 
     public static boolean isPointWithinRange(XYPair<Float> point) {
@@ -205,7 +207,7 @@ public class Player {
         return ownedItems;
     }
 
-    public static void obtainItem(ItemData.ItemTypeName itemTypeName) {
+    public static void obtainItem(ItemTypeName itemTypeName) {
         Item item = new Item(itemTypeName);
         System.out.println("Player gained item: " + itemTypeName);
 
@@ -214,7 +216,7 @@ public class Player {
         for (Item ownedItem : ownedItems) {
             if (ownedItem.getItemTypeName() == itemTypeName) {
                 item.getGroup().clear();
-                if (itemTypeName == ItemData.ItemTypeName.JUNK) {
+                if (itemTypeName == ItemTypeName.JUNK) {
                     Player.changePersistentMoney(5);
                 }
                 SoundManager.playFunnyTadaSound();

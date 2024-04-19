@@ -2,16 +2,19 @@ package com.roguelikedeckbuilder.mygame.combat;
 
 import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.Player;
+import com.roguelikedeckbuilder.mygame.animated.character.CharacterState;
 import com.roguelikedeckbuilder.mygame.cards.Card;
-import com.roguelikedeckbuilder.mygame.animated.Character;
-import com.roguelikedeckbuilder.mygame.tracking.Statistics;
+import com.roguelikedeckbuilder.mygame.combat.ability.AbilityData;
+import com.roguelikedeckbuilder.mygame.combat.ability.AbilityTypeName;
+import com.roguelikedeckbuilder.mygame.combat.enemy.Enemy;
+import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
 public class CombatHandler {
     private static Array<CombatInformation> targets = new Array<>();
     private static Array<Enemy> enemiesThePlayerIsHoveringOver = new Array<>();
     private static boolean isTargetingPlayer = false;
 
-    public static void enemyUsesAbility(AbilityData.AbilityTypeName abilityTypeName, CombatInformation self, TargetType targetType) {
+    public static void enemyUsesAbility(AbilityTypeName abilityTypeName, CombatInformation self, TargetType targetType) {
         // Convert the targetType to make sense since the enemy is using it
         if (targetType == TargetType.SELF) {
             targets.clear();
@@ -51,8 +54,8 @@ public class CombatHandler {
             Player.getCharacter().setTargeted(true);
         } else {
             for (Enemy enemy : enemiesThePlayerIsHoveringOver) {
-                if (enemy.getCharacter().getState() != Character.CharacterState.DYING
-                        && enemy.getCharacter().getState() != Character.CharacterState.DEAD) {
+                if (enemy.getCharacter().getState() != CharacterState.DYING
+                        && enemy.getCharacter().getState() != CharacterState.DEAD) {
                     targetArray.add(enemy.getCombatInformation());
                     enemy.setTargeted(true);
                 }

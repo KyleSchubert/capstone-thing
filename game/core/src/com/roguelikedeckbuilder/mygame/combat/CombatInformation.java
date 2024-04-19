@@ -1,9 +1,10 @@
 package com.roguelikedeckbuilder.mygame.combat;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.roguelikedeckbuilder.mygame.animated.Character;
+import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
+import com.roguelikedeckbuilder.mygame.combat.enemy.EnemyData;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
-import com.roguelikedeckbuilder.mygame.tracking.Statistics;
+import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
 
 public class CombatInformation {
@@ -23,7 +24,7 @@ public class CombatInformation {
         isPlayerInformation = playerInformation;
     }
 
-    public void loadEnemyStats(Character.CharacterTypeName characterTypeName) {
+    public void loadEnemyStats(CharacterTypeName characterTypeName) {
         maxHp = EnemyData.getMaxHp(characterTypeName);
         hp = maxHp;
         updateHpBar();

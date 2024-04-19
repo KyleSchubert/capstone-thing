@@ -1,7 +1,7 @@
 package com.roguelikedeckbuilder.mygame.cards;
 
 import com.badlogic.gdx.utils.Array;
-import com.roguelikedeckbuilder.mygame.combat.AbilityData;
+import com.roguelikedeckbuilder.mygame.combat.ability.AbilityTypeName;
 
 public class CardData {
     private static Array<IndividualCardData> data;
@@ -39,11 +39,11 @@ public class CardData {
         return results;
     }
 
-    public static AbilityData.AbilityTypeName getAbilityTypeName(CardTypeName cardTypeName) {
+    public static AbilityTypeName getAbilityTypeName(CardTypeName cardTypeName) {
         return data.get(cardTypeName.ordinal()).getAbilityTypeName();
     }
 
-    public static AbilityData.AbilityTypeName getUpgradedAbilityTypeName(CardTypeName cardTypeName) {
+    public static AbilityTypeName getUpgradedAbilityTypeName(CardTypeName cardTypeName) {
         return data.get(cardTypeName.ordinal()).getUpgradedAbilityTypeName();
     }
 
@@ -56,42 +56,42 @@ public class CardData {
     }
 
     public static class IndividualCardData {
-        private AbilityData.AbilityTypeName abilityTypeName;
-        private AbilityData.AbilityTypeName upgradedAbilityTypeName;
-        private int value;
         private final String imagePath;
+        private AbilityTypeName abilityTypeName;
+        private AbilityTypeName upgradedAbilityTypeName;
+        private int value;
 
         public IndividualCardData(CardTypeName cardTypeName) {
             String iconFileName = "1.png";
 
             switch (cardTypeName) {
                 case ENERGY_SLICES -> {
-                    abilityTypeName = AbilityData.AbilityTypeName.ENERGY_SLICES;
-                    upgradedAbilityTypeName = AbilityData.AbilityTypeName.ENERGY_SLICES_UPGRADED;
+                    abilityTypeName = AbilityTypeName.ENERGY_SLICES;
+                    upgradedAbilityTypeName = AbilityTypeName.ENERGY_SLICES_UPGRADED;
                     value = 110;
                     iconFileName = "1.png";
                 }
                 case FLAME -> {
-                    abilityTypeName = AbilityData.AbilityTypeName.FLAME;
-                    upgradedAbilityTypeName = AbilityData.AbilityTypeName.FLAME_UPGRADED;
+                    abilityTypeName = AbilityTypeName.FLAME;
+                    upgradedAbilityTypeName = AbilityTypeName.FLAME_UPGRADED;
                     value = 70;
                     iconFileName = "2.png";
                 }
                 case FIRE_STRIKE -> {
-                    abilityTypeName = AbilityData.AbilityTypeName.FIRE_STRIKE;
-                    upgradedAbilityTypeName = AbilityData.AbilityTypeName.FIRE_STRIKE_UPGRADED;
+                    abilityTypeName = AbilityTypeName.FIRE_STRIKE;
+                    upgradedAbilityTypeName = AbilityTypeName.FIRE_STRIKE_UPGRADED;
                     value = 80;
                     iconFileName = "3.png";
                 }
                 case DEFEND -> {
-                    abilityTypeName = AbilityData.AbilityTypeName.DEFEND;
-                    upgradedAbilityTypeName = AbilityData.AbilityTypeName.DEFEND_UPGRADED;
+                    abilityTypeName = AbilityTypeName.DEFEND;
+                    upgradedAbilityTypeName = AbilityTypeName.DEFEND_UPGRADED;
                     value = 80;
                     iconFileName = "4.png";
                 }
                 case OUT_OF_STOCK -> {
-                    abilityTypeName = AbilityData.AbilityTypeName.NOTHING;
-                    upgradedAbilityTypeName = AbilityData.AbilityTypeName.NOTHING;
+                    abilityTypeName = AbilityTypeName.NOTHING;
+                    upgradedAbilityTypeName = AbilityTypeName.NOTHING;
                     iconFileName = "sold.png";
                     value = 999999;
                 }
@@ -102,11 +102,11 @@ public class CardData {
             imagePath = "ABILITIES/" + iconFileName;
         }
 
-        public AbilityData.AbilityTypeName getAbilityTypeName() {
+        public AbilityTypeName getAbilityTypeName() {
             return abilityTypeName;
         }
 
-        public AbilityData.AbilityTypeName getUpgradedAbilityTypeName() {
+        public AbilityTypeName getUpgradedAbilityTypeName() {
             return upgradedAbilityTypeName;
         }
 
@@ -117,14 +117,5 @@ public class CardData {
         public String getImagePath() {
             return imagePath;
         }
-    }
-
-
-    public enum CardTypeName {
-        ENERGY_SLICES,
-        FLAME,
-        FIRE_STRIKE,
-        DEFEND,
-        OUT_OF_STOCK
     }
 }

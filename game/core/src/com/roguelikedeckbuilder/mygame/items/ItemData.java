@@ -2,8 +2,10 @@ package com.roguelikedeckbuilder.mygame.items;
 
 import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.Player;
-import com.roguelikedeckbuilder.mygame.combat.AbilityData;
-import com.roguelikedeckbuilder.mygame.tracking.TriggerData;
+import com.roguelikedeckbuilder.mygame.combat.ability.AbilityData;
+import com.roguelikedeckbuilder.mygame.combat.ability.AbilityTypeName;
+import com.roguelikedeckbuilder.mygame.tracking.trigger.TriggerData;
+import com.roguelikedeckbuilder.mygame.tracking.trigger.TriggerName;
 
 public class ItemData {
     private static Array<IndividualItemData> data;
@@ -73,7 +75,7 @@ public class ItemData {
         return data.get(itemTypeName.ordinal()).getName();
     }
 
-    public static AbilityData.AbilityTypeName getAbilityTypeName(ItemTypeName itemTypeName) {
+    public static AbilityTypeName getAbilityTypeName(ItemTypeName itemTypeName) {
         return data.get(itemTypeName.ordinal()).getAbilityTypeName();
     }
 
@@ -81,16 +83,16 @@ public class ItemData {
         return data.get(itemTypeName.ordinal()).getItemTier();
     }
 
-    public static TriggerData.TriggerName getTriggerName(ItemTypeName itemTypeName) {
+    public static TriggerName getTriggerName(ItemTypeName itemTypeName) {
         return data.get(itemTypeName.ordinal()).getTriggerName();
     }
 
     private static class IndividualItemData {
         private final String imagePath;
         private String name;
-        private AbilityData.AbilityTypeName abilityTypeName;
+        private AbilityTypeName abilityTypeName;
         private ItemTier itemTier;
-        private TriggerData.TriggerName triggerName;
+        private TriggerName triggerName;
 
         public IndividualItemData(ItemTypeName itemTypeName) {
             String iconFileName = "default.png";
@@ -99,30 +101,30 @@ public class ItemData {
                 case TEST_SWORD -> {
                     iconFileName = "sword1.png";
                     name = "Test Sword";
-                    abilityTypeName = AbilityData.AbilityTypeName.ITEM_SWORD_ABILITY;
+                    abilityTypeName = AbilityTypeName.ITEM_SWORD_ABILITY;
                     itemTier = ItemTier.COMMON;
-                    triggerName = TriggerData.TriggerName.EVERY_START_OF_BATTLE;
+                    triggerName = TriggerName.EVERY_START_OF_BATTLE;
                 }
                 case TEST_SHIELD -> {
                     iconFileName = "shield1.png";
                     name = "Test Shield";
-                    abilityTypeName = AbilityData.AbilityTypeName.ITEM_SHIELD_ABILITY;
+                    abilityTypeName = AbilityTypeName.ITEM_SHIELD_ABILITY;
                     itemTier = ItemTier.COMMON;
-                    triggerName = TriggerData.TriggerName.LAST_THREE_DAMAGE_DEALT_GREATER_THAN_30;
+                    triggerName = TriggerName.LAST_THREE_DAMAGE_DEALT_GREATER_THAN_30;
                 }
                 case TEST_SWORD_2 -> {
                     iconFileName = "sword2.png";
                     name = "Test Sword 2";
-                    abilityTypeName = AbilityData.AbilityTypeName.ITEM_SWORD_2_ABILITY;
+                    abilityTypeName = AbilityTypeName.ITEM_SWORD_2_ABILITY;
                     itemTier = ItemTier.COMMON;
-                    triggerName = TriggerData.TriggerName.ONCE_PER_TURN_AFTER_ENEMY_USES_ABILITY;
+                    triggerName = TriggerName.ONCE_PER_TURN_AFTER_ENEMY_USES_ABILITY;
                 }
                 case JUNK -> {
                     iconFileName = "junk.png";
                     name = "Junk";
-                    abilityTypeName = AbilityData.AbilityTypeName.NOTHING;
+                    abilityTypeName = AbilityTypeName.NOTHING;
                     itemTier = ItemTier.JUNK;
-                    triggerName = TriggerData.TriggerName.NOTHING;
+                    triggerName = TriggerName.NOTHING;
                 }
             }
 
@@ -137,7 +139,7 @@ public class ItemData {
             return name;
         }
 
-        public AbilityData.AbilityTypeName getAbilityTypeName() {
+        public AbilityTypeName getAbilityTypeName() {
             return abilityTypeName;
         }
 
@@ -145,16 +147,9 @@ public class ItemData {
             return itemTier;
         }
 
-        public TriggerData.TriggerName getTriggerName() {
+        public TriggerName getTriggerName() {
             return triggerName;
         }
     }
 
-    public enum ItemTypeName {
-        TEST_SWORD, TEST_SHIELD, TEST_SWORD_2, JUNK
-    }
-
-    public enum ItemTier {
-        COMMON, UNCOMMON, RARE, BOSS, ANY, JUNK
-    }
 }

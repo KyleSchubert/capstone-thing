@@ -7,15 +7,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Null;
-import com.roguelikedeckbuilder.mygame.MenuController;
 import com.roguelikedeckbuilder.mygame.Player;
-import com.roguelikedeckbuilder.mygame.stages.TooltipStage;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.cards.CardData;
-import com.roguelikedeckbuilder.mygame.combat.AbilityData;
-import com.roguelikedeckbuilder.mygame.items.ItemData;
-import com.roguelikedeckbuilder.mygame.tracking.Statistics;
+import com.roguelikedeckbuilder.mygame.cards.CardTypeName;
+import com.roguelikedeckbuilder.mygame.combat.ability.AbilityData;
+import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
+import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
+import com.roguelikedeckbuilder.mygame.menucontroller.MenuSoundType;
+import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
+import com.roguelikedeckbuilder.mygame.stages.tooltip.Size;
+import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 import com.roguelikedeckbuilder.mygame.treasure.Treasure;
+import com.roguelikedeckbuilder.mygame.treasure.TreasureType;
 
 public class ClickListenerManager {
     // These could be in MenuController, but I wanted the organization bonus of it being in another file so yeah
@@ -41,7 +45,7 @@ public class ClickListenerManager {
     }
 
 
-    public static ClickListener obtainingItem(ItemData.ItemTypeName itemTypeName) {
+    public static ClickListener obtainingItem(ItemTypeName itemTypeName) {
         return getClickListenerForTouchUp(() -> Player.obtainItem(itemTypeName));
     }
 
@@ -60,12 +64,12 @@ public class ClickListenerManager {
         });
     }
 
-    public static ClickListener triggeringMenuState(MenuController.MenuState menuState, MenuController.MenuSoundType menuSoundType) {
+    public static ClickListener triggeringMenuState(MenuState menuState, MenuSoundType menuSoundType) {
         return getClickListenerForTouchUp(() -> {
             menuController.setMenuState(menuState);
-            if (menuSoundType == MenuController.MenuSoundType.OPEN) {
+            if (menuSoundType == MenuSoundType.OPEN) {
                 SoundManager.playMenuOpenSound();
-            } else if (menuSoundType == MenuController.MenuSoundType.CLOSE) {
+            } else if (menuSoundType == MenuSoundType.CLOSE) {
                 SoundManager.playMenuCloseSound();
             }
         });
@@ -85,7 +89,7 @@ public class ClickListenerManager {
         });
     }
 
-    public static ClickListener obtainingCard(CardData.CardTypeName cardTypeName, boolean isUpgraded) {
+    public static ClickListener obtainingCard(CardTypeName cardTypeName, boolean isUpgraded) {
         return getClickListenerForTouchUp(() -> {
             String cardName;
             if (isUpgraded) {
@@ -106,7 +110,7 @@ public class ClickListenerManager {
         });
     }
 
-    public static ClickListener upgradingCard(int cardIndex, CardData.CardTypeName cardTypeName) {
+    public static ClickListener upgradingCard(int cardIndex, CardTypeName cardTypeName) {
         return getClickListenerForTouchUp(() -> {
             String cardName = AbilityData.getName(CardData.getUpgradedAbilityTypeName(cardTypeName));
 
@@ -127,7 +131,7 @@ public class ClickListenerManager {
         });
     }
 
-    public static ClickListener triggerTreasure(Treasure.TreasureType treasureType, int amount, Group groupToRemove) {
+    public static ClickListener triggerTreasure(TreasureType treasureType, int amount, Group groupToRemove) {
         return getClickListenerForTouchUp(() -> {
             Treasure.triggerTreasure(treasureType, amount);
             groupToRemove.remove();
@@ -136,7 +140,7 @@ public class ClickListenerManager {
 
     public static ClickListener buyingCard(Card card) {
         return getClickListenerForTouchUp(() -> {
-            if (card.getCardTypeName() == CardData.CardTypeName.OUT_OF_STOCK) {
+            if (card.getCardTypeName() == CardTypeName.OUT_OF_STOCK) {
                 return;
             }
             boolean success = Player.buyCard(CardData.getValue(card.getCardTypeName()), card.getCardTypeName(), card.isUpgraded());
@@ -170,7 +174,7 @@ public class ClickListenerManager {
         return new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, @Null Actor fromActor) {
-                menuController.getTooltipStage().setSize(TooltipStage.Size.SMALL);
+                menuController.getTooltipStage().setSize(Size.SMALL);
                 menuController.getTooltipStage().setLocation();
                 menuController.getTooltipStage().setTitleText(title);
                 menuController.getTooltipStage().setBodyText(body);

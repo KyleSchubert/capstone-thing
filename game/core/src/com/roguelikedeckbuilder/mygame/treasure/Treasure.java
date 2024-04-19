@@ -115,7 +115,4 @@ public class Treasure {
         return treasureGroup;
     }
 
-    public enum TreasureType {
-        CURRENCY, PERSISTENT_CURRENCY, CARDS
-    }
 }

@@ -6,26 +6,27 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.Player;
-import com.roguelikedeckbuilder.mygame.animated.VisualEffect;
-import com.roguelikedeckbuilder.mygame.animated.VisualEffectData;
-import com.roguelikedeckbuilder.mygame.combat.AbilityData;
+import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffect;
+import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffectName;
 import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
-import com.roguelikedeckbuilder.mygame.combat.Enemy;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
+import com.roguelikedeckbuilder.mygame.combat.ability.AbilityData;
+import com.roguelikedeckbuilder.mygame.combat.ability.AbilityTypeName;
+import com.roguelikedeckbuilder.mygame.combat.enemy.Enemy;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
-import com.roguelikedeckbuilder.mygame.stages.CombatMenuStage;
-import com.roguelikedeckbuilder.mygame.tracking.Statistics;
-import com.roguelikedeckbuilder.mygame.tracking.Trigger;
+import com.roguelikedeckbuilder.mygame.stages.combatmenu.CombatMenuStage;
+import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
+import com.roguelikedeckbuilder.mygame.tracking.trigger.Trigger;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class Item {
-    private final ItemData.ItemTypeName itemTypeName;
+    private final ItemTypeName itemTypeName;
     private final Group group;
     private final Trigger trigger;
 
-    public Item(ItemData.ItemTypeName itemTypeName) {
+    public Item(ItemTypeName itemTypeName) {
         this.itemTypeName = itemTypeName;
 
         group = new Group();
@@ -51,7 +52,7 @@ public class Item {
         // A loop could happen - Ex: On dealing damage, give defense. + On gaining defense, deal damage.
         // But breaking a game (in a good way) with a strategy is fun
         if (hasTriggered) {
-            AbilityData.AbilityTypeName abilityTypeName = ItemData.getAbilityTypeName(itemTypeName);
+            AbilityTypeName abilityTypeName = ItemData.getAbilityTypeName(itemTypeName);
             TargetType targetType = AbilityData.getTargetType(abilityTypeName);
             Array<CombatInformation> targets = new Array<>();
 
@@ -76,7 +77,7 @@ public class Item {
                 }
             }
 
-            VisualEffect visualEffect = new VisualEffect(VisualEffectData.VisualEffectName.ITEM_TRIGGERED_2,
+            VisualEffect visualEffect = new VisualEffect(VisualEffectName.ITEM_TRIGGERED_2,
                     group.getChild(0).getWidth() / 2,
                     group.getChild(0).getHeight() / 2,
                     SCALE_FACTOR / this.group.getScaleX());
@@ -105,15 +106,15 @@ public class Item {
         return ItemData.getImagePath(itemTypeName);
     }
 
-    public AbilityData.AbilityTypeName getAbilityTypeName() {
+    public AbilityTypeName getAbilityTypeName() {
         return ItemData.getAbilityTypeName(itemTypeName);
     }
 
-    public ItemData.ItemTier getItemTier() {
+    public ItemTier getItemTier() {
         return ItemData.getItemTier(itemTypeName);
     }
 
-    public ItemData.ItemTypeName getItemTypeName() {
+    public ItemTypeName getItemTypeName() {
         return itemTypeName;
     }
 }
