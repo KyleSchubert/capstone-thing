@@ -173,6 +173,10 @@ public class Player {
         return energy;
     }
 
+    public static void setEnergy(int energy) {
+        Player.energy = energy;
+    }
+
     public static boolean tryToSpendEnergy(int amount) {
         if (energy >= amount) {
             energy -= amount;

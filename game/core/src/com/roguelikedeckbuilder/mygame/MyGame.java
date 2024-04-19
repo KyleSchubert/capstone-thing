@@ -166,7 +166,7 @@ public class MyGame extends ApplicationAdapter {
                         System.out.println("- 7 : +1000 persistent coins");
                         System.out.println("- 8 : +1000 coins");
                         System.out.println("- 9 : Full heal");
-                        System.out.println("- L : Print all Statistics");
+                        System.out.println("- P : Print all Statistics");
                         SoundManager.playHealSound();
                     } else {
                         System.out.println("DEBUG: OFF");

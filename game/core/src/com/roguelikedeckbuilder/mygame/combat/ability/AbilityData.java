@@ -74,8 +74,37 @@ public class AbilityData {
 
         String effectText;
         switch (effectType) {
-            case ATTACK -> effectText = String.format("Deals [RED]%d Damage[]", effectiveness);
-            case DEFEND -> effectText = String.format("Grants [YELLOW]%d Defense[]", effectiveness);
+            case ATTACK -> effectText = String.format("Deal [RED]%d Damage[]", effectiveness);
+            case CONSTITUTION -> effectText = String.format("Grant [YELLOW]%d Constitution[]", effectiveness);
+            case DEFEND -> effectText = String.format("Grant [YELLOW]%d Defense[]", effectiveness);
+            case DISCARD_RANDOM_CARD -> {
+                String singularOrPlural = "cards";
+                if (effectiveness == 1) {
+                    singularOrPlural = "card";
+                }
+                return String.format("Discard up to %d random %s from your hand.", effectiveness, singularOrPlural);
+            }
+            case DRAW_CARD -> {
+                String singularOrPlural = "cards";
+                if (effectiveness == 1) {
+                    singularOrPlural = "card";
+                }
+                return String.format("Draw %d %s.", effectiveness, singularOrPlural);
+            }
+            case GAIN_ENERGY -> {
+                return String.format("Gain [YELLOW]%d Energy[].", effectiveness);
+            }
+            case GOLD_CHANGE -> {
+                return String.format("Gain [ORANGE]%d Gold[].", effectiveness);
+            }
+            case HEAL -> effectText = String.format("Grant [GREEN]%d Immediate HP Recovery[]", effectiveness);
+            case MAX_HP_CHANGE -> effectText = String.format("Permanently grant [RED]%d Max HP[]", effectiveness);
+            case NOTHING -> effectText = "Do nothing";
+            case STRENGTH -> effectText = String.format("Grant [YELLOW]%d Strength[]", effectiveness);
+            case TRUE_DAMAGE_FLAT ->
+                    effectText = String.format("Ignore defense to deal [RED]%d Damage[]", effectiveness);
+            case TRUE_DAMAGE_PERCENT ->
+                    effectText = String.format("Ignore defense to deal [RED]%d%% Damage[]", effectiveness);
             default ->
                     throw new IllegalStateException("Unexpected value for effectType in getDescription(): " + effectType);
         }
@@ -92,7 +121,7 @@ public class AbilityData {
 
         int repetitions = EffectData.getRepetitions(effectName);
         String repetitionsText;
-        if (repetitions == 1) {
+        if (repetitions <= 1) {
             repetitionsText = "";
         } else {
             repetitionsText = String.format("[CYAN]%d times[]", repetitions);
@@ -140,7 +169,7 @@ public class AbilityData {
                     name = "Flame";
                     energyCost = 1;
                     targetType = TargetType.SELF;
-                    effect = EffectName.HIGH_DAMAGE_MANY_TIMES;
+                    effect = EffectName.HIGH_DAMAGE_ONCE;
                 }
                 case FLAME_UPGRADED -> {
                     name = "Double Flame";
@@ -153,13 +182,13 @@ public class AbilityData {
                     name = "Fire Strike";
                     energyCost = 1;
                     targetType = TargetType.ONE;
-                    effect = EffectName.HIGH_DAMAGE_MANY_TIMES;
+                    effect = EffectName.HIGH_DAMAGE_ONCE;
                 }
                 case FIRE_STRIKE_UPGRADED -> {
                     name = "Fire Strike+";
                     energyCost = 1;
                     targetType = TargetType.ONE;
-                    effect = EffectName.HIGH_DAMAGE_MANY_TIMES;
+                    effect = EffectName.HIGH_DAMAGE_ONCE;
                     postEffect = EffectName.DEFEND_SOME;
                 }
                 case DEFEND -> {
@@ -191,6 +220,7 @@ public class AbilityData {
                     energyCost = 0;
                     targetType = TargetType.SELF;
                     effect = EffectName.DEFEND_SOME;
+                    postEffect = EffectName.HEAL_SMALL;
                 }
                 case NOTHING -> {
                     name = "Sold";

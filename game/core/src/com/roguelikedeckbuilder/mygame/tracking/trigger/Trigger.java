@@ -62,20 +62,22 @@ public class Trigger {
         switch (whatToLookAt) {
             case VALUE -> {
                 for (int i = Statistics.getSizeOfFullStatistics() - 1; i > indexOfCutoff; i--) {
-                    int value = Statistics.getValue(i);
+                    if (Statistics.getType(i) == typeOfTrackedStatistic) {
+                        int value = Statistics.getValue(i);
 
-                    if (value == Integer.MIN_VALUE) {
-                        // Then it was one of the `None` values
-                        // Treat it as an occurrence check and return 1 so it can add 1
-                        System.out.println("[!] TRIGGER LOOKED AT Value WHEN IT SHOULD'VE LOOKED AT Occurrences. --> "
-                                + typeOfTrackedStatistic + " " + whatToLookAt + " " + whenToCheck + " " + whenToReset);
-                        value = 1;
-                    }
+                        if (value == Integer.MIN_VALUE) {
+                            // Then it was one of the `None` values
+                            // Treat it as an occurrence check and return 1, so it can add 1
+                            System.out.println("[!] TRIGGER LOOKED AT Value WHEN IT SHOULD'VE LOOKED AT Occurrences. --> "
+                                    + typeOfTrackedStatistic + " " + whatToLookAt + " " + whenToCheck + " " + whenToReset);
+                            value = 1;
+                        }
 
-                    total += value;
-                    amountSeen++;
-                    if (amountSeen == howManyMostRecentToConsider) {
-                        break;
+                        total += value;
+                        amountSeen++;
+                        if (amountSeen == howManyMostRecentToConsider) {
+                            break;
+                        }
                     }
                 }
             }

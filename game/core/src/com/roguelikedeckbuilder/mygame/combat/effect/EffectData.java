@@ -1,6 +1,7 @@
 package com.roguelikedeckbuilder.mygame.combat.effect;
 
 import com.badlogic.gdx.utils.Array;
+import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 
@@ -41,12 +42,36 @@ public class EffectData {
 
         for (CombatInformation combatInformation : targets) {
             for (int i = 0; i < repetitions; i++) {
-                if (effectType == EffectType.ATTACK) {
-                    stopEarly = combatInformation.takeDamage(effectiveness);
-                    SoundManager.playHitSound();
-                } else if (effectType == EffectType.DEFEND) {
-                    combatInformation.grantDefense(effectiveness);
-                    SoundManager.playDefendSound();
+                switch (effectType) {
+                    case ATTACK -> {
+                        stopEarly = combatInformation.takeDamage(effectiveness);
+                        SoundManager.playHitSound();
+                    }
+                    case CONSTITUTION -> {
+                    }
+                    case DEFEND -> {
+                        combatInformation.grantDefense(effectiveness);
+                        SoundManager.playDefendSound();
+                    }
+                    case DISCARD_RANDOM_CARD -> {
+                    }
+                    case DRAW_CARD -> {
+                    }
+                    case GAIN_ENERGY -> Player.setEnergy(Player.getEnergy() + 1);
+                    case GOLD_CHANGE -> Player.changeMoney(effectiveness);
+                    case HEAL -> {
+                        combatInformation.changeHp(effectiveness);
+                        SoundManager.playHealSound();
+                    }
+                    case MAX_HP_CHANGE -> combatInformation.changeMaxHp(effectiveness);
+                    case STRENGTH -> {
+                    }
+                    case TRUE_DAMAGE_FLAT -> combatInformation.changeHp(-effectiveness);
+                    case TRUE_DAMAGE_PERCENT -> {
+                        float percent = (float) effectiveness / 100;
+                        int change = Math.round(combatInformation.getMaxHp() * percent);
+                        combatInformation.changeHp(-change);
+                    }
                 }
 
                 if (stopEarly) {
@@ -73,10 +98,15 @@ public class EffectData {
                     effectiveness = 1;
                     repetitions = 8;
                 }
-                case HIGH_DAMAGE_MANY_TIMES -> {
+                case HIGH_DAMAGE_ONCE -> {
                     effectType = EffectType.ATTACK;
-                    effectiveness = 3;
-                    repetitions = 7;
+                    effectiveness = 20;
+                    repetitions = 1;
+                }
+                case CONSTITUTION_ONE -> {
+                    effectType = EffectType.CONSTITUTION;
+                    effectiveness = 1;
+                    repetitions = 1;
                 }
                 case DAMAGE_A_BIT -> {
                     effectType = EffectType.ATTACK;
@@ -92,6 +122,56 @@ public class EffectData {
                     effectType = EffectType.DEFEND;
                     effectiveness = 4;
                     repetitions = 2;
+                }
+                case DISCARD_RANDOM_CARD_ONE -> {
+                    effectType = EffectType.DISCARD_RANDOM_CARD;
+                    effectiveness = 1;
+                    repetitions = 0;
+                }
+                case DRAW_CARD_ONE -> {
+                    effectType = EffectType.DRAW_CARD;
+                    effectiveness = 1;
+                    repetitions = 0;
+                }
+                case GAIN_ENERGY_ONE -> {
+                    effectType = EffectType.GAIN_ENERGY;
+                    effectiveness = 1;
+                    repetitions = 1;
+                }
+                case GOLD_BONUS_BIG -> {
+                    effectType = EffectType.GOLD_CHANGE;
+                    effectiveness = 30;
+                    repetitions = 1;
+                }
+                case HEAL_SMALL -> {
+                    effectType = EffectType.HEAL;
+                    effectiveness = 1;
+                    repetitions = 1;
+                }
+                case MAX_HP_CHANGE_DOWN_ONE -> {
+                    effectType = EffectType.MAX_HP_CHANGE;
+                    effectiveness = -1;
+                    repetitions = 1;
+                }
+                case MAX_HP_CHANGE_UP_ONE -> {
+                    effectType = EffectType.MAX_HP_CHANGE;
+                    effectiveness = 1;
+                    repetitions = 1;
+                }
+                case STRENGTH_ONE -> {
+                    effectType = EffectType.STRENGTH;
+                    effectiveness = 1;
+                    repetitions = 1;
+                }
+                case TRUE_DAMAGE_FLAT_MODERATE -> {
+                    effectType = EffectType.TRUE_DAMAGE_FLAT;
+                    effectiveness = 12;
+                    repetitions = 1;
+                }
+                case TRUE_DAMAGE_PERCENT_SMALL -> {
+                    effectType = EffectType.TRUE_DAMAGE_PERCENT;
+                    effectiveness = 10;
+                    repetitions = 1;
                 }
             }
         }

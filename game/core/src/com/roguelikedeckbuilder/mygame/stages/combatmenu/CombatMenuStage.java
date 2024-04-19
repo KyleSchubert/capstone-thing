@@ -16,18 +16,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterState;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
 import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffect;
 import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffectName;
-import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
-import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.combat.CombatHandler;
-import com.roguelikedeckbuilder.mygame.combat.enemy.Enemy;
 import com.roguelikedeckbuilder.mygame.combat.HpChangeNumberHandler;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
+import com.roguelikedeckbuilder.mygame.combat.enemy.Enemy;
 import com.roguelikedeckbuilder.mygame.helpers.*;
+import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
@@ -36,8 +36,6 @@ import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 
 public class CombatMenuStage extends GenericStage {
     private static final Array<Enemy> currentEnemies = new Array<>();
-    private int currentAttackingEnemyIndex = 0;
-    private boolean isPlayerTurn = true;
     private final Array<Card> drawPileContents = new Array<>();
     private final Array<Card> shufflePileContents = new Array<>();
     private final Array<Card> handContents = new Array<>();
@@ -47,6 +45,8 @@ public class CombatMenuStage extends GenericStage {
     private final int shufflePileAmountTextIndex;
     private final Array<Enemy> mustRemoveBecauseDead;
     private final Label energyLabel;
+    private int currentAttackingEnemyIndex = 0;
+    private boolean isPlayerTurn = true;
     private boolean victory = false;
 
     public CombatMenuStage(ScreenViewport viewportForStage, ClickListener cardChangeStageTrigger) {
@@ -126,6 +126,10 @@ public class CombatMenuStage extends GenericStage {
         this.getStage().addListener(getCardHoverListener());
     }
 
+    public static Array<Enemy> getCurrentEnemies() {
+        return currentEnemies;
+    }
+
     public void batch(float elapsedTime, SpriteBatch batch) {
         while (HpChangeNumberHandler.size() > 0) {
             this.getStage().addActor(HpChangeNumberHandler.pop().getGroup());
@@ -186,7 +190,6 @@ public class CombatMenuStage extends GenericStage {
                         for (Enemy enemy : currentEnemies) {
                             enemy.endTurn();
                         }
-                        Statistics.turnEnded();
                         Statistics.setTurnNumber(Statistics.getTurnNumber() + 1);
                         Statistics.turnStarted();
                         drawCards(5);
@@ -317,6 +320,7 @@ public class CombatMenuStage extends GenericStage {
 
     private void endTurn() {
         System.out.println("Ended turn.");
+        Statistics.turnEnded();
 
         removeActorsByType(UserObjectOptions.CARD);
 
@@ -369,10 +373,6 @@ public class CombatMenuStage extends GenericStage {
         }
 
         return total;
-    }
-
-    public static Array<Enemy> getCurrentEnemies() {
-        return currentEnemies;
     }
 
     private void targetHoverListener() {
