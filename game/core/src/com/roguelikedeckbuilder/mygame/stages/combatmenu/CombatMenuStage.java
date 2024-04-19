@@ -39,10 +39,8 @@ public class CombatMenuStage extends GenericStage {
     private final Array<Card> drawPileContents = new Array<>();
     private final Array<Card> shufflePileContents = new Array<>();
     private final Array<Card> handContents = new Array<>();
-    private final Label.LabelStyle labelStyle = new Label.LabelStyle();
-    private final Label.LabelStyle labelStyleLarge = new Label.LabelStyle();
-    private final int drawPileAmountTextIndex;
-    private final int shufflePileAmountTextIndex;
+    private final Label drawPileAmountText;
+    private final Label shufflePileAmountText;
     private final Array<Enemy> mustRemoveBecauseDead;
     private final Label energyLabel;
     private int currentAttackingEnemyIndex = 0;
@@ -72,19 +70,18 @@ public class CombatMenuStage extends GenericStage {
         this.getStage().addActor(shufflePile);
 
         // Labels for amount of cards in each pile
-        labelStyle.font = new BitmapFont(Gdx.files.internal("font.fnt"), false);
-        labelStyle.font.setUseIntegerPositions(false);
-        labelStyle.font.getData().setScale(SCALE_FACTOR, SCALE_FACTOR);
+        Group groupForLabels = new Group();
+        groupForLabels.setScale(SCALE_FACTOR);
 
-        Label drawPileAmountText = new Label(Integer.toString(drawPileContents.size), labelStyle);
-        drawPileAmountText.setPosition(5, 1);
-        this.drawPileAmountTextIndex = this.getStage().getActors().size;
-        this.getStage().addActor(drawPileAmountText);
+        drawPileAmountText = LabelMaker.newLabel(Integer.toString(drawPileContents.size), LabelMaker.getLarge());
+        drawPileAmountText.setPosition(108, 20);
+        groupForLabels.addActor(drawPileAmountText);
 
-        Label shufflePileAmountText = new Label(Integer.toString(shufflePileContents.size), labelStyle);
-        shufflePileAmountText.setPosition(65, 1);
-        this.shufflePileAmountTextIndex = this.getStage().getActors().size;
-        this.getStage().addActor(shufflePileAmountText);
+        shufflePileAmountText = LabelMaker.newLabel(Integer.toString(shufflePileContents.size), LabelMaker.getLarge());
+        shufflePileAmountText.setPosition(1308, 20);
+        groupForLabels.addActor(shufflePileAmountText);
+
+        this.getStage().addActor(groupForLabels);
 
         // End turn button
         ImageButton endTurnButton = MenuController.getImageButton("end turn");
@@ -107,6 +104,7 @@ public class CombatMenuStage extends GenericStage {
 
         mustRemoveBecauseDead = new Array<>();
 
+        Label.LabelStyle labelStyleLarge = new Label.LabelStyle();
         labelStyleLarge.font = new BitmapFont(Gdx.files.internal("hp_and_damage.fnt"));
         labelStyleLarge.font.getData().setScale(SCALE_FACTOR / 2);
         labelStyleLarge.font.setUseIntegerPositions(false);
@@ -311,10 +309,7 @@ public class CombatMenuStage extends GenericStage {
     }
 
     private void updatePileText() {
-        Label drawPileAmountText = (Label) this.getStage().getActors().get(drawPileAmountTextIndex);
         drawPileAmountText.setText(drawPileContents.size);
-
-        Label shufflePileAmountText = (Label) this.getStage().getActors().get(shufflePileAmountTextIndex);
         shufflePileAmountText.setText(shufflePileContents.size);
     }
 
@@ -339,7 +334,7 @@ public class CombatMenuStage extends GenericStage {
         scheduleNewDelay(0.8f, "enemyTurnStart");
     }
 
-    private void drawCards(int amount) {
+    public void drawCards(int amount) {
         amount = Math.min(amount, drawPileContents.size + shufflePileContents.size);
 
         for (int i = 0; i < amount; i++) {
@@ -353,26 +348,13 @@ public class CombatMenuStage extends GenericStage {
                 drawPileContents.shuffle();
                 shufflePileContents.clear();
             }
-            drawPileContents.get(0).getGroup().setPosition(12 + getAmountOfCardsInHand() * 7, 0);
+            drawPileContents.get(0).getGroup().setPosition(12 + handContents.size * 7, 0);
             this.getStage().addActor(drawPileContents.get(0).getGroup());
             handContents.add(drawPileContents.get(0));
             Statistics.drewCard();
             drawPileContents.removeIndex(0);
         }
         updatePileText();
-    }
-
-    private int getAmountOfCardsInHand() {
-        int total = 0;
-
-        for (Actor actor : this.getStage().getActors()) {
-            UserObjectOptions actorType = (UserObjectOptions) actor.getUserObject();
-            if (actorType == UserObjectOptions.CARD) {
-                total++;
-            }
-        }
-
-        return total;
     }
 
     private void targetHoverListener() {
