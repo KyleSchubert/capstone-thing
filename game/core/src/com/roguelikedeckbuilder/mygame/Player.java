@@ -173,6 +173,8 @@ public class Player {
         drawPileContents.clear();
         for (Card card : ownedCards) {
             card.setToGoToShufflePile(false);
+            card.setUsed(false);
+            card.setToBeAddedToCombatMenuStage(false);
         }
         drawPileContents.addAll(ownedCards);
         drawPileContents.shuffle();
@@ -328,5 +330,15 @@ public class Player {
 
     public static void setCombatMenuStageMustAddCard(boolean combatMenuStageMustAddCard) {
         Player.combatMenuStageMustAddCard = combatMenuStageMustAddCard;
+    }
+
+    public static void discardOneRandomCard() {
+        // If there are no cards to discard, that is OK
+        for (Card card : handContents) {
+            if (!card.isUsed()) {
+                card.setToGoToShufflePile(true);
+                break;
+            }
+        }
     }
 }

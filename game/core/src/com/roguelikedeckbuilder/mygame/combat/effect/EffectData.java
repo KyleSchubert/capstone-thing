@@ -53,10 +53,8 @@ public class EffectData {
                         combatInformation.grantDefense(effectiveness);
                         SoundManager.playDefendSound();
                     }
-                    case DISCARD_RANDOM_CARD -> {
-                    }
-                    case DRAW_CARD -> {
-                    }
+                    case DISCARD_RANDOM_CARD -> Player.discardOneRandomCard();
+                    case DRAW_CARD -> Player.drawCards(effectiveness);
                     case GAIN_ENERGY -> Player.setEnergy(Player.getEnergy() + 1);
                     case GOLD_CHANGE -> Player.changeMoney(effectiveness);
                     case HEAL -> {

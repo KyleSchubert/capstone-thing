@@ -32,6 +32,7 @@ public class Card {
     private boolean isUpgraded = false;
     private boolean toGoToShufflePile = false;
     private boolean toBeAddedToCombatMenuStage;
+    private boolean used;
 
     public Card(CardTypeName cardTypeName, boolean showValue) {
         this.cardTypeName = cardTypeName;
@@ -175,5 +176,13 @@ public class Card {
 
     public void setToBeAddedToCombatMenuStage(boolean toBeAddedToCombatMenuStage) {
         this.toBeAddedToCombatMenuStage = toBeAddedToCombatMenuStage;
+    }
+
+    public boolean isUsed() {
+        return used;
+    }
+
+    public void setUsed(boolean used) {
+        this.used = used;
     }
 }
