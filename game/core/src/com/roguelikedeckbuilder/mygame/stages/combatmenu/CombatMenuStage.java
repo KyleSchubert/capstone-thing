@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -158,14 +160,32 @@ public class CombatMenuStage extends GenericStage {
         Player.getCombatInformation().drawHpBar(batch);
         energyLabel.setText(String.valueOf(Player.getEnergy()));
 
-        Player.potentiallyDiscardCards();
+        if (Player.potentiallyDiscardCards() || Player.isCombatMenuStageMustAddCard()) {
+            int i = 0;
+            int amountOfCards = Player.getHandContents().size;
 
-        if (Player.isCombatMenuStageMustAddCard()) {
             for (Card card : Player.getHandContents()) {
+                // Reposition the cards
+                float LEFTMOST_POSITION = 6;
+                float RIGHTMOST_POSITION = 48;
+                float gapSize = (RIGHTMOST_POSITION - LEFTMOST_POSITION) / (amountOfCards + 1);
+                float positionX = LEFTMOST_POSITION + gapSize * (i + 1);
+
                 if (card.isToBeAddedToCombatMenuStage()) {
+                    // Add it to the stage and snap its position to where it should be
                     this.getStage().addActor(card.getGroup());
                     card.setToBeAddedToCombatMenuStage(false);
+                    card.getGroup().setPosition(positionX, 0);
+                } else {
+                    // It's already on the stage, so slide it over
+                    SequenceAction sequenceAction = new SequenceAction(
+                            Actions.moveTo(positionX, 0, 0.1f)
+                    );
+                    card.getGroup().addAction(sequenceAction);
                 }
+                // Reset z index so it looks OK
+                card.getGroup().setZIndex(99);
+                i++;
             }
             Player.setCombatMenuStageMustAddCard(false);
         }
@@ -367,5 +387,4 @@ public class CombatMenuStage extends GenericStage {
             }
         };
     }
-
 }

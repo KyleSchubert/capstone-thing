@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.animated.character.Character;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
 import com.roguelikedeckbuilder.mygame.cards.Card;
+import com.roguelikedeckbuilder.mygame.cards.CardData;
 import com.roguelikedeckbuilder.mygame.cards.CardTypeName;
 import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
@@ -66,7 +67,7 @@ public class Player {
 
         ownedCards.clear();
 
-        for (CardTypeName cardTypeName : CardTypeName.values()) {
+        for (CardTypeName cardTypeName : CardData.getSomeRandomCards(CardTypeName.values().length - 1, false)) {
             Card card = new Card(cardTypeName, false);
             card.getGroup().addCaptureListener(card.getClickListener());
             ownedCards.add(card);
@@ -272,7 +273,8 @@ public class Player {
         return handContents;
     }
 
-    public static void potentiallyDiscardCards() {
+    public static boolean potentiallyDiscardCards() {
+        boolean discardedSomething = false;
         for (Card card : handContents) {
             if (card.isToGoToShufflePile()) {
                 card.setToGoToShufflePile(false);
@@ -281,8 +283,10 @@ public class Player {
                 card.getGroup().remove();
                 Statistics.discardedCard();
                 combatMenuStageMustUpdatePileText = true;
+                discardedSomething = true;
             }
         }
+        return discardedSomething;
     }
 
     public static void endTurn() {
@@ -308,7 +312,7 @@ public class Player {
                 shufflePileContents.clear();
             }
             Card drawnCard = drawPileContents.get(0);
-            drawnCard.getGroup().setPosition(12 + handContents.size * 7, 0);
+            drawnCard.getGroup().setPosition(-200, 0);
 
             combatMenuStageMustUpdatePileText = true;
             combatMenuStageMustAddCard = true;
@@ -334,7 +338,14 @@ public class Player {
 
     public static void discardOneRandomCard() {
         // If there are no cards to discard, that is OK
-        for (Card card : handContents) {
+        Array<Integer> optionsByIndex = new Array<>();
+        for (int i = 0; i < handContents.size; i++) {
+            optionsByIndex.add(i);
+        }
+        optionsByIndex.shuffle();
+
+        for (int index : optionsByIndex) {
+            Card card = handContents.get(index);
             if (!card.isUsed()) {
                 card.setToGoToShufflePile(true);
                 break;

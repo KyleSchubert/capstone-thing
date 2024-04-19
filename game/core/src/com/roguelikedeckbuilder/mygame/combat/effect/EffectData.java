@@ -44,7 +44,7 @@ public class EffectData {
             for (int i = 0; i < repetitions; i++) {
                 switch (effectType) {
                     case ATTACK -> {
-                        stopEarly = combatInformation.takeDamage(effectiveness);
+                        stopEarly = combatInformation.takeDamage(effectiveness, false);
                         SoundManager.playHitSound();
                     }
                     case CONSTITUTION -> {
@@ -64,11 +64,15 @@ public class EffectData {
                     case MAX_HP_CHANGE -> combatInformation.changeMaxHp(effectiveness);
                     case STRENGTH -> {
                     }
-                    case TRUE_DAMAGE_FLAT -> combatInformation.changeHp(-effectiveness);
+                    case TRUE_DAMAGE_FLAT -> {
+                        combatInformation.takeDamage(effectiveness, true);
+                        SoundManager.playHitSound();
+                    }
                     case TRUE_DAMAGE_PERCENT -> {
                         float percent = (float) effectiveness / 100;
                         int change = Math.round(combatInformation.getMaxHp() * percent);
-                        combatInformation.changeHp(-change);
+                        combatInformation.takeDamage(change, true);
+                        SoundManager.playHitSound();
                     }
                 }
 
@@ -124,12 +128,12 @@ public class EffectData {
                 case DISCARD_RANDOM_CARD_ONE -> {
                     effectType = EffectType.DISCARD_RANDOM_CARD;
                     effectiveness = 1;
-                    repetitions = 0;
+                    repetitions = 1;
                 }
                 case DRAW_CARD_ONE -> {
                     effectType = EffectType.DRAW_CARD;
                     effectiveness = 1;
-                    repetitions = 0;
+                    repetitions = 1;
                 }
                 case GAIN_ENERGY_ONE -> {
                     effectType = EffectType.GAIN_ENERGY;
@@ -168,7 +172,12 @@ public class EffectData {
                 }
                 case TRUE_DAMAGE_PERCENT_SMALL -> {
                     effectType = EffectType.TRUE_DAMAGE_PERCENT;
-                    effectiveness = 10;
+                    effectiveness = 5;
+                    repetitions = 1;
+                }
+                case TRUE_DAMAGE_PERCENT_A_LITTLE_MORE -> {
+                    effectType = EffectType.TRUE_DAMAGE_PERCENT;
+                    effectiveness = 8;
                     repetitions = 1;
                 }
             }

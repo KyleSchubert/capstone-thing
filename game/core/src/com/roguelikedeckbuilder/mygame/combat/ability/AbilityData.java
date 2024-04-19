@@ -82,20 +82,20 @@ public class AbilityData {
                 if (effectiveness == 1) {
                     singularOrPlural = "card";
                 }
-                return String.format("Discard up to %d random %s from your hand.", effectiveness, singularOrPlural);
+                return String.format("[RED]Discard[] up to %d random %s from your hand. ", effectiveness, singularOrPlural);
             }
             case DRAW_CARD -> {
                 String singularOrPlural = "cards";
                 if (effectiveness == 1) {
                     singularOrPlural = "card";
                 }
-                return String.format("Draw %d %s.", effectiveness, singularOrPlural);
+                return String.format("[YELLOW]Draw[] %d %s. ", effectiveness, singularOrPlural);
             }
             case GAIN_ENERGY -> {
-                return String.format("Gain [YELLOW]%d Energy[].", effectiveness);
+                return String.format("Gain [YELLOW]%d Energy[]. ", effectiveness);
             }
             case GOLD_CHANGE -> {
-                return String.format("Gain [ORANGE]%d Gold[].", effectiveness);
+                return String.format("Gain [ORANGE]%d Gold[]. ", effectiveness);
             }
             case HEAL -> effectText = String.format("Grant [GREEN]%d Immediate HP Recovery[]", effectiveness);
             case MAX_HP_CHANGE -> effectText = String.format("Permanently grant [RED]%d Max HP[]", effectiveness);
@@ -153,6 +153,21 @@ public class AbilityData {
             postEffect = EffectName.NOTHING;
 
             switch (abilityTypeName) {
+                case DISCARD_DRAW -> {
+                    name = "Risky Draw";
+                    energyCost = 1;
+                    targetType = TargetType.SELF;
+                    preEffect = EffectName.DISCARD_RANDOM_CARD_ONE;
+                    effect = EffectName.DRAW_CARD_ONE;
+                    postEffect = EffectName.DRAW_CARD_ONE;
+                }
+                case DRAW -> {
+                    name = "You Draw 2 Cards.";
+                    energyCost = 1;
+                    targetType = TargetType.SELF;
+                    preEffect = EffectName.DRAW_CARD_ONE;
+                    effect = EffectName.DRAW_CARD_ONE;
+                }
                 case ENERGY_SLICES -> {
                     name = "Energy Slices";
                     energyCost = 2;
@@ -227,6 +242,18 @@ public class AbilityData {
                     energyCost = 0;
                     targetType = TargetType.SELF;
                     effect = EffectName.NOTHING;
+                }
+                case PERCENTAGE_PUNCH -> {
+                    name = "% Punch";
+                    energyCost = 1;
+                    targetType = TargetType.ONE;
+                    effect = EffectName.TRUE_DAMAGE_PERCENT_SMALL;
+                }
+                case PERCENTAGE_PUNCH_UPGRADED -> {
+                    name = "% Punch+";
+                    energyCost = 1;
+                    targetType = TargetType.ONE;
+                    effect = EffectName.TRUE_DAMAGE_PERCENT_A_LITTLE_MORE;
                 }
                 default ->
                         System.out.println("Why was an ability almost generated with no matching type name? abilityTypeName:  " + abilityTypeName);

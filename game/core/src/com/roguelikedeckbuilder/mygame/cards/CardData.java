@@ -95,6 +95,18 @@ public class CardData {
                     iconFileName = "sold.png";
                     value = 999999;
                 }
+                case DISCARD_DRAW -> {
+                    abilityTypeName = AbilityTypeName.DISCARD_DRAW;
+                    upgradedAbilityTypeName = AbilityTypeName.DRAW;
+                    iconFileName = "not done.png";
+                    value = 65;
+                }
+                case WEIRD_PUNCH -> {
+                    abilityTypeName = AbilityTypeName.PERCENTAGE_PUNCH;
+                    upgradedAbilityTypeName = AbilityTypeName.PERCENTAGE_PUNCH_UPGRADED;
+                    iconFileName = "not done.png";
+                    value = 105;
+                }
                 default ->
                         System.out.println("Why was an ability almost generated with no matching type name? abilityTypeName:  " + cardTypeName);
             }

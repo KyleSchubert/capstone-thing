@@ -8,10 +8,10 @@ import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
 
 public class CombatInformation {
+    private final HpBar hpBar;
     private int hp;
     private int maxHp;
     private int defense;
-    private final HpBar hpBar;
     private boolean isPlayerInformation = false;
     private XYPair<Float> damageNumberCenter;
 
@@ -77,12 +77,17 @@ public class CombatInformation {
         }
     }
 
-    public boolean takeDamage(int amount) {
+    public boolean takeDamage(int amount, boolean isIgnoringDefense) {
         if (hp == 0) {
             return true;
         }
 
-        int totalDamageTaken = Math.min(defense + hp, amount);
+        int totalDamageTaken;
+        if (isIgnoringDefense) {
+            totalDamageTaken = Math.min(hp, amount);
+        } else {
+            totalDamageTaken = Math.min(defense + hp, amount);
+        }
 
         if (isPlayerInformation) {
             Statistics.playerTookDamage(totalDamageTaken);
@@ -92,7 +97,13 @@ public class CombatInformation {
 
         createHpChangeNumbers(totalDamageTaken);
 
-        int excessDamage = changeDefense(-amount);
+        int excessDamage;
+        if (isIgnoringDefense) {
+            excessDamage = -amount;
+        } else {
+            excessDamage = changeDefense(-amount);
+        }
+        
         changeHp(excessDamage);
         return false;
     }
