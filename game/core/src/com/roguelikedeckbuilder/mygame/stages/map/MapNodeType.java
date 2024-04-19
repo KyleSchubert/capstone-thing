@@ -1,12 +1,13 @@
 package com.roguelikedeckbuilder.mygame.stages.map;
 
 public enum MapNodeType {
-    NORMAL_BATTLE,
-    ELITE_BATTLE,
     BOSS_BATTLE,
-    START,
-    SHOP,
-    REST,
+    ELITE_BATTLE,
+    NORMAL_BATTLE,
     RANDOM_EVENT,
+    REST,
+    SHOP,
+    START,
     TREASURE
+
 }

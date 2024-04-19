@@ -1,9 +1,10 @@
 package com.roguelikedeckbuilder.mygame.cards;
 
 public enum CardTypeName {
-    ENERGY_SLICES,
-    FLAME,
-    FIRE_STRIKE,
     DEFEND,
+    ENERGY_SLICES,
+    FIRE_STRIKE,
+    FLAME,
     OUT_OF_STOCK
+
 }

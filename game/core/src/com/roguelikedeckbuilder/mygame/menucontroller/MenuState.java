@@ -1,19 +1,20 @@
 package com.roguelikedeckbuilder.mygame.menucontroller;
 
 public enum MenuState {
+    CARD_CHOICE,
+    CARD_UPGRADE,
+    COMBAT,
     MAIN_MENU,
     MAP,
     PAUSED,
+    REST_AREA,
     RESULTS,
-    UPGRADES,
-    SETTINGS_BACK,
     RESUME,
     SETTINGS,
-    START_REWARDS,
-    REST_AREA,
-    TREASURE,
+    SETTINGS_BACK,
     SHOP,
-    CARD_UPGRADE,
-    COMBAT,
-    CARD_CHOICE
+    START_REWARDS,
+    TREASURE,
+    UPGRADES
+
 }

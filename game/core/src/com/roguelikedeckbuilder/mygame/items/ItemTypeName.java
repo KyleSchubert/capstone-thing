@@ -1,8 +1,9 @@
 package com.roguelikedeckbuilder.mygame.items;
 
 public enum ItemTypeName {
-    TEST_SWORD,
+    JUNK,
     TEST_SHIELD,
-    TEST_SWORD_2,
-    JUNK
+    TEST_SWORD,
+    TEST_SWORD_2
+
 }
