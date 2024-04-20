@@ -84,7 +84,8 @@ public class Item {
 
             this.group.addActor(visualEffect);
 
-            AbilityData.useAbility(abilityTypeName, targets);
+            // With this, items scale with status effects. But maybe they shouldn't
+            AbilityData.useAbility(Player.getCombatInformation(), abilityTypeName, targets);
 
             Statistics.itemTriggered();
         }

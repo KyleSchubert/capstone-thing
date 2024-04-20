@@ -12,18 +12,19 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.roguelikedeckbuilder.mygame.items.ItemTier;
-import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
-import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.items.ItemData;
+import com.roguelikedeckbuilder.mygame.items.ItemTier;
+import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
+import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 import com.roguelikedeckbuilder.mygame.stages.map.MapNodeType;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.*;
+import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
+import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 
 public class TooltipStage extends GenericStage {
     private static final XYPair<Float> middlePosition = new XYPair<>(21.2f, 14f);
@@ -121,11 +122,11 @@ public class TooltipStage extends GenericStage {
         if (isAbove) {
             getStage().getActors().get(2).setScaleY(SCALE_FACTOR);
             titleY = pos.y() / SCALE_FACTOR + usedTooltipHeight - 20;
-            bodyY = pos.y() / SCALE_FACTOR + usedTooltipHeight - 48;
+            bodyY = pos.y() / SCALE_FACTOR + usedTooltipHeight - 64;
         } else {
             getStage().getActors().get(2).setScaleY(-SCALE_FACTOR);
             titleY = pos.y() / SCALE_FACTOR - 20;
-            bodyY = pos.y() / SCALE_FACTOR - 48;
+            bodyY = pos.y() / SCALE_FACTOR - 64;
         }
 
         getStage().getActors().get(size.ordinal()).setPosition(pos.x(), pos.y()); // TooltipStage background

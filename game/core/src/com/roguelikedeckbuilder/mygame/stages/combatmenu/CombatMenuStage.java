@@ -49,11 +49,14 @@ public class CombatMenuStage extends GenericStage {
     public CombatMenuStage(ScreenViewport viewportForStage, ClickListener cardChangeStageTrigger) {
         super(viewportForStage, "combat background");
 
+        this.getStage().setDebugAll(true);
+
         // Reposition the background
         getStageBackgroundActor().setPosition(-7, -5);
 
         // Add the player
         this.getStage().addActor(Player.getCharacter());
+        this.getStage().addActor(Player.getCombatInformation().getStatusEffectVisuals());
 
         // Add the card piles
         Image drawPile = new Image(new Texture(Gdx.files.internal("CARDS/draw pile.png")));
@@ -136,7 +139,7 @@ public class CombatMenuStage extends GenericStage {
         delayHandler();
         targetHoverListener();
         for (Enemy enemy : currentEnemies) {
-            enemy.getCombatInformation().drawHpBar(batch);
+            enemy.getCombatInformation().draw(batch);
             if (enemy.getCharacter().getState() == CharacterState.DEAD) {
                 mustRemoveBecauseDead.add(enemy);
             } else if (enemy.getCombatInformation().getHp() == 0 && enemy.getCharacter().getState() != CharacterState.DYING) {
@@ -157,7 +160,7 @@ public class CombatMenuStage extends GenericStage {
         }
         mustRemoveBecauseDead.clear();
 
-        Player.getCombatInformation().drawHpBar(batch);
+        Player.getCombatInformation().draw(batch);
         energyLabel.setText(String.valueOf(Player.getEnergy()));
 
         if (Player.potentiallyDiscardCards() || Player.isCombatMenuStageMustAddCard()) {
@@ -267,6 +270,8 @@ public class CombatMenuStage extends GenericStage {
 
         currentEnemies.add(enemy);
         enemy.putOnStage(getStage());
+        enemy.getCombatInformation().getStatusEffectVisuals().setUserObject(UserObjectOptions.ENEMY);
+        getStage().addActor(enemy.getCombatInformation().getStatusEffectVisuals());
     }
 
     private EnemyPositions generateEnemyPosition() {

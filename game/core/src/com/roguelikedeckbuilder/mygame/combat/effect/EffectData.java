@@ -3,6 +3,8 @@ package com.roguelikedeckbuilder.mygame.combat.effect;
 import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
+import com.roguelikedeckbuilder.mygame.combat.statuseffect.StatusEffect;
+import com.roguelikedeckbuilder.mygame.combat.statuseffect.StatusEffectTypeName;
 import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 
 public class EffectData {
@@ -28,7 +30,7 @@ public class EffectData {
         return data.get(effectName.ordinal()).getRepetitions();
     }
 
-    public static void useEffect(EffectName effectName, Array<CombatInformation> targets) {
+    public static void useEffect(CombatInformation theAttacker, EffectName effectName, Array<CombatInformation> targets) {
         EffectType effectType = getEffectType(effectName);
 
         if (effectType == EffectType.NOTHING) {
@@ -44,13 +46,15 @@ public class EffectData {
             for (int i = 0; i < repetitions; i++) {
                 switch (effectType) {
                     case ATTACK -> {
-                        stopEarly = combatInformation.takeDamage(effectiveness, false);
+                        int strengthAmount = theAttacker.getStatusEffectValue(StatusEffectTypeName.STRENGTH);
+                        stopEarly = combatInformation.takeDamage(effectiveness + strengthAmount, false);
                         SoundManager.playHitSound();
                     }
-                    case CONSTITUTION -> {
-                    }
+                    case CONSTITUTION ->
+                            combatInformation.addStatusEffect(new StatusEffect(StatusEffectTypeName.CONSTITUTION, effectiveness));
                     case DEFEND -> {
-                        combatInformation.grantDefense(effectiveness);
+                        int constitutionAmount = theAttacker.getStatusEffectValue(StatusEffectTypeName.CONSTITUTION);
+                        combatInformation.grantDefense(effectiveness + constitutionAmount);
                         SoundManager.playDefendSound();
                     }
                     case DISCARD_RANDOM_CARD -> Player.discardOneRandomCard();
@@ -62,8 +66,8 @@ public class EffectData {
                         SoundManager.playHealSound();
                     }
                     case MAX_HP_CHANGE -> combatInformation.changeMaxHp(effectiveness);
-                    case STRENGTH -> {
-                    }
+                    case STRENGTH ->
+                            combatInformation.addStatusEffect(new StatusEffect(StatusEffectTypeName.STRENGTH, effectiveness * repetitions));
                     case TRUE_DAMAGE_FLAT -> {
                         combatInformation.takeDamage(effectiveness, true);
                         SoundManager.playHitSound();

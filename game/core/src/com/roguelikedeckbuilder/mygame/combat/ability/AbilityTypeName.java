@@ -1,6 +1,8 @@
 package com.roguelikedeckbuilder.mygame.combat.ability;
 
 public enum AbilityTypeName {
+    AMPLIFY,
+    AMPLIFY_UPGRADED,
     DEFEND,
     DEFEND_UPGRADED,
     DISCARD_DRAW,
@@ -17,4 +19,5 @@ public enum AbilityTypeName {
     NOTHING,
     PERCENTAGE_PUNCH,
     PERCENTAGE_PUNCH_UPGRADED
+
 }

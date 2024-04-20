@@ -134,10 +134,10 @@ public class AbilityData {
         }
     }
 
-    public static void useAbility(AbilityTypeName abilityTypeName, Array<CombatInformation> targets) {
-        EffectData.useEffect(AbilityData.getPreEffect(abilityTypeName), targets);
-        EffectData.useEffect(AbilityData.getEffect(abilityTypeName), targets);
-        EffectData.useEffect(AbilityData.getPostEffect(abilityTypeName), targets);
+    public static void useAbility(CombatInformation theAttacker, AbilityTypeName abilityTypeName, Array<CombatInformation> targets) {
+        EffectData.useEffect(theAttacker, AbilityData.getPreEffect(abilityTypeName), targets);
+        EffectData.useEffect(theAttacker, AbilityData.getEffect(abilityTypeName), targets);
+        EffectData.useEffect(theAttacker, AbilityData.getPostEffect(abilityTypeName), targets);
     }
 
     private static class IndividualAbilityData {
@@ -205,6 +205,20 @@ public class AbilityData {
                     targetType = TargetType.ONE;
                     effect = EffectName.HIGH_DAMAGE_ONCE;
                     postEffect = EffectName.DEFEND_SOME;
+                }
+                case AMPLIFY -> {
+                    name = "Amplify";
+                    energyCost = 3;
+                    targetType = TargetType.SELF;
+                    preEffect = EffectName.STRENGTH_ONE;
+                    effect = EffectName.CONSTITUTION_ONE;
+                }
+                case AMPLIFY_UPGRADED -> {
+                    name = "Amplify+";
+                    energyCost = 2;
+                    targetType = TargetType.SELF;
+                    preEffect = EffectName.STRENGTH_ONE;
+                    effect = EffectName.CONSTITUTION_ONE;
                 }
                 case DEFEND -> {
                     name = "Defend";

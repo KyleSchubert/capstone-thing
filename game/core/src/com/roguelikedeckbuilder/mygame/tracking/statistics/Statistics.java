@@ -199,10 +199,6 @@ public class Statistics {
         add(StatisticsType.PLAYER_GAINED_DEFENSE, amount);
     }
 
-    public static void buffOrDebuffTriggered() {
-        add(StatisticsType.BUFF_OR_DEBUFF_TRIGGERED, Integer.MIN_VALUE);
-    }
-
     public static void itemTriggered() {
         add(StatisticsType.ITEM_TRIGGERED, Integer.MIN_VALUE);
     }

@@ -1,14 +1,23 @@
 package com.roguelikedeckbuilder.mygame.combat;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
 import com.roguelikedeckbuilder.mygame.combat.enemy.EnemyData;
+import com.roguelikedeckbuilder.mygame.combat.statuseffect.StatusEffect;
+import com.roguelikedeckbuilder.mygame.combat.statuseffect.StatusEffectTypeName;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
+
+import java.util.Optional;
 
 
 public class CombatInformation {
     private final HpBar hpBar;
+    private final Array<StatusEffect> statusEffects = new Array<>();
+    private final Group statusEffectVisuals = new Group();
+    private float statusEffectVisualX = 0;
     private int hp;
     private int maxHp;
     private int defense;
@@ -103,7 +112,7 @@ public class CombatInformation {
         } else {
             excessDamage = changeDefense(-amount);
         }
-        
+
         changeHp(excessDamage);
         return false;
     }
@@ -144,6 +153,8 @@ public class CombatInformation {
     public void setPositions(XYPair<Float> position) {
         damageNumberCenter = new XYPair<>(position.x(), position.y() + 6);
         hpBar.setPosition(new XYPair<>(position.x() - 4.1f, position.y() - 1.5f));
+        statusEffectVisualX = position.x() - 1.4f;
+        repositionStatusEffectVisuals();
     }
 
     public void setHpBarVisibility(boolean visibility) {
@@ -158,11 +169,60 @@ public class CombatInformation {
         return hp;
     }
 
-    public void drawHpBar(SpriteBatch batch) {
+    public void draw(SpriteBatch batch) {
         hpBar.draw(batch);
     }
 
     public void clearDefense() {
         changeDefense(-defense);
+    }
+
+    public void resetStatusEffects() {
+        this.statusEffectVisuals.clear();
+        this.statusEffects.clear();
+    }
+
+    public int getStatusEffectValue(StatusEffectTypeName statusEffectTypeName) {
+        Optional<StatusEffect> statusEffect = findStatusEffect(statusEffectTypeName);
+        return statusEffect.map(StatusEffect::getAmount).orElse(0);
+    }
+
+    private Optional<StatusEffect> findStatusEffect(StatusEffectTypeName statusEffectTypeName) {
+        for (StatusEffect statusEffect : statusEffects) {
+            if (statusEffect.getStatusEffectTypeName() == statusEffectTypeName) {
+                return Optional.of(statusEffect);
+            }
+        }
+        return Optional.empty();
+    }
+
+    private void repositionStatusEffectVisuals() {
+        float TOPMOST_POSITION = 19.2f;
+        float GAP = 1.7f;
+
+        float i = 0;
+        for (StatusEffect statusEffect : statusEffects) {
+            statusEffect.setPosition(statusEffectVisualX, TOPMOST_POSITION - i * GAP);
+            if (statusEffect.isToBeAdded()) {
+                statusEffectVisuals.addActor(statusEffect);
+                statusEffect.setToBeAdded(false);
+            }
+            i++;
+        }
+    }
+
+    public void addStatusEffect(StatusEffect statusEffect) {
+        Optional<StatusEffect> alreadyExistingStatusEffect = findStatusEffect(statusEffect.getStatusEffectTypeName());
+        if (alreadyExistingStatusEffect.isPresent()) {
+            int currentAmount = alreadyExistingStatusEffect.get().getAmount();
+            alreadyExistingStatusEffect.get().setAmount(currentAmount + statusEffect.getAmount());
+        } else {
+            statusEffects.add(statusEffect);
+        }
+        repositionStatusEffectVisuals();
+    }
+
+    public Group getStatusEffectVisuals() {
+        return statusEffectVisuals;
     }
 }

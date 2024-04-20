@@ -107,6 +107,12 @@ public class CardData {
                     iconFileName = "not done.png";
                     value = 105;
                 }
+                case AMPLIFY -> {
+                    abilityTypeName = AbilityTypeName.AMPLIFY;
+                    upgradedAbilityTypeName = AbilityTypeName.AMPLIFY_UPGRADED;
+                    iconFileName = "not done.png";
+                    value = 250;
+                }
                 default ->
                         System.out.println("Why was an ability almost generated with no matching type name? abilityTypeName:  " + cardTypeName);
             }

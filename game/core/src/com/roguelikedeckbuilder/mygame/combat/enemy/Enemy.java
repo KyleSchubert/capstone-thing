@@ -21,8 +21,8 @@ public class Enemy {
     private final Character character;
     private final CombatInformation combatInformation;
     private final Array<AbilityTypeName> abilityOptions;
-    private AbilityTypeName nextAbility;
     private final XYPair<Float> positionOnStage;
+    private AbilityTypeName nextAbility;
 
     public Enemy(CharacterTypeName characterTypeName, EnemyPositions position) {
         positionOnStage = position.getPos();
@@ -40,7 +40,12 @@ public class Enemy {
         nextAbility = abilityOptions.random();
     }
 
+    public static boolean isPointWithinRange(XYPair<Float> point, XYPair<Float> positionOfEnemy) {
+        return GenericHelpers.isPointWithinRange(point, positionOfEnemy);
+    }
+
     public void putOnStage(Stage stage) {
+        character.addActor(combatInformation.getStatusEffectVisuals());
         stage.addActor(character);
     }
 
@@ -50,10 +55,6 @@ public class Enemy {
 
     public XYPair<Float> getPositionOnStage() {
         return positionOnStage;
-    }
-
-    public static boolean isPointWithinRange(XYPair<Float> point, XYPair<Float> positionOfEnemy) {
-        return GenericHelpers.isPointWithinRange(point, positionOfEnemy);
     }
 
     public void setTargeted(boolean targeted) {

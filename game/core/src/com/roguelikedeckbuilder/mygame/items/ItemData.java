@@ -60,11 +60,11 @@ public class ItemData {
         String effect = "[" + color + "]Effect[]: " + AbilityData.getDescription(getAbilityTypeName(itemTypeName));
         String triggerExplanation = "[" + color + "]Activation[]: " + TriggerData.getExplanationString(getTriggerName(itemTypeName));
 
-        return String.format("\n    %s\n    %s", effect, triggerExplanation);
+        return String.format("    %s\n    %s", effect, triggerExplanation);
     }
 
     public static String getFullDescription(ItemTypeName itemTypeName) {
-        return getName(itemTypeName) + getPartialDescription(itemTypeName);
+        return getName(itemTypeName) + "\n" + getPartialDescription(itemTypeName);
     }
 
     public static String getImagePath(ItemTypeName itemTypeName) {

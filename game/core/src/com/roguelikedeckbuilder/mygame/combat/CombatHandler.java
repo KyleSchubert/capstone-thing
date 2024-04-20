@@ -25,7 +25,7 @@ public class CombatHandler {
             Statistics.playerWasTargeted();
         }
 
-        AbilityData.useAbility(abilityTypeName, targets);
+        AbilityData.useAbility(self, abilityTypeName, targets);
     }
 
     public static void playerUsesCard(Card card) {
@@ -38,7 +38,7 @@ public class CombatHandler {
         if (targets.size > 0) {
             if (Player.tryToSpendEnergy(AbilityData.getEnergyCost(card.getUsedAbilityTypeName()))) {
                 card.setUsed(true);
-                AbilityData.useAbility(card.getUsedAbilityTypeName(), targets);
+                AbilityData.useAbility(Player.getCombatInformation(), card.getUsedAbilityTypeName(), targets);
                 card.setToGoToShufflePile(true);
                 Statistics.playedCard();
             }

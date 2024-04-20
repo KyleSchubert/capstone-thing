@@ -2,7 +2,6 @@ package com.roguelikedeckbuilder.mygame.tracking.statistics;
 
 // When it says  "None"  that means it'll always return `Integer.MIN_VALUE`
 public enum StatisticsType {
-    BUFF_OR_DEBUFF_TRIGGERED, // value: None
     COMBAT_ENDED, // value: int (turns)
     COMBAT_STARTED, // value: None
     DISCARDED_CARD, // value: None

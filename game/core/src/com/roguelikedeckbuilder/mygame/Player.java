@@ -167,6 +167,7 @@ public class Player {
     }
 
     public static void combatStart() {
+        combatInformation.resetStatusEffects();
         combatInformation.setPositions(character.getCharacterCenter());
         combatInformation.setHpBarVisibility(true);
         startTurn();

@@ -7,15 +7,18 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterData;
 import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffectData;
 import com.roguelikedeckbuilder.mygame.cards.CardData;
+import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 import com.roguelikedeckbuilder.mygame.combat.ability.AbilityData;
-import com.roguelikedeckbuilder.mygame.combat.buffordebuff.BuffOrDebuffData;
+import com.roguelikedeckbuilder.mygame.combat.ability.AbilityTypeName;
 import com.roguelikedeckbuilder.mygame.combat.effect.EffectData;
 import com.roguelikedeckbuilder.mygame.combat.enemy.EnemyData;
+import com.roguelikedeckbuilder.mygame.combat.statuseffect.StatusEffectData;
 import com.roguelikedeckbuilder.mygame.helpers.*;
 import com.roguelikedeckbuilder.mygame.items.ItemData;
 import com.roguelikedeckbuilder.mygame.items.ItemTier;
@@ -73,7 +76,7 @@ public class MyGame extends ApplicationAdapter {
         UseLine.initialize();
         TriggerData.initialize();
         ItemData.initialize();
-        BuffOrDebuffData.initialize();
+        StatusEffectData.initialize();
         SoundManager.initialize();
         Player.initialize();
         Statistics.resetVariables();
@@ -167,6 +170,7 @@ public class MyGame extends ApplicationAdapter {
                         System.out.println("- 8 : +1000 coins");
                         System.out.println("- 9 : Full heal");
                         System.out.println("- P : Print all Statistics");
+                        System.out.println("- [ : Give +1 STR and +1 CON");
                         SoundManager.playHealSound();
                     } else {
                         System.out.println("DEBUG: OFF");
@@ -226,6 +230,11 @@ public class MyGame extends ApplicationAdapter {
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
                     SoundManager.playFunnyTadaSound();
                     Statistics.printAll();
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT_BRACKET)) {
+                    SoundManager.playGetItemSound();
+                    Array<CombatInformation> array = new Array<>();
+                    array.add(Player.getCombatInformation());
+                    AbilityData.useAbility(Player.getCombatInformation(), AbilityTypeName.AMPLIFY, array);
                 }
             }
 
