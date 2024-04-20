@@ -313,6 +313,7 @@ public class Player {
                 shufflePileContents.clear();
             }
             Card drawnCard = drawPileContents.get(0);
+            drawnCard.getGroup().clearActions();
             drawnCard.getGroup().setPosition(-200, 0);
 
             combatMenuStageMustUpdatePileText = true;

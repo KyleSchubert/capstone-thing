@@ -171,6 +171,7 @@ public class MyGame extends ApplicationAdapter {
                         System.out.println("- 9 : Full heal");
                         System.out.println("- P : Print all Statistics");
                         System.out.println("- [ : Give +1 STR and +1 CON");
+                        System.out.println("- ] : Draw 1 card");
                         SoundManager.playHealSound();
                     } else {
                         System.out.println("DEBUG: OFF");
@@ -235,6 +236,10 @@ public class MyGame extends ApplicationAdapter {
                     Array<CombatInformation> array = new Array<>();
                     array.add(Player.getCombatInformation());
                     AbilityData.useAbility(Player.getCombatInformation(), AbilityTypeName.AMPLIFY, array);
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT_BRACKET)) {
+                    if (menuController.getCurrentMenuState() == MenuState.COMBAT) {
+                        Player.drawCards(1);
+                    }
                 }
             }
 

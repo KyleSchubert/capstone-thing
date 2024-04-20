@@ -49,8 +49,6 @@ public class CombatMenuStage extends GenericStage {
     public CombatMenuStage(ScreenViewport viewportForStage, ClickListener cardChangeStageTrigger) {
         super(viewportForStage, "combat background");
 
-        this.getStage().setDebugAll(true);
-
         // Reposition the background
         getStageBackgroundActor().setPosition(-7, -5);
 
@@ -174,6 +172,7 @@ public class CombatMenuStage extends GenericStage {
                 float gapSize = (RIGHTMOST_POSITION - LEFTMOST_POSITION) / (amountOfCards + 1);
                 float positionX = LEFTMOST_POSITION + gapSize * (i + 1);
 
+                card.getGroup().clearActions();
                 if (card.isToBeAddedToCombatMenuStage()) {
                     // Add it to the stage and snap its position to where it should be
                     this.getStage().addActor(card.getGroup());
