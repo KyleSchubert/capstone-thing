@@ -85,7 +85,7 @@ public class Player {
         Array<Actor> mustRemove = new Array<>();
 
         if (menuController != null) {
-            for (Actor actor : menuController.getTopBarStage().getActors()) {
+            for (Actor actor : menuController.getTopBarStage().getStage().getActors()) {
                 UserObjectOptions actorType = (UserObjectOptions) actor.getUserObject();
                 if (actorType == UserObjectOptions.ITEM) {
                     mustRemove.add(actor);

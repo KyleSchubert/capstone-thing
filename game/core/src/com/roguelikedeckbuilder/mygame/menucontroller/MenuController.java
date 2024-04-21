@@ -30,6 +30,7 @@ import com.roguelikedeckbuilder.mygame.stages.results.ResultsMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.settings.SettingsMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.shop.ShopMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.tooltip.TooltipStage;
+import com.roguelikedeckbuilder.mygame.stages.topbar.TopBarStage;
 import com.roguelikedeckbuilder.mygame.stages.treasure.TreasureMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.upgrades.UpgradesMenuStage;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
@@ -55,7 +56,7 @@ public class MenuController {
     private CombatMenuStage combatMenuStage;
     private MapMenuStage mapMenuStage;
     private TooltipStage tooltipStage;
-    private Stage topBarStage;
+    private TopBarStage topBarStage;
     private Image darkTransparentScreen;
     private MenuState currentMenuState;
     private MenuState previousImportantMenuState;
@@ -174,6 +175,8 @@ public class MenuController {
                 ClickListenerManager.triggeringMenuState(MenuState.MAP, MenuSoundType.CLOSE)
         );
 
+        topBarStage = new TopBarStage(viewportForStage);
+
         ClickListener hoverAndClickListener = makeHoverAndClickListener();
         mapMenuStage = new MapMenuStage(viewportForStage, hoverAndClickListener);
 
@@ -184,26 +187,6 @@ public class MenuController {
         previousImportantMenuState = MenuState.MAIN_MENU;
         previousNonimportantMenuState = currentMenuState;
 
-        // Top Bar Images
-        Image topBarBackground = new Image(new Texture(Gdx.files.internal("OTHER UI/top bar background.png")));
-        topBarBackground.setScale(SCALE_FACTOR);
-        topBarBackground.setPosition(0, 42.7f);
-
-        Image topBarCoin = new Image(new Texture(Gdx.files.internal("ITEMS/doubloon.png")));
-        topBarCoin.setScale(SCALE_FACTOR);
-        topBarCoin.setPosition(53.2f, 43.6f);
-
-        Image topBarDeckIcon = new Image(new Texture(Gdx.files.internal("OTHER UI/deck.png")));
-        topBarDeckIcon.setScale(SCALE_FACTOR);
-        topBarDeckIcon.setPosition(46.2f, 42.9f);
-        topBarDeckIcon.addCaptureListener(ClickListenerManager.viewingPlayerCards());
-        topBarDeckIcon.addCaptureListener(ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN));
-
-        topBarStage = new Stage(viewportForStage);
-        topBarStage.addActor(topBarBackground);
-        topBarStage.addActor(topBarCoin);
-        topBarStage.addActor(topBarDeckIcon);
-
         // Dark transparent screen
         darkTransparentScreen = new Image(new Texture(Gdx.files.internal("MENU backgrounds/dark transparent screen.png")));
         darkTransparentScreen.setSize(40 * SCALE_FACTOR * 300, 40 * SCALE_FACTOR * 300);
@@ -213,7 +196,7 @@ public class MenuController {
         setMenuState(MenuState.MAIN_MENU);
     }
 
-    public void batch(float elapsedTime, String timeText) {
+    public void batch(float elapsedTime) {
         if (Player.isFlagGoBackToPreviousMenuState()) {
             Player.setFlagGoBackToPreviousMenuState(false);
             System.out.println("Going back to PREVIOUS: " + previousNonimportantMenuState);
@@ -237,17 +220,17 @@ public class MenuController {
         // For letting the player click things on the topBar no matter the current stage they are on
         if (currentMenuState == MenuState.MAP || currentMenuState == MenuState.SHOP || currentMenuState == MenuState.COMBAT) {
             if (getMousePosition().y() > 40) {
-                if (currentInputProcessor != topBarStage) {
-                    Gdx.input.setInputProcessor(topBarStage);
+                if (currentInputProcessor != topBarStage.getStage()) {
+                    Gdx.input.setInputProcessor(topBarStage.getStage());
                     previousInputProcessor = currentInputProcessor;
-                    currentInputProcessor = topBarStage;
+                    currentInputProcessor = topBarStage.getStage();
                     System.out.println("Changed input processor. OLD: " + previousInputProcessor + " CURRENT: " + currentInputProcessor);
                 }
             } else {
-                if (currentInputProcessor == topBarStage) {
+                if (currentInputProcessor == topBarStage.getStage()) {
                     Gdx.input.setInputProcessor(previousInputProcessor);
                     currentInputProcessor = previousInputProcessor;
-                    previousInputProcessor = topBarStage;
+                    previousInputProcessor = topBarStage.getStage();
                     System.out.println("Changed input processor. OLD: " + previousInputProcessor + " CURRENT: " + currentInputProcessor);
                 }
             }
@@ -276,12 +259,7 @@ public class MenuController {
         if (mainMenuStage.isDraw()) {
             mainMenuStage.batch(elapsedTime);
         } else {
-            topBarStage.draw();
-            topBarStage.act();
-            font.draw(batch, "Deck", 46, 45);
-            font.draw(batch, timeText, 65, 45); // text for time elapsed in game
-            font.draw(batch, "HP: " + Player.getCombatInformation().getHp() + " / " + Player.getCombatInformation().getMaxHp(), 2, 45);
-            font.draw(batch, Integer.toString(Player.getMoney()), 55, 45);
+            topBarStage.batch(elapsedTime);
         }
         batch.end();
         batch.begin();
@@ -633,7 +611,7 @@ public class MenuController {
         return tooltipStage;
     }
 
-    public Stage getTopBarStage() {
+    public TopBarStage getTopBarStage() {
         return topBarStage;
     }
 }

@@ -37,11 +37,11 @@ public class MyGame extends ApplicationAdapter {
     private static final float viewHeight = windowHeight * SCALE_FACTOR;
     public static SpriteBatch batch;
     public static BitmapFont font;
+    public static String timeText = "0:00";
     static ScreenViewport viewport;
     static OrthographicCamera camera;
     MenuController menuController;
     float accumulator = 0;
-    private String timeText = "0:00";
     private boolean isSomeDebugOn = false;
 
     public static XYPair<Float> getMousePosition() {
@@ -98,7 +98,7 @@ public class MyGame extends ApplicationAdapter {
 
         batch.begin();
 
-        menuController.batch(elapsedTime, timeText);
+        menuController.batch(elapsedTime);
 
         batch.end();
     }
