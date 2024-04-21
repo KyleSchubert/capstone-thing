@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Player;
@@ -16,7 +15,9 @@ import com.roguelikedeckbuilder.mygame.cards.CardData;
 import com.roguelikedeckbuilder.mygame.cards.CardTypeName;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
+import com.roguelikedeckbuilder.mygame.helpers.MenuSoundType;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
+import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 
 import java.util.Random;
@@ -36,10 +37,12 @@ public class ShopMenuStage extends GenericStage {
     private final Integer[] removeCardCost = new Integer[]{200};
     private int numberOfCards = 0;
 
-    public ShopMenuStage(ScreenViewport viewportForStage, ImageButton exitButton, ClickListener cardChangeStageTrigger, ClickListener cardUpgradePreparerClickListener, ClickListener cardRemovePreparerClickListener) {
+    public ShopMenuStage(ScreenViewport viewportForStage) {
         super(viewportForStage, "shop");
         super.getStageBackgroundActor().setPosition(5, 3);
 
+        ImageButton exitButton = ClickListenerManager.getMenuSwitchingButton(
+                "exit", MenuState.MAP, MenuSoundType.CLOSE, 56.8f, 32);
         exitButton.setPosition(56.8f, 32);
         getStage().addActor(exitButton);
 
@@ -54,8 +57,8 @@ public class ShopMenuStage extends GenericStage {
         upgradeButton = new Image(new Texture(Gdx.files.internal("MENU BUTTONS/shop area/Upgrade.png")));
         upgradeButton.setPosition(1110, 550);
         upgradeButton.addListener(ClickListenerManager.increasingCostInShop(upgradeCost, upgradeCostLabel));
-        upgradeButton.addListener(cardChangeStageTrigger);
-        upgradeButton.addListener(cardUpgradePreparerClickListener);
+        upgradeButton.addListener(ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN));
+        upgradeButton.addListener(ClickListenerManager.preparingCardUpgradeMenu());
 
         upgradeButtonNoInteraction = new Image(new Texture(Gdx.files.internal("MENU BUTTONS/shop area/Upgrade.png")));
         upgradeButtonNoInteraction.setPosition(1110, 550);
@@ -67,8 +70,8 @@ public class ShopMenuStage extends GenericStage {
         removeCardButton = new Image(new Texture(Gdx.files.internal("MENU BUTTONS/shop area/Remove card.png")));
         removeCardButton.setPosition(1120, 450);
         removeCardButton.addListener(ClickListenerManager.increasingCostInShop(removeCardCost, removeCardCostLabel));
-        removeCardButton.addListener(cardChangeStageTrigger);
-        removeCardButton.addListener(cardRemovePreparerClickListener);
+        removeCardButton.addListener(ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN));
+        removeCardButton.addListener(ClickListenerManager.preparingCardRemoveMenu());
 
         removeCardButtonNoInteraction = new Image(new Texture(Gdx.files.internal("MENU BUTTONS/shop area/Remove card.png")));
         removeCardButtonNoInteraction.setPosition(1120, 450);

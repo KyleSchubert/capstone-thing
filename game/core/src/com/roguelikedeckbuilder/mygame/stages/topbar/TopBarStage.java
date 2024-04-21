@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
-import com.roguelikedeckbuilder.mygame.menucontroller.MenuSoundType;
+import com.roguelikedeckbuilder.mygame.helpers.MenuSoundType;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 

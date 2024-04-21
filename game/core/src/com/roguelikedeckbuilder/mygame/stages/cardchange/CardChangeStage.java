@@ -14,16 +14,13 @@ import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.cards.CardData;
 import com.roguelikedeckbuilder.mygame.cards.CardTypeName;
-import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
-import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
-import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
-import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
+import com.roguelikedeckbuilder.mygame.helpers.*;
+import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 
 import java.util.Random;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
-import static com.roguelikedeckbuilder.mygame.menucontroller.MenuController.getImageButton;
 
 public class CardChangeStage extends GenericStage {
     private final ScrollPane.ScrollPaneStyle scrollPaneStyle;
@@ -32,11 +29,11 @@ public class CardChangeStage extends GenericStage {
     private final Label textAtTop;
     private Group cardChoiceGroup;
 
-    public CardChangeStage(ScreenViewport viewportForStage, ClickListener clickListenerToGoBackToTreasure) {
+    public CardChangeStage(ScreenViewport viewportForStage) {
         super(viewportForStage, "gray background");
         super.getStageBackgroundActor().setPosition(13.5f, 4);
         resetCardChoiceGroup();
-        this.clickListenerToGoBackToTreasure = clickListenerToGoBackToTreasure;
+        this.clickListenerToGoBackToTreasure = ClickListenerManager.triggeringMenuState(MenuState.TREASURE, MenuSoundType.OPEN);
         random = new Random();
 
         textAtTop = new Label("", LabelMaker.getLarge());
@@ -60,7 +57,7 @@ public class CardChangeStage extends GenericStage {
         scrollPaneStyle.vScroll.setMinWidth(vScrollBackground.getWidth() * SCALE_FACTOR);
         scrollPaneStyle.vScroll.setMinHeight(0.2f);
 
-        ImageButton backButton = getImageButton("back");
+        ImageButton backButton = ClickListenerManager.getImageButton("back");
         backButton.addListener(getClickListenerForBackButton());
         backButton.setPosition(47, 36.6f);
         this.getStage().addActor(backButton);

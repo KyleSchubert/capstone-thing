@@ -5,7 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
+import com.roguelikedeckbuilder.mygame.helpers.MenuSoundType;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
+import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 import com.roguelikedeckbuilder.mygame.treasure.Treasure;
 import com.roguelikedeckbuilder.mygame.treasure.TreasureType;
@@ -15,17 +18,19 @@ public class TreasureMenuStage extends GenericStage {
     private final ClickListener cardChoicePreparerClickListener;
     private Group treasureGroup;
 
-    public TreasureMenuStage(ScreenViewport viewportForStage, ImageButton exitButton, ClickListener clickListener, ClickListener cardChoicePreparerClickListener) {
+    public TreasureMenuStage(ScreenViewport viewportForStage) {
         super(viewportForStage, "treasure background");
         getStageBackgroundActor().setPosition(16, 1.6f);
 
-        exitButton.setPosition(42, 3);
+        ImageButton exitButton = ClickListenerManager.getMenuSwitchingButton(
+                "exit", MenuState.MAP, MenuSoundType.CLOSE, 42, 3);
         this.getStage().addActor(exitButton);
+
         treasureGroup = new Group();
         treasureGroup.setUserObject("");
 
-        cardChoiceClickListener = clickListener;
-        this.cardChoicePreparerClickListener = cardChoicePreparerClickListener;
+        this.cardChoiceClickListener = ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN);
+        this.cardChoicePreparerClickListener = ClickListenerManager.preparingCardChoiceMenu();
     }
 
     public void aLotOfTreasure() {

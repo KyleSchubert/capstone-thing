@@ -1,4 +1,4 @@
-package com.roguelikedeckbuilder.mygame.menucontroller;
+package com.roguelikedeckbuilder.mygame.helpers;
 
 public enum MenuSoundType {
     CLOSE,

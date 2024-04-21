@@ -1,11 +1,15 @@
 package com.roguelikedeckbuilder.mygame.helpers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Null;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.cards.Card;
@@ -14,12 +18,13 @@ import com.roguelikedeckbuilder.mygame.cards.CardTypeName;
 import com.roguelikedeckbuilder.mygame.combat.ability.AbilityData;
 import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
-import com.roguelikedeckbuilder.mygame.menucontroller.MenuSoundType;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.tooltip.Size;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 import com.roguelikedeckbuilder.mygame.treasure.Treasure;
 import com.roguelikedeckbuilder.mygame.treasure.TreasureType;
+
+import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class ClickListenerManager {
     // These could be in MenuController, but I wanted the organization bonus of it being in another file so yeah
@@ -199,5 +204,23 @@ public class ClickListenerManager {
             Gdx.app.exit();
             System.exit(-1);
         });
+    }
+
+    public static ImageButton getImageButton(String buttonInternalFolderName) {
+        Texture notClickedTexture = new Texture(Gdx.files.internal("MENU BUTTONS/" + buttonInternalFolderName + "/default.png"));
+        Texture clickedTexture = new Texture(Gdx.files.internal("MENU BUTTONS/" + buttonInternalFolderName + "/hover.png"));
+        ImageButton button = new ImageButton(
+                new TextureRegionDrawable(new TextureRegion(notClickedTexture)),
+                new TextureRegionDrawable(new TextureRegion(clickedTexture))
+        );
+        button.setSize(notClickedTexture.getWidth() * SCALE_FACTOR, notClickedTexture.getHeight() * SCALE_FACTOR);
+        return button;
+    }
+
+    public static ImageButton getMenuSwitchingButton(String buttonInternalFolderName, MenuState menuState, MenuSoundType menuSoundType, float x, float y) {
+        ImageButton newButton = ClickListenerManager.getImageButton(buttonInternalFolderName);
+        newButton.addCaptureListener(ClickListenerManager.triggeringMenuState(menuState, menuSoundType));
+        newButton.setPosition(x, y);
+        return newButton;
     }
 }

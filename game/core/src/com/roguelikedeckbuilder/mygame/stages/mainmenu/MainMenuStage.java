@@ -13,6 +13,8 @@ import com.roguelikedeckbuilder.mygame.animated.character.Character;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterState;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
+import com.roguelikedeckbuilder.mygame.helpers.MenuSoundType;
+import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 
 import java.util.Random;
@@ -24,22 +26,26 @@ public class MainMenuStage extends GenericStage {
     private final Random random = new Random();
     private float runningAnimationAddClock = 0;
 
-    public MainMenuStage(ScreenViewport viewportForStage, ImageButton playButton, ImageButton upgradesButton, ImageButton settingsButton, ImageButton exitButton) {
+    public MainMenuStage(ScreenViewport viewportForStage) {
         super(viewportForStage);
 
         Image persistentCurrencyCounterImage = new Image(new Texture(Gdx.files.internal("ITEMS/persistent coin.png")));
         persistentCurrencyCounterImage.setPosition(15.5f, 14);
         addActor(persistentCurrencyCounterImage);
 
-        playButton.setPosition(2, 18);
+        ImageButton playButton = ClickListenerManager.getMenuSwitchingButton(
+                "play", MenuState.START_REWARDS, MenuSoundType.SILENT, 2, 18);
         getStage().addActor(playButton);
 
-        upgradesButton.setPosition(2, 13);
+        ImageButton upgradesButton = ClickListenerManager.getMenuSwitchingButton(
+                "upgrades", MenuState.UPGRADES, MenuSoundType.OPEN, 2, 13);
         getStage().addActor(upgradesButton);
 
-        settingsButton.setPosition(2, 8);
+        ImageButton settingsButton = ClickListenerManager.getMenuSwitchingButton(
+                "settings", MenuState.SETTINGS, MenuSoundType.OPEN, 2, 8);
         getStage().addActor(settingsButton);
 
+        ImageButton exitButton = ClickListenerManager.getImageButton("exit");
         exitButton.setPosition(2, 3);
         exitButton.addListener(ClickListenerManager.exitingGame());
         getStage().addActor(exitButton);

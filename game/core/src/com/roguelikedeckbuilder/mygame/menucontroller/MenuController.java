@@ -3,20 +3,15 @@ package com.roguelikedeckbuilder.mygame.menucontroller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
-import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 import com.roguelikedeckbuilder.mygame.stages.cardchange.CardChangeStage;
 import com.roguelikedeckbuilder.mygame.stages.combatmenu.CombatMenuStage;
@@ -68,17 +63,6 @@ public class MenuController {
         isDrawTooltipMenu = drawTooltipMenu;
     }
 
-    public static ImageButton getImageButton(String buttonInternalFolderName) {
-        Texture notClickedTexture = new Texture(Gdx.files.internal("MENU BUTTONS/" + buttonInternalFolderName + "/default.png"));
-        Texture clickedTexture = new Texture(Gdx.files.internal("MENU BUTTONS/" + buttonInternalFolderName + "/hover.png"));
-        ImageButton button = new ImageButton(
-                new TextureRegionDrawable(new TextureRegion(notClickedTexture)),
-                new TextureRegionDrawable(new TextureRegion(clickedTexture))
-        );
-        button.setSize(notClickedTexture.getWidth() * SCALE_FACTOR, notClickedTexture.getHeight() * SCALE_FACTOR);
-        return button;
-    }
-
     public static boolean getIsGameplayPaused() {
         return isGameplayPaused;
     }
@@ -88,74 +72,17 @@ public class MenuController {
         ScreenViewport viewportForStage = new ScreenViewport(camera);
         viewportForStage.setUnitsPerPixel(SCALE_FACTOR);
 
-        mainMenuStage = new MainMenuStage(
-                viewportForStage,
-                newImageButtonFrom("play", MenuState.START_REWARDS, MenuSoundType.SILENT),
-                newImageButtonFrom("upgrades", MenuState.UPGRADES, MenuSoundType.OPEN),
-                newImageButtonFrom("settings", MenuState.SETTINGS, MenuSoundType.OPEN),
-                getImageButton("exit")
-        );
-
-        pauseMenuStage = new PauseMenuStage(
-                viewportForStage,
-                newImageButtonFrom("resume", MenuState.RESUME, MenuSoundType.CLOSE),
-                newImageButtonFrom("settings", MenuState.SETTINGS, MenuSoundType.OPEN),
-                newImageButtonFrom("give up", MenuState.RESULTS, MenuSoundType.SILENT)
-        );
-
-        resultsMenuStage = new ResultsMenuStage(
-                viewportForStage,
-                newImageButtonFrom("main menu", MenuState.MAIN_MENU, MenuSoundType.CLOSE)
-        );
-
-        upgradesMenuStage = new UpgradesMenuStage(
-                viewportForStage,
-                newImageButtonFrom("back", MenuState.MAIN_MENU, MenuSoundType.CLOSE)
-        );
-
-        settingsMenuStage = new SettingsMenuStage(
-                viewportForStage,
-                newImageButtonFrom("back", MenuState.SETTINGS_BACK, MenuSoundType.CLOSE),
-                newImageButtonFrom("confirm", MenuState.SETTINGS_BACK, MenuSoundType.CLOSE)
-        );
-
-        cardChangeMenuStage = new CardChangeStage(
-                viewportForStage,
-                ClickListenerManager.triggeringMenuState(MenuState.TREASURE, MenuSoundType.OPEN)
-        );
-
-        restMenuStage = new RestMenuStage(
-                viewportForStage,
-                ClickListenerManager.triggeringMenuState(MenuState.MAP, MenuSoundType.CLOSE),
-                ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN),
-                ClickListenerManager.preparingCardUpgradeMenu()
-        );
-
-        treasureMenuStage = new TreasureMenuStage(
-                viewportForStage,
-                newImageButtonFrom("exit", MenuState.MAP, MenuSoundType.CLOSE),
-                ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN),
-                ClickListenerManager.preparingCardChoiceMenu()
-        );
-
-        shopMenuStage = new ShopMenuStage(
-                viewportForStage,
-                newImageButtonFrom("exit", MenuState.MAP, MenuSoundType.CLOSE),
-                ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN),
-                ClickListenerManager.preparingCardUpgradeMenu(),
-                ClickListenerManager.preparingCardRemoveMenu()
-        );
-
-        combatMenuStage = new CombatMenuStage(
-                viewportForStage,
-                ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN)
-        );
-
-        tooltipStage = new TooltipStage(
-                viewportForStage,
-                ClickListenerManager.triggeringMenuState(MenuState.MAP, MenuSoundType.CLOSE)
-        );
-
+        mainMenuStage = new MainMenuStage(viewportForStage);
+        pauseMenuStage = new PauseMenuStage(viewportForStage);
+        resultsMenuStage = new ResultsMenuStage(viewportForStage);
+        upgradesMenuStage = new UpgradesMenuStage(viewportForStage);
+        settingsMenuStage = new SettingsMenuStage(viewportForStage);
+        cardChangeMenuStage = new CardChangeStage(viewportForStage);
+        restMenuStage = new RestMenuStage(viewportForStage);
+        treasureMenuStage = new TreasureMenuStage(viewportForStage);
+        shopMenuStage = new ShopMenuStage(viewportForStage);
+        combatMenuStage = new CombatMenuStage(viewportForStage);
+        tooltipStage = new TooltipStage(viewportForStage);
         topBarStage = new TopBarStage(viewportForStage);
 
         ClickListener hoverAndClickListener = makeHoverAndClickListener();
@@ -549,28 +476,6 @@ public class MenuController {
 
     private void setGameplayPaused(boolean gameplayPaused) {
         isGameplayPaused = gameplayPaused;
-    }
-
-    private ImageButton newImageButtonFrom(String buttonInternalFolderName, MenuState menuState, MenuSoundType menuSoundType) {
-        ImageButton button = getImageButton(buttonInternalFolderName);
-        button.addListener(new InputListener() {
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                setMenuState(menuState);
-                if (menuSoundType == MenuSoundType.OPEN) {
-                    SoundManager.playMenuOpenSound();
-                } else if (menuSoundType == MenuSoundType.CLOSE) {
-                    SoundManager.playMenuCloseSound();
-                }
-            }
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-        });
-
-        return button;
     }
 
     public MenuState getCurrentMenuState() {

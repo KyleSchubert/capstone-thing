@@ -7,19 +7,16 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
-import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
-import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
-import com.roguelikedeckbuilder.mygame.helpers.XYPair;
+import com.roguelikedeckbuilder.mygame.helpers.*;
 import com.roguelikedeckbuilder.mygame.items.ItemData;
 import com.roguelikedeckbuilder.mygame.items.ItemTier;
 import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
+import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 import com.roguelikedeckbuilder.mygame.stages.map.MapNodeType;
 
@@ -29,7 +26,6 @@ import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 public class TooltipStage extends GenericStage {
     private static final XYPair<Float> middlePosition = new XYPair<>(21.2f, 14f);
     private static final XYPair<Float> offScreen = new XYPair<>(9999f, 9999f);
-    private final ClickListener clickListenerExitingToMap;
     private final Label itemChoiceLabel1 = LabelMaker.newLabel("", LabelMaker.getSmall());
     private final Label itemChoiceLabel2 = LabelMaker.newLabel("", LabelMaker.getSmall());
     private final Label itemChoiceLabel3 = LabelMaker.newLabel("", LabelMaker.getSmall());
@@ -41,7 +37,7 @@ public class TooltipStage extends GenericStage {
     private boolean isAbove;
     private boolean showChooseOneItemDetails = false;
 
-    public TooltipStage(ScreenViewport viewportForStage, ClickListener clickListenerExitingToMap) {
+    public TooltipStage(ScreenViewport viewportForStage) {
         super(viewportForStage, "tooltip");
         getStageBackgroundActor().setTouchable(Touchable.disabled);
         getStageBackgroundActor().setPosition(offScreen.x(), offScreen.y());
@@ -85,8 +81,6 @@ public class TooltipStage extends GenericStage {
 
         nonBackgroundThings.setScale(SCALE_FACTOR);
         getStage().addActor(nonBackgroundThings);
-
-        this.clickListenerExitingToMap = clickListenerExitingToMap;
     }
 
     @Override
@@ -242,7 +236,7 @@ public class TooltipStage extends GenericStage {
 
             item.setScale(2);
             item.setPosition(offScreen.x(), offScreen.y());
-            item.addListener(clickListenerExitingToMap);
+            item.addListener(ClickListenerManager.triggeringMenuState(MenuState.MAP, MenuSoundType.CLOSE));
             item.addListener(ClickListenerManager.obtainingItem(itemTypeName));
             item.setUserObject(UserObjectOptions.ITEM);
 

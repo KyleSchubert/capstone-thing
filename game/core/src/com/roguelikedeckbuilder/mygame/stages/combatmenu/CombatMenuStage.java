@@ -29,7 +29,7 @@ import com.roguelikedeckbuilder.mygame.combat.HpChangeNumberHandler;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
 import com.roguelikedeckbuilder.mygame.combat.enemy.Enemy;
 import com.roguelikedeckbuilder.mygame.helpers.*;
-import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
+import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
@@ -46,7 +46,7 @@ public class CombatMenuStage extends GenericStage {
     private boolean isPlayerTurn = true;
     private boolean victory = false;
 
-    public CombatMenuStage(ScreenViewport viewportForStage, ClickListener cardChangeStageTrigger) {
+    public CombatMenuStage(ScreenViewport viewportForStage) {
         super(viewportForStage, "combat background");
 
         // Reposition the background
@@ -62,7 +62,7 @@ public class CombatMenuStage extends GenericStage {
         drawPile.setScale(SCALE_FACTOR);
         this.getStage().addActor(drawPile);
         drawPile.addCaptureListener(ClickListenerManager.lookingAtDrawPile());
-        drawPile.addCaptureListener(cardChangeStageTrigger);
+        drawPile.addCaptureListener(ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN));
 
         Image shufflePile = new Image(new Texture(Gdx.files.internal("CARDS/shuffle pile.png")));
         shufflePile.setPosition(64, 3);
@@ -84,7 +84,7 @@ public class CombatMenuStage extends GenericStage {
         this.getStage().addActor(groupForLabels);
 
         // End turn button
-        ImageButton endTurnButton = MenuController.getImageButton("end turn");
+        ImageButton endTurnButton = ClickListenerManager.getImageButton("end turn");
         endTurnButton.setPosition(58, 9);
         endTurnButton.addListener(new InputListener() {
             @Override
