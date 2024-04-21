@@ -5,6 +5,8 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.Array;
 
 public class SoundManager {
+    private static final float BASE_VOLUME = 0.25f;
+    private static final Array<DelayScheduler.Delay> delays = new Array<>();
     private static Sound hitSound;
     private static Sound getCoinsSound;
     private static Sound defendSound;
@@ -17,8 +19,6 @@ public class SoundManager {
     private static Sound menuOpenSound;
     private static Sound travelSound;
     private static float masterVolume;
-    private static final float BASE_VOLUME = 0.25f;
-    private static final Array<DelayScheduler.Delay> delays = new Array<>();
 
     public static void initialize() {
         hitSound = newSound("hit_freesound.org");
@@ -117,15 +117,11 @@ public class SoundManager {
     }
 
     public static void playMenuCloseSound() {
-        if (noSoundOfSameTypeIsPlaying("menuCloseSound")) {
-            playSound(menuCloseSound, 2f);
-        }
+        playSound(menuCloseSound, 2f);
     }
 
     public static void playMenuOpenSound() {
-        if (noSoundOfSameTypeIsPlaying("menuOpenSound")) {
-            playSound(menuOpenSound, 2f);
-        }
+        playSound(menuOpenSound, 2f);
     }
 
     public static void playTravelSound() {
