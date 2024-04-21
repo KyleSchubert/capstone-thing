@@ -15,6 +15,10 @@ public class GenericStage {
     private final Stage stage;
     private final Array<DelayScheduler.Delay> scheduledDelays = new Array<>();
 
+    public GenericStage(ScreenViewport viewportForStage) {
+        stage = new Stage(viewportForStage);
+    }
+
     public GenericStage(ScreenViewport viewportForStage, String stageBackgroundFilename) {
         stage = new Stage(viewportForStage);
 

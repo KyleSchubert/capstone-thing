@@ -101,14 +101,11 @@ public class MyGame extends ApplicationAdapter {
         menuController.batch(elapsedTime, timeText);
 
         batch.end();
-
-        menuController.postBatch(elapsedTime);
     }
 
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
-        menuController.resize(width, height);
         batch.setProjectionMatrix(camera.combined);
     }
 

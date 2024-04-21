@@ -4,9 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.*;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -14,20 +15,23 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Player;
-import com.roguelikedeckbuilder.mygame.animated.character.Character;
-import com.roguelikedeckbuilder.mygame.animated.character.CharacterState;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 import com.roguelikedeckbuilder.mygame.stages.cardchange.CardChangeStage;
 import com.roguelikedeckbuilder.mygame.stages.combatmenu.CombatMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.combatmenu.UseLine;
+import com.roguelikedeckbuilder.mygame.stages.mainmenu.MainMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.map.Map;
 import com.roguelikedeckbuilder.mygame.stages.map.MapNodeType;
+import com.roguelikedeckbuilder.mygame.stages.pause.PauseMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.rest.RestMenuStage;
+import com.roguelikedeckbuilder.mygame.stages.results.ResultsMenuStage;
+import com.roguelikedeckbuilder.mygame.stages.settings.SettingsMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.shop.ShopMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.tooltip.TooltipStage;
 import com.roguelikedeckbuilder.mygame.stages.treasure.TreasureMenuStage;
+import com.roguelikedeckbuilder.mygame.stages.upgrades.UpgradesMenuStage;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
 import java.util.Random;
@@ -39,12 +43,11 @@ public class MenuController {
     public static MenuState previousNonimportantMenuState;
     protected static boolean isGameplayPaused;
     private static boolean isDrawTooltipMenu;
-    private final Random random = new Random();
-    private Stage mainMenuStage;
-    private Stage pauseMenuStage;
-    private Stage resultsMenuStage;
-    private Stage upgradesMenuStage;
-    private Stage settingsMenuStage;
+    private MainMenuStage mainMenuStage;
+    private PauseMenuStage pauseMenuStage;
+    private ResultsMenuStage resultsMenuStage;
+    private UpgradesMenuStage upgradesMenuStage;
+    private SettingsMenuStage settingsMenuStage;
     private CardChangeStage cardChangeMenuStage;
     private RestMenuStage restMenuStage;
     private TreasureMenuStage treasureMenuStage;
@@ -54,10 +57,6 @@ public class MenuController {
     private TooltipStage tooltipStage;
     private Stage topBarStage;
     private Image darkTransparentScreen;
-    private Image pauseBackground;
-    private Image resultsBackground;
-    private Image settingsBackground;
-    private Image upgradesBackground;
     private MenuState currentMenuState;
     private MenuState previousImportantMenuState;
     private Stage currentInputProcessor;
@@ -74,7 +73,6 @@ public class MenuController {
     private boolean isDrawCardChangeMenuStage;
     private boolean isDrawShopMenuStage;
     private boolean isDrawCombatMenuStage;
-    private float runningAnimationAddClock = 0;
 
     public static void setDrawTooltipMenu(boolean drawTooltipMenu) {
         isDrawTooltipMenu = drawTooltipMenu;
@@ -99,66 +97,6 @@ public class MenuController {
         // For the UI and menus
         ScreenViewport viewportForStage = new ScreenViewport(camera);
         viewportForStage.setUnitsPerPixel(SCALE_FACTOR);
-        mainMenuStage = new Stage(viewportForStage);
-        pauseMenuStage = new Stage(viewportForStage);
-        resultsMenuStage = new Stage(viewportForStage);
-        upgradesMenuStage = new Stage(viewportForStage);
-        settingsMenuStage = new Stage(viewportForStage);
-
-        cardChangeMenuStage = new CardChangeStage(viewportForStage, ClickListenerManager.triggeringMenuState(MenuState.TREASURE, MenuSoundType.OPEN));
-        restMenuStage = new RestMenuStage(
-                viewportForStage,
-                ClickListenerManager.triggeringMenuState(MenuState.MAP, MenuSoundType.CLOSE),
-                ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN),
-                ClickListenerManager.preparingCardUpgradeMenu()
-        );
-        treasureMenuStage = new TreasureMenuStage(
-                viewportForStage,
-                newImageButtonFrom("exit", MenuState.MAP, MenuSoundType.CLOSE),
-                ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN),
-                ClickListenerManager.preparingCardChoiceMenu()
-        );
-        shopMenuStage = new ShopMenuStage(
-                viewportForStage,
-                newImageButtonFrom("exit", MenuState.MAP, MenuSoundType.CLOSE),
-                ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN),
-                ClickListenerManager.preparingCardUpgradeMenu(),
-                ClickListenerManager.preparingCardRemoveMenu()
-        );
-        combatMenuStage = new CombatMenuStage(
-                viewportForStage,
-                ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN)
-        );
-
-        tooltipStage = new TooltipStage(viewportForStage, ClickListenerManager.triggeringMenuState(MenuState.MAP, MenuSoundType.CLOSE));
-
-        ClickListener hoverAndClickListener = makeHoverAndClickListener();
-        map = new Map(viewportForStage, hoverAndClickListener);
-
-        Gdx.input.setInputProcessor(mainMenuStage);
-        currentInputProcessor = mainMenuStage;
-        previousInputProcessor = mainMenuStage;
-        currentMenuState = MenuState.MAIN_MENU;
-        previousImportantMenuState = MenuState.MAIN_MENU;
-        previousNonimportantMenuState = currentMenuState;
-
-        // Load the in-game currency counter
-        Image persistentCurrencyCounterImage = new Image(new Texture(Gdx.files.internal("ITEMS/persistent coin.png")));
-        persistentCurrencyCounterImage.setScale(SCALE_FACTOR);
-        mainMenuStage.addActor(persistentCurrencyCounterImage);
-
-        // Menu buttons below
-        // PLAY button
-        ImageButton playButton = newImageButtonFrom("play", MenuState.START_REWARDS, MenuSoundType.SILENT);
-        mainMenuStage.addActor(playButton);
-
-        // UPGRADES button
-        ImageButton upgradesButton = newImageButtonFrom("upgrades", MenuState.UPGRADES, MenuSoundType.OPEN);
-        mainMenuStage.addActor(upgradesButton);
-
-        // SETTINGS button
-        ImageButton settingsButton = newImageButtonFrom("settings", MenuState.SETTINGS, MenuSoundType.OPEN);
-        mainMenuStage.addActor(settingsButton);
 
         // EXIT button
         ImageButton exitButton = new ImageButton(
@@ -178,8 +116,84 @@ public class MenuController {
                 return true;
             }
         });
-        mainMenuStage.addActor(exitButton);
 
+        mainMenuStage = new MainMenuStage(
+                viewportForStage,
+                newImageButtonFrom("play", MenuState.START_REWARDS, MenuSoundType.SILENT),
+                newImageButtonFrom("upgrades", MenuState.UPGRADES, MenuSoundType.OPEN),
+                newImageButtonFrom("settings", MenuState.SETTINGS, MenuSoundType.OPEN),
+                exitButton
+        );
+
+        pauseMenuStage = new PauseMenuStage(
+                viewportForStage,
+                newImageButtonFrom("resume", MenuState.RESUME, MenuSoundType.CLOSE),
+                newImageButtonFrom("settings", MenuState.SETTINGS, MenuSoundType.OPEN),
+                newImageButtonFrom("give up", MenuState.RESULTS, MenuSoundType.SILENT)
+        );
+
+        resultsMenuStage = new ResultsMenuStage(
+                viewportForStage,
+                newImageButtonFrom("main menu", MenuState.MAIN_MENU, MenuSoundType.CLOSE)
+        );
+
+        upgradesMenuStage = new UpgradesMenuStage(
+                viewportForStage,
+                newImageButtonFrom("back", MenuState.MAIN_MENU, MenuSoundType.CLOSE)
+        );
+
+        settingsMenuStage = new SettingsMenuStage(
+                viewportForStage,
+                newImageButtonFrom("back", MenuState.SETTINGS_BACK, MenuSoundType.CLOSE),
+                newImageButtonFrom("confirm", MenuState.SETTINGS_BACK, MenuSoundType.CLOSE)
+        );
+
+        cardChangeMenuStage = new CardChangeStage(
+                viewportForStage,
+                ClickListenerManager.triggeringMenuState(MenuState.TREASURE, MenuSoundType.OPEN)
+        );
+
+        restMenuStage = new RestMenuStage(
+                viewportForStage,
+                ClickListenerManager.triggeringMenuState(MenuState.MAP, MenuSoundType.CLOSE),
+                ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN),
+                ClickListenerManager.preparingCardUpgradeMenu()
+        );
+
+        treasureMenuStage = new TreasureMenuStage(
+                viewportForStage,
+                newImageButtonFrom("exit", MenuState.MAP, MenuSoundType.CLOSE),
+                ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN),
+                ClickListenerManager.preparingCardChoiceMenu()
+        );
+
+        shopMenuStage = new ShopMenuStage(
+                viewportForStage,
+                newImageButtonFrom("exit", MenuState.MAP, MenuSoundType.CLOSE),
+                ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN),
+                ClickListenerManager.preparingCardUpgradeMenu(),
+                ClickListenerManager.preparingCardRemoveMenu()
+        );
+
+        combatMenuStage = new CombatMenuStage(
+                viewportForStage,
+                ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN)
+        );
+
+        tooltipStage = new TooltipStage(
+                viewportForStage,
+                ClickListenerManager.triggeringMenuState(MenuState.MAP, MenuSoundType.CLOSE)
+        );
+
+        ClickListener hoverAndClickListener = makeHoverAndClickListener();
+        map = new Map(viewportForStage, hoverAndClickListener);
+
+        Gdx.input.setInputProcessor(mainMenuStage.getStage());
+        currentInputProcessor = mainMenuStage.getStage();
+        previousInputProcessor = mainMenuStage.getStage();
+        currentMenuState = MenuState.MAIN_MENU;
+        previousImportantMenuState = MenuState.MAIN_MENU;
+        previousNonimportantMenuState = currentMenuState;
 
         // Top Bar Images
         Image topBarBackground = new Image(new Texture(Gdx.files.internal("OTHER UI/top bar background.png")));
@@ -206,66 +220,6 @@ public class MenuController {
         darkTransparentScreen.setSize(40 * SCALE_FACTOR * 300, 40 * SCALE_FACTOR * 300);
         darkTransparentScreen.setPosition(0, 0);
 
-        // Pause background
-        pauseBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/pause background.png")));
-        pauseBackground.setSize(296 * SCALE_FACTOR, 287 * SCALE_FACTOR);
-
-        // Results background
-        resultsBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/results background.png")));
-        resultsBackground.setSize(429 * SCALE_FACTOR, 844 * SCALE_FACTOR);
-
-        // Settings background
-        settingsBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/settings background.png")));
-        settingsBackground.setSize(771 * SCALE_FACTOR, 814 * SCALE_FACTOR);
-
-        // Upgrades background
-        upgradesBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/upgrades background.png")));
-        upgradesBackground.setSize(873 * SCALE_FACTOR, 814 * SCALE_FACTOR);
-
-
-        // Pause menu buttons
-        // Resume button
-        ImageButton resumeButton = newImageButtonFrom("resume", MenuState.RESUME, MenuSoundType.CLOSE);
-        pauseMenuStage.addActor(resumeButton);
-
-        // Settings button
-        ImageButton pauseSettingsButton = newImageButtonFrom("settings", MenuState.SETTINGS, MenuSoundType.OPEN);
-        pauseMenuStage.addActor(pauseSettingsButton);
-
-        // Give up button
-        ImageButton giveUpButton = newImageButtonFrom("give up", MenuState.RESULTS, MenuSoundType.SILENT);
-        pauseMenuStage.addActor(giveUpButton);
-
-        // Results menu buttons
-        // Main menu button
-        ImageButton mainMenuButton = newImageButtonFrom("main menu", MenuState.MAIN_MENU, MenuSoundType.CLOSE);
-        resultsMenuStage.addActor(mainMenuButton);
-
-        // Upgrades menu buttons
-        // Back button
-        ImageButton upgradesBackButton = newImageButtonFrom("back", MenuState.MAIN_MENU, MenuSoundType.CLOSE);
-        upgradesMenuStage.addActor(upgradesBackButton);
-
-        // Settings menu buttons
-        // Back button
-        // TODO: this will need additional code to discard the changed settings
-        ImageButton settingsBackButton = newImageButtonFrom("back", MenuState.SETTINGS_BACK, MenuSoundType.CLOSE);
-        settingsMenuStage.addActor(settingsBackButton);
-
-        // confirm button
-        // TODO: this will need additional code to save and apply the changed settings
-        ImageButton settingsConfirmButton = newImageButtonFrom("confirm", MenuState.SETTINGS_BACK, MenuSoundType.CLOSE);
-        settingsMenuStage.addActor(settingsConfirmButton);
-
-        // Characters on main menu
-
-        mainMenuStage.addActor(new Character(CharacterTypeName.BIRD, 23, 6));
-        mainMenuStage.addActor(new Character(CharacterTypeName.BLUE_MUSHROOM, 29, 6));
-        mainMenuStage.addActor(new Character(CharacterTypeName.HELMET_PENGUIN, 35, 6));
-        mainMenuStage.addActor(new Character(CharacterTypeName.ORANGE_MUSHROOM, 41, 6));
-        mainMenuStage.addActor(new Character(CharacterTypeName.PIG, 47, 6));
-        mainMenuStage.addActor(new Character(CharacterTypeName.PLANT, 53, 6));
-        mainMenuStage.addActor(new Character(CharacterTypeName.STUMP, 59, 6));
 
         setMenuState(MenuState.MAIN_MENU);
     }
@@ -329,22 +283,7 @@ public class MenuController {
         batch.begin();
 
         if (this.isDrawMainMenu) {
-            mainMenuStage.getActors().get(0).setPosition(15.5f, 14); // persistentCurrencyCounterImage
-            mainMenuStage.getActors().get(1).setPosition(2, 18); // playButton
-            mainMenuStage.getActors().get(2).setPosition(2, 13); // upgradesButton
-            mainMenuStage.getActors().get(3).setPosition(2, 8); // settingsButton
-            mainMenuStage.getActors().get(4).setPosition(2, 3); // exitButton
-            mainMenuStage.getViewport().apply();
-            mainMenuStage.act(elapsedTime);
-            mainMenuStage.draw();
-            font.draw(batch, "x " + Player.getPersistentMoney(), 17.3f, 15.3f); // text for currency counter
-
-            // For the running animation looping
-            runningAnimationAddClock += elapsedTime;
-            if (runningAnimationAddClock > 0.2f) {
-                runningAnimationAddClock -= 0.2f;
-                animateRandomRunningCharacter();
-            }
+            mainMenuStage.batch(elapsedTime);
         } else {
             topBarStage.draw();
             topBarStage.act();
@@ -390,55 +329,17 @@ public class MenuController {
         if (isDrawTooltipMenu) {
             tooltipStage.batch(elapsedTime);
         }
-        if (this.isDrawPauseMenu) { // JUST for the pause menu background texture
-            pauseBackground.setPosition(29.5f, 20);
-            pauseBackground.draw(batch, 1);
-        }
-        if (this.isDrawUpgradesMenu) { // JUST for the upgrades menu background texture
-            upgradesBackground.setPosition(23, 3.7f);
-            upgradesBackground.draw(batch, 1);
-        }
-        if (this.isDrawResultsMenu) { // JUST for the results menu background texture
-            resultsBackground.setPosition(48, 0.7f);
-            resultsBackground.draw(batch, 1);
-        }
-        if (this.isDrawSettingsMenu) { // JUST for the settings menu background texture
-            settingsBackground.setPosition(23.7f, 3.7f);
-            settingsBackground.draw(batch, 1);
-        }
-    }
-
-    public void postBatch(float elapsedTime) {
         if (this.isDrawPauseMenu) {
-            // draw the pause menu
-            pauseMenuStage.getActors().get(0).setPosition(31, 29.2f); // resume button
-            pauseMenuStage.getActors().get(1).setPosition(31, 25.1f); // settings button
-            pauseMenuStage.getActors().get(2).setPosition(31.5f, 20.5f); // give up button
-            pauseMenuStage.getViewport().apply();
-            pauseMenuStage.act(elapsedTime);
-            pauseMenuStage.draw();
+            pauseMenuStage.batch(elapsedTime);
         }
         if (this.isDrawUpgradesMenu) {
-            // draw the upgrades menu
-            upgradesMenuStage.getActors().get(0).setPosition(25, 5); // back button
-            upgradesMenuStage.getViewport().apply();
-            upgradesMenuStage.act(elapsedTime);
-            upgradesMenuStage.draw();
-        }
-        if (this.isDrawResultsMenu) {
-            // draw the results menu
-            resultsMenuStage.getActors().get(0).setPosition(52, 2); // main menu button
-            resultsMenuStage.getViewport().apply();
-            resultsMenuStage.act(elapsedTime);
-            resultsMenuStage.draw();
+            upgradesMenuStage.batch(elapsedTime);
         }
         if (this.isDrawSettingsMenu) {
-            // draw the settings menu
-            settingsMenuStage.getActors().get(0).setPosition(25, 5); // back button
-            settingsMenuStage.getActors().get(1).setPosition(49, 5); // confirm button
-            settingsMenuStage.getViewport().apply();
-            settingsMenuStage.act(elapsedTime);
-            settingsMenuStage.draw();
+            settingsMenuStage.batch(elapsedTime);
+        }
+        if (this.isDrawResultsMenu) {
+            resultsMenuStage.batch(elapsedTime);
         }
     }
 
@@ -456,10 +357,6 @@ public class MenuController {
         shopMenuStage.dispose();
         treasureMenuStage.dispose();
         topBarStage.dispose();
-    }
-
-    public void resize(int width, int height) {
-        mainMenuStage.getViewport().update(width, height, true);
     }
 
     private ClickListener makeHoverAndClickListener() {
@@ -547,8 +444,8 @@ public class MenuController {
                 Player.reset();
                 currentMenuState = MenuState.MAIN_MENU;
                 map.reset();
-                Gdx.input.setInputProcessor(mainMenuStage);
-                currentInputProcessor = mainMenuStage;
+                Gdx.input.setInputProcessor(mainMenuStage.getStage());
+                currentInputProcessor = mainMenuStage.getStage();
                 UseLine.setVisibility(false);
                 Statistics.resetVariables();
                 setGameplayPaused(true);
@@ -583,14 +480,14 @@ public class MenuController {
             }
             case UPGRADES -> {
                 currentMenuState = MenuState.UPGRADES;
-                Gdx.input.setInputProcessor(upgradesMenuStage);
-                currentInputProcessor = upgradesMenuStage;
+                Gdx.input.setInputProcessor(upgradesMenuStage.getStage());
+                currentInputProcessor = upgradesMenuStage.getStage();
                 setDrawDarkTransparentScreen(true);
                 setDrawUpgradesMenu(true);
             }
             case SETTINGS -> {
-                Gdx.input.setInputProcessor(settingsMenuStage);
-                currentInputProcessor = settingsMenuStage;
+                Gdx.input.setInputProcessor(settingsMenuStage.getStage());
+                currentInputProcessor = settingsMenuStage.getStage();
                 setDrawDarkTransparentScreen(true);
                 setDrawPauseMenu(false);
                 setDrawSettingsMenu(true);
@@ -599,8 +496,8 @@ public class MenuController {
                     setMenuState(currentMenuState);
             case PAUSED -> {
                 currentMenuState = MenuState.PAUSED;
-                Gdx.input.setInputProcessor(pauseMenuStage);
-                currentInputProcessor = pauseMenuStage;
+                Gdx.input.setInputProcessor(pauseMenuStage.getStage());
+                currentInputProcessor = pauseMenuStage.getStage();
                 setGameplayPaused(true);
                 setDrawDarkTransparentScreen(true);
                 setDrawPauseMenu(true);
@@ -610,8 +507,8 @@ public class MenuController {
             case RESULTS -> {
                 Statistics.runEnded();
                 currentMenuState = MenuState.RESULTS;
-                Gdx.input.setInputProcessor(resultsMenuStage);
-                currentInputProcessor = resultsMenuStage;
+                Gdx.input.setInputProcessor(resultsMenuStage.getStage());
+                currentInputProcessor = resultsMenuStage.getStage();
                 setGameplayPaused(true);
                 setDrawDarkTransparentScreen(true);
                 setDrawPauseMenu(false);
@@ -776,29 +673,6 @@ public class MenuController {
 
     public MenuState getCurrentMenuState() {
         return currentMenuState;
-    }
-
-    private void animateRandomRunningCharacter() {
-        float startX = 90;
-        float startY = 31;
-        float endXOffset = -130;
-
-        float randomX = random.nextFloat(15) - 7;
-        float randomY = random.nextFloat(15) - 7;
-
-        int randomTypeIndex = random.nextInt(CharacterTypeName.values().length);
-        CharacterTypeName randomType = CharacterTypeName.values()[randomTypeIndex];
-
-        mainMenuStage.addActor(new Character(randomType, startX + randomX, startY + randomY));
-        Character character = (Character) mainMenuStage.getActors().get(mainMenuStage.getActors().size - 1);
-        character.setTouchable(Touchable.disabled);
-        character.setState(CharacterState.MOVING);
-
-        SequenceAction sequenceAction = new SequenceAction(
-                Actions.moveBy(endXOffset, 0, 26),
-                Actions.removeActor()
-        );
-        character.addAction(sequenceAction);
     }
 
     public TreasureMenuStage getTreasureMenuStage() {
