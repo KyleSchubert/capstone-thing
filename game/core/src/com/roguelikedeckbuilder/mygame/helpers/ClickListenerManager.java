@@ -1,5 +1,6 @@
 package com.roguelikedeckbuilder.mygame.helpers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -191,5 +192,12 @@ public class ClickListenerManager {
                 }
             }
         };
+    }
+
+    public static ClickListener exitingGame() {
+        return getClickListenerForTouchUp(() -> {
+            Gdx.app.exit();
+            System.exit(-1);
+        });
     }
 }

@@ -12,6 +12,7 @@ import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.animated.character.Character;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterState;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
+import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 
 import java.util.Random;
@@ -40,6 +41,7 @@ public class MainMenuStage extends GenericStage {
         getStage().addActor(settingsButton);
 
         exitButton.setPosition(2, 3);
+        exitButton.addListener(ClickListenerManager.exitingGame());
         getStage().addActor(exitButton);
 
         // Characters on main menu

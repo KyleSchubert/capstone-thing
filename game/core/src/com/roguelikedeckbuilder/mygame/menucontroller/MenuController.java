@@ -88,31 +88,12 @@ public class MenuController {
         ScreenViewport viewportForStage = new ScreenViewport(camera);
         viewportForStage.setUnitsPerPixel(SCALE_FACTOR);
 
-        // EXIT button
-        ImageButton exitButton = new ImageButton(
-                new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("MENU BUTTONS/exit/default.png")))),
-                new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("MENU BUTTONS/exit/hover.png"))))
-        );
-        exitButton.setSize(152 * SCALE_FACTOR, 72 * SCALE_FACTOR);
-        exitButton.addListener(new InputListener() {
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.exit();
-                System.exit(-1);
-            }
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-        });
-
         mainMenuStage = new MainMenuStage(
                 viewportForStage,
                 newImageButtonFrom("play", MenuState.START_REWARDS, MenuSoundType.SILENT),
                 newImageButtonFrom("upgrades", MenuState.UPGRADES, MenuSoundType.OPEN),
                 newImageButtonFrom("settings", MenuState.SETTINGS, MenuSoundType.OPEN),
-                exitButton
+                getImageButton("exit")
         );
 
         pauseMenuStage = new PauseMenuStage(
@@ -189,7 +170,8 @@ public class MenuController {
 
         // Dark transparent screen
         darkTransparentScreen = new Image(new Texture(Gdx.files.internal("MENU backgrounds/dark transparent screen.png")));
-        darkTransparentScreen.setSize(40 * SCALE_FACTOR * 300, 40 * SCALE_FACTOR * 300);
+        darkTransparentScreen.setScale(SCALE_FACTOR);
+        darkTransparentScreen.setSize(40 * 300, 40 * 300);
         darkTransparentScreen.setPosition(0, 0);
 
 
