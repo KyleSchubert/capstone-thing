@@ -1,8 +1,9 @@
 package com.roguelikedeckbuilder.mygame.helpers;
 
 public enum UserObjectOptions {
-    ENEMY,
     CARD,
-    TREASURE_GROUP,
-    ITEM
+    ENEMY,
+    ITEM,
+    SLIDER_KNOB,
+    TREASURE_GROUP
 }

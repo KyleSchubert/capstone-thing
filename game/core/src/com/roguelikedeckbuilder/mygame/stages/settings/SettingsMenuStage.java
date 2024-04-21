@@ -1,13 +1,23 @@
 package com.roguelikedeckbuilder.mygame.stages.settings;
 
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
+import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.MenuSoundType;
+import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 
+import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
+
 public class SettingsMenuStage extends GenericStage {
+    private final Slider overallVolumeSlider;
+    private final Slider musicVolumeSlider;
+    private final Slider soundVolumeSlider;
+
     public SettingsMenuStage(ScreenViewport viewportForStage) {
         super(viewportForStage, "settings background");
 
@@ -20,5 +30,42 @@ public class SettingsMenuStage extends GenericStage {
         ImageButton confirmButton = ClickListenerManager.getMenuSwitchingButton(
                 "confirm", MenuState.SETTINGS_BACK, MenuSoundType.CLOSE, 49, 5);
         getStage().addActor(confirmButton);
+
+        Group titleArea = new Group();
+        titleArea.setScale(SCALE_FACTOR);
+        getStage().addActor(titleArea);
+
+        Label title = LabelMaker.newLabel("Settings", LabelMaker.getLarge());
+        titleArea.addActor(title);
+        titleArea.setPosition(25, 40);
+
+        overallVolumeSlider = new Slider(0.5f, "Overall Volume", 26, 35);
+        getStage().addActor(overallVolumeSlider);
+
+        musicVolumeSlider = new Slider(0.5f, "Music Volume", 26, 30);
+        getStage().addActor(musicVolumeSlider);
+
+        soundVolumeSlider = new Slider(0.5f, "Sound Volume", 26, 25);
+        getStage().addActor(soundVolumeSlider);
+    }
+
+    @Override
+    public void batch(float elapsedTime) {
+        super.batch(elapsedTime);
+
+        if (overallVolumeSlider.isChanged()) {
+            SoundManager.setOverallVolume(overallVolumeSlider.getValue());
+            overallVolumeSlider.setIsChanged(false);
+            SoundManager.playHitSound();
+        }
+        if (musicVolumeSlider.isChanged()) {
+            SoundManager.setMusicVolume(musicVolumeSlider.getValue());
+            musicVolumeSlider.setIsChanged(false);
+        }
+        if (soundVolumeSlider.isChanged()) {
+            SoundManager.setSoundVolume(soundVolumeSlider.getValue());
+            soundVolumeSlider.setIsChanged(false);
+            SoundManager.playHitSound();
+        }
     }
 }

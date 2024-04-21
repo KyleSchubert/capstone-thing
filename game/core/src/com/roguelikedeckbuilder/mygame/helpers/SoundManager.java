@@ -5,7 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.Array;
 
 public class SoundManager {
-    private static final float BASE_VOLUME = 0.25f;
+    private static final float BASE_VOLUME = 0.5f;
     private static final Array<DelayScheduler.Delay> delays = new Array<>();
     private static Sound hitSound;
     private static Sound getCoinsSound;
@@ -18,7 +18,9 @@ public class SoundManager {
     private static Sound menuCloseSound;
     private static Sound menuOpenSound;
     private static Sound travelSound;
-    private static float masterVolume;
+    private static float overallVolume;
+    private static float musicVolume;
+    private static float soundVolume;
 
     public static void initialize() {
         hitSound = newSound("hit_freesound.org");
@@ -32,7 +34,9 @@ public class SoundManager {
         menuCloseSound = newSound("menu_close");
         menuOpenSound = newSound("menu_open");
         travelSound = newSound("travel");
-        masterVolume = 0.5f;
+        overallVolume = 0.5f;
+        musicVolume = 0.5f;
+        soundVolume = 0.5f;
     }
 
     private static Sound newSound(String fileName) {
@@ -40,11 +44,11 @@ public class SoundManager {
     }
 
     private static void playSound(Sound sound) {
-        sound.play(BASE_VOLUME * masterVolume);
+        sound.play(BASE_VOLUME * overallVolume * soundVolume);
     }
 
     private static void playSound(Sound sound, float volumeMultiplier) {
-        sound.play(BASE_VOLUME * masterVolume * volumeMultiplier);
+        sound.play(BASE_VOLUME * overallVolume * soundVolume * volumeMultiplier);
     }
 
     private static boolean noSoundOfSameTypeIsPlaying(String typeName) {
@@ -128,5 +132,17 @@ public class SoundManager {
         if (noSoundOfSameTypeIsPlaying("travelSound")) {
             playSound(travelSound, 1.5f);
         }
+    }
+
+    public static void setOverallVolume(float overallVolume) {
+        SoundManager.overallVolume = overallVolume;
+    }
+
+    public static void setMusicVolume(float musicVolume) {
+        SoundManager.musicVolume = musicVolume;
+    }
+
+    public static void setSoundVolume(float soundVolume) {
+        SoundManager.soundVolume = soundVolume;
     }
 }

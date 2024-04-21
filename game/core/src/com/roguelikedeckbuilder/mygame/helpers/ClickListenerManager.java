@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Null;
 import com.roguelikedeckbuilder.mygame.Player;
@@ -19,12 +20,14 @@ import com.roguelikedeckbuilder.mygame.combat.ability.AbilityData;
 import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
+import com.roguelikedeckbuilder.mygame.stages.settings.Slider;
 import com.roguelikedeckbuilder.mygame.stages.tooltip.Size;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 import com.roguelikedeckbuilder.mygame.treasure.Treasure;
 import com.roguelikedeckbuilder.mygame.treasure.TreasureType;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
+import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 
 public class ClickListenerManager {
     // These could be in MenuController, but I wanted the organization bonus of it being in another file so yeah
@@ -45,6 +48,23 @@ public class ClickListenerManager {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 action.run();
+            }
+        };
+    }
+
+    public static DragListener getDragListener() {
+        return new DragListener() {
+            public void drag(InputEvent event, float x, float y, int pointer) {
+                UserObjectOptions userObjectOptions = (UserObjectOptions) event.getTarget().getUserObject();
+                if (userObjectOptions == UserObjectOptions.SLIDER_KNOB) {
+                    Actor knob = event.getTarget();
+                    float sliderOffset = knob.getParent().getX() / SCALE_FACTOR + knob.getWidth() / 2;
+                    float scaledMousePosition = getMousePosition().x() / SCALE_FACTOR;
+                    float correctedMousePosition = scaledMousePosition - sliderOffset;
+
+                    Slider slider = (Slider) knob.getParent();
+                    slider.updateKnobPosition(correctedMousePosition);
+                }
             }
         };
     }
