@@ -14,9 +14,9 @@ import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class SettingsMenuStage extends GenericStage {
-    private final Slider overallVolumeSlider;
-    private final Slider musicVolumeSlider;
-    private final Slider soundVolumeSlider;
+    private static Slider overallVolumeSlider;
+    private static Slider musicVolumeSlider;
+    private static Slider soundVolumeSlider;
 
     public SettingsMenuStage(ScreenViewport viewportForStage) {
         super(viewportForStage, "settings background");
@@ -25,10 +25,12 @@ public class SettingsMenuStage extends GenericStage {
 
         ImageButton backButton = ClickListenerManager.getMenuSwitchingButton(
                 "back", MenuState.SETTINGS_BACK, MenuSoundType.CLOSE, 25, 5);
+        backButton.addCaptureListener(ClickListenerManager.notSavingSettings());
         getStage().addActor(backButton);
 
         ImageButton confirmButton = ClickListenerManager.getMenuSwitchingButton(
                 "confirm", MenuState.SETTINGS_BACK, MenuSoundType.CLOSE, 49, 5);
+        confirmButton.addCaptureListener(ClickListenerManager.savingSettings());
         getStage().addActor(confirmButton);
 
         Group titleArea = new Group();
@@ -47,6 +49,12 @@ public class SettingsMenuStage extends GenericStage {
 
         soundVolumeSlider = new Slider(0.5f, "Sound Volume", 26, 25);
         getStage().addActor(soundVolumeSlider);
+    }
+
+    public static void repositionSliders() {
+        overallVolumeSlider.loadPositionFromValue(SoundManager.getOverallVolume());
+        musicVolumeSlider.loadPositionFromValue(SoundManager.getMusicVolume());
+        soundVolumeSlider.loadPositionFromValue(SoundManager.getSoundVolume());
     }
 
     @Override

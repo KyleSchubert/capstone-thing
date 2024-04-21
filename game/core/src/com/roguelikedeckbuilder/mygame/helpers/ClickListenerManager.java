@@ -20,6 +20,7 @@ import com.roguelikedeckbuilder.mygame.combat.ability.AbilityData;
 import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
+import com.roguelikedeckbuilder.mygame.stages.settings.SettingsMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.settings.Slider;
 import com.roguelikedeckbuilder.mygame.stages.tooltip.Size;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
@@ -242,5 +243,17 @@ public class ClickListenerManager {
         newButton.addCaptureListener(ClickListenerManager.triggeringMenuState(menuState, menuSoundType));
         newButton.setPosition(x, y);
         return newButton;
+    }
+
+    public static ClickListener savingSettings() {
+        return getClickListenerForTouchUp(SaveLoad::saveVolumeSettings);
+    }
+
+    public static ClickListener notSavingSettings() {
+        return getClickListenerForTouchUp(SaveLoad::loadVolumeSettings);
+    }
+
+    public static ClickListener reloadSettingsMenu() {
+        return getClickListenerForTouchUp(SettingsMenuStage::repositionSliders);
     }
 }

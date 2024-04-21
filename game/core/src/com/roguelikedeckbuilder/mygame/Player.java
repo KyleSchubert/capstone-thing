@@ -10,10 +10,7 @@ import com.roguelikedeckbuilder.mygame.cards.CardData;
 import com.roguelikedeckbuilder.mygame.cards.CardTypeName;
 import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
-import com.roguelikedeckbuilder.mygame.helpers.GenericHelpers;
-import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
-import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
-import com.roguelikedeckbuilder.mygame.helpers.XYPair;
+import com.roguelikedeckbuilder.mygame.helpers.*;
 import com.roguelikedeckbuilder.mygame.items.Item;
 import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
@@ -39,7 +36,7 @@ public class Player {
 
     public static void initialize() {
         positionOnStage = new XYPair<>(18f, 22.8f);
-        persistentMoney = 200;
+        persistentMoney = 0;
         character = new Character(CharacterTypeName.HELMET_PENGUIN, positionOnStage.x(), positionOnStage.y());
         character.setTouchable(Touchable.disabled);
         character.faceRight();
@@ -114,6 +111,7 @@ public class Player {
             SoundManager.playGetCoinsSound();
             Statistics.gainedPersistentCoins(change);
         }
+        SaveLoad.savePersistentMoney();
     }
 
     public static int getMoney() {
@@ -122,6 +120,10 @@ public class Player {
 
     public static int getPersistentMoney() {
         return persistentMoney;
+    }
+
+    public static void setPersistentMoney(int persistentMoney) {
+        Player.persistentMoney = persistentMoney;
     }
 
     public static boolean buyCard(int cardValue, CardTypeName cardTypeName, boolean isUpgraded) {

@@ -80,6 +80,7 @@ public class MyGame extends ApplicationAdapter {
         SoundManager.initialize();
         Player.initialize();
         Statistics.resetVariables();
+        SaveLoad.initialize();
 
         menuController = new MenuController();
         menuController.create(camera);
@@ -169,6 +170,7 @@ public class MyGame extends ApplicationAdapter {
                         System.out.println("- P : Print all Statistics");
                         System.out.println("- [ : Give +1 STR and +1 CON");
                         System.out.println("- ] : Draw 1 card");
+                        System.out.println("- . + Z : Clear save data");
                         SoundManager.playHealSound();
                     } else {
                         System.out.println("DEBUG: OFF");
@@ -237,6 +239,9 @@ public class MyGame extends ApplicationAdapter {
                     if (menuController.getCurrentMenuState() == MenuState.COMBAT) {
                         Player.drawCards(1);
                     }
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_UP)) {
+                    SoundManager.playFunnyTadaSound();
+                    SaveLoad.clearSave();
                 }
             }
 

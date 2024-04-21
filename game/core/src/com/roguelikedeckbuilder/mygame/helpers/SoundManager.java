@@ -134,12 +134,24 @@ public class SoundManager {
         }
     }
 
+    public static float getOverallVolume() {
+        return overallVolume;
+    }
+
     public static void setOverallVolume(float overallVolume) {
         SoundManager.overallVolume = overallVolume;
     }
 
+    public static float getMusicVolume() {
+        return musicVolume;
+    }
+
     public static void setMusicVolume(float musicVolume) {
         SoundManager.musicVolume = musicVolume;
+    }
+
+    public static float getSoundVolume() {
+        return soundVolume;
     }
 
     public static void setSoundVolume(float soundVolume) {

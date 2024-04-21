@@ -19,6 +19,7 @@ public class PauseMenuStage extends GenericStage {
 
         ImageButton settingsButton = ClickListenerManager.getMenuSwitchingButton(
                 "settings", MenuState.SETTINGS, MenuSoundType.OPEN, 31, 25.1f);
+        settingsButton.addCaptureListener(ClickListenerManager.reloadSettingsMenu());
         getStage().addActor(settingsButton);
 
         ImageButton giveUpButton = ClickListenerManager.getMenuSwitchingButton(

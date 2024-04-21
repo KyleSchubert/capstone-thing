@@ -27,7 +27,10 @@ public class Slider extends Group {
 
         this.value = value;
         knob = new Image(new Texture(Gdx.files.internal("OTHER UI/knob.png")));
-        knob.setPosition(this.getWidth() * value - knob.getWidth() / 2, getCenter() - knob.getHeight() / 2);
+
+        loadPositionFromValue(value);
+        knob.setY(getCenter() - knob.getHeight() / 2);
+
         knob.addCaptureListener(ClickListenerManager.getDragListener());
         knob.setUserObject(UserObjectOptions.SLIDER_KNOB);
         this.addActor(knob);
@@ -40,6 +43,10 @@ public class Slider extends Group {
         this.addActor(valueLabel);
 
         updateText();
+    }
+
+    public void loadPositionFromValue(float someValue) {
+        updateKnobPosition(this.getWidth() * someValue - knob.getWidth() / 2);
     }
 
     private void updateText() {

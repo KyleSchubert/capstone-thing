@@ -43,6 +43,7 @@ public class MainMenuStage extends GenericStage {
 
         ImageButton settingsButton = ClickListenerManager.getMenuSwitchingButton(
                 "settings", MenuState.SETTINGS, MenuSoundType.OPEN, 2, 8);
+        settingsButton.addCaptureListener(ClickListenerManager.reloadSettingsMenu());
         getStage().addActor(settingsButton);
 
         ImageButton exitButton = ClickListenerManager.getImageButton("exit");
