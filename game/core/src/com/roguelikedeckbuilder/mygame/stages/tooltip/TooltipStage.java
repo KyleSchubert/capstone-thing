@@ -89,6 +89,7 @@ public class TooltipStage extends GenericStage {
         this.clickListenerExitingToMap = clickListenerExitingToMap;
     }
 
+    @Override
     public void batch(float elapsedTime) {
         if (MenuController.getIsGameplayPaused()) {
             return;
@@ -130,9 +131,7 @@ public class TooltipStage extends GenericStage {
         }
 
         getStage().getActors().get(size.ordinal()).setPosition(pos.x(), pos.y()); // TooltipStage background
-        getStage().getViewport().apply();
-        getStage().act(elapsedTime);
-        getStage().draw();
+        super.batch(elapsedTime);
 
         title.setPosition(titleX, titleY); // Text for tooltip title
         if (!showChooseOneItemDetails) {

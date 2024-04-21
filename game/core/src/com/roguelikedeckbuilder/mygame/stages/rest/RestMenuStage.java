@@ -33,9 +33,4 @@ public class RestMenuStage extends GenericStage {
         upgradeButton.addListener(cardUpgradePreparerClickListener);
         getStage().addActor(upgradeButton);
     }
-
-
-    public void batch(float elapsedTime) {
-        super.batch(elapsedTime);
-    }
 }

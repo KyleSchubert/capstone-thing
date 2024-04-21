@@ -14,6 +14,7 @@ import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 public class GenericStage {
     private final Stage stage;
     private final Array<DelayScheduler.Delay> scheduledDelays = new Array<>();
+    private boolean isDraw = false;
 
     public GenericStage(ScreenViewport viewportForStage) {
         stage = new Stage(viewportForStage);
@@ -62,5 +63,13 @@ public class GenericStage {
     public void deleteDelay(DelayScheduler.Delay delay) {
         scheduledDelays.removeValue(delay, true);
         DelayScheduler.deleteDelay(delay);
+    }
+
+    public boolean isDraw() {
+        return isDraw;
+    }
+
+    public void setDraw(boolean draw) {
+        isDraw = draw;
     }
 }

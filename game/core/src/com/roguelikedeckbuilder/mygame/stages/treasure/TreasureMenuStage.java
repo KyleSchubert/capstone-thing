@@ -11,13 +11,14 @@ import com.roguelikedeckbuilder.mygame.treasure.Treasure;
 import com.roguelikedeckbuilder.mygame.treasure.TreasureType;
 
 public class TreasureMenuStage extends GenericStage {
-    private Group treasureGroup;
     private final ClickListener cardChoiceClickListener;
     private final ClickListener cardChoicePreparerClickListener;
+    private Group treasureGroup;
 
     public TreasureMenuStage(ScreenViewport viewportForStage, ImageButton exitButton, ClickListener clickListener, ClickListener cardChoicePreparerClickListener) {
         super(viewportForStage, "treasure background");
-        this.getStage().getActors().get(0).setPosition(16, 1.6f);
+        getStageBackgroundActor().setPosition(16, 1.6f);
+
         exitButton.setPosition(42, 3);
         this.getStage().addActor(exitButton);
         treasureGroup = new Group();
@@ -70,9 +71,5 @@ public class TreasureMenuStage extends GenericStage {
             group.setPosition(334, 700 - yOffset);
             yOffset += 79;
         }
-    }
-
-    public void batch(float elapsedTime) {
-        super.batch(elapsedTime);
     }
 }

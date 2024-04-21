@@ -74,10 +74,6 @@ public class ShopMenuStage extends GenericStage {
         removeCardButtonNoInteraction.setPosition(1120, 450);
     }
 
-    public void batch(float elapsedTime) {
-        super.batch(elapsedTime);
-    }
-
     public void generateShop() {
         reset();
 

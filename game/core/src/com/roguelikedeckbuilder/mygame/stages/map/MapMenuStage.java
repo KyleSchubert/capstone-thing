@@ -2,14 +2,13 @@ package com.roguelikedeckbuilder.mygame.stages.map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
+import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 import com.roguelikedeckbuilder.mygame.stages.tooltip.Location;
 import com.roguelikedeckbuilder.mygame.stages.tooltip.Size;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
@@ -20,8 +19,9 @@ import java.util.stream.IntStream;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
+import static com.roguelikedeckbuilder.mygame.MyGame.batch;
 
-public class Map {
+public class MapMenuStage extends GenericStage {
     private static final int MAX_STAGES = 10; // Minimum of 2: 1 for start, 1 for boss.
     private static final int MAX_NODES_PER_STAGE = 6;
     private static final int MIN_NODES_PER_STAGE = 4;
@@ -36,21 +36,23 @@ public class Map {
     private static final int MAX_TREASURE = 6;
     private static final int NO_REST_NODES_BEFORE_STAGE_NUMBER = 3;
     private static final int NO_SHOP_NODES_BEFORE_STAGE_NUMBER = 4;
-    public final Stage mapStage;
     private final Array<MapNodeType> randomEventOptions;
-    private final Image mapBackground;
     private final Array<Array<MapNode>> mapNodes;
     private final ClickListener hoverAndClickListener;
+    private final Image background;
+    private final ShapeRenderer shapeRenderer;
     public HashMap<MapNodeType, Integer> mapNodeTypeWeights;
     public int weightSum;
-    private final ShapeRenderer shapeRenderer;
     private int currentNodeStage = 0;
     private int currentNodeIndex = 0;
 
-    public Map(ScreenViewport viewportForStage, ClickListener hoverAndClickListener) {
-        mapStage = new Stage(viewportForStage);
-        mapBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/map background.png")));
-        mapBackground.setSize(1442 * SCALE_FACTOR, 952 * SCALE_FACTOR);
+    public MapMenuStage(ScreenViewport viewportForStage, ClickListener hoverAndClickListener) {
+        super(viewportForStage);
+
+        // Background is separate because it needs to be drawn after the lines on the map and after the node icons
+        background = new Image(new Texture(Gdx.files.internal("MENU backgrounds/map background.png")));
+        background.setPosition(0, -1);
+        background.setScale(SCALE_FACTOR);
 
         mapNodes = new Array<>();
         shapeRenderer = new ShapeRenderer();
@@ -73,7 +75,12 @@ public class Map {
         reset();
     }
 
+    @Override
     public void batch(float elapsedTime) {
+        background.draw(batch, 1);
+        batch.end();
+        batch.begin();
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for (int stageNumber = 0; stageNumber < MAX_STAGES; stageNumber++) {
             for (int i = 0; i < mapNodes.get(stageNumber).size; i++) {
@@ -103,9 +110,7 @@ public class Map {
         }
         shapeRenderer.end();
 
-        mapStage.getViewport().apply();
-        mapStage.act(elapsedTime);
-        mapStage.draw();
+        super.batch(elapsedTime);
     }
 
     private void generateMap() {
@@ -225,7 +230,7 @@ public class Map {
                 getMapNode(stageNumber, i).prepareNodeImage();
                 getMapNode(stageNumber, i).getImage().addListener(hoverAndClickListener);
                 getMapNode(stageNumber, i).getImage().setUserObject(getMapNode(stageNumber, i).getMapNodeData());
-                mapStage.addActor(getMapNode(stageNumber, i).getImage());
+                getStage().addActor(getMapNode(stageNumber, i).getImage());
             }
         }
     }
@@ -303,11 +308,6 @@ public class Map {
         }
     }
 
-    public void drawMap(SpriteBatch batch) {
-        mapBackground.setPosition(0, -1);
-        mapBackground.draw(batch, 1);
-    }
-
     private Array<MapNode> findNodesByType(MapNodeType type) {
         Array<MapNode> results = new Array<>();
         for (Array<MapNode> stage : mapNodes) {
@@ -342,14 +342,10 @@ public class Map {
     }
 
     public void reset() {
-        mapStage.clear();
+        getStage().clear();
         mapNodes.clear();
         generateMap();
         drawImagesAndAddActors();
-    }
-
-    public void dispose() {
-        mapStage.dispose();
     }
 
     public Array<MapNodeType> getRandomEventOptions() {
