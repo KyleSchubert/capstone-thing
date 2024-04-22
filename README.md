@@ -111,7 +111,7 @@ I am using IntelliJ IDEA.
 <b>Cards</b>
 - [x] Player spends energy to play cards unless a card is free
 - [x] Can be made to target a specific enemy or hit all enemies
-- [ ] Deal damage to enemies, inflict a debuff on enemies, heal the player, do nothing, or buff the player
+- [x] Deal damage to enemies, inflict a debuff on enemies, heal the player, do nothing, or buff the player
 - [x] Go into the discard pile once used
 - [x] Discard pile shuffled into draw pile once the draw pile is empty
 
@@ -119,7 +119,7 @@ I am using IntelliJ IDEA.
 <b>Enemies</b>
 - [X] Have HP
 - [X] Are of a specific type, which grants them different HP values and abilities
-- [ ] Uses 1 ability when it is their turn
+- [x] Uses 1 ability when it is their turn
 - [ ] The ability that they will use when it is their turn is shown above them by an icon and damage number, and with a tooltip on hover
 
  
@@ -149,9 +149,8 @@ I am using IntelliJ IDEA.
 - [x] Upgrades button
 - [x] Settings button
 - [ ] Has a background
-- [ ] Music plays
+- [x] Music plays
 - [ ] Has a title
-- [ ] Shows a version number in the bottom left
 
 
 <b>Pause menu</b>
@@ -163,8 +162,8 @@ I am using IntelliJ IDEA.
 
 <b>Settings menu</b>
 - [x] Has a back button
-- [ ] Has a music volume slider
-- [ ] Has a sound effects volume slider
+- [x] Has a music volume slider
+- [x] Has a sound effects volume slider
 
 
 <b>Results menu</b>
