@@ -260,7 +260,7 @@ public class CombatMenuStage extends GenericStage {
     public void setVictory(boolean victory) {
         this.victory = victory;
         if (victory) {
-            SoundManager.playFunnyTadaSound();
+            AudioManager.playFunnyTadaSound();
         }
     }
 

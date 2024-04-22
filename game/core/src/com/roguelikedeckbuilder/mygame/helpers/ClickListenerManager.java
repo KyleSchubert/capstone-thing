@@ -78,7 +78,7 @@ public class ClickListenerManager {
     public static ClickListener viewingPlayerCards() {
         return getClickListenerForTouchUp(() -> {
             menuController.getCardChangeMenuStage().prepareViewPlayerCards();
-            SoundManager.playMenuOpenSound();
+            AudioManager.playMenuOpenSound();
         });
     }
 
@@ -86,7 +86,7 @@ public class ClickListenerManager {
         return getClickListenerForTouchUp(() -> {
             int healAmount = Math.round(Player.getCombatInformation().getMaxHp() * 0.35f);
             Player.getCombatInformation().changeHp(healAmount);
-            SoundManager.playHealSound();
+            AudioManager.playHealSound();
         });
     }
 
@@ -94,9 +94,9 @@ public class ClickListenerManager {
         return getClickListenerForTouchUp(() -> {
             menuController.setMenuState(menuState);
             if (menuSoundType == MenuSoundType.OPEN) {
-                SoundManager.playMenuOpenSound();
+                AudioManager.playMenuOpenSound();
             } else if (menuSoundType == MenuSoundType.CLOSE) {
-                SoundManager.playMenuCloseSound();
+                AudioManager.playMenuCloseSound();
             }
         });
     }
@@ -104,14 +104,14 @@ public class ClickListenerManager {
     public static ClickListener preparingCardRemoveMenu() {
         return getClickListenerForTouchUp(() -> {
             menuController.getCardChangeMenuStage().prepareRemovePlayerCards();
-            SoundManager.playMenuOpenSound();
+            AudioManager.playMenuOpenSound();
         });
     }
 
     public static ClickListener preparingCardUpgradeMenu() {
         return getClickListenerForTouchUp(() -> {
             menuController.getCardChangeMenuStage().prepareUpgradePlayerCards();
-            SoundManager.playMenuOpenSound();
+            AudioManager.playMenuOpenSound();
         });
     }
 
@@ -125,14 +125,14 @@ public class ClickListenerManager {
             }
             System.out.println("Player chose card: " + cardName);
             Player.obtainCard(cardTypeName, isUpgraded);
-            SoundManager.playGetCardSound();
+            AudioManager.playGetCardSound();
         });
     }
 
     public static ClickListener preparingCardChoiceMenu() {
         return getClickListenerForTouchUp(() -> {
             menuController.getCardChangeMenuStage().prepareThreeCardChoice();
-            SoundManager.playMenuOpenSound();
+            AudioManager.playMenuOpenSound();
         });
     }
 
@@ -144,7 +144,7 @@ public class ClickListenerManager {
             Player.removeCard(cardIndex, false);
             Player.obtainCard(cardTypeName, true);
             Player.setFlagGoBackToPreviousMenuState(true);
-            SoundManager.playGetCardSound();
+            AudioManager.playGetCardSound();
         });
     }
 
@@ -153,7 +153,7 @@ public class ClickListenerManager {
             System.out.println("Player removed card at index: " + cardIndex);
             Player.removeCard(cardIndex, true);
             Player.setFlagGoBackToPreviousMenuState(true);
-            SoundManager.playGetCardSound(); // but this doesn't make super sense
+            AudioManager.playGetCardSound(); // but this doesn't make super sense
         });
     }
 
@@ -171,7 +171,7 @@ public class ClickListenerManager {
             }
             boolean success = Player.buyCard(CardData.getValue(card.getCardTypeName()), card.getCardTypeName(), card.isUpgraded());
             if (success) {
-                SoundManager.playBuyInShopSound();
+                AudioManager.playBuyInShopSound();
                 menuController.getShopMenuStage().useCorrectButtons();
                 menuController.getShopMenuStage().setCardSold(card);
             }
@@ -181,7 +181,7 @@ public class ClickListenerManager {
     public static ClickListener lookingAtDrawPile() {
         return getClickListenerForTouchUp(() -> {
             menuController.getCardChangeMenuStage().prepareViewDrawPile(Player.getDrawPileContents());
-            SoundManager.playMenuOpenSound();
+            AudioManager.playMenuOpenSound();
         });
     }
 
@@ -191,7 +191,7 @@ public class ClickListenerManager {
                 Player.changeMoney(-cost[0]);
                 cost[0] += 50;
                 label.setText("Price: " + cost[0]);
-                SoundManager.playBuyInShopSound();
+                AudioManager.playBuyInShopSound();
             }
         });
     }

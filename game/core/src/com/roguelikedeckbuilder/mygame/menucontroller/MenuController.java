@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
-import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
+import com.roguelikedeckbuilder.mygame.helpers.AudioManager;
 import com.roguelikedeckbuilder.mygame.stages.cardchange.CardChangeStage;
 import com.roguelikedeckbuilder.mygame.stages.combatmenu.CombatMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.combatmenu.UseLine;
@@ -267,7 +267,7 @@ public class MenuController {
 
                 // Check if the node is a valid choice
                 if (mapMenuStage.isValidChoice(data.stageNumberOfSelf(), data.indexOfSelf())) {
-                    SoundManager.playTravelSound();
+                    AudioManager.playTravelSound();
 
                     // Make ??? (RANDOM_EVENT) nodes act like a random mapMenuStage node type
                     MapNodeType nodeType;
@@ -281,12 +281,18 @@ public class MenuController {
                     switch (nodeType) {
                         case NORMAL_BATTLE -> {
                             setMenuState(MenuState.COMBAT);
+
+                            AudioManager.playNormalCombatMusic();
                         }
                         case ELITE_BATTLE -> {
                             setMenuState(MenuState.COMBAT);
+
+                            AudioManager.playNormalCombatMusic();
                         }
                         case BOSS_BATTLE -> {
                             setMenuState(MenuState.COMBAT);
+
+                            AudioManager.playBossMusic();
                         }
                         case SHOP -> {
                             shopMenuStage.generateShop();
@@ -332,6 +338,8 @@ public class MenuController {
                 treasureMenuStage.setDraw(false);
                 shopMenuStage.setDraw(false);
                 combatMenuStage.setDraw(false);
+
+                AudioManager.playMenuMusic();
             }
             case MAP -> {
                 mapMenuStage.setDraw(true);
@@ -350,6 +358,8 @@ public class MenuController {
                 cardChangeMenuStage.setDraw(false);
                 UseLine.setVisibility(false);
                 tooltipStage.setShowChooseOneItemDetails(false);
+
+                AudioManager.playMapMusic();
             }
             case UPGRADES -> {
                 currentMenuState = MenuState.UPGRADES;
@@ -401,6 +411,8 @@ public class MenuController {
                 mainMenuStage.setDraw(false);
                 pauseMenuStage.setDraw(false);
                 mapMenuStage.setDraw(true);
+
+                AudioManager.playMapMusic();
             }
             case REST_AREA -> {
                 currentMenuState = MenuState.REST_AREA;

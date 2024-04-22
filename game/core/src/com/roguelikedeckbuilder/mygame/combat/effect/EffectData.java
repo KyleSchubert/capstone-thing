@@ -5,7 +5,7 @@ import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 import com.roguelikedeckbuilder.mygame.combat.statuseffect.StatusEffect;
 import com.roguelikedeckbuilder.mygame.combat.statuseffect.StatusEffectTypeName;
-import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
+import com.roguelikedeckbuilder.mygame.helpers.AudioManager;
 
 public class EffectData {
     private static Array<IndividualEffectData> data;
@@ -48,14 +48,14 @@ public class EffectData {
                     case ATTACK -> {
                         int strengthAmount = theAttacker.getStatusEffectValue(StatusEffectTypeName.STRENGTH);
                         stopEarly = combatInformation.takeDamage(effectiveness + strengthAmount, false);
-                        SoundManager.playHitSound();
+                        AudioManager.playHitSound();
                     }
                     case CONSTITUTION ->
                             combatInformation.addStatusEffect(new StatusEffect(StatusEffectTypeName.CONSTITUTION, effectiveness));
                     case DEFEND -> {
                         int constitutionAmount = theAttacker.getStatusEffectValue(StatusEffectTypeName.CONSTITUTION);
                         combatInformation.grantDefense(effectiveness + constitutionAmount);
-                        SoundManager.playDefendSound();
+                        AudioManager.playDefendSound();
                     }
                     case DISCARD_RANDOM_CARD -> Player.discardOneRandomCard();
                     case DRAW_CARD -> Player.drawCards(effectiveness);
@@ -63,20 +63,20 @@ public class EffectData {
                     case GOLD_CHANGE -> Player.changeMoney(effectiveness);
                     case HEAL -> {
                         combatInformation.changeHp(effectiveness);
-                        SoundManager.playHealSound();
+                        AudioManager.playHealSound();
                     }
                     case MAX_HP_CHANGE -> combatInformation.changeMaxHp(effectiveness);
                     case STRENGTH ->
                             combatInformation.addStatusEffect(new StatusEffect(StatusEffectTypeName.STRENGTH, effectiveness * repetitions));
                     case TRUE_DAMAGE_FLAT -> {
                         combatInformation.takeDamage(effectiveness, true);
-                        SoundManager.playHitSound();
+                        AudioManager.playHitSound();
                     }
                     case TRUE_DAMAGE_PERCENT -> {
                         float percent = (float) effectiveness / 100;
                         int change = Math.round(combatInformation.getMaxHp() * percent);
                         combatInformation.takeDamage(change, true);
-                        SoundManager.playHitSound();
+                        AudioManager.playHitSound();
                     }
                 }
 

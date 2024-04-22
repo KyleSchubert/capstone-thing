@@ -218,7 +218,7 @@ public class CardChangeStage extends GenericStage {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Player.setFlagGoBackToPreviousMenuState(true);
-                SoundManager.playMenuCloseSound();
+                AudioManager.playMenuCloseSound();
             }
         };
     }

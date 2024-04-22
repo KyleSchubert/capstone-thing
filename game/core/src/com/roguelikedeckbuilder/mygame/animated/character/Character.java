@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
@@ -42,6 +43,8 @@ public class Character extends Group {
         targetGlow = new Image(new Texture(Gdx.files.internal("OTHER UI/target glow.png")));
         targetGlow.setScale(SCALE_FACTOR);
         targetGlow.setOrigin(-96 * SCALE_FACTOR, -80 * SCALE_FACTOR);
+
+        this.setTouchable(Touchable.disabled);
     }
 
     private void prepareFrameStartAndEndIndex() {

@@ -15,25 +15,25 @@ public class SaveLoad {
     }
 
     public static void loadVolumeSettings() {
-        SoundManager.setOverallVolume(prefs.getFloat("overallVolume", 0.5f));
-        SoundManager.setMusicVolume(prefs.getFloat("musicVolume", 0.5f));
-        SoundManager.setSoundVolume(prefs.getFloat("soundVolume", 0.5f));
+        AudioManager.setOverallVolume(prefs.getFloat("overallVolume", 0.5f));
+        AudioManager.setMusicVolume(prefs.getFloat("musicVolume", 0.5f));
+        AudioManager.setSoundVolume(prefs.getFloat("soundVolume", 0.5f));
 
-        if (SoundManager.getOverallVolume() > 1 || SoundManager.getOverallVolume() < 0) {
-            SoundManager.setOverallVolume(0.5f);
+        if (AudioManager.getOverallVolume() > 1 || AudioManager.getOverallVolume() < 0) {
+            AudioManager.setOverallVolume(0.5f);
         }
-        if (SoundManager.getMusicVolume() > 1 || SoundManager.getMusicVolume() < 0) {
-            SoundManager.setMusicVolume(0.5f);
+        if (AudioManager.getMusicVolume() > 1 || AudioManager.getMusicVolume() < 0) {
+            AudioManager.setMusicVolume(0.5f);
         }
-        if (SoundManager.getSoundVolume() > 1 || SoundManager.getSoundVolume() < 0) {
-            SoundManager.setSoundVolume(0.5f);
+        if (AudioManager.getSoundVolume() > 1 || AudioManager.getSoundVolume() < 0) {
+            AudioManager.setSoundVolume(0.5f);
         }
     }
 
     public static void saveVolumeSettings() {
-        prefs.putFloat("overallVolume", SoundManager.getOverallVolume());
-        prefs.putFloat("musicVolume", SoundManager.getMusicVolume());
-        prefs.putFloat("soundVolume", SoundManager.getSoundVolume());
+        prefs.putFloat("overallVolume", AudioManager.getOverallVolume());
+        prefs.putFloat("musicVolume", AudioManager.getMusicVolume());
+        prefs.putFloat("soundVolume", AudioManager.getSoundVolume());
         prefs.flush();
     }
 

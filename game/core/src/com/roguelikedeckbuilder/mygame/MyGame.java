@@ -77,7 +77,7 @@ public class MyGame extends ApplicationAdapter {
         TriggerData.initialize();
         ItemData.initialize();
         StatusEffectData.initialize();
-        SoundManager.initialize();
+        AudioManager.initialize();
         Player.initialize();
         Statistics.resetVariables();
         SaveLoad.initialize();
@@ -139,17 +139,18 @@ public class MyGame extends ApplicationAdapter {
                 }
 
                 DelayScheduler.changeAllDelays(-STEP_TIME);
+                AudioManager.checkDelays();
             }
 
             // Check for ESCAPE key -- Toggle pause menu
             if (menuController.getCurrentMenuState() == MenuState.MAP || menuController.getCurrentMenuState() == MenuState.COMBAT) {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-                    SoundManager.playMenuOpenSound();
+                    AudioManager.playMenuOpenSound();
                     menuController.setMenuState(MenuState.PAUSED);
                 }
             } else if (menuController.getCurrentMenuState() == MenuState.PAUSED) {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-                    SoundManager.playMenuCloseSound();
+                    AudioManager.playMenuCloseSound();
                     menuController.setMenuState(MenuState.RESUME);
                 }
             } else if (menuController.getCurrentMenuState() == MenuState.MAIN_MENU) {
@@ -171,10 +172,10 @@ public class MyGame extends ApplicationAdapter {
                         System.out.println("- [ : Give +1 STR and +1 CON");
                         System.out.println("- ] : Draw 1 card");
                         System.out.println("- . + Z : Clear save data");
-                        SoundManager.playHealSound();
+                        AudioManager.playHealSound();
                     } else {
                         System.out.println("DEBUG: OFF");
-                        SoundManager.playDefendSound();
+                        AudioManager.playDefendSound();
                     }
                 }
             }
@@ -225,13 +226,13 @@ public class MyGame extends ApplicationAdapter {
                     if (menuController.getCurrentMenuState() == MenuState.COMBAT) {
                         Statistics.combatEnded();
                         menuController.setMenuState(MenuState.MAP);
-                        SoundManager.playMenuCloseSound();
+                        AudioManager.playMenuCloseSound();
                     }
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-                    SoundManager.playFunnyTadaSound();
+                    AudioManager.playFunnyTadaSound();
                     Statistics.printAll();
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT_BRACKET)) {
-                    SoundManager.playGetItemSound();
+                    AudioManager.playGetItemSound();
                     Array<CombatInformation> array = new Array<>();
                     array.add(Player.getCombatInformation());
                     AbilityData.useAbility(Player.getCombatInformation(), AbilityTypeName.AMPLIFY, array);
@@ -240,7 +241,7 @@ public class MyGame extends ApplicationAdapter {
                         Player.drawCards(1);
                     }
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_UP)) {
-                    SoundManager.playFunnyTadaSound();
+                    AudioManager.playFunnyTadaSound();
                     SaveLoad.clearSave();
                 }
             }

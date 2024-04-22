@@ -4,10 +4,10 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.roguelikedeckbuilder.mygame.helpers.AudioManager;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.MenuSoundType;
-import com.roguelikedeckbuilder.mygame.helpers.SoundManager;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 
@@ -52,9 +52,9 @@ public class SettingsMenuStage extends GenericStage {
     }
 
     public static void repositionSliders() {
-        overallVolumeSlider.loadPositionFromValue(SoundManager.getOverallVolume());
-        musicVolumeSlider.loadPositionFromValue(SoundManager.getMusicVolume());
-        soundVolumeSlider.loadPositionFromValue(SoundManager.getSoundVolume());
+        overallVolumeSlider.loadPositionFromValue(AudioManager.getOverallVolume());
+        musicVolumeSlider.loadPositionFromValue(AudioManager.getMusicVolume());
+        soundVolumeSlider.loadPositionFromValue(AudioManager.getSoundVolume());
     }
 
     @Override
@@ -62,18 +62,18 @@ public class SettingsMenuStage extends GenericStage {
         super.batch(elapsedTime);
 
         if (overallVolumeSlider.isChanged()) {
-            SoundManager.setOverallVolume(overallVolumeSlider.getValue());
+            AudioManager.setOverallVolume(overallVolumeSlider.getValue());
             overallVolumeSlider.setIsChanged(false);
-            SoundManager.playHitSound();
+            AudioManager.playHitSound();
         }
         if (musicVolumeSlider.isChanged()) {
-            SoundManager.setMusicVolume(musicVolumeSlider.getValue());
+            AudioManager.setMusicVolume(musicVolumeSlider.getValue());
             musicVolumeSlider.setIsChanged(false);
         }
         if (soundVolumeSlider.isChanged()) {
-            SoundManager.setSoundVolume(soundVolumeSlider.getValue());
+            AudioManager.setSoundVolume(soundVolumeSlider.getValue());
             soundVolumeSlider.setIsChanged(false);
-            SoundManager.playHitSound();
+            AudioManager.playHitSound();
         }
     }
 }

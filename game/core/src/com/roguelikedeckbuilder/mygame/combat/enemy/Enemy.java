@@ -2,7 +2,6 @@ package com.roguelikedeckbuilder.mygame.combat.enemy;
 
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.animated.character.Character;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
@@ -27,7 +26,6 @@ public class Enemy {
     public Enemy(CharacterTypeName characterTypeName, EnemyPositions position) {
         positionOnStage = position.getPos();
         character = new Character(characterTypeName, positionOnStage.x(), positionOnStage.y());
-        character.setTouchable(Touchable.disabled);
         character.setUserObject(UserObjectOptions.ENEMY);
 
         combatInformation = new CombatInformation();

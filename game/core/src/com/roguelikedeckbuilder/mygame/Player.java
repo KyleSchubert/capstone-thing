@@ -1,7 +1,6 @@
 package com.roguelikedeckbuilder.mygame;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.animated.character.Character;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
@@ -38,7 +37,6 @@ public class Player {
         positionOnStage = new XYPair<>(18f, 22.8f);
         persistentMoney = 0;
         character = new Character(CharacterTypeName.HELMET_PENGUIN, positionOnStage.x(), positionOnStage.y());
-        character.setTouchable(Touchable.disabled);
         character.faceRight();
         ownedCards = new Array<>();
         combatInformation = new CombatInformation();
@@ -98,7 +96,7 @@ public class Player {
     public static void changeMoney(int change) {
         money += change;
         if (change > 0) {
-            SoundManager.playGetCoinsSound();
+            AudioManager.playGetCoinsSound();
             Statistics.gainedCoins(change);
         } else {
             Statistics.spentCoins(Math.abs(change));
@@ -108,7 +106,7 @@ public class Player {
     public static void changePersistentMoney(int change) {
         persistentMoney += change;
         if (change > 0) {
-            SoundManager.playGetCoinsSound();
+            AudioManager.playGetCoinsSound();
             Statistics.gainedPersistentCoins(change);
         }
         SaveLoad.savePersistentMoney();
@@ -252,16 +250,16 @@ public class Player {
                 if (itemTypeName == ItemTypeName.JUNK) {
                     changePersistentMoney(5);
                 }
-                SoundManager.playFunnyTadaSound();
+                AudioManager.playFunnyTadaSound();
                 return;
             }
         }
 
-        menuController.getTopBarStage().addActor(item.getGroup());
+        menuController.getTopBarStage().getStage().addActor(item.getGroup());
 
         ownedItems.add(item);
         Statistics.gainedItem();
-        SoundManager.playGetItemSound();
+        AudioManager.playGetItemSound();
     }
 
     public static Array<Card> getDrawPileContents() {
