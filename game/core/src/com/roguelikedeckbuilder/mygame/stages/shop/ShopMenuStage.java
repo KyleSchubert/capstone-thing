@@ -17,6 +17,10 @@ import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.MenuSoundType;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
+import com.roguelikedeckbuilder.mygame.items.Item;
+import com.roguelikedeckbuilder.mygame.items.ItemData;
+import com.roguelikedeckbuilder.mygame.items.ItemTier;
+import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 
@@ -36,6 +40,7 @@ public class ShopMenuStage extends GenericStage {
     private final Integer[] upgradeCost = new Integer[]{150};
     private final Integer[] removeCardCost = new Integer[]{200};
     private int numberOfCards = 0;
+    private int numberOfItems = 0;
 
     public ShopMenuStage(ScreenViewport viewportForStage) {
         super(viewportForStage, "shop");
@@ -99,6 +104,14 @@ public class ShopMenuStage extends GenericStage {
             card.setUpgraded(whichAreUpgraded.get(i));
             card.getGroup().addCaptureListener(ClickListenerManager.buyingCard(card));
             addCard(card);
+        }
+
+        Array<ItemTypeName> itemTypeNames = ItemData.getSomeRandomItemNamesByTier(ItemTier.ANY, 3, false);
+        for (int i = 0; i < 3; i++) {
+            Item item = new Item(itemTypeNames.get(i));
+            item.setShowPriceLabel(true);
+            item.getGroup().addCaptureListener(ClickListenerManager.buyingItem(item));
+            addItem(item);
         }
 
         upgradeCost[0] = 150;
@@ -170,6 +183,33 @@ public class ShopMenuStage extends GenericStage {
         getStage().addActor(newCard.getGroup());
     }
 
+    public void setItemSold(Item item) {
+        float posX = item.getGroup().getX();
+        float posY = item.getGroup().getY();
+        getStage().getActors().removeValue(item.getGroup(), true);
+        Item newItem = new Item(ItemTypeName.JUNK);
+        newItem.setShowPriceLabel(true);
+        newItem.getGroup().addCaptureListener(ClickListenerManager.buyingItem(newItem));
+        newItem.getGroup().setPosition(posX, posY);
+        getStage().addActor(newItem.getGroup());
+    }
+
+    public void addItem(Item item) {
+        Group itemGroup = item.getGroup();
+
+        ShopPositions position = switch (numberOfItems) {
+            case 0 -> ShopPositions.ITEM1;
+            case 1 -> ShopPositions.ITEM2;
+            case 2 -> ShopPositions.ITEM3;
+            default -> throw new IllegalStateException("Unexpected value: " + numberOfItems);
+        };
+
+        itemGroup.setPosition(position.x, position.y);
+        numberOfItems += 1;
+
+        getStage().addActor(itemGroup);
+    }
+
     private enum ShopPositions {
         CARD1(6, 20.6f),
         CARD2(18, 20.6f),
@@ -178,7 +218,10 @@ public class ShopMenuStage extends GenericStage {
         CARD5(6, 4.1f),
         CARD6(18, 4.1f),
         CARD7(30, 4.1f),
-        CARD8(42, 4.1f);
+        CARD8(42, 4.1f),
+        ITEM1(56, 15),
+        ITEM2(56, 10),
+        ITEM3(56, 5);
 
         private final float x;
         private final float y;

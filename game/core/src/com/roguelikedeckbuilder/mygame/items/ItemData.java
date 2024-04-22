@@ -87,12 +87,17 @@ public class ItemData {
         return data.get(itemTypeName.ordinal()).getTriggerName();
     }
 
+    public static int getValue(ItemTypeName itemTypeName) {
+        return data.get(itemTypeName.ordinal()).getValue();
+    }
+
     private static class IndividualItemData {
         private final String imagePath;
         private String name;
         private AbilityTypeName abilityTypeName;
         private ItemTier itemTier;
         private TriggerName triggerName;
+        private int value;
 
         public IndividualItemData(ItemTypeName itemTypeName) {
             String iconFileName = "default.png";
@@ -104,6 +109,7 @@ public class ItemData {
                     abilityTypeName = AbilityTypeName.ITEM_SWORD_ABILITY;
                     itemTier = ItemTier.COMMON;
                     triggerName = TriggerName.EVERY_START_OF_BATTLE;
+                    value = 400;
                 }
                 case TEST_SHIELD -> {
                     iconFileName = "shield1.png";
@@ -111,6 +117,7 @@ public class ItemData {
                     abilityTypeName = AbilityTypeName.ITEM_SHIELD_ABILITY;
                     itemTier = ItemTier.COMMON;
                     triggerName = TriggerName.LAST_THREE_DAMAGE_DEALT_GREATER_THAN_30;
+                    value = 250;
                 }
                 case TEST_SWORD_2 -> {
                     iconFileName = "sword2.png";
@@ -118,13 +125,15 @@ public class ItemData {
                     abilityTypeName = AbilityTypeName.ITEM_SWORD_2_ABILITY;
                     itemTier = ItemTier.COMMON;
                     triggerName = TriggerName.ONCE_PER_TURN_AFTER_ENEMY_USES_ABILITY;
+                    value = 350;
                 }
                 case JUNK -> {
                     iconFileName = "junk.png";
-                    name = "Junk";
+                    name = "Junk \n\n\n+5 SUPER Coins";
                     abilityTypeName = AbilityTypeName.NOTHING;
                     itemTier = ItemTier.JUNK;
                     triggerName = TriggerName.NOTHING;
+                    value = 999;
                 }
             }
 
@@ -150,6 +159,9 @@ public class ItemData {
         public TriggerName getTriggerName() {
             return triggerName;
         }
-    }
 
+        public int getValue() {
+            return value;
+        }
+    }
 }

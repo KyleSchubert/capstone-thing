@@ -3,7 +3,9 @@ package com.roguelikedeckbuilder.mygame.items;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffect;
@@ -14,6 +16,7 @@ import com.roguelikedeckbuilder.mygame.combat.ability.AbilityData;
 import com.roguelikedeckbuilder.mygame.combat.ability.AbilityTypeName;
 import com.roguelikedeckbuilder.mygame.combat.enemy.Enemy;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
+import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.stages.combatmenu.CombatMenuStage;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
@@ -25,6 +28,7 @@ public class Item {
     private final ItemTypeName itemTypeName;
     private final Group group;
     private final Trigger trigger;
+    private final Label priceLabel;
 
     public Item(ItemTypeName itemTypeName) {
         this.itemTypeName = itemTypeName;
@@ -39,6 +43,15 @@ public class Item {
         group.setUserObject(UserObjectOptions.ITEM);
 
         group.setScale(SCALE_FACTOR * 2);
+
+        Group groupHoldingPriceLabel = new Group();
+        priceLabel = LabelMaker.newLabel("Price: " + ItemData.getValue(itemTypeName), LabelMaker.getMedium());
+        priceLabel.setPosition(72, 16);
+        priceLabel.setVisible(false);
+        groupHoldingPriceLabel.setScale(1 / (group.getScaleX() / SCALE_FACTOR));
+        groupHoldingPriceLabel.addActor(priceLabel);
+        groupHoldingPriceLabel.setTouchable(Touchable.disabled);
+        group.addActor(groupHoldingPriceLabel);
 
         group.addCaptureListener(ClickListenerManager.hoverAndPutTextInTooltip(getName(), getDescription(), Statistics.getRunNumber()));
 
@@ -117,5 +130,9 @@ public class Item {
 
     public ItemTypeName getItemTypeName() {
         return itemTypeName;
+    }
+
+    public void setShowPriceLabel(boolean showPriceLabel) {
+        priceLabel.setVisible(showPriceLabel);
     }
 }

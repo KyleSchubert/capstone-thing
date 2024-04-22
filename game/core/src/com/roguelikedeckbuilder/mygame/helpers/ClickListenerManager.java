@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -17,6 +18,8 @@ import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.cards.CardData;
 import com.roguelikedeckbuilder.mygame.cards.CardTypeName;
 import com.roguelikedeckbuilder.mygame.combat.ability.AbilityData;
+import com.roguelikedeckbuilder.mygame.items.Item;
+import com.roguelikedeckbuilder.mygame.items.ItemData;
 import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
@@ -255,5 +258,16 @@ public class ClickListenerManager {
 
     public static ClickListener reloadSettingsMenu() {
         return getClickListenerForTouchUp(SettingsMenuStage::repositionSliders);
+    }
+
+    public static EventListener buyingItem(Item item) {
+        return getClickListenerForTouchUp(() -> {
+            boolean success = Player.buyItem(ItemData.getValue(item.getItemTypeName()), item.getItemTypeName());
+            if (success) {
+                AudioManager.playBuyInShopSound();
+                menuController.getShopMenuStage().useCorrectButtons();
+                menuController.getShopMenuStage().setItemSold(item);
+            }
+        });
     }
 }

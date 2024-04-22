@@ -246,11 +246,12 @@ public class Player {
         item.getGroup().setPosition(0.5f + ownedItems.size * 3, 40.1f);
 
         for (Item ownedItem : ownedItems) {
-            if (ownedItem.getItemTypeName() == itemTypeName) {
+            if (itemTypeName == ItemTypeName.JUNK) {
+                changePersistentMoney(5);
+                AudioManager.playFunnyTadaSound();
+            } else if (ownedItem.getItemTypeName() == itemTypeName) {
                 item.getGroup().clear();
-                if (itemTypeName == ItemTypeName.JUNK) {
-                    changePersistentMoney(5);
-                }
+                changePersistentMoney(5);
                 AudioManager.playFunnyTadaSound();
                 return;
             }
@@ -362,5 +363,14 @@ public class Player {
 
     public static XYPair<Float> getPositionOnStage() {
         return positionOnStage;
+    }
+
+    public static boolean buyItem(int itemValue, ItemTypeName itemTypeName) {
+        if (money > itemValue) {
+            changeMoney(-itemValue);
+            obtainItem(itemTypeName);
+            return true;
+        }
+        return false;
     }
 }
