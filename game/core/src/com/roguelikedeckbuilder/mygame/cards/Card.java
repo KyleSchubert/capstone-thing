@@ -78,15 +78,15 @@ public class Card {
 
         // Energy
         Image energyImage = new Image(new Texture(Gdx.files.internal("CARDS/energy on card.png")));
-        energyImage.setPosition((background.getWidth() - energyImage.getWidth()) / 2, 4);
+        energyImage.setPosition(170, 200);
         group.addActor(energyImage);
 
         energyCostLabel = LabelMaker.newLabel(
                 String.valueOf(AbilityData.getEnergyCost(getUsedAbilityTypeName())),
                 LabelMaker.getMediumHpAndDamage());
-        energyCostLabel.setPosition(-8, 16);
+        energyCostLabel.setPosition(186, 206);
         energyCostLabel.setWidth(background.getWidth());
-        energyCostLabel.setAlignment(Align.center);
+        energyCostLabel.setTouchable(Touchable.disabled);
         group.addActor(energyCostLabel);
 
         // Final things
@@ -125,7 +125,7 @@ public class Card {
         if (upgraded) {
             // A star symbol, to show it is upgraded
             Image upgradedImage = new Image(new Texture(Gdx.files.internal("CARDS/upgraded star.png")));
-            upgradedImage.setPosition(25, 190);
+            upgradedImage.setPosition(25, 212);
             group.addActor(upgradedImage);
         }
 

@@ -5,10 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -42,6 +39,7 @@ public class CombatMenuStage extends GenericStage {
     private final Label shufflePileAmountText;
     private final Array<Enemy> mustRemoveBecauseDead;
     private final Label energyLabel;
+    private final Label maximumAmountOfCardsLabel;
     private int currentAttackingEnemyIndex = 0;
     private boolean isPlayerTurn = true;
     private boolean victory = false;
@@ -50,7 +48,7 @@ public class CombatMenuStage extends GenericStage {
         super(viewportForStage, "combat background");
 
         // Reposition the background
-        getStageBackgroundActor().setPosition(-7, -5);
+        getStageBackgroundActor().setPosition(-7, -3.8f);
 
         // Add the player
         this.getStage().addActor(Player.getCharacter());
@@ -74,11 +72,11 @@ public class CombatMenuStage extends GenericStage {
         groupForLabels.setScale(SCALE_FACTOR);
 
         drawPileAmountText = LabelMaker.newLabel("", LabelMaker.getLarge());
-        drawPileAmountText.setPosition(108, 20);
+        drawPileAmountText.setPosition(108, 40);
         groupForLabels.addActor(drawPileAmountText);
 
         shufflePileAmountText = LabelMaker.newLabel("", LabelMaker.getLarge());
-        shufflePileAmountText.setPosition(1308, 20);
+        shufflePileAmountText.setPosition(1308, 40);
         groupForLabels.addActor(shufflePileAmountText);
 
         this.getStage().addActor(groupForLabels);
@@ -122,6 +120,17 @@ public class CombatMenuStage extends GenericStage {
         this.getStage().addActor(energyLabel);
 
         this.getStage().addListener(getCardHoverListener());
+
+        Group group = new Group();
+        maximumAmountOfCardsLabel = LabelMaker.newLabel(
+                String.format("Cards in hand: %d / %d", Player.getHandContents().size, Player.MAXIMUM_CARDS_IN_HAND),
+                LabelMaker.getMedium()
+        );
+        maximumAmountOfCardsLabel.setPosition(12, 300);
+        maximumAmountOfCardsLabel.setWidth(300);
+        maximumAmountOfCardsLabel.setTouchable(Touchable.disabled);
+        group.addActor(maximumAmountOfCardsLabel);
+        addActor(group);
     }
 
     public static Array<Enemy> getCurrentEnemies() {
@@ -167,26 +176,40 @@ public class CombatMenuStage extends GenericStage {
 
             for (Card card : Player.getHandContents()) {
                 // Reposition the cards
-                float LEFTMOST_POSITION = 6;
-                float RIGHTMOST_POSITION = 48;
-                float gapSize = (RIGHTMOST_POSITION - LEFTMOST_POSITION) / (amountOfCards + 1);
-                float positionX = LEFTMOST_POSITION + gapSize * (i + 1);
+                float LEFTMOST_POSITION = 8;
+                float RIGHTMOST_POSITION = 50;
+                float gapSize, positionX, positionY;
+
+                // If there are more than 5 cards, some will be on a second, higher row behind the first row
+                if (i >= 5) {
+                    gapSize = (RIGHTMOST_POSITION - LEFTMOST_POSITION) / (amountOfCards - 5 + 1);
+                    positionX = LEFTMOST_POSITION + gapSize * (i - 5 + 1);
+                    positionY = 5;
+                } else {
+                    if (amountOfCards > 5) {
+                        gapSize = (RIGHTMOST_POSITION - LEFTMOST_POSITION) / 6;
+                    } else {
+                        gapSize = (RIGHTMOST_POSITION - LEFTMOST_POSITION) / (amountOfCards + 1);
+                    }
+                    positionX = LEFTMOST_POSITION + gapSize * (i + 1);
+                    positionY = 0;
+                }
 
                 card.getGroup().clearActions();
                 if (card.isToBeAddedToCombatMenuStage()) {
                     // Add it to the stage and snap its position to where it should be
                     this.getStage().addActor(card.getGroup());
                     card.setToBeAddedToCombatMenuStage(false);
-                    card.getGroup().setPosition(positionX, 0);
+                    card.getGroup().setPosition(positionX, positionY);
                 } else {
                     // It's already on the stage, so slide it over
                     SequenceAction sequenceAction = new SequenceAction(
-                            Actions.moveTo(positionX, 0, 0.1f)
+                            Actions.moveTo(positionX, positionY, 0.1f)
                     );
                     card.getGroup().addAction(sequenceAction);
                 }
                 // Reset z index so it looks OK
-                card.getGroup().setZIndex(99);
+                card.getGroup().setZIndex(1);
                 i++;
             }
             Player.setCombatMenuStageMustAddCard(false);
@@ -194,6 +217,7 @@ public class CombatMenuStage extends GenericStage {
 
         if (Player.combatMenuStageMustUpdatePileText) {
             updatePileText();
+            updateMaximumAmountOfCardsLabel();
             Player.setCombatMenuStageMustUpdatePileText(false);
         }
     }
@@ -389,6 +413,19 @@ public class CombatMenuStage extends GenericStage {
                     }
                 }
             }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, @Null Actor toActor) {
+                for (Card card : Player.getHandContents()) {
+                    card.getGroup().setZIndex(1);
+                }
+            }
         };
+    }
+
+    private void updateMaximumAmountOfCardsLabel() {
+        maximumAmountOfCardsLabel.setText(
+                String.format("Cards in hand: %d / %d", Player.getHandContents().size, Player.MAXIMUM_CARDS_IN_HAND)
+        );
     }
 }

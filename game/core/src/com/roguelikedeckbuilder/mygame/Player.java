@@ -16,6 +16,7 @@ import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
 public class Player {
+    public static final int MAXIMUM_CARDS_IN_HAND = 10;
     public static boolean combatMenuStageMustUpdatePileText;
     public static boolean combatMenuStageMustAddCard;
     private static Character character;
@@ -34,7 +35,7 @@ public class Player {
     private static Array<Card> handContents;
 
     public static void initialize() {
-        positionOnStage = new XYPair<>(18f, 22.8f);
+        positionOnStage = new XYPair<>(18f, 28.8f);
         persistentMoney = 0;
         character = new Character(CharacterTypeName.HELMET_PENGUIN, positionOnStage.x(), positionOnStage.y());
         character.faceRight();
@@ -300,6 +301,10 @@ public class Player {
 
     public static void drawCards(int amount) {
         amount = Math.min(amount, drawPileContents.size + shufflePileContents.size);
+        amount = Math.min(amount, MAXIMUM_CARDS_IN_HAND - handContents.size);
+        if (amount <= 0) {
+            return;
+        }
 
         for (int i = 0; i < amount; i++) {
             if (drawPileContents.size == 0) {
@@ -353,5 +358,9 @@ public class Player {
                 break;
             }
         }
+    }
+
+    public static XYPair<Float> getPositionOnStage() {
+        return positionOnStage;
     }
 }

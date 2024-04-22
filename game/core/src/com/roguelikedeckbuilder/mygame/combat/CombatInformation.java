@@ -3,6 +3,7 @@ package com.roguelikedeckbuilder.mygame.combat;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
+import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
 import com.roguelikedeckbuilder.mygame.combat.enemy.EnemyData;
 import com.roguelikedeckbuilder.mygame.combat.statuseffect.StatusEffect;
@@ -197,7 +198,8 @@ public class CombatInformation {
     }
 
     private void repositionStatusEffectVisuals() {
-        float TOPMOST_POSITION = 19.2f;
+        // The player's Y position matches the enemies' Y positions
+        float TOPMOST_POSITION = Player.getPositionOnStage().y() - 3.6f;
         float GAP = 1.7f;
 
         float i = 0;
