@@ -85,6 +85,7 @@ public class ShopMenuStage extends GenericStage {
     public void generateShop() {
         reset();
 
+        numberOfItems = 0;
         numberOfCards = 0;
         Random random = new Random();
 
@@ -126,7 +127,7 @@ public class ShopMenuStage extends GenericStage {
     private void reset() {
         for (int i = getStage().getActors().size - 1; i >= 0; i--) {
             Actor someActor = getStage().getActors().get(i);
-            if (someActor.getUserObject() == UserObjectOptions.CARD) {
+            if (someActor.getUserObject() == UserObjectOptions.CARD || someActor.getUserObject() == UserObjectOptions.ITEM) {
                 someActor.remove();
             }
         }
