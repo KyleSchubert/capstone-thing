@@ -152,17 +152,17 @@ public class AudioManager {
     }
 
     public static void playBossMusic() {
-        currentMusicVolumeMultiplier = 1;
+        currentMusicVolumeMultiplier = 0.9f;
         playMusic(bossMusic, "boss");
     }
 
     public static void playMapMusic() {
-        currentMusicVolumeMultiplier = 0.8f;
+        currentMusicVolumeMultiplier = 0.65f;
         playMusic(mapMusic, "map");
     }
 
     public static void playNormalCombatMusic() {
-        currentMusicVolumeMultiplier = 0.9f;
+        currentMusicVolumeMultiplier = 0.5f;
         playMusic(normalCombatMusic, "normalCombat");
     }
 
