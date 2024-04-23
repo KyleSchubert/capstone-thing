@@ -389,6 +389,10 @@ public class MenuController {
             case RESUME -> setMenuState(previousImportantMenuState);
             case RESULTS -> {
                 Statistics.runEnded();
+
+                boolean victory = false;
+                resultsMenuStage.setAllLabels(victory);
+
                 currentMenuState = MenuState.RESULTS;
                 Gdx.input.setInputProcessor(resultsMenuStage.getStage());
                 currentInputProcessor = resultsMenuStage.getStage();
@@ -401,6 +405,7 @@ public class MenuController {
             case START_REWARDS -> {
                 Statistics.setRunNumber(Statistics.getRunNumber() + 1);
                 Statistics.runStarted();
+                Statistics.resetVariables();
                 tooltipStage.itemReward();
                 currentMenuState = MenuState.START_REWARDS;
                 Gdx.input.setInputProcessor(tooltipStage.getStage());

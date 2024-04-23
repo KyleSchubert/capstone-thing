@@ -45,5 +45,8 @@ public class SaveLoad {
     public static void clearSave() {
         prefs.clear();
         prefs.flush();
+
+        loadVolumeSettings();
+        Player.setPersistentMoney(prefs.getInteger("persistentMoney", 0));
     }
 }

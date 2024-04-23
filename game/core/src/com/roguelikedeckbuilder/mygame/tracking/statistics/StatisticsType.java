@@ -35,5 +35,4 @@ public enum StatisticsType {
     TURN_ENDED, // value: None
     TURN_STARTED, // value: None
     UPGRADED_CARD // value: None
-    , // value: int (run number)
 }

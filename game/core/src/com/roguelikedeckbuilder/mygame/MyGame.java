@@ -171,7 +171,7 @@ public class MyGame extends ApplicationAdapter {
                         System.out.println("- P : Print all Statistics");
                         System.out.println("- [ : Give +1 STR and +1 CON");
                         System.out.println("- ] : Draw 1 card");
-                        System.out.println("- . + Z : Clear save data");
+                        System.out.println("- PAGE UP : Clear save data");
                         AudioManager.playHealSound();
                     } else {
                         System.out.println("DEBUG: OFF");
@@ -208,7 +208,6 @@ public class MyGame extends ApplicationAdapter {
                     menuController.setMenuState(MenuState.COMBAT);
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_5)) {
                     menuController.setMenuState(MenuState.RESULTS);
-                    menuController.setMenuState(MenuState.MAIN_MENU);
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_6)) {
                     if (menuController.getCurrentMenuState() == MenuState.MAP ||
                             menuController.getCurrentMenuState() == MenuState.REST_AREA ||

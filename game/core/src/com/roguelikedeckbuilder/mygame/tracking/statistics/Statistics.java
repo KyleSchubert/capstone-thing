@@ -38,6 +38,34 @@ public class Statistics {
         }
     }
 
+    public static int countOccurrencesInCurrentRun(StatisticsType statisticsType) {
+        int total = 0;
+
+        for (int i = fullStatistics.size - 1; i >= 0; i--) {
+            if (fullStatistics.get(i).statisticsType() == StatisticsType.RUN_STARTED) {
+                break;
+            }
+            if (fullStatistics.get(i).statisticsType() == statisticsType) {
+                total++;
+            }
+        }
+        return total;
+    }
+
+    public static int sumValuesOfOccurrencesInCurrentRun(StatisticsType statisticsType) {
+        int total = 0;
+
+        for (int i = fullStatistics.size - 1; i >= 0; i--) {
+            if (fullStatistics.get(i).statisticsType() == StatisticsType.RUN_STARTED) {
+                break;
+            }
+            if (fullStatistics.get(i).statisticsType() == statisticsType) {
+                total += fullStatistics.get(i).value();
+            }
+        }
+        return total;
+    }
+
     public static int getSizeOfFullStatistics() {
         return fullStatistics.size;
     }
