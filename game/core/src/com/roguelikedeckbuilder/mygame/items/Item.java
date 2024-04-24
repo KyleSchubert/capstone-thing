@@ -6,19 +6,14 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffect;
 import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffectName;
-import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
-import com.roguelikedeckbuilder.mygame.combat.TargetType;
 import com.roguelikedeckbuilder.mygame.combat.ability.AbilityData;
 import com.roguelikedeckbuilder.mygame.combat.ability.AbilityTypeName;
-import com.roguelikedeckbuilder.mygame.combat.enemy.Enemy;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
-import com.roguelikedeckbuilder.mygame.stages.combatmenu.CombatMenuStage;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 import com.roguelikedeckbuilder.mygame.tracking.trigger.Trigger;
 
@@ -66,30 +61,6 @@ public class Item {
         // But breaking a game (in a good way) with a strategy is fun
         if (hasTriggered) {
             AbilityTypeName abilityTypeName = ItemData.getAbilityTypeName(itemTypeName);
-            TargetType targetType = AbilityData.getTargetType(abilityTypeName);
-            Array<CombatInformation> targets = new Array<>();
-
-            if (targetType == TargetType.SELF) {
-                targets.add(Player.getCombatInformation());
-            } else {
-                Array<Enemy> enemies = CombatMenuStage.getCurrentEnemies();
-                Array<Enemy> potentialTargets = new Array<>();
-                for (Enemy enemy : enemies) {
-                    if (enemy.getCombatInformation().getHp() > 0) {
-                        potentialTargets.add(enemy);
-                    }
-                }
-
-                if (targetType == TargetType.ONE) {
-                    potentialTargets.shuffle();
-                    targets.add(potentialTargets.first().getCombatInformation());
-                } else if (targetType == TargetType.ALL) {
-                    for (Enemy enemy : potentialTargets) {
-                        targets.add(enemy.getCombatInformation());
-                    }
-                }
-            }
-
             VisualEffect visualEffect = new VisualEffect(VisualEffectName.ITEM_TRIGGERED_2,
                     group.getChild(0).getWidth() / 2,
                     group.getChild(0).getHeight() / 2,
@@ -98,7 +69,7 @@ public class Item {
             this.group.addActor(visualEffect);
 
             // With this, items scale with status effects. But maybe they shouldn't
-            AbilityData.useAbility(Player.getCombatInformation(), abilityTypeName, targets);
+            AbilityData.useAbility(Player.getCombatInformation(), abilityTypeName, true);
 
             Statistics.itemTriggered();
         }

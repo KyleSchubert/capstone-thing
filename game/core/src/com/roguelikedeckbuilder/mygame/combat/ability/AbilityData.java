@@ -1,13 +1,14 @@
 package com.roguelikedeckbuilder.mygame.combat.ability;
 
 import com.badlogic.gdx.utils.Array;
+import com.roguelikedeckbuilder.mygame.Player;
+import com.roguelikedeckbuilder.mygame.combat.CombatHandler;
 import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
 import com.roguelikedeckbuilder.mygame.combat.effect.EffectData;
 import com.roguelikedeckbuilder.mygame.combat.effect.EffectName;
-import com.roguelikedeckbuilder.mygame.combat.effect.EffectType;
-
-import java.util.Objects;
+import com.roguelikedeckbuilder.mygame.stages.combatmenu.CombatMenuStage;
+import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
 public class AbilityData {
     private static Array<IndividualAbilityData> data;
@@ -28,8 +29,22 @@ public class AbilityData {
         return data.get(typeName.ordinal()).getEnergyCost();
     }
 
-    public static TargetType getTargetType(AbilityTypeName typeName) {
-        return data.get(typeName.ordinal()).getTargetType();
+    public static TargetType getTargetTypeForHoveringAndHighlighting(AbilityTypeName typeName) {
+        TargetType targetType1 = EffectData.getTargetType(getPreEffect(typeName));
+        TargetType targetType2 = EffectData.getTargetType(getEffect(typeName));
+        TargetType targetType3 = EffectData.getTargetType(getPostEffect(typeName));
+
+        // This is the order of priority
+        if (targetType1 == TargetType.ALL || targetType2 == TargetType.ALL || targetType3 == TargetType.ALL) {
+            return TargetType.ALL;
+        } else if (targetType1 == TargetType.ONE || targetType2 == TargetType.ONE || targetType3 == TargetType.ONE) {
+            return TargetType.ONE;
+        } else if (targetType1 == TargetType.SELF || targetType2 == TargetType.SELF || targetType3 == TargetType.SELF) {
+            return TargetType.SELF;
+        }
+        // It would never get here anyway
+        System.out.println("IT GOT HERE ANYWAY <----------------");
+        return TargetType.SELF;
     }
 
     public static EffectName getPreEffect(AbilityTypeName typeName) {
@@ -51,99 +66,70 @@ public class AbilityData {
 
         EffectName preEffect = getPreEffect(typeName);
         if (preEffect != EffectName.NOTHING) {
-            preEffectText = prepareOneEffectDescription(typeName, preEffect);
+            preEffectText = EffectData.prepareOneEffectDescription(preEffect);
         }
 
         EffectName effect = getEffect(typeName);
         if (effect != EffectName.NOTHING) {
-            effectText = prepareOneEffectDescription(typeName, effect);
+            effectText = EffectData.prepareOneEffectDescription(effect);
         }
 
         EffectName postEffect = getPostEffect(typeName);
         if (postEffect != EffectName.NOTHING) {
-            postEffectText = prepareOneEffectDescription(typeName, postEffect);
+            postEffectText = EffectData.prepareOneEffectDescription(postEffect);
         }
 
         return String.join("", preEffectText, effectText, postEffectText);
     }
 
-    private static String prepareOneEffectDescription(AbilityTypeName typeName, EffectName effectName) {
-        //"Deals [RED]1 Damage[] to an enemy [CYAN]4 times[]."
-        EffectType effectType = EffectData.getEffectType(effectName);
-        int effectiveness = EffectData.getEffectiveness(effectName);
-
-        String effectText;
-        switch (effectType) {
-            case ATTACK -> effectText = String.format("Deal [RED]%d Damage[]", effectiveness);
-            case CONSTITUTION -> effectText = String.format("Grant [YELLOW]%d Constitution[]", effectiveness);
-            case DEFEND -> effectText = String.format("Grant [YELLOW]%d Defense[]", effectiveness);
-            case DISCARD_RANDOM_CARD -> {
-                String singularOrPlural = "cards";
-                if (effectiveness == 1) {
-                    singularOrPlural = "card";
-                }
-                return String.format("[RED]Discard[] up to %d random %s from your hand. ", effectiveness, singularOrPlural);
-            }
-            case DRAW_CARD -> {
-                String singularOrPlural = "cards";
-                if (effectiveness == 1) {
-                    singularOrPlural = "card";
-                }
-                return String.format("[YELLOW]Draw[] %d %s. ", effectiveness, singularOrPlural);
-            }
-            case GAIN_ENERGY -> {
-                return String.format("Gain [YELLOW]%d Energy[]. ", effectiveness);
-            }
-            case GOLD_CHANGE -> {
-                return String.format("Gain [ORANGE]%d Gold[]. ", effectiveness);
-            }
-            case HEAL -> effectText = String.format("Grant [GREEN]%d Immediate HP Recovery[]", effectiveness);
-            case MAX_HP_CHANGE -> effectText = String.format("Permanently grant [RED]%d Max HP[]", effectiveness);
-            case NOTHING -> effectText = "Do nothing";
-            case STRENGTH -> effectText = String.format("Grant [YELLOW]%d Strength[]", effectiveness);
-            case TRUE_DAMAGE_FLAT ->
-                    effectText = String.format("Ignore defense to deal [RED]%d Damage[]", effectiveness);
-            case TRUE_DAMAGE_PERCENT ->
-                    effectText = String.format("Ignore defense to deal [RED]%d%% Damage[]", effectiveness);
-            default ->
-                    throw new IllegalStateException("Unexpected value for effectType in getDescription(): " + effectType);
-        }
-
-        TargetType targetType = getTargetType(typeName);
-        String targetTypeText;
-        switch (targetType) {
-            case ONE -> targetTypeText = "to an enemy";
-            case ALL -> targetTypeText = "to [LIME]all[] enemies";
-            case SELF -> targetTypeText = "to yourself";
-            default ->
-                    throw new IllegalStateException("Unexpected value for hitType in getDescription(): " + targetType);
-        }
-
-        int repetitions = EffectData.getRepetitions(effectName);
-        String repetitionsText;
-        if (repetitions <= 1) {
-            repetitionsText = "";
+    public static void useAbility(CombatInformation theAttacker, AbilityTypeName abilityTypeName, boolean isPlayerTheAttacker) {
+        Array<CombatInformation> allEnemies = CombatMenuStage.getCombatInformationForLivingEnemies();
+        CombatInformation mainTarget; // Can be the CombatInformation of the Player or one Enemy
+        if (isPlayerTheAttacker) {
+            mainTarget = CombatHandler.getMainTarget();
         } else {
-            repetitionsText = String.format("[CYAN]%d times[]", repetitions);
+            mainTarget = Player.getCombatInformation();
         }
 
-        if (Objects.equals(repetitionsText, "")) {
-            return String.format("%s %s. ", effectText, targetTypeText);
-        } else {
-            return String.format("%s %s %s. ", effectText, targetTypeText, repetitionsText);
-        }
+        Array<CombatInformation> preEffectTargets = getTargets(AbilityData.getPreEffect(abilityTypeName), theAttacker, allEnemies, mainTarget, isPlayerTheAttacker);
+        EffectData.useEffect(theAttacker, AbilityData.getPreEffect(abilityTypeName), preEffectTargets);
+
+        Array<CombatInformation> effectTargets = getTargets(AbilityData.getEffect(abilityTypeName), theAttacker, allEnemies, mainTarget, isPlayerTheAttacker);
+        EffectData.useEffect(theAttacker, AbilityData.getEffect(abilityTypeName), effectTargets);
+
+        Array<CombatInformation> postEffectTargets = getTargets(AbilityData.getPostEffect(abilityTypeName), theAttacker, allEnemies, mainTarget, isPlayerTheAttacker);
+        EffectData.useEffect(theAttacker, AbilityData.getPostEffect(abilityTypeName), postEffectTargets);
     }
 
-    public static void useAbility(CombatInformation theAttacker, AbilityTypeName abilityTypeName, Array<CombatInformation> targets) {
-        EffectData.useEffect(theAttacker, AbilityData.getPreEffect(abilityTypeName), targets);
-        EffectData.useEffect(theAttacker, AbilityData.getEffect(abilityTypeName), targets);
-        EffectData.useEffect(theAttacker, AbilityData.getPostEffect(abilityTypeName), targets);
+    private static Array<CombatInformation> getTargets(EffectName effectName, CombatInformation theAttacker, Array<CombatInformation> allEnemies, CombatInformation mainTarget, boolean isPlayerTheAttacker) {
+        // Now to look at the targeting of the individual effects and use what is needed
+        Array<CombatInformation> targets = new Array<>();
+
+        TargetType targetType = EffectData.getTargetType(effectName);
+        if (targetType == TargetType.ALL) {
+            targets = allEnemies;
+            if (isPlayerTheAttacker) {
+                Statistics.enemyWasTargeted();
+            } else {
+                Statistics.playerWasTargeted();
+            }
+        } else if (targetType == TargetType.ONE) {
+            targets.add(mainTarget);
+            if (isPlayerTheAttacker) {
+                Statistics.enemyWasTargeted();
+            } else {
+                Statistics.playerWasTargeted();
+            }
+        } else if (targetType == TargetType.SELF) {
+            targets.add(theAttacker);
+        }
+
+        return targets;
     }
 
     private static class IndividualAbilityData {
         private String name;
         private int energyCost;
-        private TargetType targetType;
         private EffectName preEffect;
         private EffectName effect;
         private EffectName postEffect;
@@ -156,7 +142,6 @@ public class AbilityData {
                 case DISCARD_DRAW -> {
                     name = "Risky Draw";
                     energyCost = 1;
-                    targetType = TargetType.SELF;
                     preEffect = EffectName.DISCARD_RANDOM_CARD_ONE;
                     effect = EffectName.DRAW_CARD_ONE;
                     postEffect = EffectName.DRAW_CARD_ONE;
@@ -164,109 +149,92 @@ public class AbilityData {
                 case DRAW -> {
                     name = "You Draw 2 Cards.";
                     energyCost = 1;
-                    targetType = TargetType.SELF;
                     preEffect = EffectName.DRAW_CARD_ONE;
                     effect = EffectName.DRAW_CARD_ONE;
                 }
                 case ENERGY_SLICES -> {
                     name = "Energy Slices";
                     energyCost = 2;
-                    targetType = TargetType.ALL;
                     effect = EffectName.DAMAGE_MANY_TIMES;
                 }
                 case ENERGY_SLICES_UPGRADED -> {
                     name = "Energy Slices+";
                     energyCost = 1;
-                    targetType = TargetType.ALL;
                     effect = EffectName.DAMAGE_MANY_TIMES;
                 }
                 case FLAME -> {
                     name = "Flame";
                     energyCost = 1;
-                    targetType = TargetType.SELF;
                     effect = EffectName.HIGH_DAMAGE_ONCE;
                 }
                 case FLAME_UPGRADED -> {
                     name = "Double Flame";
                     energyCost = 1;
-                    targetType = TargetType.SELF;
                     effect = EffectName.DAMAGE_MANY_TIMES;
                     postEffect = EffectName.DAMAGE_A_BIT;
                 }
                 case FIRE_STRIKE -> {
                     name = "Fire Strike";
                     energyCost = 1;
-                    targetType = TargetType.ONE;
                     effect = EffectName.HIGH_DAMAGE_ONCE;
                 }
                 case FIRE_STRIKE_UPGRADED -> {
                     name = "Fire Strike+";
                     energyCost = 1;
-                    targetType = TargetType.ONE;
                     effect = EffectName.HIGH_DAMAGE_ONCE;
                     postEffect = EffectName.DEFEND_SOME;
                 }
                 case AMPLIFY -> {
                     name = "Amplify";
                     energyCost = 3;
-                    targetType = TargetType.SELF;
                     preEffect = EffectName.STRENGTH_ONE;
                     effect = EffectName.CONSTITUTION_ONE;
                 }
                 case AMPLIFY_UPGRADED -> {
                     name = "Amplify+";
                     energyCost = 2;
-                    targetType = TargetType.SELF;
                     preEffect = EffectName.STRENGTH_ONE;
                     effect = EffectName.CONSTITUTION_ONE;
                 }
                 case DEFEND -> {
                     name = "Defend";
                     energyCost = 1;
-                    targetType = TargetType.SELF;
                     effect = EffectName.DEFEND_SOME;
                 }
                 case DEFEND_UPGRADED -> {
                     name = "Defend+";
                     energyCost = 1;
-                    targetType = TargetType.SELF;
                     effect = EffectName.DEFEND_TWICE_A_BIT;
                 }
                 case ITEM_SWORD_ABILITY -> {
                     name = "";
                     energyCost = 0;
-                    targetType = TargetType.ALL;
                     effect = EffectName.DAMAGE_A_BIT;
                 }
                 case ITEM_SWORD_2_ABILITY -> {
                     name = "";
                     energyCost = 0;
-                    targetType = TargetType.ONE;
-                    effect = EffectName.DAMAGE_A_BIT;
+                    effect = EffectName.DAMAGE_A_BIT_TO_ONE;
                 }
                 case ITEM_SHIELD_ABILITY -> {
                     name = "";
                     energyCost = 0;
-                    targetType = TargetType.SELF;
                     effect = EffectName.DEFEND_SOME;
                     postEffect = EffectName.HEAL_SMALL;
                 }
                 case NOTHING -> {
                     name = "Sold";
                     energyCost = 0;
-                    targetType = TargetType.SELF;
                     effect = EffectName.NOTHING;
                 }
                 case PERCENTAGE_PUNCH -> {
                     name = "% Punch";
                     energyCost = 1;
-                    targetType = TargetType.ONE;
                     effect = EffectName.TRUE_DAMAGE_PERCENT_SMALL;
                 }
                 case PERCENTAGE_PUNCH_UPGRADED -> {
                     name = "% Punch+";
                     energyCost = 1;
-                    targetType = TargetType.ONE;
                     effect = EffectName.TRUE_DAMAGE_PERCENT_A_LITTLE_MORE;
                 }
                 default ->
@@ -280,10 +248,6 @@ public class AbilityData {
 
         public int getEnergyCost() {
             return energyCost;
-        }
-
-        public TargetType getTargetType() {
-            return targetType;
         }
 
         public EffectName getPreEffect() {

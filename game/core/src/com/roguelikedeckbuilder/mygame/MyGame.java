@@ -7,13 +7,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterData;
 import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffectData;
 import com.roguelikedeckbuilder.mygame.cards.CardData;
-import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 import com.roguelikedeckbuilder.mygame.combat.ability.AbilityData;
 import com.roguelikedeckbuilder.mygame.combat.ability.AbilityTypeName;
 import com.roguelikedeckbuilder.mygame.combat.effect.EffectData;
@@ -232,9 +230,11 @@ public class MyGame extends ApplicationAdapter {
                     Statistics.printAll();
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT_BRACKET)) {
                     AudioManager.playGetItemSound();
-                    Array<CombatInformation> array = new Array<>();
-                    array.add(Player.getCombatInformation());
-                    AbilityData.useAbility(Player.getCombatInformation(), AbilityTypeName.AMPLIFY, array);
+                    AbilityData.useAbility(
+                            Player.getCombatInformation(),
+                            AbilityTypeName.AMPLIFY,
+                            true
+                    );
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT_BRACKET)) {
                     if (menuController.getCurrentMenuState() == MenuState.COMBAT) {
                         Player.drawCards(1);

@@ -22,6 +22,7 @@ import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffect;
 import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffectName;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.combat.CombatHandler;
+import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 import com.roguelikedeckbuilder.mygame.combat.HpChangeNumberHandler;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
 import com.roguelikedeckbuilder.mygame.combat.enemy.Enemy;
@@ -135,6 +136,18 @@ public class CombatMenuStage extends GenericStage {
 
     public static Array<Enemy> getCurrentEnemies() {
         return currentEnemies;
+    }
+
+    public static Array<CombatInformation> getCombatInformationForLivingEnemies() {
+        Array<CombatInformation> filteredEnemies = new Array<>();
+
+        for (Enemy enemy : currentEnemies) {
+            if (enemy.getCharacter().getState() != CharacterState.DYING && enemy.getCharacter().getState() != CharacterState.DEAD) {
+                filteredEnemies.add(enemy.getCombatInformation());
+            }
+        }
+
+        return filteredEnemies;
     }
 
     public void batch(float elapsedTime, SpriteBatch batch) {
@@ -378,25 +391,20 @@ public class CombatMenuStage extends GenericStage {
             }
             Player.getCharacter().setTargeted(false);
 
-            Array<Enemy> enemies = new Array<>();
+            CombatHandler.resetIsTargetingValid();
+
             if (Player.getPotentialAbilityTargetType() == TargetType.SELF) {
-                CombatHandler.setIsTargetingPlayer(Player.isPointWithinRange(mousePosition));
+                if (Player.isPointWithinRange(mousePosition)) {
+                    CombatHandler.setEnemyTargets(currentEnemies);
+                }
             } else {
                 for (Enemy enemy : currentEnemies) {
                     if (Enemy.isPointWithinRange(mousePosition, enemy.getPositionOnStage())) {
-                        CombatHandler.setIsTargetingPlayer(false);
-                        // Check for TargetType.ALL first, so players can cancel attacking all enemies, by not hovering any enemy.
-                        if (Player.getPotentialAbilityTargetType() == TargetType.ALL) {
-                            enemies = currentEnemies;
-                            break;
-                        }
-                        enemies.add(enemy);
+                        CombatHandler.setEnemyTargets(currentEnemies, enemy);
                         break;
                     }
                 }
             }
-
-            CombatHandler.setEnemiesThePlayerIsHoveringOver(enemies);
         }
     }
 

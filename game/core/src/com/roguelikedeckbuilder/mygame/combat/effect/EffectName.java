@@ -3,6 +3,7 @@ package com.roguelikedeckbuilder.mygame.combat.effect;
 public enum EffectName {
     CONSTITUTION_ONE,
     DAMAGE_A_BIT,
+    DAMAGE_A_BIT_TO_ONE,
     DAMAGE_MANY_TIMES,
     DEFEND_SOME,
     DEFEND_TWICE_A_BIT,

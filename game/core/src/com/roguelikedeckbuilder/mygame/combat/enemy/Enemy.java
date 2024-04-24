@@ -71,11 +71,11 @@ public class Enemy {
         System.out.println("An enemy is using: " + nextAbility.name());
         Statistics.enemyUsedAbility();
 
-        TargetType targetType = AbilityData.getTargetType(nextAbility);
+        TargetType targetType = AbilityData.getTargetTypeForHoveringAndHighlighting(nextAbility);
         if (targetType == TargetType.SELF) {
             Statistics.enemyWasTargeted();
         }
-        CombatHandler.enemyUsesAbility(nextAbility, combatInformation, targetType);
+        CombatHandler.enemyUsesAbility(nextAbility, combatInformation);
     }
 
     public void endTurn() {
