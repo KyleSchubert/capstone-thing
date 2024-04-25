@@ -274,10 +274,12 @@ public class CombatMenuStage extends GenericStage {
                         for (Enemy enemy : currentEnemies) {
                             enemy.endTurn();
                         }
-                        Statistics.setTurnNumber(Statistics.getTurnNumber() + 1);
-                        Statistics.turnStarted();
-                        isPlayerTurn = true;
-                        Player.startTurn();
+                        if (!currentEnemies.isEmpty()) {
+                            Statistics.setTurnNumber(Statistics.getTurnNumber() + 1);
+                            Statistics.turnStarted();
+                            isPlayerTurn = true;
+                            Player.startTurn();
+                        }
                         deleteDelay(delay);
                     }
                     case "victoryPause" -> {
