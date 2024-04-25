@@ -85,9 +85,8 @@ public class EffectData {
                     case MAX_HP_CHANGE -> combatInformation.changeMaxHp(effectiveness);
                     case STRENGTH ->
                             combatInformation.addStatusEffect(new StatusEffect(StatusEffectTypeName.STRENGTH, effectiveness * repetitions));
-                    case TEMPORARY_ITEM -> {
-                        combatInformation.obtainTemporaryItem(getTemporaryItem(effectName), isSingleUseItem(effectName));
-                    }
+                    case TEMPORARY_ITEM ->
+                            combatInformation.obtainTemporaryItem(getTemporaryItem(effectName), isSingleUseItem(effectName));
                     case TRUE_DAMAGE_FLAT -> {
                         combatInformation.takeDamage(effectiveness, true);
                         AudioManager.playHitSound();
@@ -228,7 +227,7 @@ public class EffectData {
                 }
                 case DAMAGE_ALL_VERY_SMALL -> {
                     effectType = EffectType.ATTACK;
-                    effectiveness = 3;
+                    effectiveness = 2;
                     repetitions = 1;
                     targetType = TargetType.ALL;
                 }
@@ -304,6 +303,12 @@ public class EffectData {
                     repetitions = 1;
                     targetType = TargetType.ONE;
                 }
+                case TRUE_DAMAGE_ONE_SMALL -> {
+                    effectType = EffectType.TRUE_DAMAGE_FLAT;
+                    effectiveness = 1;
+                    repetitions = 1;
+                    targetType = TargetType.ONE;
+                }
                 case TRUE_DAMAGE_PERCENT_SMALL -> {
                     effectType = EffectType.TRUE_DAMAGE_PERCENT;
                     effectiveness = 5;
@@ -321,7 +326,7 @@ public class EffectData {
                     effectiveness = 1;
                     repetitions = 1;
                     targetType = TargetType.SELF;
-                    temporaryItem = ItemTypeName.FOR_CARD_DAMAGE_EVERY_TURN;
+                    temporaryItem = ItemTypeName.FOR_CARD_DEFENSE_EVERY_TURN;
                     isSingleUseItem = false;
                 }
                 case ATTACK_AT_END_OF_TURN -> {
@@ -337,8 +342,30 @@ public class EffectData {
                     effectiveness = 1;
                     repetitions = 1;
                     targetType = TargetType.SELF;
-                    temporaryItem = ItemTypeName.FOR_CARD_DAMAGE_EVERY_TURN;
+                    temporaryItem = ItemTypeName.FOR_CARD_DAMAGE_ON_DRAW;
                     isSingleUseItem = false;
+                }
+                case STRENGTH_AT_START_OF_TURN -> {
+                    effectType = EffectType.TEMPORARY_ITEM;
+                    effectiveness = 1;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                    temporaryItem = ItemTypeName.FOR_CARD_STRENGTH_EVERY_TURN;
+                    isSingleUseItem = false;
+                }
+                case DRAW_CARD_AT_START_OF_TURN -> {
+                    effectType = EffectType.TEMPORARY_ITEM;
+                    effectiveness = 1;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                    temporaryItem = ItemTypeName.FOR_CARD_DRAW_EVERY_TURN;
+                    isSingleUseItem = false;
+                }
+                case DEFEND_TWO -> {
+                    effectType = EffectType.DEFEND;
+                    effectiveness = 2;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
                 }
             }
         }

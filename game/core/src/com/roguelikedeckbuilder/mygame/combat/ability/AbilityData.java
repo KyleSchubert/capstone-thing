@@ -216,6 +216,16 @@ public class AbilityData {
                     energyCost = 0;
                     effect = EffectName.DAMAGE_A_BIT_TO_ONE;
                 }
+                case ITEM_DRAW_CARD -> {
+                    name = "";
+                    energyCost = 0;
+                    effect = EffectName.DRAW_CARD_ONE;
+                }
+                case ITEM_GAIN_STRENGTH -> {
+                    name = "";
+                    energyCost = 0;
+                    effect = EffectName.STRENGTH_ONE;
+                }
                 case ITEM_SHIELD_ABILITY -> {
                     name = "";
                     energyCost = 0;
@@ -237,6 +247,36 @@ public class AbilityData {
                     energyCost = 1;
                     effect = EffectName.TRUE_DAMAGE_PERCENT_A_LITTLE_MORE;
                 }
+                case PINS_AND_NEEDLES -> {
+                    name = "Pins And Needles";
+                    energyCost = 2;
+                    effect = EffectName.ATTACK_ON_DRAW;
+                }
+                case PINS_AND_NEEDLES_UPGRADED -> {
+                    name = "Pins And Needles+";
+                    energyCost = 1;
+                    effect = EffectName.ATTACK_ON_DRAW;
+                }
+                case PUMP_IRON -> {
+                    name = "Pump Iron";
+                    energyCost = 2;
+                    effect = EffectName.STRENGTH_AT_START_OF_TURN;
+                }
+                case PUMP_IRON_UPGRADED -> {
+                    name = "Pump Iron+";
+                    energyCost = 1;
+                    effect = EffectName.STRENGTH_AT_START_OF_TURN;
+                }
+                case SHIELDS_UP -> {
+                    name = "Shields Up";
+                    energyCost = 2;
+                    effect = EffectName.DEFEND_AT_END_OF_TURN;
+                }
+                case SHIELDS_UP_UPGRADED -> {
+                    name = "Shields Up+";
+                    energyCost = 1;
+                    effect = EffectName.DEFEND_AT_END_OF_TURN;
+                }
                 case SMALL_DAMAGE_EVERY_TURN -> {
                     name = "Routine Poking";
                     energyCost = 2;
@@ -251,6 +291,31 @@ public class AbilityData {
                     name = "Routine Poking+";
                     energyCost = 1;
                     effect = EffectName.ATTACK_AT_END_OF_TURN;
+                }
+                case ITEM_SMALL_TRUE_DAMAGE_ONE -> {
+                    name = "";
+                    energyCost = 0;
+                    effect = EffectName.TRUE_DAMAGE_ONE_SMALL;
+                }
+                case ITEM_SMALL_DEFENSE -> {
+                    name = "";
+                    energyCost = 0;
+                    effect = EffectName.DEFEND_SOME;
+                }
+                case ITEM_SMALL_HEAL -> {
+                    name = "";
+                    energyCost = 0;
+                    effect = EffectName.HEAL_SMALL;
+                }
+                case SPEED_DIAL -> {
+                    name = "Speed Dial";
+                    energyCost = 2;
+                    effect = EffectName.DRAW_CARD_AT_START_OF_TURN;
+                }
+                case SPEED_DIAL_UPGRADED -> {
+                    name = "Speed Dial+";
+                    energyCost = 1;
+                    effect = EffectName.DRAW_CARD_AT_START_OF_TURN;
                 }
                 default ->
                         System.out.println("Why was an ability almost generated with no matching type name? abilityTypeName:  " + abilityTypeName);

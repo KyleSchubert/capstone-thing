@@ -153,6 +153,38 @@ public class ItemData {
                     triggerName = TriggerName.END_OF_TURN;
                     value = 1;
                 }
+                case FOR_CARD_DEFENSE_EVERY_TURN -> {
+                    iconFileName = "default.png";
+                    name = "Temporary Buff";
+                    abilityTypeName = AbilityTypeName.ITEM_SMALL_DEFENSE;
+                    itemTier = ItemTier.TEMPORARY_ITEM;
+                    triggerName = TriggerName.END_OF_TURN;
+                    value = 1;
+                }
+                case FOR_CARD_DRAW_EVERY_TURN -> {
+                    iconFileName = "default.png";
+                    name = "Temporary Buff";
+                    abilityTypeName = AbilityTypeName.ITEM_DRAW_CARD;
+                    itemTier = ItemTier.TEMPORARY_ITEM;
+                    triggerName = TriggerName.START_OF_TURN;
+                    value = 1;
+                }
+                case FOR_CARD_STRENGTH_EVERY_TURN -> {
+                    iconFileName = "default.png";
+                    name = "Temporary Buff";
+                    abilityTypeName = AbilityTypeName.ITEM_GAIN_STRENGTH;
+                    itemTier = ItemTier.TEMPORARY_ITEM;
+                    triggerName = TriggerName.START_OF_TURN;
+                    value = 1;
+                }
+                case FOR_CARD_DAMAGE_ON_DRAW -> {
+                    iconFileName = "default.png";
+                    name = "Temporary Buff";
+                    abilityTypeName = AbilityTypeName.ITEM_SMALL_TRUE_DAMAGE_ONE;
+                    itemTier = ItemTier.TEMPORARY_ITEM;
+                    triggerName = TriggerName.DRAW_CARD;
+                    value = 1;
+                }
             }
 
             imagePath = "ITEMS/" + iconFileName;

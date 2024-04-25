@@ -111,6 +111,15 @@ public class TriggerData {
                     whenToReset = StatisticsType.RUN_ENDED;
                     explanationString = "Does nothing.";
                 }
+                case DRAW_CARD -> {
+                    typeOfTrackedStatistic = StatisticsType.DREW_CARD;
+                    whatToLookAt = WhatToLookAt.OCCURRENCES;
+                    activationComparison = ActivationComparison.EQUAL;
+                    activationValue = 1;
+                    whenToCheck = StatisticsType.DREW_CARD;
+                    whenToReset = StatisticsType.DREW_CARD;
+                    explanationString = "When you draw a card.";
+                }
                 case END_OF_TURN -> {
                     typeOfTrackedStatistic = StatisticsType.TURN_ENDED;
                     whatToLookAt = WhatToLookAt.OCCURRENCES;
@@ -119,6 +128,15 @@ public class TriggerData {
                     whenToCheck = StatisticsType.TURN_ENDED;
                     whenToReset = StatisticsType.TURN_STARTED;
                     explanationString = "At the end of your turn.";
+                }
+                case START_OF_TURN -> {
+                    typeOfTrackedStatistic = StatisticsType.TURN_STARTED;
+                    whatToLookAt = WhatToLookAt.OCCURRENCES;
+                    activationComparison = ActivationComparison.EQUAL;
+                    activationValue = 1;
+                    whenToCheck = StatisticsType.TURN_STARTED;
+                    whenToReset = StatisticsType.TURN_ENDED;
+                    explanationString = "At the start of your turn.";
                 }
             }
         }
