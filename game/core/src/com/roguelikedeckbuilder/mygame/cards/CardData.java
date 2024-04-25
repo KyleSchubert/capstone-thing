@@ -139,7 +139,7 @@ public class CardData {
                 }
                 case PUMP_IRON -> {
                     abilityTypeName = AbilityTypeName.PUMP_IRON;
-                    upgradedAbilityTypeName = AbilityTypeName.SHIELDS_UP_UPGRADED;
+                    upgradedAbilityTypeName = AbilityTypeName.PUMP_IRON_UPGRADED;
                     iconFileName = "not done.png";
                     value = 550;
                 }
