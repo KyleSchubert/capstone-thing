@@ -32,6 +32,7 @@ public class CombatHandler {
                 card.setUsed(true);
                 AbilityData.useAbility(Player.getCombatInformation(), card.getUsedAbilityTypeName(), true);
                 card.setToGoToShufflePile(true);
+                card.setDiscardedByUse(true);
                 Statistics.playedCard();
             }
             isTargetingValid = false;

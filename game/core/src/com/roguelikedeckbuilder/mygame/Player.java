@@ -9,6 +9,9 @@ import com.roguelikedeckbuilder.mygame.cards.CardData;
 import com.roguelikedeckbuilder.mygame.cards.CardTypeName;
 import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
+import com.roguelikedeckbuilder.mygame.combat.ability.AbilityData;
+import com.roguelikedeckbuilder.mygame.combat.effect.EffectData;
+import com.roguelikedeckbuilder.mygame.combat.effect.EffectType;
 import com.roguelikedeckbuilder.mygame.helpers.*;
 import com.roguelikedeckbuilder.mygame.items.Item;
 import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
@@ -282,12 +285,18 @@ public class Player {
         for (Card card : handContents) {
             if (card.isToGoToShufflePile()) {
                 card.setToGoToShufflePile(false);
-                shufflePileContents.add(card);
+
                 handContents.removeValue(card, true);
                 card.getGroup().remove();
                 Statistics.discardedCard();
                 combatMenuStageMustUpdatePileText = true;
                 discardedSomething = true;
+
+                // Temporary_item type cards normally are deleted after use, instead of being sent to the shuffle pile.
+                // For all other types or if a temporary_item type card is discarded another way, it's sent to the shuffle pile like this
+                if (!card.isDiscardedByUse() || EffectData.getEffectType(AbilityData.getEffect(card.getUsedAbilityTypeName())) != EffectType.TEMPORARY_ITEM) {
+                    shufflePileContents.add(card);
+                }
             }
         }
         return discardedSomething;
@@ -357,6 +366,7 @@ public class Player {
             Card card = handContents.get(index);
             if (!card.isUsed()) {
                 card.setToGoToShufflePile(true);
+                card.setDiscardedByUse(false);
                 break;
             }
         }
