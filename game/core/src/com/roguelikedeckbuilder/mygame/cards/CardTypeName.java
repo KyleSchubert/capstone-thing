@@ -8,6 +8,7 @@ public enum CardTypeName {
     FIRE_STRIKE,
     FLAME,
     OUT_OF_STOCK,
-    WEIRD_PUNCH
+    WEIRD_PUNCH,
+    ROUTINE_POKING
 
 }

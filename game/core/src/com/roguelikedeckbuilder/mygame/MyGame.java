@@ -169,6 +169,7 @@ public class MyGame extends ApplicationAdapter {
                         System.out.println("- P : Print all Statistics");
                         System.out.println("- [ : Give +1 STR and +1 CON");
                         System.out.println("- ] : Draw 1 card");
+                        System.out.println("- ; : Get a temporary item");
                         System.out.println("- PAGE UP : Clear save data");
                         AudioManager.playHealSound();
                     } else {
@@ -242,6 +243,12 @@ public class MyGame extends ApplicationAdapter {
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_UP)) {
                     AudioManager.playFunnyTadaSound();
                     SaveLoad.clearSave();
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.SEMICOLON)) {
+                    AbilityData.useAbility(
+                            Player.getCombatInformation(),
+                            AbilityTypeName.SMALL_DAMAGE_EVERY_TURN,
+                            true
+                    );
                 }
             }
 

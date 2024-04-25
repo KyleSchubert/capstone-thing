@@ -27,6 +27,7 @@ import com.roguelikedeckbuilder.mygame.combat.HpChangeNumberHandler;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
 import com.roguelikedeckbuilder.mygame.combat.enemy.Enemy;
 import com.roguelikedeckbuilder.mygame.helpers.*;
+import com.roguelikedeckbuilder.mygame.items.Item;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
@@ -175,6 +176,8 @@ public class CombatMenuStage extends GenericStage {
             }
         }
 
+        positionTemporaryItems();
+
         for (Enemy enemy : mustRemoveBecauseDead) {
             removeEnemy(enemy);
         }
@@ -232,6 +235,27 @@ public class CombatMenuStage extends GenericStage {
             updatePileText();
             updateMaximumAmountOfCardsLabel();
             Player.setCombatMenuStageMustUpdatePileText(false);
+        }
+    }
+
+    private void positionTemporaryItems() {
+        removeActorsByType(UserObjectOptions.ITEM);
+        float GAP_X = 3.5f;
+        float GAP_Y = 3.5f;
+        float TOP_MOST = 36;
+        float LEFT_MOST = 0.4f;
+        float MAX_AMOUNT_PER_COLUMN = 6;
+
+        int amountOfTemporaryItems = 0;
+        for (Item item : Player.getCombatInformation().getTemporaryItems()) {
+            getStage().addActor(item.getGroup());
+
+            int rowNumber = (int) (amountOfTemporaryItems % MAX_AMOUNT_PER_COLUMN);
+            int columnNumber = (int) Math.floor(amountOfTemporaryItems / MAX_AMOUNT_PER_COLUMN);
+
+            item.getGroup().setY(TOP_MOST - GAP_Y * rowNumber);
+            item.getGroup().setX(LEFT_MOST + GAP_X * columnNumber);
+            amountOfTemporaryItems++;
         }
     }
 
@@ -326,6 +350,7 @@ public class CombatMenuStage extends GenericStage {
     public void reset() {
         removeActorsByType(UserObjectOptions.ENEMY);
         removeActorsByType(UserObjectOptions.CARD);
+        removeActorsByType(UserObjectOptions.ITEM);
 
         getScheduledDelays().clear();
         isPlayerTurn = true;

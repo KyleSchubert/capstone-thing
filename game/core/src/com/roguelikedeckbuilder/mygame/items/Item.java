@@ -24,6 +24,9 @@ public class Item {
     private final Group group;
     private final Trigger trigger;
     private final Label priceLabel;
+    private int activations = 0;
+    private int activationLimit = 999999999;
+    private boolean usedUp = false;
 
     public Item(ItemTypeName itemTypeName) {
         this.itemTypeName = itemTypeName;
@@ -71,6 +74,11 @@ public class Item {
             // With this, items scale with status effects. But maybe they shouldn't
             AbilityData.useAbility(Player.getCombatInformation(), abilityTypeName, true);
 
+            activations++;
+            if (activations == activationLimit) {
+                usedUp = true;
+            }
+
             Statistics.itemTriggered();
         }
     }
@@ -105,5 +113,13 @@ public class Item {
 
     public void setShowPriceLabel(boolean showPriceLabel) {
         priceLabel.setVisible(showPriceLabel);
+    }
+
+    public void setActivationLimit(int activationLimit) {
+        this.activationLimit = activationLimit;
+    }
+
+    public boolean isUsedUp() {
+        return usedUp;
     }
 }

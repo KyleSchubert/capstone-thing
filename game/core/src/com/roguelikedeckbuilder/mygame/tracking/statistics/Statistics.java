@@ -2,6 +2,8 @@ package com.roguelikedeckbuilder.mygame.tracking.statistics;
 
 import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.Player;
+import com.roguelikedeckbuilder.mygame.items.Item;
+import com.roguelikedeckbuilder.mygame.stages.combatmenu.CombatMenuStage;
 
 public class Statistics {
     private static final Array<StatisticsRow> fullStatistics = new Array<>();
@@ -136,6 +138,22 @@ public class Statistics {
         int amountOfItems = Player.getOwnedItems().size;
         for (int i = 0; i < amountOfItems; i++) {
             Player.getOwnedItems().get(i).checkTrigger(newRow, indexOfThisNewRow);
+        }
+
+        // Temporary items (during combat only)
+        int amountOfPlayerTemporaryItems = Player.getCombatInformation().getTemporaryItems().size;
+        for (int i = 0; i < amountOfPlayerTemporaryItems; i++) {
+            Player.getCombatInformation().getTemporaryItems().get(i).checkTrigger(newRow, indexOfThisNewRow);
+        }
+        Player.getCombatInformation().removeUsedUpTemporaryItems();
+
+        for (int i = 0; i < CombatMenuStage.getCombatInformationForLivingEnemies().size; i++) {
+            Array<Item> temporaryItems = CombatMenuStage.getCombatInformationForLivingEnemies().get(i).getTemporaryItems();
+            int amountOfTemporaryItems = temporaryItems.size;
+            for (int j = 0; j < amountOfTemporaryItems; j++) {
+                temporaryItems.get(j).checkTrigger(newRow, indexOfThisNewRow);
+            }
+            CombatMenuStage.getCombatInformationForLivingEnemies().get(i).removeUsedUpTemporaryItems();
         }
     }
 

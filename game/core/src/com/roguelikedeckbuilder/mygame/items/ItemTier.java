@@ -6,6 +6,7 @@ public enum ItemTier {
     COMMON,
     JUNK,
     RARE,
+    TEMPORARY_ITEM,
     UNCOMMON
 
 }

@@ -7,6 +7,8 @@ import com.roguelikedeckbuilder.mygame.combat.TargetType;
 import com.roguelikedeckbuilder.mygame.combat.statuseffect.StatusEffect;
 import com.roguelikedeckbuilder.mygame.combat.statuseffect.StatusEffectTypeName;
 import com.roguelikedeckbuilder.mygame.helpers.AudioManager;
+import com.roguelikedeckbuilder.mygame.items.ItemData;
+import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
 
 import java.util.Objects;
 
@@ -35,6 +37,14 @@ public class EffectData {
 
     public static TargetType getTargetType(EffectName effectName) {
         return data.get(effectName.ordinal()).getTargetType();
+    }
+
+    public static ItemTypeName getTemporaryItem(EffectName effectName) {
+        return data.get(effectName.ordinal()).getTemporaryItem();
+    }
+
+    public static boolean isSingleUseItem(EffectName effectName) {
+        return data.get(effectName.ordinal()).isSingleUseItem();
     }
 
     public static void useEffect(CombatInformation theAttacker, EffectName effectName, Array<CombatInformation> targets) {
@@ -75,6 +85,9 @@ public class EffectData {
                     case MAX_HP_CHANGE -> combatInformation.changeMaxHp(effectiveness);
                     case STRENGTH ->
                             combatInformation.addStatusEffect(new StatusEffect(StatusEffectTypeName.STRENGTH, effectiveness * repetitions));
+                    case TEMPORARY_ITEM -> {
+                        combatInformation.obtainTemporaryItem(getTemporaryItem(effectName), isSingleUseItem(effectName));
+                    }
                     case TRUE_DAMAGE_FLAT -> {
                         combatInformation.takeDamage(effectiveness, true);
                         AudioManager.playHitSound();
@@ -128,6 +141,18 @@ public class EffectData {
             case MAX_HP_CHANGE -> effectText = String.format("Permanently grant [RED]%d Max HP[]", effectiveness);
             case NOTHING -> effectText = "Do nothing";
             case STRENGTH -> effectText = String.format("Grant [YELLOW]%d Strength[]", effectiveness);
+            case TEMPORARY_ITEM -> {
+                boolean isSingleUse = isSingleUseItem(effectName);
+                if (isSingleUse) {
+                    return String.format("Buff lasts [PURPLE]1 activation[]: %s%s",
+                            ItemData.getEffectExplanation(getTemporaryItem(effectName)),
+                            ItemData.getTriggerExplanation(getTemporaryItem(effectName)));
+                } else {
+                    return String.format("Buff lasts [PURPLE]the entire combat[]: %s%s",
+                            ItemData.getEffectExplanation(getTemporaryItem(effectName)),
+                            ItemData.getTriggerExplanation(getTemporaryItem(effectName)));
+                }
+            }
             case TRUE_DAMAGE_FLAT ->
                     effectText = String.format("Ignore defense to deal [RED]%d Damage[]", effectiveness);
             case TRUE_DAMAGE_PERCENT ->
@@ -166,6 +191,8 @@ public class EffectData {
         private int effectiveness;
         private int repetitions;
         private TargetType targetType;
+        private ItemTypeName temporaryItem;
+        private boolean isSingleUseItem;
 
         public IndividualEffectData(EffectName effectName) {
             switch (effectName) {
@@ -198,6 +225,12 @@ public class EffectData {
                     effectiveness = 1;
                     repetitions = 1;
                     targetType = TargetType.SELF;
+                }
+                case DAMAGE_ALL_VERY_SMALL -> {
+                    effectType = EffectType.ATTACK;
+                    effectiveness = 3;
+                    repetitions = 1;
+                    targetType = TargetType.ALL;
                 }
                 case DAMAGE_A_BIT -> {
                     effectType = EffectType.ATTACK;
@@ -283,6 +316,30 @@ public class EffectData {
                     repetitions = 1;
                     targetType = TargetType.ONE;
                 }
+                case DEFEND_AT_END_OF_TURN -> {
+                    effectType = EffectType.TEMPORARY_ITEM;
+                    effectiveness = 1;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                    temporaryItem = ItemTypeName.FOR_CARD_DAMAGE_EVERY_TURN;
+                    isSingleUseItem = false;
+                }
+                case ATTACK_AT_END_OF_TURN -> {
+                    effectType = EffectType.TEMPORARY_ITEM;
+                    effectiveness = 1;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                    temporaryItem = ItemTypeName.FOR_CARD_DAMAGE_EVERY_TURN;
+                    isSingleUseItem = false;
+                }
+                case ATTACK_ON_DRAW -> {
+                    effectType = EffectType.TEMPORARY_ITEM;
+                    effectiveness = 1;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                    temporaryItem = ItemTypeName.FOR_CARD_DAMAGE_EVERY_TURN;
+                    isSingleUseItem = false;
+                }
             }
         }
 
@@ -300,6 +357,14 @@ public class EffectData {
 
         public TargetType getTargetType() {
             return targetType;
+        }
+
+        public ItemTypeName getTemporaryItem() {
+            return temporaryItem;
+        }
+
+        public boolean isSingleUseItem() {
+            return isSingleUseItem;
         }
     }
 }

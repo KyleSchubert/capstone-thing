@@ -12,6 +12,7 @@ public enum EffectType {
     MAX_HP_CHANGE,
     NOTHING,
     STRENGTH,
+    TEMPORARY_ITEM,
     TRUE_DAMAGE_FLAT,
     TRUE_DAMAGE_PERCENT
 }

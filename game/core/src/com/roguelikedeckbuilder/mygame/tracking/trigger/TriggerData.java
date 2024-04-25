@@ -111,6 +111,15 @@ public class TriggerData {
                     whenToReset = StatisticsType.RUN_ENDED;
                     explanationString = "Does nothing.";
                 }
+                case END_OF_TURN -> {
+                    typeOfTrackedStatistic = StatisticsType.TURN_ENDED;
+                    whatToLookAt = WhatToLookAt.OCCURRENCES;
+                    activationComparison = ActivationComparison.EQUAL;
+                    activationValue = 1;
+                    whenToCheck = StatisticsType.TURN_ENDED;
+                    whenToReset = StatisticsType.TURN_STARTED;
+                    explanationString = "At the end of your turn.";
+                }
             }
         }
 

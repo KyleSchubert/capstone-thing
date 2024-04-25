@@ -1,10 +1,14 @@
 package com.roguelikedeckbuilder.mygame.combat.effect;
 
 public enum EffectName {
+    ATTACK_AT_END_OF_TURN,
+    ATTACK_ON_DRAW,
     CONSTITUTION_ONE,
+    DAMAGE_ALL_VERY_SMALL,
     DAMAGE_A_BIT,
     DAMAGE_A_BIT_TO_ONE,
     DAMAGE_MANY_TIMES,
+    DEFEND_AT_END_OF_TURN,
     DEFEND_SOME,
     DEFEND_TWICE_A_BIT,
     DISCARD_RANDOM_CARD_ONE,
@@ -18,6 +22,6 @@ public enum EffectName {
     NOTHING,
     STRENGTH_ONE,
     TRUE_DAMAGE_FLAT_MODERATE,
-    TRUE_DAMAGE_PERCENT_SMALL,
     TRUE_DAMAGE_PERCENT_A_LITTLE_MORE,
+    TRUE_DAMAGE_PERCENT_SMALL
 }

@@ -237,6 +237,21 @@ public class AbilityData {
                     energyCost = 1;
                     effect = EffectName.TRUE_DAMAGE_PERCENT_A_LITTLE_MORE;
                 }
+                case SMALL_DAMAGE_EVERY_TURN -> {
+                    name = "Routine Poking";
+                    energyCost = 2;
+                    effect = EffectName.ATTACK_AT_END_OF_TURN;
+                }
+                case ITEM_SMALL_DAMAGE -> {
+                    name = "";
+                    energyCost = 0;
+                    effect = EffectName.DAMAGE_ALL_VERY_SMALL;
+                }
+                case SMALL_DAMAGE_EVERY_TURN_UPGRADED -> {
+                    name = "Routine Poking+";
+                    energyCost = 1;
+                    effect = EffectName.ATTACK_AT_END_OF_TURN;
+                }
                 default ->
                         System.out.println("Why was an ability almost generated with no matching type name? abilityTypeName:  " + abilityTypeName);
             }

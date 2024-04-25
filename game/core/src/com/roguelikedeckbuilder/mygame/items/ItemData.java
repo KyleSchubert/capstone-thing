@@ -28,6 +28,11 @@ public class ItemData {
         copy.addAll(allItemNames);
         copy.shuffle();
 
+        for (int i = copy.size - 1; i >= 0; i--) {
+            if (getItemTier(copy.get(i)) == ItemTier.TEMPORARY_ITEM) {
+                copy.removeIndex(i);
+            }
+        }
 
         if (!allowDuplicates) {
             for (Item item : Player.getOwnedItems()) {
@@ -55,12 +60,17 @@ public class ItemData {
     }
 
     public static String getPartialDescription(ItemTypeName itemTypeName) {
+        return String.format("    %s\n    %s", getEffectExplanation(itemTypeName), getTriggerExplanation(itemTypeName));
+    }
+
+    public static String getEffectExplanation(ItemTypeName itemTypeName) {
         String color = "ORANGE";
+        return "[" + color + "]Effect[]: " + AbilityData.getDescription(getAbilityTypeName(itemTypeName));
+    }
 
-        String effect = "[" + color + "]Effect[]: " + AbilityData.getDescription(getAbilityTypeName(itemTypeName));
-        String triggerExplanation = "[" + color + "]Activation[]: " + TriggerData.getExplanationString(getTriggerName(itemTypeName));
-
-        return String.format("    %s\n    %s", effect, triggerExplanation);
+    public static String getTriggerExplanation(ItemTypeName itemTypeName) {
+        String color = "ORANGE";
+        return "[" + color + "]Activation[]: " + TriggerData.getExplanationString(getTriggerName(itemTypeName));
     }
 
     public static String getFullDescription(ItemTypeName itemTypeName) {
@@ -134,6 +144,14 @@ public class ItemData {
                     itemTier = ItemTier.JUNK;
                     triggerName = TriggerName.NOTHING;
                     value = 999;
+                }
+                case FOR_CARD_DAMAGE_EVERY_TURN -> {
+                    iconFileName = "default.png";
+                    name = "Temporary Buff";
+                    abilityTypeName = AbilityTypeName.ITEM_SMALL_DAMAGE;
+                    itemTier = ItemTier.TEMPORARY_ITEM;
+                    triggerName = TriggerName.END_OF_TURN;
+                    value = 1;
                 }
             }
 

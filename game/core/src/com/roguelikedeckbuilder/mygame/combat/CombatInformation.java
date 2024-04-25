@@ -9,6 +9,8 @@ import com.roguelikedeckbuilder.mygame.combat.enemy.EnemyData;
 import com.roguelikedeckbuilder.mygame.combat.statuseffect.StatusEffect;
 import com.roguelikedeckbuilder.mygame.combat.statuseffect.StatusEffectTypeName;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
+import com.roguelikedeckbuilder.mygame.items.Item;
+import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
 import java.util.Optional;
@@ -17,6 +19,7 @@ import java.util.Optional;
 public class CombatInformation {
     private final HpBar hpBar;
     private final Array<StatusEffect> statusEffects = new Array<>();
+    private final Array<Item> temporaryItems = new Array<>();
     private final Group statusEffectVisuals = new Group();
     private float statusEffectVisualX = 0;
     private int hp;
@@ -226,5 +229,25 @@ public class CombatInformation {
 
     public Group getStatusEffectVisuals() {
         return statusEffectVisuals;
+    }
+
+    public void obtainTemporaryItem(ItemTypeName temporaryItem, boolean singleUseItem) {
+        Item item = new Item(temporaryItem);
+        if (singleUseItem) {
+            item.setActivationLimit(1);
+        }
+        temporaryItems.add(item);
+    }
+
+    public Array<Item> getTemporaryItems() {
+        return temporaryItems;
+    }
+
+    public void removeUsedUpTemporaryItems() {
+        for (int i = temporaryItems.size - 1; i >= 0; i--) {
+            if (temporaryItems.get(i).isUsedUp()) {
+                temporaryItems.removeIndex(i);
+            }
+        }
     }
 }

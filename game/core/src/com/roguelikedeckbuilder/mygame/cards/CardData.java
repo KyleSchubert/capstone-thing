@@ -113,6 +113,12 @@ public class CardData {
                     iconFileName = "not done.png";
                     value = 250;
                 }
+                case ROUTINE_POKING -> {
+                    abilityTypeName = AbilityTypeName.SMALL_DAMAGE_EVERY_TURN;
+                    upgradedAbilityTypeName = AbilityTypeName.SMALL_DAMAGE_EVERY_TURN_UPGRADED;
+                    iconFileName = "not done.png";
+                    value = 280;
+                }
                 default ->
                         System.out.println("Why was an ability almost generated with no matching type name? abilityTypeName:  " + cardTypeName);
             }
