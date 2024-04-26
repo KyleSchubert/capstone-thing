@@ -5,10 +5,11 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
 public class VisualEffect extends Group {
-    private float frameTime = 0;
-    private int frame = 0;
     private final VisualEffectName visualEffectName;
     private final int totalFrameCount;
+    private float frameTime = 0;
+    private int frame = 0;
+    private boolean looping = false;
 
     public VisualEffect(VisualEffectName visualEffectName, float x, float y, float scaleAmount) {
         this.visualEffectName = visualEffectName;
@@ -34,8 +35,12 @@ public class VisualEffect extends Group {
         if (this.frameTime > delayAmount) {
             this.frameTime -= delayAmount;
             if (this.frame == totalFrameCount - 1) {
-                this.remove();
-                return;
+                if (looping) {
+                    this.frame = 0;
+                } else {
+                    this.remove();
+                    return;
+                }
             } else {
                 this.frame++;
             }
@@ -44,6 +49,10 @@ public class VisualEffect extends Group {
         for (Action action : this.getActions()) {
             action.act(elapsedTime);
         }
+    }
+
+    public void setLooping() {
+        this.looping = true;
     }
 
     @Override

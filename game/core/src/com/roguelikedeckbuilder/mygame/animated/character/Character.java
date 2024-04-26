@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffect;
+import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffectName;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
@@ -21,6 +23,8 @@ public class Character extends Group {
     private int stateFrameEndIndex = 0;
     private int isFacingLeft = 1;
     private boolean isTargeted = false;
+    private boolean hasEvilAura = false;
+    private VisualEffect evilAura;
 
     public Character(CharacterTypeName characterTypeName, float x, float y) {
         this.characterTypeName = characterTypeName;
@@ -44,6 +48,17 @@ public class Character extends Group {
         targetGlow.setScale(SCALE_FACTOR);
         targetGlow.setOrigin(-96 * SCALE_FACTOR, -80 * SCALE_FACTOR);
 
+        if (characterTypeName == CharacterTypeName.EVIL_HH) {
+            hasEvilAura = true;
+            evilAura = new VisualEffect(
+                    VisualEffectName.EVIL_HH_AURA,
+                    getCharacterCenter().x(),
+                    getCharacterCenter().y() + 2.6f,
+                    this.getScaleX()
+            );
+            evilAura.setLooping();
+        }
+
         this.setTouchable(Touchable.disabled);
     }
 
@@ -55,6 +70,11 @@ public class Character extends Group {
     @Override
     public void act(float elapsedTime) {
         this.frameTime += elapsedTime;
+
+        if (hasEvilAura) {
+            evilAura.act(elapsedTime);
+        }
+
         if (this.frameTime > CharacterData.getAllAnimationFrameDelays(characterTypeName).get(this.frame)) {
             this.frameTime -= CharacterData.getAllAnimationFrameDelays(characterTypeName).get(this.frame);
             if (this.frame == this.stateFrameEndIndex) {
@@ -77,6 +97,10 @@ public class Character extends Group {
     public void draw(Batch batch, float parentAlpha) {
         if (isTargeted) {
             targetGlow.draw(batch, parentAlpha);
+        }
+
+        if (hasEvilAura) {
+            evilAura.draw(batch, parentAlpha);
         }
 
         float additionalShiftX = 0;

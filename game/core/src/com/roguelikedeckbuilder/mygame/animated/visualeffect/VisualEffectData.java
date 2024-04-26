@@ -78,6 +78,13 @@ public class VisualEffectData {
                     this.dimensions = new XYPair<>(256, 256);
                     this.origin = new XYPair<>(128, 128);
                 }
+                case EVIL_HH_AURA -> {
+                    internalName = "evil hh aura";
+                    this.totalFrameCount = 20;
+                    this.animationFrameDelays = new ArrayList<>(Collections.nCopies(totalFrameCount, 0.090f));
+                    this.dimensions = new XYPair<>(384, 384);
+                    this.origin = new XYPair<>(192, 192);
+                }
                 default ->
                         throw new IllegalStateException("Unexpected value for `visualEffectName`: " + visualEffectName);
             }

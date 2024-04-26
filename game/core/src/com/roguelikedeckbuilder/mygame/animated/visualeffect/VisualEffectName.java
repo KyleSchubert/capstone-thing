@@ -4,5 +4,6 @@ public enum VisualEffectName {
     DIE,
     ITEM_TRIGGERED,
     ITEM_TRIGGERED_2,
-    CHARACTER_SELECTED
+    CHARACTER_SELECTED,
+    EVIL_HH_AURA
 }
