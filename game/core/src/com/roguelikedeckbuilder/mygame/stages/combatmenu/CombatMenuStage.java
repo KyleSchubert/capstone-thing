@@ -63,10 +63,12 @@ public class CombatMenuStage extends GenericStage {
         this.getStage().addActor(drawPile);
         drawPile.addCaptureListener(ClickListenerManager.lookingAtDrawPile());
         drawPile.addCaptureListener(ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN));
+        drawPile.addCaptureListener(ClickListenerManager.hoverAndPutTextInTooltip("Draw Pile", "Click to view", -999));
 
         Image shufflePile = new Image(new Texture(Gdx.files.internal("CARDS/shuffle pile.png")));
         shufflePile.setPosition(64, 3);
         shufflePile.setScale(SCALE_FACTOR);
+        shufflePile.addCaptureListener(ClickListenerManager.hoverAndPutTextInTooltip("Shuffle Pile", "Unable to view", -999));
         this.getStage().addActor(shufflePile);
 
         // Labels for amount of cards in each pile
@@ -86,6 +88,10 @@ public class CombatMenuStage extends GenericStage {
         // End turn button
         ImageButton endTurnButton = ClickListenerManager.getImageButton("end turn");
         endTurnButton.setPosition(58, 9);
+        endTurnButton.addCaptureListener(
+                ClickListenerManager.hoverAndPutTextInTooltip("End Turn", "Clicking this ends your turn and starts the Enemies' turns from left to right.", -999)
+        );
+
         endTurnButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -113,12 +119,20 @@ public class CombatMenuStage extends GenericStage {
         Image energyImage = new Image(new Texture(Gdx.files.internal("CARDS/energy.png")));
         energyImage.setPosition(3, 8);
         energyImage.setScale(SCALE_FACTOR);
+        energyImage.addCaptureListener(
+                ClickListenerManager.hoverAndPutTextInTooltip(
+                        "Energy",
+                        "Normally, your energy returns to 3 when your turn starts. Spend energy to use cards in your hand.",
+                        -999
+                )
+        );
         this.getStage().addActor(energyImage);
 
         energyLabel = new Label(String.valueOf(Player.getEnergy()), labelStyleLarge);
         energyLabel.setWidth(6);
         energyLabel.setWrap(true);
         energyLabel.setPosition(5, 9.3f);
+        energyLabel.setTouchable(Touchable.disabled);
         this.getStage().addActor(energyLabel);
 
         this.getStage().addListener(getCardHoverListener());

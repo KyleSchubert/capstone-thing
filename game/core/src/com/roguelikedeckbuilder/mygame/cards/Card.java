@@ -13,6 +13,9 @@ import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.combat.CombatHandler;
 import com.roguelikedeckbuilder.mygame.combat.ability.AbilityData;
 import com.roguelikedeckbuilder.mygame.combat.ability.AbilityTypeName;
+import com.roguelikedeckbuilder.mygame.combat.effect.EffectData;
+import com.roguelikedeckbuilder.mygame.combat.effect.EffectType;
+import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
@@ -58,7 +61,6 @@ public class Card {
         cardEffectDescription.setAlignment(Align.topLeft);
         cardEffectDescription.setPosition(16, 140);
 
-
         group = new Group();
 
         group.addActor(background);
@@ -99,6 +101,17 @@ public class Card {
 
         group.setWidth(width);
         group.setHeight(height);
+
+        // Defend is really the only non-obvious mechanic to people that don't know these kinds of games, I think. Probably.
+        if (EffectData.getEffectType(AbilityData.getEffect(CardData.getAbilityTypeName(cardTypeName))) == EffectType.DEFEND) {
+            group.addCaptureListener(
+                    ClickListenerManager.hoverAndPutTextInTooltip(
+                            "Defend",
+                            "Protects from 1 damage per 1 Defend. Resets to 0 when the character starts their turn.",
+                            -999
+                    )
+            );
+        }
     }
 
     public CardTypeName getCardTypeName() {

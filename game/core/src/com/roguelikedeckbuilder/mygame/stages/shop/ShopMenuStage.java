@@ -62,7 +62,7 @@ public class ShopMenuStage extends GenericStage {
         upgradeButton = new Image(new Texture(Gdx.files.internal("MENU BUTTONS/shop area/Upgrade.png")));
         upgradeButton.setPosition(1110, 550);
         upgradeButton.addListener(ClickListenerManager.increasingCostInShop(upgradeCost, upgradeCostLabel));
-        upgradeButton.addListener(ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN));
+        upgradeButton.addListener(ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.SILENT));
         upgradeButton.addListener(ClickListenerManager.preparingCardUpgradeMenu());
 
         upgradeButtonNoInteraction = new Image(new Texture(Gdx.files.internal("MENU BUTTONS/shop area/Upgrade.png")));
@@ -75,7 +75,7 @@ public class ShopMenuStage extends GenericStage {
         removeCardButton = new Image(new Texture(Gdx.files.internal("MENU BUTTONS/shop area/Remove card.png")));
         removeCardButton.setPosition(1120, 450);
         removeCardButton.addListener(ClickListenerManager.increasingCostInShop(removeCardCost, removeCardCostLabel));
-        removeCardButton.addListener(ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN));
+        removeCardButton.addListener(ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.SILENT));
         removeCardButton.addListener(ClickListenerManager.preparingCardRemoveMenu());
 
         removeCardButtonNoInteraction = new Image(new Texture(Gdx.files.internal("MENU BUTTONS/shop area/Remove card.png")));

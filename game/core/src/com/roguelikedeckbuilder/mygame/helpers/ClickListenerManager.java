@@ -215,7 +215,8 @@ public class ClickListenerManager {
             public void exit(InputEvent event, float x, float y, int pointer, @Null Actor toActor) {
                 int currentRun = Statistics.getRunNumber();
                 // Prevent going back to the main menu, storing this event, and triggering it in the next run
-                if (runNumber == currentRun) {
+                // -999 is a value I made up that is impossible to reach unless directly used
+                if (runNumber == currentRun || runNumber == -999) {
                     menuController.getTooltipStage().resetPositionsOffscreen();
                     MenuController.setDrawTooltipMenu(false);
                 }

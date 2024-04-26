@@ -112,6 +112,7 @@ public class MenuController {
 
             if (previousNonimportantMenuState == MenuState.SHOP) {
                 shopMenuStage.useCorrectButtons();
+                setDrawDarkTransparentScreen(false);
             }
             if (previousNonimportantMenuState == MenuState.COMBAT) {
                 // The combat stage gets special treatment, since loading it normally restarts the fight at the moment
@@ -121,6 +122,7 @@ public class MenuController {
                 currentMenuState = MenuState.COMBAT;
                 previousInputProcessor = currentInputProcessor;
                 currentInputProcessor = combatMenuStage.getStage();
+                setDrawDarkTransparentScreen(false);
             } else {
                 setMenuState(previousNonimportantMenuState);
             }
@@ -439,12 +441,15 @@ public class MenuController {
             case CARD_CHOICE -> {
                 currentMenuState = MenuState.CARD_CHOICE;
                 cardChangeMenuStage.setDraw(true);
+                setDrawTooltipMenu(false);
+                setDrawDarkTransparentScreen(true);
                 Gdx.input.setInputProcessor(cardChangeMenuStage.getStage());
                 currentInputProcessor = cardChangeMenuStage.getStage();
             }
             case CARD_UPGRADE -> {
                 currentMenuState = MenuState.CARD_UPGRADE;
                 cardChangeMenuStage.setDraw(true);
+                setDrawDarkTransparentScreen(true);
                 Gdx.input.setInputProcessor(cardChangeMenuStage.getStage());
                 currentInputProcessor = cardChangeMenuStage.getStage();
             }
@@ -453,6 +458,7 @@ public class MenuController {
                 Gdx.input.setInputProcessor(shopMenuStage.getStage());
                 currentInputProcessor = shopMenuStage.getStage();
                 setDrawTooltipMenu(false);
+                setDrawDarkTransparentScreen(false);
                 shopMenuStage.setDraw(true);
                 cardChangeMenuStage.setDraw(false);
             }

@@ -14,22 +14,22 @@ import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class HpBar {
     private final ShapeRenderer shapeRenderer;
-    private boolean visible;
     private final Color mainColor;
     private final Color tickDownColor;
+    private final float hpTickDownX;
+    private final float totalWidth;
+    private final BitmapFont font;
+    private final GlyphLayout layoutHpBarText;
+    private final GlyphLayout layoutDefenseText;
+    private final Image defenseImage;
+    private boolean visible;
     private XYPair<Float> position;
     private XYPair<Float> mainStart;
     private XYPair<Float> mainEnd;
     private XYPair<Float> tickDownEnd;
-    private final float hpTickDownX;
     private float hpRatio;
-    private final float totalWidth;
-    private final BitmapFont font;
     private String hpBarText = "";
-    private final GlyphLayout layoutHpBarText;
     private String defenseText = "";
-    private final GlyphLayout layoutDefenseText;
-    private final Image defenseImage;
     private boolean isDrawDefense = false;
 
     public HpBar() {
