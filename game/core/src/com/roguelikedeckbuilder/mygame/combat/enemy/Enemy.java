@@ -1,6 +1,7 @@
 package com.roguelikedeckbuilder.mygame.combat.enemy;
 
 
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.animated.character.Character;
@@ -21,6 +22,7 @@ public class Enemy {
     private final CombatInformation combatInformation;
     private final Array<AbilityTypeName> abilityOptions;
     private final XYPair<Float> positionOnStage;
+    private final Group intentHolder = new Group();
     private AbilityTypeName nextAbility;
 
     public Enemy(CharacterTypeName characterTypeName, EnemyPositions position) {
@@ -35,7 +37,7 @@ public class Enemy {
 
         abilityOptions = EnemyData.getAbilityOptions(characterTypeName);
 
-        nextAbility = abilityOptions.random();
+        resetNextAbility();
     }
 
     public static boolean isPointWithinRange(XYPair<Float> point, XYPair<Float> positionOfEnemy) {
@@ -45,6 +47,7 @@ public class Enemy {
     public void putOnStage(Stage stage) {
         character.addActor(combatInformation.getStatusEffectVisuals());
         stage.addActor(character);
+        stage.addActor(intentHolder);
     }
 
     public void removeFromStage(Stage stage) {
@@ -78,7 +81,17 @@ public class Enemy {
         CombatHandler.enemyUsesAbility(nextAbility, combatInformation);
     }
 
-    public void endTurn() {
+    private void resetNextAbility() {
         nextAbility = abilityOptions.random();
+
+        Group intent = new Intent(nextAbility).getGroup();
+        XYPair<Float> position = character.getCharacterCenter();
+
+        intent.setPosition(position.x() - 3.5f, position.y() - 3.8f);
+        intentHolder.addActor(intent);
+    }
+
+    public void endTurn() {
+        resetNextAbility();
     }
 }

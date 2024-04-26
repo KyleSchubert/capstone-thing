@@ -1,5 +1,8 @@
 package com.roguelikedeckbuilder.mygame.combat.effect;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
@@ -104,6 +107,26 @@ public class EffectData {
                 }
             }
         }
+    }
+
+    public static Image getIntentIcon(EffectName effectName) {
+        EffectType effectType = getEffectType(effectName);
+        String fileName = "";
+
+        // Not all types have a unique icon
+
+        switch (effectType) {
+            case ATTACK -> fileName = "attack";
+            case CONSTITUTION, STRENGTH -> fileName = "buff";
+            case DEFEND -> fileName = "defend";
+            case DRAW_CARD, DISCARD_RANDOM_CARD, GAIN_ENERGY, GOLD_CHANGE, MAX_HP_CHANGE, NOTHING, TEMPORARY_ITEM ->
+                    fileName = "other";
+            case HEAL -> fileName = "heal";
+            case TRUE_DAMAGE_FLAT, TRUE_DAMAGE_PERCENT -> fileName = "true";
+        }
+
+        String filePath = "ABILITIES/INTENT ICONS/" + fileName + ".png";
+        return new Image(new Texture(Gdx.files.internal(filePath)));
     }
 
     public static String prepareOneEffectDescription(EffectName effectName) {
