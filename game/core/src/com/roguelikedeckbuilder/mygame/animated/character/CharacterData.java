@@ -1,5 +1,6 @@
 package com.roguelikedeckbuilder.mygame.animated.character;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
@@ -71,6 +72,38 @@ public class CharacterData {
                 return data.get(typeName.ordinal()).getDyingAnimationEndFrameIndex();
             }
         }
+    }
+
+    public static CharacterTypeName colorToCharacterTypeName(Color color) {
+        String colorString = color.toString();
+
+        CharacterTypeName characterTypeName;
+        switch (colorString) {
+            case "404040ff" -> characterTypeName = CharacterTypeName.HELMET_PENGUIN;
+            case "ff0000ff" -> characterTypeName = CharacterTypeName.SWORD_FISH;
+            case "ff6a00ff" -> characterTypeName = CharacterTypeName.SAD_DOLLAR;
+            case "000000ff" -> characterTypeName = CharacterTypeName.UNIMPRESSED_FISH;
+            case "ffd800ff" -> characterTypeName = CharacterTypeName.ALIEN;
+            case "4cff00ff" -> characterTypeName = CharacterTypeName.BURGER;
+            case "b6ff00ff" -> characterTypeName = CharacterTypeName.HAM_SHAMWITCH;
+            case "00ff90ff" -> characterTypeName = CharacterTypeName.HAM_AND_FIST;
+            case "808080ff" -> characterTypeName = CharacterTypeName.POINTER;
+            case "00ffffff" -> characterTypeName = CharacterTypeName.KNIGHT;
+            case "ffffffff" -> characterTypeName = CharacterTypeName.STARER;
+            case "0094ffff" -> characterTypeName = CharacterTypeName.HAMMIE;
+            case "ff006eff" -> characterTypeName = CharacterTypeName.CHIPS;
+            case "7f0000ff" -> characterTypeName = CharacterTypeName.SOCK;
+            case "ff00dcff" -> characterTypeName = CharacterTypeName.EVIL_HH;
+            case "8c00ffff" -> characterTypeName = CharacterTypeName.HOT_DOG;
+            case "0026ffff" -> characterTypeName = CharacterTypeName.ANTEATER;
+            case "b200ffff" -> characterTypeName = CharacterTypeName.MONOLITH;
+            default -> {
+                System.out.println("Got this color: " + colorString + " which doesn't correspond to anything");
+                return CharacterTypeName.HELMET_PENGUIN;
+            }
+        }
+
+        return characterTypeName;
     }
 
 

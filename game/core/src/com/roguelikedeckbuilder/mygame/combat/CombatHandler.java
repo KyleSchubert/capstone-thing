@@ -25,7 +25,7 @@ public class CombatHandler {
         for (Enemy enemy : CombatMenuStage.getCurrentEnemies()) {
             enemy.setTargeted(false);
         }
-        Player.getCharacter().setTargeted(false);
+        CombatMenuStage.getPlayerCharacter().setTargeted(false);
 
         if (isTargetingValid) {
             if (Player.tryToSpendEnergy(AbilityData.getEnergyCost(card.getUsedAbilityTypeName()))) {
@@ -59,7 +59,7 @@ public class CombatHandler {
 
         // This determines which targets should have the "target glow" show up behind them and which things can be targeted
         if (visualTargetType == TargetType.SELF) {
-            Player.getCharacter().setTargeted(true);
+            CombatMenuStage.getPlayerCharacter().setTargeted(true);
         }
         for (Enemy enemy : allEnemies) {
             if (enemy.getCharacter().getState() != CharacterState.DYING

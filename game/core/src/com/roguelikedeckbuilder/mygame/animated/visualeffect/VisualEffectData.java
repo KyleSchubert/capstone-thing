@@ -71,6 +71,13 @@ public class VisualEffectData {
                     this.dimensions = new XYPair<>(200, 200);
                     this.origin = new XYPair<>(100, 100);
                 }
+                case CHARACTER_SELECTED -> {
+                    internalName = "character selected";
+                    this.totalFrameCount = 19;
+                    this.animationFrameDelays = new ArrayList<>(Collections.nCopies(totalFrameCount, 0.050f));
+                    this.dimensions = new XYPair<>(256, 256);
+                    this.origin = new XYPair<>(128, 128);
+                }
                 default ->
                         throw new IllegalStateException("Unexpected value for `visualEffectName`: " + visualEffectName);
             }

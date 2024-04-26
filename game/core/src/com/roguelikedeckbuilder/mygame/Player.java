@@ -22,7 +22,7 @@ public class Player {
     public static final int MAXIMUM_CARDS_IN_HAND = 10;
     public static boolean combatMenuStageMustUpdatePileText;
     public static boolean combatMenuStageMustAddCard;
-    private static Character character;
+    private static CharacterTypeName characterTypeName;
     private static CombatInformation combatInformation;
     private static int money;
     private static int persistentMoney;
@@ -40,8 +40,7 @@ public class Player {
     public static void initialize() {
         positionOnStage = new XYPair<>(18f, 28.8f);
         persistentMoney = 0;
-        character = new Character(CharacterTypeName.HELMET_PENGUIN, positionOnStage.x(), positionOnStage.y());
-        character.faceRight();
+        setCharacterTypeName(CharacterTypeName.HELMET_PENGUIN);
         ownedCards = new Array<>();
         combatInformation = new CombatInformation();
         combatInformation.setPlayerInformation(true);
@@ -60,8 +59,6 @@ public class Player {
 
     public static void reset() {
         money = 1500;
-        combatInformation.setPositions(character.getCharacterCenter());
-        combatInformation.loadPlayerStats();
         flagGoBackToPreviousMenuState = false;
 
         ownedCards.clear();
@@ -159,7 +156,16 @@ public class Player {
     }
 
     public static Character getCharacter() {
+        Character character = new Character(characterTypeName, positionOnStage.x(), positionOnStage.y());
+        character.setUserObject(UserObjectOptions.PLAYER);
+        character.faceRight();
+        combatInformation.setPositions(character.getCharacterCenter());
+        combatInformation.loadPlayerStats();
         return character;
+    }
+
+    public static void setCharacterTypeName(CharacterTypeName newCharacterTypeName) {
+        characterTypeName = newCharacterTypeName;
     }
 
     public static Array<Card> getOwnedCards() {
@@ -173,7 +179,6 @@ public class Player {
     public static void combatStart() {
         combatInformation.getTemporaryItems().clear();
         combatInformation.resetStatusEffects();
-        combatInformation.setPositions(character.getCharacterCenter());
         combatInformation.setHpBarVisibility(true);
         startTurn();
 

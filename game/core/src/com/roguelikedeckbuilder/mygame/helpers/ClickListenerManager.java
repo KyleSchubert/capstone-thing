@@ -1,12 +1,11 @@
 package com.roguelikedeckbuilder.mygame.helpers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -14,6 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Null;
 import com.roguelikedeckbuilder.mygame.Player;
+import com.roguelikedeckbuilder.mygame.animated.character.CharacterData;
+import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
+import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffect;
+import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffectName;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.cards.CardData;
 import com.roguelikedeckbuilder.mygame.cards.CardTypeName;
@@ -23,6 +26,7 @@ import com.roguelikedeckbuilder.mygame.items.ItemData;
 import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
+import com.roguelikedeckbuilder.mygame.stages.mainmenu.MainMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.settings.SettingsMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.settings.Slider;
 import com.roguelikedeckbuilder.mygame.stages.tooltip.Size;
@@ -270,5 +274,41 @@ public class ClickListenerManager {
                 menuController.getShopMenuStage().setItemSold(item);
             }
         });
+    }
+
+    public static ClickListener characterSelectPixelColor(Pixmap pixmap, MainMenuStage mainMenuStage) {
+        return new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                float multiplier = 1 / event.getTarget().getScaleX();
+
+                XYPair<Integer> pos = new XYPair<>(Math.round(x * multiplier), Math.round(pixmap.getHeight() - y * multiplier));
+
+                Color color = new Color(pixmap.getPixel(pos.x(), pos.y()));
+
+                if (color.toString().equals("00000000")) {
+                    return;
+                }
+
+                VisualEffect visualEffect = new VisualEffect(
+                        VisualEffectName.CHARACTER_SELECTED,
+                        x,
+                        y,
+                        event.getTarget().getScaleX()
+                );
+                visualEffect.setTouchable(Touchable.disabled);
+                mainMenuStage.addActor(visualEffect);
+                
+                CharacterTypeName characterTypeName = CharacterData.colorToCharacterTypeName(color);
+                mainMenuStage.setCharacter(characterTypeName);
+
+                System.out.println(pos.x() + " " + pos.y() + "  -  " + color + "  Character:  " + characterTypeName);
+            }
+        };
     }
 }

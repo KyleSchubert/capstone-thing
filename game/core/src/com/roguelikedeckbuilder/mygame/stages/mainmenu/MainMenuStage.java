@@ -1,8 +1,10 @@
 package com.roguelikedeckbuilder.mygame.stages.mainmenu;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -14,15 +16,34 @@ import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.MenuSoundType;
+import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.batch;
-import static com.roguelikedeckbuilder.mygame.MyGame.font;
+import static com.roguelikedeckbuilder.mygame.MyGame.*;
 
 public class MainMenuStage extends GenericStage {
+    private static final XYPair<Float> CHOSEN_CHARACTER_POS = new XYPair<>(17f, 32f);
+    private Character chosenCharacter = new Character(CharacterTypeName.HELMET_PENGUIN, CHOSEN_CHARACTER_POS.x(), CHOSEN_CHARACTER_POS.y());
+
     public MainMenuStage(ScreenViewport viewportForStage) {
         super(viewportForStage);
+
+        // Hidden character selection bounds-by-color image
+        Pixmap characterSelectionPixmap = new Pixmap(Gdx.files.internal("characters/character select.png"));
+        getStage().addCaptureListener(ClickListenerManager.characterSelectPixelColor(characterSelectionPixmap, this));
+
+        // For debugging:
+        Image characterSelection = new Image(new Texture(Gdx.files.internal("characters/character select.png")));
+        characterSelection.setScale(SCALE_FACTOR);
+        getStage().addActor(characterSelection);
+
+        // Everything else
+        Group groupForLabel = new Group();
+        groupForLabel.setPosition(2, 36);
+        Label label = LabelMaker.newLabel("Chosen Character:", LabelMaker.getLarge());
+        groupForLabel.addActor(label);
+        addActor(groupForLabel);
 
         Image persistentCurrencyCounterImage = new Image(new Texture(Gdx.files.internal("ITEMS/persistent coin.png")));
         persistentCurrencyCounterImage.setPosition(15.5f, 14);
@@ -67,6 +88,7 @@ public class MainMenuStage extends GenericStage {
         getStage().addActor(new Character(CharacterTypeName.HAM_AND_FIST, 43.3f, 0));
 
         Group creditsHolder = new Group();
+        creditsHolder.setTouchable(Touchable.disabled);
         creditsHolder.setX(49);
 
         Label creditsTitle = LabelMaker.newLabel("Credits", LabelMaker.getMedium());
@@ -92,6 +114,17 @@ public class MainMenuStage extends GenericStage {
         addActor(creditsHolder);
 
         creditsTitle.setY(credits.getY() + credits.getHeight() + 12);
+
+        getStage().addActor(chosenCharacter);
+    }
+
+    public void setCharacter(CharacterTypeName characterTypeName) {
+        getStage().getActors().removeValue(chosenCharacter, true);
+
+        chosenCharacter = new Character(characterTypeName, CHOSEN_CHARACTER_POS.x(), CHOSEN_CHARACTER_POS.y());
+        getStage().addActor(chosenCharacter);
+
+        Player.setCharacterTypeName(characterTypeName);
     }
 
     @Override

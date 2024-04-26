@@ -5,5 +5,6 @@ public enum UserObjectOptions {
     ENEMY,
     ITEM,
     SLIDER_KNOB,
+    PLAYER,
     TREASURE_GROUP
 }

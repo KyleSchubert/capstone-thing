@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Player;
+import com.roguelikedeckbuilder.mygame.animated.character.Character;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterState;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
 import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffect;
@@ -37,6 +38,7 @@ import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 
 public class CombatMenuStage extends GenericStage {
     private static final Array<Enemy> currentEnemies = new Array<>();
+    private static Character playerCharacter;
     private final Label drawPileAmountText;
     private final Label shufflePileAmountText;
     private final Array<Enemy> mustRemoveBecauseDead;
@@ -53,7 +55,7 @@ public class CombatMenuStage extends GenericStage {
         getStageBackgroundActor().setPosition(-7, -3.8f);
 
         // Add the player
-        this.getStage().addActor(Player.getCharacter());
+        setPlayerCharacter();
         this.getStage().addActor(Player.getCombatInformation().getStatusEffectVisuals());
 
         // Add the card piles
@@ -163,6 +165,20 @@ public class CombatMenuStage extends GenericStage {
         }
 
         return filteredEnemies;
+    }
+
+    public static Character getPlayerCharacter() {
+        return playerCharacter;
+    }
+
+    public void setPlayerCharacter() {
+        playerCharacter = Player.getCharacter();
+        removeActorsByType(UserObjectOptions.PLAYER);
+        getStage().addActor(playerCharacter);
+
+        System.out.println(playerCharacter.getX());
+        System.out.println(playerCharacter.getY());
+        System.out.println(getStage().getActors().indexOf(playerCharacter, true));
     }
 
     public void batch(float elapsedTime, SpriteBatch batch) {
@@ -369,6 +385,8 @@ public class CombatMenuStage extends GenericStage {
         removeActorsByType(UserObjectOptions.ITEM);
 
         getScheduledDelays().clear();
+        setPlayerCharacter();
+
         isPlayerTurn = true;
 
         victory = false;
@@ -430,7 +448,7 @@ public class CombatMenuStage extends GenericStage {
             for (Enemy enemy : currentEnemies) {
                 enemy.setTargeted(false);
             }
-            Player.getCharacter().setTargeted(false);
+            playerCharacter.setTargeted(false);
 
             CombatHandler.resetIsTargetingValid();
 
