@@ -2,6 +2,7 @@ package com.roguelikedeckbuilder.mygame.cards;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -75,7 +76,6 @@ public class Card {
 
             Label cardValueLabel = LabelMaker.newLabel("" + CardData.getValue(cardTypeName), LabelMaker.getMedium());
             cardValueLabel.setPosition(184, 18);
-            cardValueLabel.setTouchable(Touchable.disabled);
             group.addActor(cardValueLabel);
         }
 
@@ -89,7 +89,6 @@ public class Card {
                 LabelMaker.getMediumHpAndDamage());
         energyCostLabel.setPosition(186, 206);
         energyCostLabel.setWidth(background.getWidth());
-        energyCostLabel.setTouchable(Touchable.disabled);
         group.addActor(energyCostLabel);
 
         // Final things
@@ -112,6 +111,12 @@ public class Card {
                     )
             );
         }
+
+        // Only the background should register the mouse
+        for (Actor actor : group.getChildren()) {
+            actor.setTouchable(Touchable.disabled);
+        }
+        background.setTouchable(Touchable.enabled);
     }
 
     public CardTypeName getCardTypeName() {
@@ -140,6 +145,7 @@ public class Card {
             // A star symbol, to show it is upgraded
             Image upgradedImage = new Image(new Texture(Gdx.files.internal("CARDS/upgraded star.png")));
             upgradedImage.setPosition(25, 212);
+            upgradedImage.setTouchable(Touchable.disabled);
             group.addActor(upgradedImage);
         }
 

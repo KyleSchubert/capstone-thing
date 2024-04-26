@@ -47,13 +47,24 @@ public class MainMenuStage extends GenericStage {
         getStage().addActor(exitButton);
 
         // Characters on main menu
-        getStage().addActor(new Character(CharacterTypeName.BIRD, 12, 0));
-        getStage().addActor(new Character(CharacterTypeName.BLUE_MUSHROOM, 17, 0));
-        getStage().addActor(new Character(CharacterTypeName.HELMET_PENGUIN, 22, 0));
-        getStage().addActor(new Character(CharacterTypeName.ORANGE_MUSHROOM, 27, 0));
-        getStage().addActor(new Character(CharacterTypeName.PIG, 32, 0));
-        getStage().addActor(new Character(CharacterTypeName.PLANT, 37, 0));
-        getStage().addActor(new Character(CharacterTypeName.STUMP, 42, 0));
+        getStage().addActor(new Character(CharacterTypeName.SWORD_FISH, 19, 0));
+        getStage().addActor(new Character(CharacterTypeName.HELMET_PENGUIN, 12, 0));
+        getStage().addActor(new Character(CharacterTypeName.UNIMPRESSED_FISH, 29.6f, -0.3f));
+        getStage().addActor(new Character(CharacterTypeName.BURGER, 37.1f, 0));
+        getStage().addActor(new Character(CharacterTypeName.KNIGHT, 48.3f, 0));
+        getStage().addActor(new Character(CharacterTypeName.HAMMIE, 57, 0));
+        getStage().addActor(new Character(CharacterTypeName.ANTEATER, 66.3f, 0));
+        getStage().addActor(new Character(CharacterTypeName.CHIPS, 56.8f, 5));
+        getStage().addActor(new Character(CharacterTypeName.SAD_DOLLAR, 19.8f, 6.6f));
+        getStage().addActor(new Character(CharacterTypeName.EVIL_HH, 62, 12));
+        getStage().addActor(new Character(CharacterTypeName.HOT_DOG, 61.4f, 4.4f));
+        getStage().addActor(new Character(CharacterTypeName.STARER, 51.6f, 9));
+        getStage().addActor(new Character(CharacterTypeName.HAM_SHAMWITCH, 39, 8));
+        getStage().addActor(new Character(CharacterTypeName.POINTER, 43, 13));
+        getStage().addActor(new Character(CharacterTypeName.SOCK, 57.4f, 13));
+        getStage().addActor(new Character(CharacterTypeName.MONOLITH, 68, 7));
+        getStage().addActor(new Character(CharacterTypeName.ALIEN, 34, 11.3f));
+        getStage().addActor(new Character(CharacterTypeName.HAM_AND_FIST, 43.3f, 0));
 
         Group creditsHolder = new Group();
         creditsHolder.setX(49);
@@ -63,10 +74,14 @@ public class MainMenuStage extends GenericStage {
         creditsHolder.addActor(creditsTitle);
 
         Label credits = LabelMaker.newLabel(
-                "- \"Local Forecast - Elevator\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 License http://creativecommons.org/licenses/by/4.0/\n\n"
-                        + "- \"Autumn Warrior Remastered\" by Darkkit10 (Newgrounds.com)\n\n"
-                        + "- \"Ordinary\" by zybor, Eurns (Newgrounds.com)\n\n"
-                        + "- \"Blood Reaper Kane (Boss Theme)\" by Dutonic (Newgrounds.com)",
+                """
+                        - "Local Forecast - Elevator" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 License http://creativecommons.org/licenses/by/4.0/
+
+                        - "Autumn Warrior Remastered" by Darkkit10 (Newgrounds.com)
+
+                        - "Ordinary" by zybor, Eurns (Newgrounds.com)
+
+                        - "Blood Reaper Kane (Boss Theme)" by Dutonic (Newgrounds.com)""",
                 LabelMaker.getSmall());
 
         credits.setAlignment(Align.topLeft);

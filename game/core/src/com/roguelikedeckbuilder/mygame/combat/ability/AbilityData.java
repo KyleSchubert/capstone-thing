@@ -216,6 +216,11 @@ public class AbilityData {
                     energyCost = 0;
                     effect = EffectName.DAMAGE_A_BIT_TO_ONE;
                 }
+                case HEAL_SELF_ENEMY -> {
+                    name = "";
+                    energyCost = 4;
+                    effect = EffectName.HEAL_MODERATE_ENEMY;
+                }
                 case ITEM_DRAW_CARD -> {
                     name = "";
                     energyCost = 0;

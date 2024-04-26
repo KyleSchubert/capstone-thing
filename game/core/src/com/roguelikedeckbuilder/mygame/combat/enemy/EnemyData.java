@@ -33,34 +33,44 @@ public class EnemyData {
 
         public IndividualEnemyData(CharacterTypeName characterTypeName) {
             switch (characterTypeName) {
-                case BIRD:
+                case ALIEN:
+                    maxHp = 20;
+                    abilityOptions = prepareOptions(AbilityTypeName.FIRE_STRIKE, AbilityTypeName.HEAL_SELF_ENEMY);
+                    enemyClassification = EnemyClassification.NORMAL;
+                    break;
+                case ANTEATER:
                     maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.NORMAL;
-                    break;
-                case PLANT:
-                    maxHp = 14;
-                    abilityOptions = prepareOptions(AbilityTypeName.DEFEND, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.NORMAL;
-                    break;
-                case STUMP:
-                    maxHp = 30;
                     abilityOptions = prepareOptions(AbilityTypeName.DEFEND_UPGRADED, AbilityTypeName.FIRE_STRIKE);
                     enemyClassification = EnemyClassification.NORMAL;
                     break;
-                case PIG:
-                    maxHp = 22;
-                    abilityOptions = prepareOptions(AbilityTypeName.DEFEND, AbilityTypeName.FIRE_STRIKE);
+                case BURGER:
+                    maxHp = 20;
+                    abilityOptions = prepareOptions(AbilityTypeName.FIRE_STRIKE, AbilityTypeName.HEAL_SELF_ENEMY);
                     enemyClassification = EnemyClassification.NORMAL;
                     break;
-                case ORANGE_MUSHROOM:
-                    maxHp = 34;
-                    abilityOptions = prepareOptions(AbilityTypeName.FIRE_STRIKE_UPGRADED, AbilityTypeName.FIRE_STRIKE);
+                case CHIPS:
+                    maxHp = 20;
+                    abilityOptions = prepareOptions(AbilityTypeName.DEFEND_UPGRADED, AbilityTypeName.HEAL_SELF_ENEMY);
                     enemyClassification = EnemyClassification.NORMAL;
                     break;
-                case BLUE_MUSHROOM:
-                    maxHp = 50;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
+                case EVIL_HH:
+                    maxHp = 20;
+                    abilityOptions = prepareOptions(AbilityTypeName.FIRE_STRIKE, AbilityTypeName.HEAL_SELF_ENEMY);
+                    enemyClassification = EnemyClassification.NORMAL;
+                    break;
+                case HAM_AND_FIST:
+                    maxHp = 20;
+                    abilityOptions = prepareOptions(AbilityTypeName.DEFEND_UPGRADED, AbilityTypeName.HEAL_SELF_ENEMY);
+                    enemyClassification = EnemyClassification.NORMAL;
+                    break;
+                case HAM_SHAMWITCH:
+                    maxHp = 20;
+                    abilityOptions = prepareOptions(AbilityTypeName.FIRE_STRIKE, AbilityTypeName.HEAL_SELF_ENEMY);
+                    enemyClassification = EnemyClassification.NORMAL;
+                    break;
+                case HAMMIE:
+                    maxHp = 20;
+                    abilityOptions = prepareOptions(AbilityTypeName.DEFEND_UPGRADED, AbilityTypeName.HEAL_SELF_ENEMY);
                     enemyClassification = EnemyClassification.NORMAL;
                     break;
                 case HELMET_PENGUIN:
@@ -68,134 +78,49 @@ public class EnemyData {
                     abilityOptions = prepareOptions(AbilityTypeName.DEFEND_UPGRADED, AbilityTypeName.FIRE_STRIKE);
                     enemyClassification = EnemyClassification.NORMAL;
                     break;
-                case BELLFLOWER:
+                case HOT_DOG:
+                    maxHp = 20;
+                    abilityOptions = prepareOptions(AbilityTypeName.FIRE_STRIKE, AbilityTypeName.HEAL_SELF_ENEMY);
+                    enemyClassification = EnemyClassification.NORMAL;
+                    break;
+                case KNIGHT:
+                    maxHp = 20;
+                    abilityOptions = prepareOptions(AbilityTypeName.DEFEND_UPGRADED, AbilityTypeName.FIRE_STRIKE);
+                    enemyClassification = EnemyClassification.NORMAL;
+                    break;
+                case MONOLITH:
+                    maxHp = 20;
+                    abilityOptions = prepareOptions(AbilityTypeName.DEFEND_UPGRADED, AbilityTypeName.HEAL_SELF_ENEMY);
+                    enemyClassification = EnemyClassification.NORMAL;
+                    break;
+                case POINTER:
+                    maxHp = 20;
+                    abilityOptions = prepareOptions(AbilityTypeName.DEFEND_UPGRADED, AbilityTypeName.FIRE_STRIKE);
+                    enemyClassification = EnemyClassification.NORMAL;
+                    break;
+                case SAD_DOLLAR:
+                    maxHp = 20;
+                    abilityOptions = prepareOptions(AbilityTypeName.FIRE_STRIKE, AbilityTypeName.HEAL_SELF_ENEMY);
+                    enemyClassification = EnemyClassification.NORMAL;
+                    break;
+                case SOCK:
+                    maxHp = 20;
+                    abilityOptions = prepareOptions(AbilityTypeName.DEFEND_UPGRADED, AbilityTypeName.FIRE_STRIKE);
+                    enemyClassification = EnemyClassification.NORMAL;
+                    break;
+                case STARER:
+                    maxHp = 20;
+                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.HEAL_SELF_ENEMY);
+                    enemyClassification = EnemyClassification.NORMAL;
+                    break;
+                case SWORD_FISH:
                     maxHp = 10;
                     abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
                     enemyClassification = EnemyClassification.NORMAL;
                     break;
-                case BIG_BOAR:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.ELITE;
-                    break;
-                case BIG_SLIME:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.BOSS;
-                    break;
-                case BIG_SNAIL:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.ELITE;
-                    break;
-                case BUFF_PIG:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.ELITE;
-                    break;
-                case DRAGON:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.BOSS;
-                    break;
-                case DYLE:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.BOSS;
-                    break;
-                case FANCY_BIRD:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.ELITE;
-                    break;
-                case FIRE_SPIRIT:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.ELITE;
-                    break;
-                case GOLEM:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.ELITE;
-                    break;
-                case KING_PENGUIN:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.ELITE;
-                    break;
-                case LICH:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.ELITE;
-                    break;
-                case LIVING_MONEY:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.NORMAL;
-                    break;
-                case MOUSE:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.NORMAL;
-                    break;
-                case ROBOT:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.NORMAL;
-                    break;
-                case ROCK:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.ELITE;
-                    break;
-                case SEAL:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.NORMAL;
-                    break;
-                case SKELETON:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.NORMAL;
-                    break;
-                case SQUID:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.NORMAL;
-                    break;
-                case THUNDER_SPIRIT:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.ELITE;
-                    break;
-                case TOY_BEAR:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.NORMAL;
-                    break;
-                case TRAINING_DUMMY:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.ELITE;
-                    break;
-                case TURNIP:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.ELITE;
-                    break;
-                case WALRUS:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.NORMAL;
-                    break;
-                case WARRIOR:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
-                    enemyClassification = EnemyClassification.BOSS;
-                    break;
-                case WRAITH:
-                    maxHp = 10;
-                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.FIRE_STRIKE);
+                case UNIMPRESSED_FISH:
+                    maxHp = 50;
+                    abilityOptions = prepareOptions(AbilityTypeName.ENERGY_SLICES, AbilityTypeName.HEAL_SELF_ENEMY);
                     enemyClassification = EnemyClassification.NORMAL;
                     break;
                 default:

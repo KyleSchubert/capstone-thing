@@ -1,7 +1,0 @@
-this.internalName = "";
-dyingAnimationFrameDelays = new ArrayList<>(150, 150, 150, 150, 150, 150, 150, 150, 150, 150);
-movingAnimationFrameDelays = new ArrayList<>(150, 150, 150, 150);
-standingAnimationFrameDelays = new ArrayList<>(999, 999, 999, 999, 999, 999);
-this.origin = new XYPair<>(85, 139);
-this.dimensions = new XYPair<>(170, 203);
-break;

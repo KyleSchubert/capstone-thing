@@ -236,6 +236,12 @@ public class EffectData {
                     repetitions = 8;
                     targetType = TargetType.ALL;
                 }
+                case HEAL_MODERATE_ENEMY -> {
+                    effectType = EffectType.HEAL;
+                    effectiveness = 15;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                }
                 case HIGH_DAMAGE_ONCE -> {
                     effectType = EffectType.ATTACK;
                     effectiveness = 20;

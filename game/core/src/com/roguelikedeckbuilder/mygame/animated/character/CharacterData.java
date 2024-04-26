@@ -6,9 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 
 public class CharacterData {
@@ -90,58 +88,54 @@ public class CharacterData {
         private int standingEndFrameIndex;
 
         public IndividualCharacterData(CharacterTypeName characterTypeName) {
-            ArrayList<Float> dyingAnimationFrameDelays;
-            ArrayList<Float> movingAnimationFrameDelays;
-            ArrayList<Float> standingAnimationFrameDelays;
+            ArrayList<Float> dyingAnimationFrameDelays = new ArrayList<>();
+            ArrayList<Float> movingAnimationFrameDelays = new ArrayList<>();
+            ArrayList<Float> standingAnimationFrameDelays = new ArrayList<>();
 
             switch (characterTypeName) {
-                case BIRD:
-                    this.internalName = "bird";
-                    dyingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(13, 0.120f));
-                    movingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(6, 0.150f));
-                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(4, 0.210f));
-                    this.origin = new XYPair<>(94, 62);
-                    this.dimensions = new XYPair<>(188, 86);
+                case ALIEN:
+                    this.internalName = "alien";
+                    this.origin = new XYPair<>(130, 220);
+                    this.dimensions = new XYPair<>(334, 270);
                     break;
-                case PLANT:
-                    this.internalName = "plant";
-                    dyingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(7, 0.120f));
-                    movingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(6, 0.090f));
-                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(6, 0.120f));
-                    this.origin = new XYPair<>(126, 103);
-                    this.dimensions = new XYPair<>(252, 134);
+                case ANTEATER:
+                    this.internalName = "anteater";
+                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(21, 0.120f));
+                    this.origin = new XYPair<>(110, 241);
+                    this.dimensions = new XYPair<>(220, 270);
                     break;
-                case STUMP:
-                    this.internalName = "stump";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.300f));
-                    movingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(4, 0.180f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.100f, 0.200f, 0.100f, 0.100f));
-                    this.origin = new XYPair<>(63, 130);
-                    this.dimensions = new XYPair<>(126, 167);
+                case BURGER:
+                    this.internalName = "burger";
+                    this.origin = new XYPair<>(65, 160);
+                    this.dimensions = new XYPair<>(132, 162);
                     break;
-                case PIG:
-                    this.internalName = "pig";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.180f, 0.180f, 0.300f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.100f, 0.100f, 0.300f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.180f, 0.150f, 0.180f));
-                    this.origin = new XYPair<>(48, 74);
-                    this.dimensions = new XYPair<>(96, 108);
+                case CHIPS:
+                    this.internalName = "chips";
+                    this.origin = new XYPair<>(77, 172);
+                    this.dimensions = new XYPair<>(154, 189);
                     break;
-                case ORANGE_MUSHROOM:
-                    this.internalName = "orange mushroom";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.180f, 0.180f, 0.300f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.180f, 0.120f, 0.180f));
-                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(2, 0.180f));
-                    this.origin = new XYPair<>(42, 88);
-                    this.dimensions = new XYPair<>(81, 121);
+                case EVIL_HH:
+                    this.internalName = "evil hh";
+                    this.origin = new XYPair<>(55, 124);
+                    this.dimensions = new XYPair<>(110, 135);
                     break;
-                case BLUE_MUSHROOM:
-                    this.internalName = "blue mushroom";
-                    dyingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(5, 0.180f));
-                    movingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(4, 0.180f));
-                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(2, 0.180f));
-                    this.origin = new XYPair<>(121, 126);
-                    this.dimensions = new XYPair<>(242, 194);
+                case HAM_AND_FIST:
+                    this.internalName = "ham and fist";
+                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(11, 0.160f));
+                    this.origin = new XYPair<>(70, 114);
+                    this.dimensions = new XYPair<>(128, 128);
+                    break;
+                case HAM_SHAMWITCH:
+                    this.internalName = "ham shamwitch";
+                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(10, 0.180f));
+                    this.origin = new XYPair<>(70, 114);
+                    this.dimensions = new XYPair<>(128, 128);
+                    break;
+                case HAMMIE:
+                    this.internalName = "hammie";
+                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(4, 0.140f));
+                    this.origin = new XYPair<>(70, 114);
+                    this.dimensions = new XYPair<>(128, 128);
                     break;
                 case HELMET_PENGUIN:
                     this.internalName = "helmet penguin";
@@ -151,217 +145,72 @@ public class CharacterData {
                     this.origin = new XYPair<>(244, 194);
                     this.dimensions = new XYPair<>(488, 292);
                     break;
-                case BELLFLOWER:
-                    this.internalName = "bellflower";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.300f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f));
-                    this.origin = new XYPair<>(54, 117);
-                    this.dimensions = new XYPair<>(108, 146);
+                case HOT_DOG:
+                    this.internalName = "hot dog";
+                    this.origin = new XYPair<>(55, 134);
+                    this.dimensions = new XYPair<>(110, 135);
                     break;
-                case BIG_BOAR:
-                    this.internalName = "big boar";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f));
-                    this.origin = new XYPair<>(269, 202);
-                    this.dimensions = new XYPair<>(538, 309);
+                case KNIGHT:
+                    this.internalName = "knight";
+                    this.origin = new XYPair<>(110, 261);
+                    this.dimensions = new XYPair<>(220, 270);
                     break;
-                case BIG_SLIME:
-                    this.internalName = "big slime";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.080f, 0.080f, 0.080f, 0.130f, 0.130f, 0.130f, 0.140f, 0.150f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.200f, 0.050f, 0.150f, 0.150f, 0.100f, 0.100f, 0.300f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.300f, 0.250f));
-                    this.origin = new XYPair<>(277, 679);
-                    this.dimensions = new XYPair<>(554, 1119);
+                case MONOLITH:
+                    this.internalName = "monolith";
+                    this.origin = new XYPair<>(115, 240);
+                    this.dimensions = new XYPair<>(220, 270);
                     break;
-                case BIG_SNAIL:
-                    this.internalName = "big snail";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.450f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f));
-                    this.origin = new XYPair<>(109, 216);
-                    this.dimensions = new XYPair<>(218, 330);
+                case POINTER:
+                    this.internalName = "pointer";
+                    this.origin = new XYPair<>(115, 200);
+                    this.dimensions = new XYPair<>(220, 270);
                     break;
-                case BUFF_PIG:
-                    this.internalName = "buff pig";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f));
-                    this.origin = new XYPair<>(444, 428);
-                    this.dimensions = new XYPair<>(888, 647);
+                case SAD_DOLLAR:
+                    this.internalName = "sad dollar";
+                    this.origin = new XYPair<>(115, 267);
+                    this.dimensions = new XYPair<>(220, 270);
                     break;
-                case DRAGON:
-                    this.internalName = "dragon";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.110f, 0.110f, 0.110f, 0.110f, 0.110f, 0.110f, 0.110f, 0.110f, 0.110f, 0.110f, 0.300f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.130f, 0.130f, 0.130f, 0.130f, 0.130f, 0.130f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.130f, 0.130f, 0.130f, 0.130f, 0.130f, 0.130f, 0.130f, 0.130f));
-                    this.origin = new XYPair<>(431, 876);
-                    this.dimensions = new XYPair<>(862, 1252);
+                case SOCK:
+                    this.internalName = "sock";
+                    this.origin = new XYPair<>(51, 133);
+                    this.dimensions = new XYPair<>(110, 135);
                     break;
-                case DYLE:
-                    this.internalName = "dyle";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.210f, 0.210f, 0.210f, 0.210f, 0.210f, 0.210f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f));
-                    this.origin = new XYPair<>(199, 294);
-                    this.dimensions = new XYPair<>(398, 436);
+                case STARER:
+                    this.internalName = "starer";
+                    this.origin = new XYPair<>(51, 142);
+                    this.dimensions = new XYPair<>(110, 135);
                     break;
-                case FANCY_BIRD:
-                    this.internalName = "fancy bird";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.300f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f));
-                    this.origin = new XYPair<>(278, 172);
-                    this.dimensions = new XYPair<>(556, 260);
+                case SWORD_FISH:
+                    this.internalName = "sword fish";
+                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(8, 0.120f));
+                    this.origin = new XYPair<>(110, 266);
+                    this.dimensions = new XYPair<>(220, 270);
                     break;
-                case FIRE_SPIRIT:
-                    this.internalName = "fire spirit";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f));
-                    this.origin = new XYPair<>(380, 408);
-                    this.dimensions = new XYPair<>(760, 667);
-                    break;
-                case GOLEM:
-                    this.internalName = "golem";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.250f, 0.250f, 0.250f, 0.250f, 0.250f, 0.250f, 0.300f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.350f, 0.350f, 0.350f, 0.350f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.300f, 0.150f, 0.300f));
-                    this.origin = new XYPair<>(216, 282);
-                    this.dimensions = new XYPair<>(432, 408);
-                    break;
-                case KING_PENGUIN:
-                    this.internalName = "king penguin";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f));
-                    this.origin = new XYPair<>(712, 586);
-                    this.dimensions = new XYPair<>(1424, 861);
-                    break;
-                case LICH:
-                    this.internalName = "lich";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.200f, 0.200f, 0.200f, 0.200f, 0.200f, 0.200f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.200f, 0.200f, 0.200f, 0.200f, 0.200f, 0.200f));
-                    this.origin = new XYPair<>(321, 376);
-                    this.dimensions = new XYPair<>(642, 607);
-                    break;
-                case LIVING_MONEY:
-                    this.internalName = "living money";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.200f, 0.200f, 0.200f, 0.200f, 0.200f, 0.200f, 0.200f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.150f, 0.150f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.250f, 0.250f, 0.250f, 0.250f, 0.250f, 0.250f, 0.250f, 0.250f)); // last 4 were 999???
-                    this.origin = new XYPair<>(114, 174);
-                    this.dimensions = new XYPair<>(228, 301);
-                    break;
-                case MOUSE:
-                    this.internalName = "mouse";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f));
-                    this.origin = new XYPair<>(94, 60);
-                    this.dimensions = new XYPair<>(188, 67);
-                    break;
-                case ROBOT:
-                    this.internalName = "robot";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.090f, 0.090f, 0.090f, 0.090f, 0.090f, 0.090f, 0.090f, 0.090f, 0.090f, 0.090f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.120f));
-                    this.origin = new XYPair<>(1439, 499);
-                    this.dimensions = new XYPair<>(2878, 914);
-                    break;
-                case ROCK:
-                    this.internalName = "rock";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.180f, 0.180f, 0.180f, 0.180f));
-                    this.origin = new XYPair<>(130, 217);
-                    this.dimensions = new XYPair<>(260, 313);
-                    break;
-                case SEAL:
-                    this.internalName = "seal";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.150f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f));
-                    this.origin = new XYPair<>(172, 193);
-                    this.dimensions = new XYPair<>(344, 311);
-                    break;
-                case SKELETON:
-                    this.internalName = "skeleton";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.150f, 0.150f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.150f, 0.150f));
-                    this.origin = new XYPair<>(200, 305);
-                    this.dimensions = new XYPair<>(400, 505);
-                    break;
-                case SQUID:
-                    this.internalName = "squid";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.090f, 0.090f, 0.090f, 0.090f, 0.090f, 0.090f, 0.090f, 0.090f, 0.090f, 0.090f, 0.090f, 0.090f, 0.090f, 0.090f, 0.090f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f));
-                    this.origin = new XYPair<>(296, 170);
-                    this.dimensions = new XYPair<>(592, 245);
-                    break;
-                case THUNDER_SPIRIT:
-                    this.internalName = "thunder spirit";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f));
-                    this.origin = new XYPair<>(232, 532);
-                    this.dimensions = new XYPair<>(464, 900);
-                    break;
-                case TOY_BEAR:
-                    this.internalName = "toy bear";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.130f, 0.130f, 0.130f, 0.130f, 0.130f, 0.130f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f, 0.100f));
-                    this.origin = new XYPair<>(62, 88);
-                    this.dimensions = new XYPair<>(124, 127);
-                    break;
-                case TRAINING_DUMMY:
-                    this.internalName = "training dummy";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.300f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.090f, 0.090f, 0.090f, 0.090f, 0.090f, 0.090f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.090f, 0.090f, 0.090f, 0.090f, 0.090f, 0.090f));
-                    this.origin = new XYPair<>(65, 100);
-                    this.dimensions = new XYPair<>(130, 113);
-                    break;
-                case TURNIP:
-                    this.internalName = "turnip";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.150f, 0.150f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.150f, 0.150f, 0.150f, 0.150f));
-                    this.origin = new XYPair<>(85, 139);
-                    this.dimensions = new XYPair<>(170, 203);
-                    break;
-                case WALRUS:
-                    this.internalName = "walrus";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.120f, 0.150f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.120f, 0.120f, 0.120f, 0.120f));
-                    this.origin = new XYPair<>(172, 210);
-                    this.dimensions = new XYPair<>(344, 317);
-                    break;
-                case WARRIOR:
-                    this.internalName = "warrior";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f, 0.180f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.180f, 0.180f, 0.180f, 0.180f));
-                    standingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.180f, 0.180f, 0.180f, 0.180f));
-                    this.origin = new XYPair<>(465, 486);
-                    this.dimensions = new XYPair<>(930, 781);
-                    break;
-                case WRAITH:
-                    this.internalName = "wraith";
-                    dyingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.130f, 0.130f, 0.130f, 0.130f, 0.130f, 0.300f));
-                    movingAnimationFrameDelays = new ArrayList<>(Arrays.asList(0.150f, 0.150f, 0.100f, 0.150f));
-                    standingAnimationFrameDelays = new ArrayList<>(List.of(0.999f));
-                    this.origin = new XYPair<>(81, 149);
-                    this.dimensions = new XYPair<>(162, 160);
+                case UNIMPRESSED_FISH:
+                    this.internalName = "unimpressed fish";
+                    this.origin = new XYPair<>(110, 285);
+                    this.dimensions = new XYPair<>(220, 270);
                     break;
                 default:
                     System.out.println("Why was a character almost generated with no matching type name? characterTypeName:  " + characterTypeName);
                     return;
+            }
+
+            // If the standingAnimationFrameDelays is empty, then it must be a 1-frame character, so play the frame forever:
+            if (standingAnimationFrameDelays.isEmpty()) {
+                standingAnimationFrameDelays.add(Float.MAX_VALUE);
+            }
+
+            // If missing data, duplicate the standing information and spritesheets to these
+            boolean noDying = false;
+            boolean noMoving = false;
+            if (dyingAnimationFrameDelays.isEmpty()) {
+                dyingAnimationFrameDelays = standingAnimationFrameDelays;
+                noDying = true;
+            }
+            if (movingAnimationFrameDelays.isEmpty()) {
+                movingAnimationFrameDelays = standingAnimationFrameDelays;
+                noMoving = true;
             }
 
             int totalFrameCount = dyingAnimationFrameDelays.size()
@@ -373,19 +222,19 @@ public class CharacterData {
             int nextIndex = 0;
 
             // DYING FRAMES
-            nextIndex = addFrames(animationFrames, nextIndex, FileNameByType.DYING, dyingAnimationFrameDelays);
+            nextIndex = addFrames(animationFrames, nextIndex, FileNameByType.DYING, dyingAnimationFrameDelays, noDying, noMoving);
 
             // MOVING FRAMES
-            nextIndex = addFrames(animationFrames, nextIndex, FileNameByType.MOVING, movingAnimationFrameDelays);
+            nextIndex = addFrames(animationFrames, nextIndex, FileNameByType.MOVING, movingAnimationFrameDelays, noDying, noMoving);
 
             // STANDING FRAMES
-            addFrames(animationFrames, nextIndex, FileNameByType.STANDING, standingAnimationFrameDelays);
+            addFrames(animationFrames, nextIndex, FileNameByType.STANDING, standingAnimationFrameDelays, noDying, noMoving);
 
             // DONE
             this.allAnimationFrames = animationFrames;
         }
 
-        private int addFrames(TextureRegion[] animationFrames, int nextIndex, FileNameByType fileName, ArrayList<Float> delays) {
+        private int addFrames(TextureRegion[] animationFrames, int nextIndex, FileNameByType fileName, ArrayList<Float> delays, boolean noDying, boolean noMoving) {
             String internalPath = "characters/" + internalName;
 
             int startIndex = nextIndex;
@@ -398,12 +247,20 @@ public class CharacterData {
                     this.standingEndFrameIndex = endIndex;
                 }
                 case DYING -> {
-                    internalPath += "/die.png";
+                    if (noDying) {
+                        internalPath += "/stand.png";
+                    } else {
+                        internalPath += "/die.png";
+                    }
                     this.dyingAnimationStartFrameIndex = startIndex;
                     this.dyingAnimationEndFrameIndex = endIndex;
                 }
                 case MOVING -> {
-                    internalPath += "/move.png";
+                    if (noMoving) {
+                        internalPath += "/stand.png";
+                    } else {
+                        internalPath += "/move.png";
+                    }
                     this.movingAnimationStartFrameIndex = startIndex;
                     this.movingAnimationEndFrameIndex = endIndex;
                 }
@@ -467,5 +324,3 @@ public class CharacterData {
         }
     }
 }
-
-
