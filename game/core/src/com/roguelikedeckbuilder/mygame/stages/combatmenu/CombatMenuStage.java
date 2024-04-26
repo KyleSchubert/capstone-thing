@@ -191,6 +191,7 @@ public class CombatMenuStage extends GenericStage {
         targetHoverListener();
         for (Enemy enemy : currentEnemies) {
             enemy.getCombatInformation().draw(batch);
+
             if (enemy.getCharacter().getState() == CharacterState.DEAD) {
                 mustRemoveBecauseDead.add(enemy);
             } else if (enemy.getCombatInformation().getHp() == 0 && enemy.getCharacter().getState() != CharacterState.DYING) {
@@ -203,6 +204,16 @@ public class CombatMenuStage extends GenericStage {
 
                 // To use a dying animation, this should be .DYING rather than .DEAD
                 enemy.getCharacter().setState(CharacterState.DEAD);
+            } else if (enemy.getCombatInformation().getNeedToPlayHitEffect()) {
+                addActor(
+                        new VisualEffect(
+                                VisualEffectName.HIT,
+                                enemy.getPositionOnStage().x(),
+                                enemy.getPositionOnStage().y() + 2,
+                                enemy.getCharacter().getScaleX()
+                        )
+                );
+                enemy.getCombatInformation().setNeedToPlayHitEffect(false);
             }
         }
 
@@ -215,6 +226,18 @@ public class CombatMenuStage extends GenericStage {
 
         Player.getCombatInformation().draw(batch);
         energyLabel.setText(String.valueOf(Player.getEnergy()));
+
+        if (Player.getCombatInformation().getNeedToPlayHitEffect()) {
+            addActor(
+                    new VisualEffect(
+                            VisualEffectName.HIT,
+                            Player.getPositionOnStage().x(),
+                            Player.getPositionOnStage().y() + 2,
+                            playerCharacter.getScaleX()
+                    )
+            );
+            Player.getCombatInformation().setNeedToPlayHitEffect(false);
+        }
 
         if (Player.potentiallyDiscardCards() || Player.isCombatMenuStageMustAddCard()) {
             int i = 0;

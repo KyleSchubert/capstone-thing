@@ -27,6 +27,7 @@ public class CombatInformation {
     private int defense;
     private boolean isPlayerInformation = false;
     private XYPair<Float> damageNumberCenter;
+    private boolean needToPlayHitEffect = false;
 
     public CombatInformation() {
         hpBar = new HpBar();
@@ -116,6 +117,8 @@ public class CombatInformation {
         } else {
             excessDamage = changeDefense(-amount);
         }
+
+        setNeedToPlayHitEffect(true);
 
         changeHp(excessDamage);
         return false;
@@ -249,5 +252,13 @@ public class CombatInformation {
                 temporaryItems.removeIndex(i);
             }
         }
+    }
+
+    public boolean getNeedToPlayHitEffect() {
+        return needToPlayHitEffect;
+    }
+
+    public void setNeedToPlayHitEffect(boolean needToPlayHitEffect) {
+        this.needToPlayHitEffect = needToPlayHitEffect;
     }
 }
