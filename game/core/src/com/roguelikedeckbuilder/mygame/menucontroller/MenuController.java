@@ -107,6 +107,7 @@ public class MenuController {
 
             if (previousNonimportantMenuState == MenuState.SHOP) {
                 shopMenuStage.useCorrectButtons();
+                setGameplayPaused(false);
                 setDrawDarkTransparentScreen(false);
             }
             if (previousNonimportantMenuState == MenuState.COMBAT) {
@@ -117,6 +118,7 @@ public class MenuController {
                 currentMenuState = MenuState.COMBAT;
                 previousInputProcessor = currentInputProcessor;
                 currentInputProcessor = combatMenuStage.getStage();
+                setGameplayPaused(false);
                 setDrawDarkTransparentScreen(false);
             } else {
                 setMenuState(previousNonimportantMenuState);
@@ -156,9 +158,11 @@ public class MenuController {
         }
         batch.end();
         batch.begin();
+
         if (mapMenuStage.isDraw()) {
             mapMenuStage.batch(elapsedTime);
         }
+
         batch.end();
         batch.begin();
 
@@ -169,9 +173,14 @@ public class MenuController {
         }
         batch.end();
         batch.begin();
+
         if (UseLine.isVisible()) {
             UseLine.draw();
         }
+        if (shopMenuStage.isDraw()) {
+            shopMenuStage.batch(elapsedTime);
+        }
+
         batch.end();
         batch.begin();
         if (this.isDrawDarkTransparentScreen) {
@@ -187,12 +196,10 @@ public class MenuController {
         if (treasureMenuStage.isDraw()) {
             treasureMenuStage.batch(elapsedTime);
         }
-        if (shopMenuStage.isDraw()) {
-            shopMenuStage.batch(elapsedTime);
-        }
 
         batch.end();
         batch.begin();
+        
         if (cardChangeMenuStage.isDraw()) {
             cardChangeMenuStage.batch(elapsedTime);
         }
@@ -346,7 +353,7 @@ public class MenuController {
                 currentInputProcessor = mapMenuStage.getStage();
                 previousImportantMenuState = MenuState.MAP;
                 pauseMenuStage.setDraw(false);
-                isGameplayPaused = false;
+                setGameplayPaused(false);
                 setDrawDarkTransparentScreen(false);
                 restMenuStage.setDraw(false);
                 treasureMenuStage.setDraw(false);
@@ -438,6 +445,7 @@ public class MenuController {
                 cardChangeMenuStage.setDraw(true);
                 setDrawTooltipMenu(false);
                 setDrawDarkTransparentScreen(true);
+                setGameplayPaused(true);
                 Gdx.input.setInputProcessor(cardChangeMenuStage.getStage());
                 currentInputProcessor = cardChangeMenuStage.getStage();
             }
@@ -445,6 +453,7 @@ public class MenuController {
                 currentMenuState = MenuState.CARD_UPGRADE;
                 cardChangeMenuStage.setDraw(true);
                 setDrawDarkTransparentScreen(true);
+                setGameplayPaused(true);
                 Gdx.input.setInputProcessor(cardChangeMenuStage.getStage());
                 currentInputProcessor = cardChangeMenuStage.getStage();
             }
@@ -454,6 +463,7 @@ public class MenuController {
                 currentInputProcessor = shopMenuStage.getStage();
                 setDrawTooltipMenu(false);
                 setDrawDarkTransparentScreen(false);
+                setGameplayPaused(false);
                 shopMenuStage.setDraw(true);
                 cardChangeMenuStage.setDraw(false);
             }
@@ -462,7 +472,6 @@ public class MenuController {
                 Gdx.input.setInputProcessor(combatMenuStage.getStage());
                 currentInputProcessor = combatMenuStage.getStage();
                 setDrawTooltipMenu(false);
-                isGameplayPaused = false;
                 pauseMenuStage.setDraw(false);
                 combatMenuStage.setDraw(true);
                 mapMenuStage.setDraw(false);
