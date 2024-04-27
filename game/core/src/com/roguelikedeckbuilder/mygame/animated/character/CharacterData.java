@@ -128,6 +128,7 @@ public class CharacterData {
             switch (characterTypeName) {
                 case ALIEN:
                     this.internalName = "alien";
+                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(6, 0.190f));
                     this.origin = new XYPair<>(130, 220);
                     this.dimensions = new XYPair<>(334, 270);
                     break;
@@ -139,11 +140,13 @@ public class CharacterData {
                     break;
                 case BURGER:
                     this.internalName = "burger";
+                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(8, 0.130f));
                     this.origin = new XYPair<>(65, 160);
                     this.dimensions = new XYPair<>(132, 162);
                     break;
                 case CHIPS:
                     this.internalName = "chips";
+                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(4, 0.190f));
                     this.origin = new XYPair<>(77, 172);
                     this.dimensions = new XYPair<>(154, 189);
                     break;
@@ -180,11 +183,13 @@ public class CharacterData {
                     break;
                 case HOT_DOG:
                     this.internalName = "hot dog";
+                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(14, 0.110f));
                     this.origin = new XYPair<>(55, 134);
                     this.dimensions = new XYPair<>(110, 135);
                     break;
                 case KNIGHT:
                     this.internalName = "knight";
+                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(6, 0.230f));
                     this.origin = new XYPair<>(110, 261);
                     this.dimensions = new XYPair<>(220, 270);
                     break;
@@ -196,11 +201,13 @@ public class CharacterData {
                     break;
                 case MONOLITH:
                     this.internalName = "monolith";
+                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(8, 0.010f));
                     this.origin = new XYPair<>(115, 240);
                     this.dimensions = new XYPair<>(220, 270);
                     break;
                 case POINTER:
                     this.internalName = "pointer";
+                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(6, 0.240f));
                     this.origin = new XYPair<>(115, 200);
                     this.dimensions = new XYPair<>(220, 270);
                     break;
@@ -212,11 +219,13 @@ public class CharacterData {
                     break;
                 case SOCK:
                     this.internalName = "sock";
+                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(4, 0.170f));
                     this.origin = new XYPair<>(51, 133);
                     this.dimensions = new XYPair<>(110, 135);
                     break;
                 case STARER:
                     this.internalName = "starer";
+                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(8, 0.160f));
                     this.origin = new XYPair<>(51, 142);
                     this.dimensions = new XYPair<>(110, 135);
                     break;
@@ -228,6 +237,7 @@ public class CharacterData {
                     break;
                 case UNIMPRESSED_FISH:
                     this.internalName = "unimpressed fish";
+                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(5, 0.190f));
                     this.origin = new XYPair<>(110, 285);
                     this.dimensions = new XYPair<>(220, 270);
                     break;
