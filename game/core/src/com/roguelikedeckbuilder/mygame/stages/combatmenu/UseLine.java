@@ -4,18 +4,18 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
+import static com.roguelikedeckbuilder.mygame.MyGame.shapeRenderer;
+
 
 public class UseLine {
     private static XYPair<Float> start;
     private static XYPair<Float> end;
-    private static ShapeRenderer shapeRenderer;
     private static boolean isVisible;
     private static Color mainColor;
 
     public static void initialize() {
         start = new XYPair<>(0f, 0f);
         end = new XYPair<>(0f, 0f);
-        shapeRenderer = new ShapeRenderer();
         isVisible = false;
         mainColor = Color.ORANGE;
     }

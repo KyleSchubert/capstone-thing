@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Null;
+import com.roguelikedeckbuilder.mygame.MyGame;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterData;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
@@ -308,5 +309,11 @@ public class ClickListenerManager {
                 System.out.println(pos.x() + " " + pos.y() + "  -  " + color + "  Character:  " + characterTypeName);
             }
         };
+    }
+
+    public static ClickListener resettingResolution() {
+        return getClickListenerForTouchUp(() -> {
+            Gdx.graphics.setWindowedMode(MyGame.windowWidth, MyGame.windowHeight);
+        });
     }
 }

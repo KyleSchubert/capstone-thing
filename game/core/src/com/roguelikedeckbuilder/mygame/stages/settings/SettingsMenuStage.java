@@ -44,6 +44,11 @@ public class SettingsMenuStage extends GenericStage {
 
         soundVolumeSlider = new Slider(0.5f, "Sound Volume", 520, 500);
         addActor(soundVolumeSlider);
+
+        ImageButton resetResolutionButton = ClickListenerManager.getImageButton("reset window size");
+        resetResolutionButton.setPosition(520, 400);
+        resetResolutionButton.addCaptureListener(ClickListenerManager.resettingResolution());
+        addActor(resetResolutionButton);
     }
 
     public static void repositionSliders() {

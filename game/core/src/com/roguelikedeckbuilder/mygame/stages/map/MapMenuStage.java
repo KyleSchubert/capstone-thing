@@ -18,6 +18,7 @@ import java.util.stream.IntStream;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 import static com.roguelikedeckbuilder.mygame.MyGame.batch;
+import static com.roguelikedeckbuilder.mygame.MyGame.shapeRenderer;
 
 public class MapMenuStage extends GenericStage {
     private static final int MAX_STAGES = 10; // Minimum of 2: 1 for start, 1 for boss.
@@ -38,7 +39,6 @@ public class MapMenuStage extends GenericStage {
     private final Array<Array<MapNode>> mapNodes;
     private final ClickListener hoverAndClickListener;
     private final Image background;
-    private final ShapeRenderer shapeRenderer;
     public HashMap<MapNodeType, Integer> mapNodeTypeWeights;
     public int weightSum;
     private int currentNodeStage = 0;
@@ -52,7 +52,6 @@ public class MapMenuStage extends GenericStage {
         background.setPosition(0, -20);
 
         mapNodes = new Array<>();
-        shapeRenderer = new ShapeRenderer();
 
         this.hoverAndClickListener = hoverAndClickListener;
 
@@ -429,7 +428,7 @@ public class MapMenuStage extends GenericStage {
                 default -> filePath += "default.png";
             }
             // Preferably, all the images should have the same dimensions
-            
+
             nodeImage = new Image(new Texture(Gdx.files.internal(filePath)));
             nodeImage.setScale(2);
             nodeImage.setPosition(pos.x(), pos.y());

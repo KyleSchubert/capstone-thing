@@ -1,6 +1,7 @@
 package com.roguelikedeckbuilder.mygame.helpers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -15,6 +16,8 @@ public class LabelMaker {
     public static void initialize() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Arial.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.minFilter = Texture.TextureFilter.Nearest;
+        parameter.magFilter = Texture.TextureFilter.MipMapLinearNearest;
         parameter.genMipMaps = true;
         parameter.size = 32;
         BitmapFont font32 = generator.generateFont(parameter);

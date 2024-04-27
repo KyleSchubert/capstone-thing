@@ -6,9 +6,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterData;
 import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffectData;
 import com.roguelikedeckbuilder.mygame.cards.CardData;
@@ -27,15 +28,16 @@ import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 import com.roguelikedeckbuilder.mygame.tracking.trigger.TriggerData;
 
 public class MyGame extends ApplicationAdapter {
-    public static final float STEP_TIME = 1f / 60f;
-    private static final float windowWidth = 1440;
-    private static final float windowHeight = 920;
-    private static final float viewWidth = windowWidth;
-    private static final float viewHeight = windowHeight;
+    public static final int FPS_CAP = 60;
+    public static final float STEP_TIME = 1f / (float) FPS_CAP;
+    public static final int windowWidth = 1440;  // 1440x920 looks kind of OK
+    public static final int windowHeight = 920;
+    private static final Vector3 coordinates = new Vector3();
     public static SpriteBatch batch;
+    public static ShapeRenderer shapeRenderer;
     public static BitmapFont font;
     public static String timeText = "0:00";
-    public static ScreenViewport viewport;
+    public static FitViewport viewport;
     static OrthographicCamera camera;
     MenuController menuController;
     float accumulator = 0;
@@ -44,19 +46,19 @@ public class MyGame extends ApplicationAdapter {
     public static XYPair<Float> getMousePosition() {
         float x = Gdx.input.getX();
         float y = Gdx.input.getY();
-        Vector3 coordinates = new Vector3(x, y, 0);
-        camera.unproject(coordinates);
 
+        coordinates.set(x, y, 0);
+        viewport.unproject(coordinates);
         return new XYPair<>(coordinates.x, coordinates.y);
     }
 
     @Override
     public void create() {
         batch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
 
-        camera = new OrthographicCamera(viewWidth, viewHeight);
-
-        viewport = new ScreenViewport(camera);
+        camera = new OrthographicCamera(windowWidth, windowHeight);
+        viewport = new FitViewport(windowWidth, windowHeight, camera);
 
         font = new BitmapFont(Gdx.files.internal("font.fnt"), false);
         font.setUseIntegerPositions(false);
@@ -92,6 +94,7 @@ public class MyGame extends ApplicationAdapter {
         batch.setProjectionMatrix(camera.combined);
         viewport.apply();
 
+        getMousePosition();
         batch.begin();
 
         menuController.batch(elapsedTime);
@@ -168,6 +171,7 @@ public class MyGame extends ApplicationAdapter {
                         System.out.println("- ] : Draw 1 card");
                         System.out.println("- ; : Get a temporary item");
                         System.out.println("- PAGE UP : Clear save data");
+                        System.out.println("- F : Print mouse position");
                         AudioManager.playHealSound();
                     } else {
                         System.out.println("DEBUG: OFF");
@@ -246,6 +250,8 @@ public class MyGame extends ApplicationAdapter {
                             AbilityTypeName.SMALL_DAMAGE_EVERY_TURN,
                             true
                     );
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
+                    System.out.println(getMousePosition());
                 }
             }
 
