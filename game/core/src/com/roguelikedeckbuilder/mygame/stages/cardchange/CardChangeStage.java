@@ -19,7 +19,6 @@ import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 
 import java.util.Random;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class CardChangeStage extends GenericStage {
     private final ScrollPane.ScrollPaneStyle scrollPaneStyle;
@@ -30,7 +29,7 @@ public class CardChangeStage extends GenericStage {
 
     public CardChangeStage() {
         super("gray background");
-        super.getStageBackgroundActor().setPosition(13.5f, 4);
+        super.getStageBackgroundActor().setPosition(270, 80);
         resetCardChoiceGroup();
         this.clickListenerToGoBackToTreasure = ClickListenerManager.triggeringMenuState(MenuState.TREASURE, MenuSoundType.OPEN);
         random = new Random();
@@ -39,7 +38,6 @@ public class CardChangeStage extends GenericStage {
         textAtTop.setPosition(346, 800);
 
         Group groupForTextAtTop = new Group();
-        groupForTextAtTop.setScale(SCALE_FACTOR);
 
         groupForTextAtTop.addActor(textAtTop);
         this.getStage().addActor(groupForTextAtTop);
@@ -48,17 +46,17 @@ public class CardChangeStage extends GenericStage {
 
         Image vScrollKnob = new Image(new Texture(Gdx.files.internal("OTHER UI/scrollbar.png")));
         scrollPaneStyle.vScrollKnob = vScrollKnob.getDrawable();
-        scrollPaneStyle.vScrollKnob.setMinWidth(vScrollKnob.getWidth() * SCALE_FACTOR);
-        scrollPaneStyle.vScrollKnob.setMinHeight(0.2f);
+        scrollPaneStyle.vScrollKnob.setMinWidth(vScrollKnob.getWidth());
+        scrollPaneStyle.vScrollKnob.setMinHeight(4);
 
         Image vScrollBackground = new Image(new Texture(Gdx.files.internal("OTHER UI/scrollbar background.png")));
         scrollPaneStyle.vScroll = vScrollBackground.getDrawable();
-        scrollPaneStyle.vScroll.setMinWidth(vScrollBackground.getWidth() * SCALE_FACTOR);
-        scrollPaneStyle.vScroll.setMinHeight(0.2f);
+        scrollPaneStyle.vScroll.setMinWidth(vScrollBackground.getWidth());
+        scrollPaneStyle.vScroll.setMinHeight(4);
 
         ImageButton backButton = ClickListenerManager.getImageButton("back");
         backButton.addListener(getClickListenerForBackButton());
-        backButton.setPosition(47, 36.6f);
+        backButton.setPosition(940, 732);
         this.getStage().addActor(backButton);
     }
 
@@ -80,9 +78,9 @@ public class CardChangeStage extends GenericStage {
         Card card2 = new Card(cardTypeNames.get(1), false);
         Card card3 = new Card(cardTypeNames.get(2), false);
 
-        card1.getGroup().setPosition(17.3f, 18);
-        card2.getGroup().setPosition(30.3f, 18);
-        card3.getGroup().setPosition(43.3f, 18);
+        card1.getGroup().setPosition(346, 360);
+        card2.getGroup().setPosition(606, 360);
+        card3.getGroup().setPosition(866, 360);
 
         prepareCardChoiceCards(card1);
         prepareCardChoiceCards(card2);
@@ -148,8 +146,8 @@ public class CardChangeStage extends GenericStage {
 
         final Table table = new Table();
         table.setFillParent(true);
-        table.add(scroller).size(40, 30);
-        table.setPosition(0, -2);
+        table.add(scroller).size(800, 600);
+        table.setPosition(0, -40);
 
         table.setUserObject(UserObjectOptions.TREASURE_GROUP);
 

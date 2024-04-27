@@ -13,7 +13,6 @@ import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 
 import java.util.Random;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class Treasure {
     private final Group treasureGroup;
@@ -23,11 +22,19 @@ public class Treasure {
     public Treasure(ClickListener cardChoiceClickListener) {
         treasureGroup = new Group();
         treasureGroup.setUserObject(UserObjectOptions.TREASURE_GROUP);
-        treasureGroup.setScale(SCALE_FACTOR);
 
         random = new Random();
 
         this.cardChoiceClickListener = cardChoiceClickListener;
+    }
+
+    public static void triggerTreasure(TreasureType treasureType, int amount) {
+        switch (treasureType) {
+            case CURRENCY -> Player.changeMoney(amount);
+            case PERSISTENT_CURRENCY -> Player.changePersistentMoney(amount);
+            case CARDS -> {
+            }
+        }
     }
 
     public void addTreasure(TreasureType treasureType) {
@@ -100,15 +107,6 @@ public class Treasure {
 
     private int generateRandomPersistentCurrencyAmount() {
         return random.nextInt(2) + 2;
-    }
-
-    public static void triggerTreasure(TreasureType treasureType, int amount) {
-        switch (treasureType) {
-            case CURRENCY -> Player.changeMoney(amount);
-            case PERSISTENT_CURRENCY -> Player.changePersistentMoney(amount);
-            case CARDS -> {
-            }
-        }
     }
 
     public Group getGroup() {

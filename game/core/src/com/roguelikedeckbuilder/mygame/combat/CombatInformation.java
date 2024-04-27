@@ -158,9 +158,9 @@ public class CombatInformation {
     }
 
     public void setPositions(XYPair<Float> position) {
-        damageNumberCenter = new XYPair<>(position.x(), position.y() + 6);
-        hpBar.setPosition(new XYPair<>(position.x() - 4.1f, position.y() - 1.5f));
-        statusEffectVisualX = position.x() - 1.4f;
+        damageNumberCenter = new XYPair<>(position.x(), position.y() + 120);
+        hpBar.setPosition(new XYPair<>(position.x() - 82, position.y() - 30));
+        statusEffectVisualX = position.x() - 28;
         repositionStatusEffectVisuals();
     }
 
@@ -205,8 +205,8 @@ public class CombatInformation {
 
     private void repositionStatusEffectVisuals() {
         // The player's Y position matches the enemies' Y positions
-        float TOPMOST_POSITION = Player.getPositionOnStage().y() - 3.6f;
-        float GAP = 1.7f;
+        float TOPMOST_POSITION = Player.getPositionOnStage().y() - 72;
+        float GAP = 34;
 
         float i = 0;
         for (StatusEffect statusEffect : statusEffects) {

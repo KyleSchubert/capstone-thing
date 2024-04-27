@@ -10,7 +10,6 @@ import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class StatusEffect extends Group {
     private final StatusEffectTypeName statusEffectTypeName;
@@ -30,7 +29,6 @@ public class StatusEffect extends Group {
         amountOfStacks.setTouchable(Touchable.disabled);
         this.addActor(amountOfStacks);
 
-        this.setScale(SCALE_FACTOR);
         this.addCaptureListener(ClickListenerManager.hoverAndPutTextInTooltip(
                 StatusEffectData.getName(statusEffectTypeName),
                 StatusEffectData.getDescription(statusEffectTypeName),

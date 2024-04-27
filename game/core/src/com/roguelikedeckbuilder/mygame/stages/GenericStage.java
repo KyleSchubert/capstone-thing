@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.MyGame;
 import com.roguelikedeckbuilder.mygame.helpers.DelayScheduler;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class GenericStage {
     private final Stage stage;
@@ -24,7 +23,6 @@ public class GenericStage {
         stage = new Stage(MyGame.viewport);
 
         Image stageBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/" + stageBackgroundFilename + ".png")));
-        stageBackground.setScale(SCALE_FACTOR);
         stageBackground.setPosition(0, 0);
         stage.addActor(stageBackground);
     }
@@ -40,7 +38,6 @@ public class GenericStage {
     }
 
     public void addActor(Actor actor) {
-        actor.setScale(SCALE_FACTOR);
         getStage().addActor(actor);
     }
 

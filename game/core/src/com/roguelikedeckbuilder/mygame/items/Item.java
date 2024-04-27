@@ -17,7 +17,6 @@ import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 import com.roguelikedeckbuilder.mygame.tracking.trigger.Trigger;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class Item {
     private final ItemTypeName itemTypeName;
@@ -40,13 +39,13 @@ public class Item {
         group.addActor(itemImage);
         group.setUserObject(UserObjectOptions.ITEM);
 
-        group.setScale(SCALE_FACTOR * 2);
+        group.setScale(2);
 
         Group groupHoldingPriceLabel = new Group();
         priceLabel = LabelMaker.newLabel("Price: " + ItemData.getValue(itemTypeName), LabelMaker.getMedium());
         priceLabel.setPosition(72, 16);
         priceLabel.setVisible(false);
-        groupHoldingPriceLabel.setScale(1 / (group.getScaleX() / SCALE_FACTOR));
+        groupHoldingPriceLabel.setScale(1 / group.getScaleX());
         groupHoldingPriceLabel.addActor(priceLabel);
         groupHoldingPriceLabel.setTouchable(Touchable.disabled);
         group.addActor(groupHoldingPriceLabel);
@@ -67,7 +66,7 @@ public class Item {
             VisualEffect visualEffect = new VisualEffect(VisualEffectName.ITEM_TRIGGERED_2,
                     group.getChild(0).getWidth() / 2,
                     group.getChild(0).getHeight() / 2,
-                    SCALE_FACTOR / this.group.getScaleX());
+                    2 / this.group.getScaleX());
 
             this.group.addActor(visualEffect);
 

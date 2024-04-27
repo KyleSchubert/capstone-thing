@@ -19,10 +19,11 @@ import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.*;
+import static com.roguelikedeckbuilder.mygame.MyGame.batch;
+import static com.roguelikedeckbuilder.mygame.MyGame.font;
 
 public class MainMenuStage extends GenericStage {
-    private static final XYPair<Float> CHOSEN_CHARACTER_POS = new XYPair<>(17f, 32f);
+    private static final XYPair<Float> CHOSEN_CHARACTER_POS = new XYPair<>(340f, 640f);
     private Character chosenCharacter = new Character(CharacterTypeName.HELMET_PENGUIN, CHOSEN_CHARACTER_POS.x(), CHOSEN_CHARACTER_POS.y());
 
     public MainMenuStage() {
@@ -32,64 +33,62 @@ public class MainMenuStage extends GenericStage {
         Pixmap characterSelectionPixmap = new Pixmap(Gdx.files.internal("characters/character select.png"));
         getStage().addCaptureListener(ClickListenerManager.characterSelectPixelColor(characterSelectionPixmap, this));
 
-        // For debugging:
         Image characterSelection = new Image(new Texture(Gdx.files.internal("characters/character select.png")));
-        characterSelection.setScale(SCALE_FACTOR);
         getStage().addActor(characterSelection);
 
         // Everything else
         Group groupForLabel = new Group();
-        groupForLabel.setPosition(2, 36);
+        groupForLabel.setPosition(40, 720);
         Label label = LabelMaker.newLabel("Chosen Character:", LabelMaker.getLarge());
         groupForLabel.addActor(label);
         addActor(groupForLabel);
 
         Image persistentCurrencyCounterImage = new Image(new Texture(Gdx.files.internal("ITEMS/persistent coin.png")));
-        persistentCurrencyCounterImage.setPosition(15.5f, 14);
+        persistentCurrencyCounterImage.setPosition(310, 280);
         addActor(persistentCurrencyCounterImage);
 
         ImageButton playButton = ClickListenerManager.getMenuSwitchingButton(
-                "play", MenuState.START_REWARDS, MenuSoundType.SILENT, 2, 18);
+                "play", MenuState.START_REWARDS, MenuSoundType.SILENT, 40, 360);
         getStage().addActor(playButton);
 
         ImageButton upgradesButton = ClickListenerManager.getMenuSwitchingButton(
-                "upgrades", MenuState.UPGRADES, MenuSoundType.OPEN, 2, 13);
+                "upgrades", MenuState.UPGRADES, MenuSoundType.OPEN, 40, 260);
         getStage().addActor(upgradesButton);
 
         ImageButton settingsButton = ClickListenerManager.getMenuSwitchingButton(
-                "settings", MenuState.SETTINGS, MenuSoundType.OPEN, 2, 8);
+                "settings", MenuState.SETTINGS, MenuSoundType.OPEN, 40, 160);
         settingsButton.addCaptureListener(ClickListenerManager.reloadSettingsMenu());
         getStage().addActor(settingsButton);
 
         ImageButton exitButton = ClickListenerManager.getImageButton("exit");
-        exitButton.setPosition(2, 3);
+        exitButton.setPosition(40, 60);
         exitButton.addListener(ClickListenerManager.exitingGame());
         getStage().addActor(exitButton);
 
         // Characters on main menu
-        getStage().addActor(new Character(CharacterTypeName.SWORD_FISH, 19, 0));
-        getStage().addActor(new Character(CharacterTypeName.HELMET_PENGUIN, 12, 0));
-        getStage().addActor(new Character(CharacterTypeName.UNIMPRESSED_FISH, 29.6f, -0.3f));
-        getStage().addActor(new Character(CharacterTypeName.BURGER, 37.1f, 0));
-        getStage().addActor(new Character(CharacterTypeName.KNIGHT, 48.3f, 0));
-        getStage().addActor(new Character(CharacterTypeName.HAMMIE, 57, 0));
-        getStage().addActor(new Character(CharacterTypeName.ANTEATER, 66.3f, 0));
-        getStage().addActor(new Character(CharacterTypeName.CHIPS, 56.8f, 5));
-        getStage().addActor(new Character(CharacterTypeName.SAD_DOLLAR, 19.8f, 6.6f));
-        getStage().addActor(new Character(CharacterTypeName.EVIL_HH, 62, 12));
-        getStage().addActor(new Character(CharacterTypeName.HOT_DOG, 61.4f, 4.4f));
-        getStage().addActor(new Character(CharacterTypeName.STARER, 51.6f, 9));
-        getStage().addActor(new Character(CharacterTypeName.HAM_SHAMWITCH, 39, 8));
-        getStage().addActor(new Character(CharacterTypeName.POINTER, 43, 13));
-        getStage().addActor(new Character(CharacterTypeName.SOCK, 57.4f, 13));
-        getStage().addActor(new Character(CharacterTypeName.MONOLITH, 68, 7));
-        getStage().addActor(new Character(CharacterTypeName.ALIEN, 34, 11.3f));
-        getStage().addActor(new Character(CharacterTypeName.HAM_AND_FIST, 43.3f, 0));
-        getStage().addActor(new Character(CharacterTypeName.PEANUT_BEE, 51f, 13));
+        getStage().addActor(new Character(CharacterTypeName.SWORD_FISH, 380, 0));
+        getStage().addActor(new Character(CharacterTypeName.HELMET_PENGUIN, 240, 0));
+        getStage().addActor(new Character(CharacterTypeName.UNIMPRESSED_FISH, 592, -6));
+        getStage().addActor(new Character(CharacterTypeName.BURGER, 742, 0));
+        getStage().addActor(new Character(CharacterTypeName.KNIGHT, 966, 0));
+        getStage().addActor(new Character(CharacterTypeName.HAMMIE, 1140, 0));
+        getStage().addActor(new Character(CharacterTypeName.ANTEATER, 1326, 0));
+        getStage().addActor(new Character(CharacterTypeName.CHIPS, 1136, 100));
+        getStage().addActor(new Character(CharacterTypeName.SAD_DOLLAR, 396, 132));
+        getStage().addActor(new Character(CharacterTypeName.EVIL_HH, 1240, 240));
+        getStage().addActor(new Character(CharacterTypeName.HOT_DOG, 1228, 88));
+        getStage().addActor(new Character(CharacterTypeName.STARER, 1032, 180));
+        getStage().addActor(new Character(CharacterTypeName.HAM_SHAMWITCH, 780, 160));
+        getStage().addActor(new Character(CharacterTypeName.POINTER, 860, 260));
+        getStage().addActor(new Character(CharacterTypeName.SOCK, 1148, 260));
+        getStage().addActor(new Character(CharacterTypeName.MONOLITH, 1360, 140));
+        getStage().addActor(new Character(CharacterTypeName.ALIEN, 680, 226));
+        getStage().addActor(new Character(CharacterTypeName.HAM_AND_FIST, 866, 0));
+        getStage().addActor(new Character(CharacterTypeName.PEANUT_BEE, 1020, 260));
 
         Group creditsHolder = new Group();
         creditsHolder.setTouchable(Touchable.disabled);
-        creditsHolder.setX(49);
+        creditsHolder.setX(980);
 
         Label creditsTitle = LabelMaker.newLabel("Credits", LabelMaker.getMedium());
         creditsTitle.setAlignment(Align.topLeft);
@@ -131,6 +130,6 @@ public class MainMenuStage extends GenericStage {
     public void batch(float elapsedTime) {
         super.batch(elapsedTime);
 
-        font.draw(batch, "x " + Player.getPersistentMoney(), 17.3f, 15.3f); // text for currency counter
+        font.draw(batch, "x " + Player.getPersistentMoney(), 346, 306); // text for currency counter
     }
 }

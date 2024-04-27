@@ -88,7 +88,7 @@ public class Enemy {
         Group intent = new Intent(nextAbility).getGroup();
         XYPair<Float> position = character.getCharacterCenter();
 
-        intent.setPosition(position.x() - 3.5f, position.y() - 3.8f);
+        intent.setPosition(position.x() - 70, position.y() - 76);
         intentHolder.addActor(intent);
     }
 

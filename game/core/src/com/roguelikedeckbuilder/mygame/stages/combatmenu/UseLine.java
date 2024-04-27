@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class UseLine {
     private static XYPair<Float> start;
@@ -22,8 +21,8 @@ public class UseLine {
     }
 
     public static void setPosition(XYPair<Float> startCoords, XYPair<Float> endCoords) {
-        start = new XYPair<>(startCoords.x() / SCALE_FACTOR, startCoords.y() / SCALE_FACTOR);
-        end = new XYPair<>(endCoords.x() / SCALE_FACTOR, endCoords.y() / SCALE_FACTOR);
+        start = new XYPair<>(startCoords.x(), startCoords.y());
+        end = new XYPair<>(endCoords.x(), endCoords.y());
     }
 
     public static void setVisibility(boolean visibility) {

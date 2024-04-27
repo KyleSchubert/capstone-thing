@@ -38,7 +38,7 @@ public class Player {
     private static Array<Card> handContents;
 
     public static void initialize() {
-        positionOnStage = new XYPair<>(18f, 28.8f);
+        positionOnStage = new XYPair<>(360f, 576f);
         persistentMoney = 0;
         setCharacterTypeName(CharacterTypeName.HELMET_PENGUIN);
         ownedCards = new Array<>();
@@ -252,7 +252,7 @@ public class Player {
         Item item = new Item(itemTypeName);
         System.out.println("Player gained item: " + itemTypeName);
 
-        item.getGroup().setPosition(0.5f + ownedItems.size * 3, 40.1f);
+        item.getGroup().setPosition(10 + ownedItems.size * 60, 802);
 
         for (Item ownedItem : ownedItems) {
             if (itemTypeName == ItemTypeName.JUNK) {
@@ -335,7 +335,7 @@ public class Player {
             }
             Card drawnCard = drawPileContents.get(0);
             drawnCard.getGroup().clearActions();
-            drawnCard.getGroup().setPosition(-200, 0);
+            drawnCard.getGroup().setPosition(-4000, 0);
 
             combatMenuStageMustUpdatePileText = true;
             combatMenuStageMustAddCard = true;

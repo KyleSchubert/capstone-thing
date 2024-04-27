@@ -11,10 +11,10 @@ public class UpgradesMenuStage extends GenericStage {
     public UpgradesMenuStage() {
         super("upgrades background");
 
-        getStageBackgroundActor().setPosition(23, 3.7f);
+        getStageBackgroundActor().setPosition(460, 74);
 
         ImageButton backButton = ClickListenerManager.getMenuSwitchingButton(
-                "back", MenuState.MAIN_MENU, MenuSoundType.CLOSE, 25, 5);
+                "back", MenuState.MAIN_MENU, MenuSoundType.CLOSE, 500, 100);
         getStage().addActor(backButton);
     }
 }

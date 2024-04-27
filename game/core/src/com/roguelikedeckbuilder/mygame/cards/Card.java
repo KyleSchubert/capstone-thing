@@ -22,7 +22,6 @@ import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.stages.combatmenu.UseLine;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 
 public class Card {
@@ -45,17 +44,20 @@ public class Card {
         Image background = new Image(new Texture(Gdx.files.internal("CARDS/background.png")));
         background.setPosition(0, 0);
 
+        width = background.getWidth();
+        height = background.getHeight();
+
         Image image = new Image(new Texture(Gdx.files.internal(CardData.getImagePath(cardTypeName))));
         image.setScale(3);
         XYPair<Float> imagePosition = new XYPair<>(
-                (background.getWidth() - image.getWidth() * 3) / 2,
+                (width - image.getWidth() * 3) / 2,
                 180 - image.getWidth() / 3
         );
         image.setPosition(imagePosition.x(), imagePosition.y());
 
         cardName = LabelMaker.newLabel(AbilityData.getName(getUsedAbilityTypeName()), LabelMaker.getMedium());
         cardName.setAlignment(Align.center);
-        cardName.setWidth(background.getWidth());
+        cardName.setWidth(width);
         cardName.setPosition(0, 266);
 
         cardEffectDescription = LabelMaker.newLabel(AbilityData.getDescription(getUsedAbilityTypeName()), LabelMaker.getSmall());
@@ -88,14 +90,10 @@ public class Card {
                 String.valueOf(AbilityData.getEnergyCost(getUsedAbilityTypeName())),
                 LabelMaker.getMediumHpAndDamage());
         energyCostLabel.setPosition(186, 206);
-        energyCostLabel.setWidth(background.getWidth());
+        energyCostLabel.setWidth(width);
         group.addActor(energyCostLabel);
 
         // Final things
-        width = background.getWidth() * SCALE_FACTOR;
-        height = background.getHeight() * SCALE_FACTOR;
-
-        group.setScale(SCALE_FACTOR);
         group.setUserObject(UserObjectOptions.CARD);
 
         group.setWidth(width);

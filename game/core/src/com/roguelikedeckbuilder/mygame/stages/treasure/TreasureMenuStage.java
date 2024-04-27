@@ -19,10 +19,10 @@ public class TreasureMenuStage extends GenericStage {
 
     public TreasureMenuStage() {
         super("treasure background");
-        getStageBackgroundActor().setPosition(16, 1.6f);
+        getStageBackgroundActor().setPosition(320, 32);
 
         ImageButton exitButton = ClickListenerManager.getMenuSwitchingButton(
-                "exit", MenuState.MAP, MenuSoundType.CLOSE, 42, 3);
+                "exit", MenuState.MAP, MenuSoundType.CLOSE, 840, 60);
         this.getStage().addActor(exitButton);
 
         treasureGroup = new Group();

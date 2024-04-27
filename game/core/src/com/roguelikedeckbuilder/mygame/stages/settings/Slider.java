@@ -9,7 +9,6 @@ import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class Slider extends Group {
     private final Label valueLabel = LabelMaker.newLabel("", LabelMaker.getSmall());
@@ -18,7 +17,6 @@ public class Slider extends Group {
     private boolean isChanged = false;
 
     public Slider(float value, String title, float x, float y) {
-        this.setScale(SCALE_FACTOR);
         this.setPosition(x, y);
 
         Image sliderBackground = new Image(new Texture(Gdx.files.internal("OTHER UI/slider.png")));

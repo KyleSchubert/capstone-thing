@@ -10,7 +10,6 @@ import com.roguelikedeckbuilder.mygame.helpers.MenuSoundType;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class SettingsMenuStage extends GenericStage {
     private static Slider overallVolumeSlider;
@@ -20,33 +19,32 @@ public class SettingsMenuStage extends GenericStage {
     public SettingsMenuStage() {
         super("settings background");
 
-        getStageBackgroundActor().setPosition(23.7f, 3.7f);
+        getStageBackgroundActor().setPosition(474, 74);
 
         ImageButton backButton = ClickListenerManager.getMenuSwitchingButton(
-                "back", MenuState.SETTINGS_BACK, MenuSoundType.CLOSE, 25, 5);
+                "back", MenuState.SETTINGS_BACK, MenuSoundType.CLOSE, 500, 100);
         backButton.addCaptureListener(ClickListenerManager.notSavingSettings());
         getStage().addActor(backButton);
 
         ImageButton confirmButton = ClickListenerManager.getMenuSwitchingButton(
-                "confirm", MenuState.SETTINGS_BACK, MenuSoundType.CLOSE, 49, 5);
+                "confirm", MenuState.SETTINGS_BACK, MenuSoundType.CLOSE, 980, 100);
         confirmButton.addCaptureListener(ClickListenerManager.savingSettings());
         getStage().addActor(confirmButton);
 
         Group titleArea = new Group();
-        titleArea.setScale(SCALE_FACTOR);
         getStage().addActor(titleArea);
 
         Label title = LabelMaker.newLabel("Settings", LabelMaker.getLarge());
         titleArea.addActor(title);
-        titleArea.setPosition(25, 40);
+        titleArea.setPosition(500, 800);
 
-        overallVolumeSlider = new Slider(0.5f, "Overall Volume", 26, 35);
+        overallVolumeSlider = new Slider(0.5f, "Overall Volume", 520, 700);
         getStage().addActor(overallVolumeSlider);
 
-        musicVolumeSlider = new Slider(0.5f, "Music Volume", 26, 30);
+        musicVolumeSlider = new Slider(0.5f, "Music Volume", 520, 600);
         getStage().addActor(musicVolumeSlider);
 
-        soundVolumeSlider = new Slider(0.5f, "Sound Volume", 26, 25);
+        soundVolumeSlider = new Slider(0.5f, "Sound Volume", 520, 500);
         getStage().addActor(soundVolumeSlider);
     }
 

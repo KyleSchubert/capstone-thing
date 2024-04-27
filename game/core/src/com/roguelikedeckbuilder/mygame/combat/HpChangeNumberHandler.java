@@ -9,7 +9,6 @@ import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 import java.util.Random;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class HpChangeNumberHandler {
     private static final Array<HpChangeNumber> numbersThatNeedToBeDrawn = new Array<>();
@@ -32,22 +31,20 @@ public class HpChangeNumberHandler {
 
         public HpChangeNumber(XYPair<Float> centerPoint, int hpChangeAmount) {
 
-            float xFluctuation = random.nextFloat(6) - 3;
-            float yFluctuation = random.nextFloat(6) - 3;
+            float xFluctuation = random.nextFloat(120) - 60;
+            float yFluctuation = random.nextFloat(120) - 60;
 
             group.setPosition(centerPoint.x() + xFluctuation, centerPoint.y() + yFluctuation);
 
             group.addActor(LabelMaker.newLabel(Integer.toString(hpChangeAmount), LabelMaker.getHpAndDamage()));
 
             SequenceAction sequenceAction = new SequenceAction(
-                    Actions.moveBy(0, 4, 0.8f),
+                    Actions.moveBy(0, 80, 0.8f),
                     Actions.fadeOut(0.5f),
                     Actions.removeActor()
             );
 
             group.addAction(sequenceAction);
-
-            group.setScale(SCALE_FACTOR);
         }
 
         public Group getGroup() {

@@ -4,11 +4,11 @@ import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
 public enum EnemyPositions {
-    DEBUG_POSITION(20, 20),
-    ENEMY1(33, Player.getPositionOnStage().y()),
-    ENEMY2(44, Player.getPositionOnStage().y()),
-    ENEMY3(55, Player.getPositionOnStage().y()),
-    ENEMY4(66, Player.getPositionOnStage().y());
+    DEBUG_POSITION(400, 400),
+    ENEMY1(660, Player.getPositionOnStage().y()),
+    ENEMY2(880, Player.getPositionOnStage().y()),
+    ENEMY3(1100, Player.getPositionOnStage().y()),
+    ENEMY4(1320, Player.getPositionOnStage().y());
 
     private final XYPair<Float> pos;
 

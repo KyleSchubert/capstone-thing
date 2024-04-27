@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class HpBar {
     private final ShapeRenderer shapeRenderer;
@@ -42,11 +41,11 @@ public class HpBar {
         hpRatio = 1;
 
         defenseImage = new Image(new Texture(Gdx.files.internal("OTHER UI/defense.png")));
-        defenseImage.setScale(SCALE_FACTOR * 2);
+        defenseImage.setScale(2);
 
         font = new BitmapFont(Gdx.files.internal("hp_and_damage.fnt"));
         font.setUseIntegerPositions(false);
-        font.getData().setScale(SCALE_FACTOR / 4);
+        font.getData().setScale(0.25f);
 
         layoutHpBarText = new GlyphLayout(font, "");
         layoutDefenseText = new GlyphLayout(font, "");
@@ -64,8 +63,8 @@ public class HpBar {
     }
 
     public void setPosition(XYPair<Float> position) {
-        this.position = new XYPair<>(position.x() / SCALE_FACTOR, position.y() / SCALE_FACTOR);
-        defenseImage.setPosition((this.position.x()) * SCALE_FACTOR - 1.5f, this.position.y() * SCALE_FACTOR - 1.5f);
+        this.position = position;
+        defenseImage.setPosition((this.position.x()) - 30, this.position.y() - 30);
         updateBar();
     }
 
@@ -115,12 +114,12 @@ public class HpBar {
             batch.begin();
 
             // hp bar number text
-            font.draw(batch, hpBarText, (this.position.x() + totalWidth / 2) * SCALE_FACTOR - layoutHpBarText.width / 2, this.position.y() * SCALE_FACTOR + 1.3f);
+            font.draw(batch, hpBarText, (this.position.x() + totalWidth / 2) - layoutHpBarText.width / 2, this.position.y() + 26);
             // defense number text
             if (isDrawDefense) {
                 font.draw(batch, defenseText,
-                        (defenseImage.getX() + defenseImage.getImageWidth() * SCALE_FACTOR) - layoutDefenseText.width / 2,
-                        (defenseImage.getY() + defenseImage.getImageHeight() * SCALE_FACTOR) + layoutDefenseText.height / 2);
+                        (defenseImage.getX() + defenseImage.getImageWidth()) - layoutDefenseText.width / 2,
+                        (defenseImage.getY() + defenseImage.getImageHeight()) + layoutDefenseText.height / 2);
             }
 
             batch.end();

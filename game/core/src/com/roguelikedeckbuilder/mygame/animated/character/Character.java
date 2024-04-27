@@ -11,7 +11,6 @@ import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffect;
 import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffectName;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class Character extends Group {
     private final CharacterTypeName characterTypeName;
@@ -29,15 +28,11 @@ public class Character extends Group {
     public Character(CharacterTypeName characterTypeName, float x, float y) {
         this.characterTypeName = characterTypeName;
 
-        x -= CharacterData.getOrigin(characterTypeName).x() * SCALE_FACTOR;
-        y -= (CharacterData.getDimensions(characterTypeName).y() - CharacterData.getOrigin(characterTypeName).y()) * SCALE_FACTOR;
-
-        // It seems origin is not what I want
-        // this.setOrigin(CharacterData.getOrigin(characterTypeName).x(), CharacterData.getOrigin(characterTypeName).y());
+        x -= CharacterData.getOrigin(characterTypeName).x();
+        y -= (CharacterData.getDimensions(characterTypeName).y() - CharacterData.getOrigin(characterTypeName).y());
 
         this.setPosition(x, y);
         this.setSize(CharacterData.getDimensions(characterTypeName).x(), CharacterData.getDimensions(characterTypeName).y());
-        this.setScale(SCALE_FACTOR);
 
         this.setState(CharacterState.STANDING);
         setBounds(x, y,
@@ -45,15 +40,13 @@ public class Character extends Group {
                 CharacterData.getDimensions(characterTypeName).y());
 
         targetGlow = new Image(new Texture(Gdx.files.internal("OTHER UI/target glow.png")));
-        targetGlow.setScale(SCALE_FACTOR);
-        targetGlow.setOrigin(-96 * SCALE_FACTOR, -80 * SCALE_FACTOR);
 
         if (characterTypeName == CharacterTypeName.EVIL_HH) {
             hasEvilAura = true;
             evilAura = new VisualEffect(
                     VisualEffectName.EVIL_HH_AURA,
                     getCharacterCenter().x(),
-                    getCharacterCenter().y() + 2.6f,
+                    getCharacterCenter().y() + 52,
                     this.getScaleX()
             );
             evilAura.setLooping();
@@ -105,7 +98,7 @@ public class Character extends Group {
 
         float additionalShiftX = 0;
         if (this.isFacingLeft == -1) {
-            additionalShiftX = 2 * CharacterData.getOrigin(characterTypeName).x() * SCALE_FACTOR;
+            additionalShiftX = 2 * CharacterData.getOrigin(characterTypeName).x();
         }
 
         batch.draw(CharacterData.getAllAnimationFrames(characterTypeName)[this.frame],
@@ -147,11 +140,11 @@ public class Character extends Group {
     }
 
     private float getBottomUpYOrigin() {
-        return (CharacterData.getDimensions(characterTypeName).y() - CharacterData.getOrigin(characterTypeName).y()) * SCALE_FACTOR;
+        return (CharacterData.getDimensions(characterTypeName).y() - CharacterData.getOrigin(characterTypeName).y());
     }
 
     public XYPair<Float> getCharacterCenter() {
-        float x = this.getX() + CharacterData.getOrigin(characterTypeName).x() * SCALE_FACTOR;
+        float x = this.getX() + CharacterData.getOrigin(characterTypeName).x();
         float y = this.getY() + getBottomUpYOrigin();
 
         return new XYPair<>(x, y);
@@ -159,6 +152,6 @@ public class Character extends Group {
 
     private void refreshTargetPosition() {
         XYPair<Float> coordinates = getCharacterCenter();
-        targetGlow.setPosition(coordinates.x(), coordinates.y());
+        targetGlow.setPosition(coordinates.x() - targetGlow.getWidth() / 2, coordinates.y());
     }
 }

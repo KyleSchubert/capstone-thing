@@ -10,19 +10,19 @@ public class PauseMenuStage extends GenericStage {
     public PauseMenuStage() {
         super("pause background");
 
-        getStageBackgroundActor().setPosition(29.5f, 20);
+        getStageBackgroundActor().setPosition(590, 400);
 
         ImageButton resumeButton = ClickListenerManager.getMenuSwitchingButton(
-                "resume", MenuState.RESUME, MenuSoundType.CLOSE, 31, 29.2f);
+                "resume", MenuState.RESUME, MenuSoundType.CLOSE, 625, 584);
         getStage().addActor(resumeButton);
 
         ImageButton settingsButton = ClickListenerManager.getMenuSwitchingButton(
-                "settings", MenuState.SETTINGS, MenuSoundType.OPEN, 31, 25.1f);
+                "settings", MenuState.SETTINGS, MenuSoundType.OPEN, 625, 502);
         settingsButton.addCaptureListener(ClickListenerManager.reloadSettingsMenu());
         getStage().addActor(settingsButton);
 
         ImageButton giveUpButton = ClickListenerManager.getMenuSwitchingButton(
-                "give up", MenuState.RESULTS, MenuSoundType.SILENT, 31.5f, 20.5f);
+                "give up", MenuState.RESULTS, MenuSoundType.SILENT, 630, 410);
         getStage().addActor(giveUpButton);
     }
 }

@@ -32,7 +32,6 @@ import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 
 public class CombatMenuStage extends GenericStage {
@@ -51,7 +50,7 @@ public class CombatMenuStage extends GenericStage {
         super("combat background");
 
         // Reposition the background
-        getStageBackgroundActor().setPosition(-7, -3.8f);
+        getStageBackgroundActor().setPosition(-140, -76);
 
         // Add the player
         setPlayerCharacter();
@@ -59,22 +58,19 @@ public class CombatMenuStage extends GenericStage {
 
         // Add the card piles
         Image drawPile = new Image(new Texture(Gdx.files.internal("CARDS/draw pile.png")));
-        drawPile.setPosition(4, 3);
-        drawPile.setScale(SCALE_FACTOR);
+        drawPile.setPosition(80, 60);
         this.getStage().addActor(drawPile);
         drawPile.addCaptureListener(ClickListenerManager.lookingAtDrawPile());
         drawPile.addCaptureListener(ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN));
         drawPile.addCaptureListener(ClickListenerManager.hoverAndPutTextInTooltip("Draw Pile", "Click to view", -999));
 
         Image shufflePile = new Image(new Texture(Gdx.files.internal("CARDS/shuffle pile.png")));
-        shufflePile.setPosition(64, 3);
-        shufflePile.setScale(SCALE_FACTOR);
+        shufflePile.setPosition(1280, 60);
         shufflePile.addCaptureListener(ClickListenerManager.hoverAndPutTextInTooltip("Shuffle Pile", "Unable to view", -999));
         this.getStage().addActor(shufflePile);
 
         // Labels for amount of cards in each pile
         Group groupForLabels = new Group();
-        groupForLabels.setScale(SCALE_FACTOR);
 
         drawPileAmountText = LabelMaker.newLabel("", LabelMaker.getLarge());
         drawPileAmountText.setPosition(108, 40);
@@ -88,7 +84,7 @@ public class CombatMenuStage extends GenericStage {
 
         // End turn button
         ImageButton endTurnButton = ClickListenerManager.getImageButton("end turn");
-        endTurnButton.setPosition(58, 9);
+        endTurnButton.setPosition(1160, 180);
         endTurnButton.addCaptureListener(
                 ClickListenerManager.hoverAndPutTextInTooltip("End Turn", "Clicking this ends your turn and starts the Enemies' turns from left to right.", -999)
         );
@@ -113,13 +109,12 @@ public class CombatMenuStage extends GenericStage {
 
         Label.LabelStyle labelStyleLarge = new Label.LabelStyle();
         labelStyleLarge.font = new BitmapFont(Gdx.files.internal("hp_and_damage.fnt"));
-        labelStyleLarge.font.getData().setScale(SCALE_FACTOR / 2);
+        labelStyleLarge.font.getData().setScale(0.5f);
         labelStyleLarge.font.setUseIntegerPositions(false);
 
         // Energy
         Image energyImage = new Image(new Texture(Gdx.files.internal("CARDS/energy.png")));
-        energyImage.setPosition(3, 8);
-        energyImage.setScale(SCALE_FACTOR);
+        energyImage.setPosition(60, 160);
         energyImage.addCaptureListener(
                 ClickListenerManager.hoverAndPutTextInTooltip(
                         "Energy",
@@ -132,7 +127,7 @@ public class CombatMenuStage extends GenericStage {
         energyLabel = new Label(String.valueOf(Player.getEnergy()), labelStyleLarge);
         energyLabel.setWidth(6);
         energyLabel.setWrap(true);
-        energyLabel.setPosition(5, 9.3f);
+        energyLabel.setPosition(100, 186);
         energyLabel.setTouchable(Touchable.disabled);
         this.getStage().addActor(energyLabel);
 
@@ -196,8 +191,8 @@ public class CombatMenuStage extends GenericStage {
             } else if (enemy.getCombatInformation().getHp() == 0 && enemy.getCharacter().getState() != CharacterState.DYING) {
                 VisualEffect deathEffect = new VisualEffect(VisualEffectName.DIE,
                         enemy.getPositionOnStage().x(),
-                        enemy.getPositionOnStage().y() + 2,
-                        SCALE_FACTOR);
+                        enemy.getPositionOnStage().y() + 40,
+                        1);
 
                 getStage().addActor(deathEffect);
 
@@ -208,7 +203,7 @@ public class CombatMenuStage extends GenericStage {
                         new VisualEffect(
                                 VisualEffectName.HIT,
                                 enemy.getPositionOnStage().x(),
-                                enemy.getPositionOnStage().y() + 2,
+                                enemy.getPositionOnStage().y() + 40,
                                 enemy.getCharacter().getScaleX()
                         )
                 );
@@ -232,7 +227,7 @@ public class CombatMenuStage extends GenericStage {
                     new VisualEffect(
                             VisualEffectName.HIT,
                             Player.getPositionOnStage().x(),
-                            Player.getPositionOnStage().y() + 2,
+                            Player.getPositionOnStage().y() + 40,
                             playerCharacter.getScaleX()
                     )
             );
@@ -245,8 +240,8 @@ public class CombatMenuStage extends GenericStage {
 
             for (Card card : Player.getHandContents()) {
                 // Reposition the cards
-                float LEFTMOST_POSITION = 8;
-                float RIGHTMOST_POSITION = 50;
+                float LEFTMOST_POSITION = 160;
+                float RIGHTMOST_POSITION = 1000;
                 float gapSize, positionX, positionY;
 
                 // If there are more than 5 cards, some will be on a second, higher row behind the first row
@@ -293,10 +288,10 @@ public class CombatMenuStage extends GenericStage {
 
     private void positionTemporaryItems() {
         removeActorsByType(UserObjectOptions.ITEM);
-        float GAP_X = 3.5f;
-        float GAP_Y = 3.5f;
-        float TOP_MOST = 36;
-        float LEFT_MOST = 0.4f;
+        float GAP_X = 70;
+        float GAP_Y = 70;
+        float TOP_MOST = 720;
+        float LEFT_MOST = 8;
         float MAX_AMOUNT_PER_COLUMN = 6;
 
         int amountOfTemporaryItems = 0;

@@ -19,11 +19,10 @@ import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 import com.roguelikedeckbuilder.mygame.stages.map.MapNodeType;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 
 public class TooltipStage extends GenericStage {
-    private static final XYPair<Float> middlePosition = new XYPair<>(21.2f, 14f);
+    private static final XYPair<Float> middlePosition = new XYPair<>(424f, 280f);
     private static final XYPair<Float> offScreen = new XYPair<>(9999f, 9999f);
     private final Label itemChoiceLabel1 = LabelMaker.newLabel("", LabelMaker.getSmall());
     private final Label itemChoiceLabel2 = LabelMaker.newLabel("", LabelMaker.getSmall());
@@ -40,7 +39,6 @@ public class TooltipStage extends GenericStage {
         super("tooltip");
         getStageBackgroundActor().setTouchable(Touchable.disabled);
         getStageBackgroundActor().setPosition(offScreen.x(), offScreen.y());
-        getStageBackgroundActor().setScale(SCALE_FACTOR);
 
         size = Size.SMALL;
         location = Location.LEFT;
@@ -51,13 +49,11 @@ public class TooltipStage extends GenericStage {
         mediumTooltipBackground.setPosition(offScreen.x(), offScreen.y());
         mediumTooltipBackground.setTouchable(Touchable.disabled);
         getStage().addActor(mediumTooltipBackground);
-        mediumTooltipBackground.setScale(SCALE_FACTOR);
 
         Image smallTooltipBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/small tooltip.png")));
         smallTooltipBackground.setPosition(offScreen.x(), offScreen.y());
         smallTooltipBackground.setTouchable(Touchable.disabled);
         getStage().addActor(smallTooltipBackground);
-        smallTooltipBackground.setScale(SCALE_FACTOR);
 
         // 3 labels for the "Choose one of these 3 items" screen
         itemChoiceLabel1.setWidth(420);
@@ -78,7 +74,6 @@ public class TooltipStage extends GenericStage {
         nonBackgroundThings.addActor(title);
         nonBackgroundThings.addActor(body);
 
-        nonBackgroundThings.setScale(SCALE_FACTOR);
         getStage().addActor(nonBackgroundThings);
     }
 
@@ -95,32 +90,32 @@ public class TooltipStage extends GenericStage {
         switch (location) {
             case RIGHT -> {
                 pos = getMousePosition();
-                getStage().getActors().get(2).setScaleX(SCALE_FACTOR);
-                titleX = pos.x() / SCALE_FACTOR + 20;
-                bodyX = pos.x() / SCALE_FACTOR + 20;
+                getStage().getActors().get(2).setScaleX(1);
+                titleX = pos.x() + 20;
+                bodyX = pos.x() + 20;
             }
             case LEFT -> {
                 pos = getMousePosition();
-                getStage().getActors().get(2).setScaleX(-SCALE_FACTOR);
-                titleX = pos.x() / SCALE_FACTOR - usedTooltipWidth + 20;
-                bodyX = pos.x() / SCALE_FACTOR - usedTooltipWidth + 20;
+                getStage().getActors().get(2).setScaleX(-1);
+                titleX = pos.x() - usedTooltipWidth + 20;
+                bodyX = pos.x() - usedTooltipWidth + 20;
             }
             case MIDDLE -> {
                 pos = middlePosition;
-                getStage().getActors().get(2).setScaleX(SCALE_FACTOR);
-                titleX = pos.x() / SCALE_FACTOR + 20;
-                bodyX = pos.x() / SCALE_FACTOR + usedTooltipWidth - 20; // this is probably wrong
+                getStage().getActors().get(2).setScaleX(1);
+                titleX = pos.x() + 20;
+                bodyX = pos.x() + usedTooltipWidth - 20; // this is probably wrong
             }
             default -> pos = new XYPair<>(0f, 0f);
         }
         if (isAbove) {
-            getStage().getActors().get(2).setScaleY(SCALE_FACTOR);
-            titleY = pos.y() / SCALE_FACTOR + usedTooltipHeight - 20;
-            bodyY = pos.y() / SCALE_FACTOR + usedTooltipHeight - 64;
+            getStage().getActors().get(2).setScaleY(1);
+            titleY = pos.y() + usedTooltipHeight - 20;
+            bodyY = pos.y() + usedTooltipHeight - 64;
         } else {
-            getStage().getActors().get(2).setScaleY(-SCALE_FACTOR);
-            titleY = pos.y() / SCALE_FACTOR - 20;
-            bodyY = pos.y() / SCALE_FACTOR - 64;
+            getStage().getActors().get(2).setScaleY(-1);
+            titleY = pos.y() - 20;
+            bodyY = pos.y() - 64;
         }
 
         getStage().getActors().get(size.ordinal()).setPosition(pos.x(), pos.y()); // TooltipStage background
@@ -166,17 +161,18 @@ public class TooltipStage extends GenericStage {
 
     public void setLocation(Location location) {
         this.location = location;
-        isAbove = getMousePosition().y() < 25;
+        isAbove = getMousePosition().y() < 500;
     }
 
     public void setLocation() {
         float x = getMousePosition().x();
-        if (x < 40) {
+        if (x < 800) {
             location = Location.RIGHT;
         } else {
             location = Location.LEFT;
         }
-        isAbove = getMousePosition().y() < 25;
+        // "isAbove" as in, "Should the tooltip be appearing above the mouse?"
+        isAbove = getMousePosition().y() < 500;
     }
 
     public void itemReward() {
@@ -190,15 +186,13 @@ public class TooltipStage extends GenericStage {
         title.setText("Choose an item to start with");
 
         XYPair<Float> pos = middlePosition;
-        float realX = pos.x() / SCALE_FACTOR;
-        float realY = pos.y() / SCALE_FACTOR;
 
-        itemChoiceLabel1.setPosition(realX + 120, realY + 420);
-        itemChoiceLabel2.setPosition(realX + 120, realY + 280);
-        itemChoiceLabel3.setPosition(realX + 120, realY + 140);
+        itemChoiceLabel1.setPosition(pos.x() + 120, pos.y() + 420);
+        itemChoiceLabel2.setPosition(pos.x() + 120, pos.y() + 280);
+        itemChoiceLabel3.setPosition(pos.x() + 120, pos.y() + 140);
 
         for (int i = 0; i < itemImages.size; i++) {
-            itemImages.get(i).setPosition(realX + 40, realY + 340 - i * 140);
+            itemImages.get(i).setPosition(pos.x() + 40, pos.y() + 340 - i * 140);
             nonBackgroundThings.addActor(itemImages.get(i));
         }
     }

@@ -30,7 +30,8 @@ import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
 import java.util.Random;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.*;
+import static com.roguelikedeckbuilder.mygame.MyGame.batch;
+import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 import static com.roguelikedeckbuilder.mygame.stages.map.MapNodeType.RANDOM_EVENT;
 
 public class MenuController {
@@ -92,7 +93,6 @@ public class MenuController {
 
         // Dark transparent screen
         darkTransparentScreen = new Image(new Texture(Gdx.files.internal("MENU backgrounds/dark transparent screen.png")));
-        darkTransparentScreen.setScale(SCALE_FACTOR);
         darkTransparentScreen.setSize(40 * 300, 40 * 300);
         darkTransparentScreen.setPosition(0, 0);
 
@@ -125,7 +125,7 @@ public class MenuController {
 
         // For letting the player click things on the topBar no matter the current stage they are on
         if (currentMenuState == MenuState.MAP || currentMenuState == MenuState.SHOP || currentMenuState == MenuState.COMBAT) {
-            if (getMousePosition().y() > 40) {
+            if (getMousePosition().y() > 800) {
                 if (currentInputProcessor != topBarStage.getStage()) {
                     Gdx.input.setInputProcessor(topBarStage.getStage());
                     previousInputProcessor = currentInputProcessor;

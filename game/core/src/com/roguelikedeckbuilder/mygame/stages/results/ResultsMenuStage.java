@@ -33,7 +33,7 @@ public class ResultsMenuStage extends GenericStage {
     public ResultsMenuStage() {
         super("results background");
 
-        getStageBackgroundActor().setPosition(48, 0.7f);
+        getStageBackgroundActor().setPosition(960, 14);
 
         wonOrLost = LabelMaker.newLabel("", LabelMaker.getLarge());
         timeSpent = LabelMaker.newLabel("", LabelMaker.getMedium());
@@ -76,7 +76,7 @@ public class ResultsMenuStage extends GenericStage {
         superCoin.setPosition(64, 146);
 
         Group groupHoldingAllLabels = new Group();
-        groupHoldingAllLabels.setPosition(52, 0);
+        groupHoldingAllLabels.setPosition(1040, 0);
 
         groupHoldingAllLabels.addActor(wonOrLost);
         groupHoldingAllLabels.addActor(timeSpent);
@@ -95,7 +95,7 @@ public class ResultsMenuStage extends GenericStage {
         addActor(groupHoldingAllLabels);
 
         ImageButton mainMenuButton = ClickListenerManager.getMenuSwitchingButton(
-                "main menu", MenuState.MAIN_MENU, MenuSoundType.CLOSE, 52, 2);
+                "main menu", MenuState.MAIN_MENU, MenuSoundType.CLOSE, 1040, 40);
         getStage().addActor(mainMenuButton);
     }
 

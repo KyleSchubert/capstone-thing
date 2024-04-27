@@ -9,7 +9,6 @@ import com.roguelikedeckbuilder.mygame.combat.effect.EffectName;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 // Enemies' attacks only do one thing for now.
 public class Intent {
@@ -23,9 +22,8 @@ public class Intent {
 
         Image intentIcon = EffectData.getIntentIcon(effectName);
         group.addActor(intentIcon);
-
-        group.setScale(SCALE_FACTOR);
     }
+
 
     public Group getGroup() {
         return group;

@@ -34,7 +34,6 @@ import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 import com.roguelikedeckbuilder.mygame.treasure.Treasure;
 import com.roguelikedeckbuilder.mygame.treasure.TreasureType;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 
 public class ClickListenerManager {
@@ -66,9 +65,8 @@ public class ClickListenerManager {
                 UserObjectOptions userObjectOptions = (UserObjectOptions) event.getTarget().getUserObject();
                 if (userObjectOptions == UserObjectOptions.SLIDER_KNOB) {
                     Actor knob = event.getTarget();
-                    float sliderOffset = knob.getParent().getX() / SCALE_FACTOR + knob.getWidth() / 2;
-                    float scaledMousePosition = getMousePosition().x() / SCALE_FACTOR;
-                    float correctedMousePosition = scaledMousePosition - sliderOffset;
+                    float sliderOffset = knob.getParent().getX() + knob.getWidth() / 2;
+                    float correctedMousePosition = getMousePosition().x() - sliderOffset;
 
                     Slider slider = (Slider) knob.getParent();
                     slider.updateKnobPosition(correctedMousePosition);
@@ -242,7 +240,7 @@ public class ClickListenerManager {
                 new TextureRegionDrawable(new TextureRegion(notClickedTexture)),
                 new TextureRegionDrawable(new TextureRegion(clickedTexture))
         );
-        button.setSize(notClickedTexture.getWidth() * SCALE_FACTOR, notClickedTexture.getHeight() * SCALE_FACTOR);
+        button.setSize(notClickedTexture.getWidth(), notClickedTexture.getHeight());
         return button;
     }
 
@@ -303,7 +301,7 @@ public class ClickListenerManager {
                 );
                 visualEffect.setTouchable(Touchable.disabled);
                 mainMenuStage.addActor(visualEffect);
-                
+
                 CharacterTypeName characterTypeName = CharacterData.colorToCharacterTypeName(color);
                 mainMenuStage.setCharacter(characterTypeName);
 

@@ -27,12 +27,11 @@ import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 import com.roguelikedeckbuilder.mygame.tracking.trigger.TriggerData;
 
 public class MyGame extends ApplicationAdapter {
-    public static final float SCALE_FACTOR = 0.05f;
     public static final float STEP_TIME = 1f / 60f;
     private static final float windowWidth = 1440;
     private static final float windowHeight = 920;
-    private static final float viewWidth = windowWidth * SCALE_FACTOR;
-    private static final float viewHeight = windowHeight * SCALE_FACTOR;
+    private static final float viewWidth = windowWidth;
+    private static final float viewHeight = windowHeight;
     public static SpriteBatch batch;
     public static BitmapFont font;
     public static String timeText = "0:00";
@@ -58,11 +57,9 @@ public class MyGame extends ApplicationAdapter {
         camera = new OrthographicCamera(viewWidth, viewHeight);
 
         viewport = new ScreenViewport(camera);
-        viewport.setUnitsPerPixel(SCALE_FACTOR);
 
         font = new BitmapFont(Gdx.files.internal("font.fnt"), false);
         font.setUseIntegerPositions(false);
-        font.getData().setScale(SCALE_FACTOR, SCALE_FACTOR);
 
         VisualEffectData.initialize();
         CharacterData.initialize();

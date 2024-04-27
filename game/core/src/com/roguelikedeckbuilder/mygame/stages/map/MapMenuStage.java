@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.stream.IntStream;
 
 import static com.badlogic.gdx.math.MathUtils.random;
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 import static com.roguelikedeckbuilder.mygame.MyGame.batch;
 
 public class MapMenuStage extends GenericStage {
@@ -50,8 +49,7 @@ public class MapMenuStage extends GenericStage {
 
         // Background is separate because it needs to be drawn after the lines on the map and after the node icons
         background = new Image(new Texture(Gdx.files.internal("MENU backgrounds/map background.png")));
-        background.setPosition(0, -1);
-        background.setScale(SCALE_FACTOR);
+        background.setPosition(0, -20);
 
         mapNodes = new Array<>();
         shapeRenderer = new ShapeRenderer();
@@ -98,10 +96,10 @@ public class MapMenuStage extends GenericStage {
                     }
 
                     shapeRenderer.rectLine(
-                            (currentNode.getPos().x() + 1.5f) / SCALE_FACTOR,
-                            (currentNode.getPos().y() + 1.5f) / SCALE_FACTOR,
-                            (nextNode.getPos().x() + 1.5f) / SCALE_FACTOR,
-                            (nextNode.getPos().y() + 1.5f) / SCALE_FACTOR,
+                            (currentNode.getPos().x() + 30),
+                            (currentNode.getPos().y() + 30),
+                            (nextNode.getPos().x() + 30),
+                            (nextNode.getPos().y() + 30),
                             4
                     );
                 }
@@ -352,10 +350,10 @@ public class MapMenuStage extends GenericStage {
     }
 
     public class MapNode {
-        private static final float POS_X_MIN = 4;
-        private static final float POS_X_MAX = 68;
-        private static final float POS_Y_MIN = 4;
-        private static final float POS_Y_MAX = 36;
+        private static final float POS_X_MIN = 80;
+        private static final float POS_X_MAX = 1360;
+        private static final float POS_Y_MIN = 80;
+        private static final float POS_Y_MAX = 720;
         private final XYPair<Float> pos;
         private final Array<Integer> nextConnections;
         private final Array<Integer> previousConnections;
@@ -464,7 +462,7 @@ public class MapMenuStage extends GenericStage {
                     break;
             }
             nodeImage = new Image(new Texture(Gdx.files.internal(filePath)));
-            nodeImage.setSize(x * SCALE_FACTOR * 2, y * SCALE_FACTOR * 2);
+            nodeImage.setSize(x * 2, y * 2);
             nodeImage.setPosition(pos.x(), pos.y());
         }
 

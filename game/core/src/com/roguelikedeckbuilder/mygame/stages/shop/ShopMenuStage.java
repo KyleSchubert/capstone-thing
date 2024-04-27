@@ -25,8 +25,6 @@ import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 
 import java.util.Random;
 
-import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
-
 
 public class ShopMenuStage extends GenericStage {
     private final Label upgradeCostLabel;
@@ -43,15 +41,13 @@ public class ShopMenuStage extends GenericStage {
 
     public ShopMenuStage() {
         super("shop");
-        super.getStageBackgroundActor().setPosition(5, 3);
+        super.getStageBackgroundActor().setPosition(100, 60);
 
         ImageButton exitButton = ClickListenerManager.getMenuSwitchingButton(
-                "exit", MenuState.MAP, MenuSoundType.CLOSE, 56.8f, 32);
-        exitButton.setPosition(56.8f, 32);
+                "exit", MenuState.MAP, MenuSoundType.CLOSE, 1136, 640);
         getStage().addActor(exitButton);
 
         nonCardShopUI = new Group();
-        nonCardShopUI.setScale(SCALE_FACTOR);
         getStage().addActor(nonCardShopUI);
 
         upgradeCostLabel = LabelMaker.newLabel("Price: 150", LabelMaker.getMedium());
@@ -211,17 +207,17 @@ public class ShopMenuStage extends GenericStage {
     }
 
     private enum ShopPositions {
-        CARD1(6, 20.6f),
-        CARD2(18, 20.6f),
-        CARD3(30, 20.6f),
-        CARD4(42, 20.6f),
-        CARD5(6, 4.1f),
-        CARD6(18, 4.1f),
-        CARD7(30, 4.1f),
-        CARD8(42, 4.1f),
-        ITEM1(56, 15),
-        ITEM2(56, 10),
-        ITEM3(56, 5);
+        CARD1(120, 412),
+        CARD2(360, 412),
+        CARD3(600, 412),
+        CARD4(840, 412),
+        CARD5(120, 82),
+        CARD6(360, 82),
+        CARD7(600, 82),
+        CARD8(840, 82),
+        ITEM1(1120, 300),
+        ITEM2(1120, 200),
+        ITEM3(1120, 100);
 
         private final float x;
         private final float y;
