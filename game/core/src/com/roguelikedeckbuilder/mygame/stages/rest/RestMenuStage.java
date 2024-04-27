@@ -25,7 +25,7 @@ public class RestMenuStage extends GenericStage {
         restButton.setPosition(restButtonXPosition, 520);
         restButton.addListener(clickListener);
         restButton.addListener(ClickListenerManager.healing());
-        getStage().addActor(restButton);
+        addActor(restButton);
 
         Image upgradeButton = new Image(new Texture(Gdx.files.internal("MENU BUTTONS/rest area/Upgrade.png")));
         float upgradeButtonXPosition = backgroundXPosition + (getStageBackgroundActor().getWidth() - upgradeButton.getWidth()) / 2;
@@ -33,6 +33,6 @@ public class RestMenuStage extends GenericStage {
         upgradeButton.addListener(clickListener);
         upgradeButton.addListener(cardChangeStageTrigger);
         upgradeButton.addListener(cardUpgradePreparerClickListener);
-        getStage().addActor(upgradeButton);
+        addActor(upgradeButton);
     }
 }

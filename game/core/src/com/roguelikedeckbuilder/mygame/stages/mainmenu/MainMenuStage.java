@@ -34,7 +34,7 @@ public class MainMenuStage extends GenericStage {
         getStage().addCaptureListener(ClickListenerManager.characterSelectPixelColor(characterSelectionPixmap, this));
 
         Image characterSelection = new Image(new Texture(Gdx.files.internal("characters/character select.png")));
-        getStage().addActor(characterSelection);
+        addActor(characterSelection);
 
         // Everything else
         Group groupForLabel = new Group();
@@ -49,42 +49,42 @@ public class MainMenuStage extends GenericStage {
 
         ImageButton playButton = ClickListenerManager.getMenuSwitchingButton(
                 "play", MenuState.START_REWARDS, MenuSoundType.SILENT, 40, 360);
-        getStage().addActor(playButton);
+        addActor(playButton);
 
         ImageButton upgradesButton = ClickListenerManager.getMenuSwitchingButton(
                 "upgrades", MenuState.UPGRADES, MenuSoundType.OPEN, 40, 260);
-        getStage().addActor(upgradesButton);
+        addActor(upgradesButton);
 
         ImageButton settingsButton = ClickListenerManager.getMenuSwitchingButton(
                 "settings", MenuState.SETTINGS, MenuSoundType.OPEN, 40, 160);
         settingsButton.addCaptureListener(ClickListenerManager.reloadSettingsMenu());
-        getStage().addActor(settingsButton);
+        addActor(settingsButton);
 
         ImageButton exitButton = ClickListenerManager.getImageButton("exit");
         exitButton.setPosition(40, 60);
         exitButton.addListener(ClickListenerManager.exitingGame());
-        getStage().addActor(exitButton);
+        addActor(exitButton);
 
         // Characters on main menu
-        getStage().addActor(new Character(CharacterTypeName.SWORD_FISH, 380, 0));
-        getStage().addActor(new Character(CharacterTypeName.HELMET_PENGUIN, 240, 0));
-        getStage().addActor(new Character(CharacterTypeName.UNIMPRESSED_FISH, 592, -6));
-        getStage().addActor(new Character(CharacterTypeName.BURGER, 742, 0));
-        getStage().addActor(new Character(CharacterTypeName.KNIGHT, 966, 0));
-        getStage().addActor(new Character(CharacterTypeName.HAMMIE, 1140, 0));
-        getStage().addActor(new Character(CharacterTypeName.ANTEATER, 1326, 0));
-        getStage().addActor(new Character(CharacterTypeName.CHIPS, 1136, 100));
-        getStage().addActor(new Character(CharacterTypeName.SAD_DOLLAR, 396, 132));
-        getStage().addActor(new Character(CharacterTypeName.EVIL_HH, 1240, 240));
-        getStage().addActor(new Character(CharacterTypeName.HOT_DOG, 1228, 88));
-        getStage().addActor(new Character(CharacterTypeName.STARER, 1032, 180));
-        getStage().addActor(new Character(CharacterTypeName.HAM_SHAMWITCH, 780, 160));
-        getStage().addActor(new Character(CharacterTypeName.POINTER, 860, 260));
-        getStage().addActor(new Character(CharacterTypeName.SOCK, 1148, 260));
-        getStage().addActor(new Character(CharacterTypeName.MONOLITH, 1360, 140));
-        getStage().addActor(new Character(CharacterTypeName.ALIEN, 680, 226));
-        getStage().addActor(new Character(CharacterTypeName.HAM_AND_FIST, 866, 0));
-        getStage().addActor(new Character(CharacterTypeName.PEANUT_BEE, 1020, 260));
+        addActor(new Character(CharacterTypeName.SWORD_FISH, 380, 0));
+        addActor(new Character(CharacterTypeName.HELMET_PENGUIN, 240, 0));
+        addActor(new Character(CharacterTypeName.UNIMPRESSED_FISH, 592, -6));
+        addActor(new Character(CharacterTypeName.BURGER, 742, 0));
+        addActor(new Character(CharacterTypeName.KNIGHT, 966, 0));
+        addActor(new Character(CharacterTypeName.HAMMIE, 1140, 0));
+        addActor(new Character(CharacterTypeName.ANTEATER, 1326, 0));
+        addActor(new Character(CharacterTypeName.CHIPS, 1136, 100));
+        addActor(new Character(CharacterTypeName.SAD_DOLLAR, 396, 132));
+        addActor(new Character(CharacterTypeName.EVIL_HH, 1240, 240));
+        addActor(new Character(CharacterTypeName.HOT_DOG, 1228, 88));
+        addActor(new Character(CharacterTypeName.STARER, 1032, 180));
+        addActor(new Character(CharacterTypeName.HAM_SHAMWITCH, 780, 160));
+        addActor(new Character(CharacterTypeName.POINTER, 860, 260));
+        addActor(new Character(CharacterTypeName.SOCK, 1148, 260));
+        addActor(new Character(CharacterTypeName.MONOLITH, 1360, 140));
+        addActor(new Character(CharacterTypeName.ALIEN, 680, 226));
+        addActor(new Character(CharacterTypeName.HAM_AND_FIST, 866, 0));
+        addActor(new Character(CharacterTypeName.PEANUT_BEE, 1020, 260));
 
         Group creditsHolder = new Group();
         creditsHolder.setTouchable(Touchable.disabled);
@@ -114,14 +114,14 @@ public class MainMenuStage extends GenericStage {
 
         creditsTitle.setY(credits.getY() + credits.getHeight() + 12);
 
-        getStage().addActor(chosenCharacter);
+        addActor(chosenCharacter);
     }
 
     public void setCharacter(CharacterTypeName characterTypeName) {
         getStage().getActors().removeValue(chosenCharacter, true);
 
         chosenCharacter = new Character(characterTypeName, CHOSEN_CHARACTER_POS.x(), CHOSEN_CHARACTER_POS.y());
-        getStage().addActor(chosenCharacter);
+        addActor(chosenCharacter);
 
         Player.setCharacterTypeName(characterTypeName);
     }

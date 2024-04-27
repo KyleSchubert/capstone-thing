@@ -54,12 +54,12 @@ public class CombatMenuStage extends GenericStage {
 
         // Add the player
         setPlayerCharacter();
-        this.getStage().addActor(Player.getCombatInformation().getStatusEffectVisuals());
+        addActor(Player.getCombatInformation().getStatusEffectVisuals());
 
         // Add the card piles
         Image drawPile = new Image(new Texture(Gdx.files.internal("CARDS/draw pile.png")));
         drawPile.setPosition(80, 60);
-        this.getStage().addActor(drawPile);
+        addActor(drawPile);
         drawPile.addCaptureListener(ClickListenerManager.lookingAtDrawPile());
         drawPile.addCaptureListener(ClickListenerManager.triggeringMenuState(MenuState.CARD_CHOICE, MenuSoundType.OPEN));
         drawPile.addCaptureListener(ClickListenerManager.hoverAndPutTextInTooltip("Draw Pile", "Click to view", -999));
@@ -67,7 +67,7 @@ public class CombatMenuStage extends GenericStage {
         Image shufflePile = new Image(new Texture(Gdx.files.internal("CARDS/shuffle pile.png")));
         shufflePile.setPosition(1280, 60);
         shufflePile.addCaptureListener(ClickListenerManager.hoverAndPutTextInTooltip("Shuffle Pile", "Unable to view", -999));
-        this.getStage().addActor(shufflePile);
+        addActor(shufflePile);
 
         // Labels for amount of cards in each pile
         Group groupForLabels = new Group();
@@ -80,7 +80,7 @@ public class CombatMenuStage extends GenericStage {
         shufflePileAmountText.setPosition(1308, 40);
         groupForLabels.addActor(shufflePileAmountText);
 
-        this.getStage().addActor(groupForLabels);
+        addActor(groupForLabels);
 
         // End turn button
         ImageButton endTurnButton = ClickListenerManager.getImageButton("end turn");
@@ -103,7 +103,7 @@ public class CombatMenuStage extends GenericStage {
                 return true;
             }
         });
-        this.getStage().addActor(endTurnButton);
+        addActor(endTurnButton);
 
         mustRemoveBecauseDead = new Array<>();
 
@@ -122,14 +122,14 @@ public class CombatMenuStage extends GenericStage {
                         -999
                 )
         );
-        this.getStage().addActor(energyImage);
+        addActor(energyImage);
 
         energyLabel = new Label(String.valueOf(Player.getEnergy()), labelStyleLarge);
         energyLabel.setWidth(6);
         energyLabel.setWrap(true);
         energyLabel.setPosition(100, 186);
         energyLabel.setTouchable(Touchable.disabled);
-        this.getStage().addActor(energyLabel);
+        addActor(energyLabel);
 
         this.getStage().addListener(getCardHoverListener());
 
@@ -168,7 +168,7 @@ public class CombatMenuStage extends GenericStage {
     public void setPlayerCharacter() {
         playerCharacter = Player.getCharacter();
         removeActorsByType(UserObjectOptions.PLAYER);
-        getStage().addActor(playerCharacter);
+        addActor(playerCharacter);
 
         System.out.println(playerCharacter.getX());
         System.out.println(playerCharacter.getY());
@@ -177,7 +177,7 @@ public class CombatMenuStage extends GenericStage {
 
     public void batch(float elapsedTime, SpriteBatch batch) {
         while (HpChangeNumberHandler.size() > 0) {
-            this.getStage().addActor(HpChangeNumberHandler.pop().getGroup());
+            addActor(HpChangeNumberHandler.pop().getGroup());
         }
 
         super.batch(elapsedTime);
@@ -194,7 +194,7 @@ public class CombatMenuStage extends GenericStage {
                         enemy.getPositionOnStage().y() + 40,
                         1);
 
-                getStage().addActor(deathEffect);
+                addActor(deathEffect);
 
                 // To use a dying animation, this should be .DYING rather than .DEAD
                 enemy.getCharacter().setState(CharacterState.DEAD);
@@ -262,7 +262,7 @@ public class CombatMenuStage extends GenericStage {
                 card.getGroup().clearActions();
                 if (card.isToBeAddedToCombatMenuStage()) {
                     // Add it to the stage and snap its position to where it should be
-                    this.getStage().addActor(card.getGroup());
+                    addActor(card.getGroup());
                     card.setToBeAddedToCombatMenuStage(false);
                     card.getGroup().setPosition(positionX, positionY);
                 } else {
@@ -296,7 +296,7 @@ public class CombatMenuStage extends GenericStage {
 
         int amountOfTemporaryItems = 0;
         for (Item item : Player.getCombatInformation().getTemporaryItems()) {
-            getStage().addActor(item.getGroup());
+            addActor(item.getGroup());
 
             int rowNumber = (int) (amountOfTemporaryItems % MAX_AMOUNT_PER_COLUMN);
             int columnNumber = (int) Math.floor(amountOfTemporaryItems / MAX_AMOUNT_PER_COLUMN);
@@ -381,7 +381,7 @@ public class CombatMenuStage extends GenericStage {
         currentEnemies.add(enemy);
         enemy.putOnStage(getStage());
         enemy.getCombatInformation().getStatusEffectVisuals().setUserObject(UserObjectOptions.ENEMY);
-        getStage().addActor(enemy.getCombatInformation().getStatusEffectVisuals());
+        addActor(enemy.getCombatInformation().getStatusEffectVisuals());
     }
 
     private EnemyPositions generateEnemyPosition() {

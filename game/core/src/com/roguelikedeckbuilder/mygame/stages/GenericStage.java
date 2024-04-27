@@ -38,7 +38,7 @@ public class GenericStage {
     }
 
     public void addActor(Actor actor) {
-        getStage().addActor(actor);
+        this.stage.addActor(actor);
     }
 
     public Stage getStage() {

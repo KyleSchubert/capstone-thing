@@ -227,7 +227,7 @@ public class MapMenuStage extends GenericStage {
                 getMapNode(stageNumber, i).prepareNodeImage();
                 getMapNode(stageNumber, i).getImage().addListener(hoverAndClickListener);
                 getMapNode(stageNumber, i).getImage().setUserObject(getMapNode(stageNumber, i).getMapNodeData());
-                getStage().addActor(getMapNode(stageNumber, i).getImage());
+                addActor(getMapNode(stageNumber, i).getImage());
             }
         }
     }

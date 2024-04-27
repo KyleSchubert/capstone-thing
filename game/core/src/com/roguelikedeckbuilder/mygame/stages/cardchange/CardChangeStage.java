@@ -40,7 +40,7 @@ public class CardChangeStage extends GenericStage {
         Group groupForTextAtTop = new Group();
 
         groupForTextAtTop.addActor(textAtTop);
-        this.getStage().addActor(groupForTextAtTop);
+        addActor(groupForTextAtTop);
 
         scrollPaneStyle = new ScrollPane.ScrollPaneStyle();
 
@@ -57,7 +57,7 @@ public class CardChangeStage extends GenericStage {
         ImageButton backButton = ClickListenerManager.getImageButton("back");
         backButton.addListener(getClickListenerForBackButton());
         backButton.setPosition(940, 732);
-        this.getStage().addActor(backButton);
+        addActor(backButton);
     }
 
     private void resetCardChoiceGroup() {
@@ -86,7 +86,7 @@ public class CardChangeStage extends GenericStage {
         prepareCardChoiceCards(card2);
         prepareCardChoiceCards(card3);
 
-        this.getStage().addActor(cardChoiceGroup);
+        addActor(cardChoiceGroup);
     }
 
     private void prepareCardChoiceCards(Card card) {
@@ -151,7 +151,7 @@ public class CardChangeStage extends GenericStage {
 
         table.setUserObject(UserObjectOptions.TREASURE_GROUP);
 
-        this.getStage().addActor(table);
+        addActor(table);
     }
 
     private Table getScrollTableFromPlayerCards(boolean excludeUpgraded, boolean addUpgradingClick, boolean addRemovingClick) {

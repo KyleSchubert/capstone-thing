@@ -24,28 +24,28 @@ public class SettingsMenuStage extends GenericStage {
         ImageButton backButton = ClickListenerManager.getMenuSwitchingButton(
                 "back", MenuState.SETTINGS_BACK, MenuSoundType.CLOSE, 500, 100);
         backButton.addCaptureListener(ClickListenerManager.notSavingSettings());
-        getStage().addActor(backButton);
+        addActor(backButton);
 
         ImageButton confirmButton = ClickListenerManager.getMenuSwitchingButton(
                 "confirm", MenuState.SETTINGS_BACK, MenuSoundType.CLOSE, 980, 100);
         confirmButton.addCaptureListener(ClickListenerManager.savingSettings());
-        getStage().addActor(confirmButton);
+        addActor(confirmButton);
 
         Group titleArea = new Group();
-        getStage().addActor(titleArea);
+        addActor(titleArea);
 
         Label title = LabelMaker.newLabel("Settings", LabelMaker.getLarge());
         titleArea.addActor(title);
         titleArea.setPosition(500, 800);
 
         overallVolumeSlider = new Slider(0.5f, "Overall Volume", 520, 700);
-        getStage().addActor(overallVolumeSlider);
+        addActor(overallVolumeSlider);
 
         musicVolumeSlider = new Slider(0.5f, "Music Volume", 520, 600);
-        getStage().addActor(musicVolumeSlider);
+        addActor(musicVolumeSlider);
 
         soundVolumeSlider = new Slider(0.5f, "Sound Volume", 520, 500);
-        getStage().addActor(soundVolumeSlider);
+        addActor(soundVolumeSlider);
     }
 
     public static void repositionSliders() {

@@ -45,10 +45,10 @@ public class ShopMenuStage extends GenericStage {
 
         ImageButton exitButton = ClickListenerManager.getMenuSwitchingButton(
                 "exit", MenuState.MAP, MenuSoundType.CLOSE, 1136, 640);
-        getStage().addActor(exitButton);
+        addActor(exitButton);
 
         nonCardShopUI = new Group();
-        getStage().addActor(nonCardShopUI);
+        addActor(nonCardShopUI);
 
         upgradeCostLabel = LabelMaker.newLabel("Price: 150", LabelMaker.getMedium());
         upgradeCostLabel.setPosition(1160, 520);
@@ -146,7 +146,7 @@ public class ShopMenuStage extends GenericStage {
         cardGroup.setPosition(position.x, position.y);
         numberOfCards += 1;
 
-        getStage().addActor(cardGroup);
+        addActor(cardGroup);
     }
 
     public void useCorrectButtons() {
@@ -176,7 +176,7 @@ public class ShopMenuStage extends GenericStage {
         getStage().getActors().removeValue(card.getGroup(), true);
         Card newCard = new Card(CardTypeName.OUT_OF_STOCK, false);
         newCard.getGroup().setPosition(posX, posY);
-        getStage().addActor(newCard.getGroup());
+        addActor(newCard.getGroup());
     }
 
     public void setItemSold(Item item) {
@@ -187,7 +187,7 @@ public class ShopMenuStage extends GenericStage {
         newItem.setShowPriceLabel(true);
         newItem.getGroup().addCaptureListener(ClickListenerManager.buyingItem(newItem));
         newItem.getGroup().setPosition(posX, posY);
-        getStage().addActor(newItem.getGroup());
+        addActor(newItem.getGroup());
     }
 
     public void addItem(Item item) {
@@ -203,7 +203,7 @@ public class ShopMenuStage extends GenericStage {
         itemGroup.setPosition(position.x, position.y);
         numberOfItems += 1;
 
-        getStage().addActor(itemGroup);
+        addActor(itemGroup);
     }
 
     private enum ShopPositions {

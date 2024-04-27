@@ -14,15 +14,15 @@ public class PauseMenuStage extends GenericStage {
 
         ImageButton resumeButton = ClickListenerManager.getMenuSwitchingButton(
                 "resume", MenuState.RESUME, MenuSoundType.CLOSE, 625, 584);
-        getStage().addActor(resumeButton);
+        addActor(resumeButton);
 
         ImageButton settingsButton = ClickListenerManager.getMenuSwitchingButton(
                 "settings", MenuState.SETTINGS, MenuSoundType.OPEN, 625, 502);
         settingsButton.addCaptureListener(ClickListenerManager.reloadSettingsMenu());
-        getStage().addActor(settingsButton);
+        addActor(settingsButton);
 
         ImageButton giveUpButton = ClickListenerManager.getMenuSwitchingButton(
                 "give up", MenuState.RESULTS, MenuSoundType.SILENT, 630, 410);
-        getStage().addActor(giveUpButton);
+        addActor(giveUpButton);
     }
 }

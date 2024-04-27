@@ -96,7 +96,7 @@ public class ResultsMenuStage extends GenericStage {
 
         ImageButton mainMenuButton = ClickListenerManager.getMenuSwitchingButton(
                 "main menu", MenuState.MAIN_MENU, MenuSoundType.CLOSE, 1040, 40);
-        getStage().addActor(mainMenuButton);
+        addActor(mainMenuButton);
     }
 
     public void setAllLabels(boolean victory) {

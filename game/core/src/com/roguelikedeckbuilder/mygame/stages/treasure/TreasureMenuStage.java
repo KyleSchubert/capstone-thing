@@ -23,7 +23,7 @@ public class TreasureMenuStage extends GenericStage {
 
         ImageButton exitButton = ClickListenerManager.getMenuSwitchingButton(
                 "exit", MenuState.MAP, MenuSoundType.CLOSE, 840, 60);
-        this.getStage().addActor(exitButton);
+        addActor(exitButton);
 
         treasureGroup = new Group();
         treasureGroup.setUserObject("");
@@ -47,7 +47,7 @@ public class TreasureMenuStage extends GenericStage {
         treasure.addTreasure(TreasureType.PERSISTENT_CURRENCY);
 
         treasureGroup = treasure.getGroup();
-        this.getStage().addActor(treasureGroup);
+        addActor(treasureGroup);
         positionTreasures();
     }
 
@@ -60,7 +60,7 @@ public class TreasureMenuStage extends GenericStage {
         addCardTreasure(treasure);
 
         treasureGroup = treasure.getGroup();
-        this.getStage().addActor(treasureGroup);
+        addActor(treasureGroup);
         positionTreasures();
     }
 

@@ -15,6 +15,6 @@ public class UpgradesMenuStage extends GenericStage {
 
         ImageButton backButton = ClickListenerManager.getMenuSwitchingButton(
                 "back", MenuState.MAIN_MENU, MenuSoundType.CLOSE, 500, 100);
-        getStage().addActor(backButton);
+        addActor(backButton);
     }
 }

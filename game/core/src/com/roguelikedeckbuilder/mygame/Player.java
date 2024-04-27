@@ -266,7 +266,7 @@ public class Player {
             }
         }
 
-        menuController.getTopBarStage().getStage().addActor(item.getGroup());
+        menuController.getTopBarStage().addActor(item.getGroup());
 
         ownedItems.add(item);
         Statistics.gainedItem();

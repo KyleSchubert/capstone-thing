@@ -48,12 +48,12 @@ public class TooltipStage extends GenericStage {
         Image mediumTooltipBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/medium tooltip.png")));
         mediumTooltipBackground.setPosition(offScreen.x(), offScreen.y());
         mediumTooltipBackground.setTouchable(Touchable.disabled);
-        getStage().addActor(mediumTooltipBackground);
+        addActor(mediumTooltipBackground);
 
         Image smallTooltipBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/small tooltip.png")));
         smallTooltipBackground.setPosition(offScreen.x(), offScreen.y());
         smallTooltipBackground.setTouchable(Touchable.disabled);
-        getStage().addActor(smallTooltipBackground);
+        addActor(smallTooltipBackground);
 
         // 3 labels for the "Choose one of these 3 items" screen
         itemChoiceLabel1.setWidth(420);
@@ -74,7 +74,7 @@ public class TooltipStage extends GenericStage {
         nonBackgroundThings.addActor(title);
         nonBackgroundThings.addActor(body);
 
-        getStage().addActor(nonBackgroundThings);
+        addActor(nonBackgroundThings);
     }
 
     @Override
