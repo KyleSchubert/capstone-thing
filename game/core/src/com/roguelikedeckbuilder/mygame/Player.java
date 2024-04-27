@@ -12,7 +12,10 @@ import com.roguelikedeckbuilder.mygame.combat.TargetType;
 import com.roguelikedeckbuilder.mygame.combat.ability.AbilityData;
 import com.roguelikedeckbuilder.mygame.combat.effect.EffectData;
 import com.roguelikedeckbuilder.mygame.combat.effect.EffectType;
-import com.roguelikedeckbuilder.mygame.helpers.*;
+import com.roguelikedeckbuilder.mygame.helpers.AudioManager;
+import com.roguelikedeckbuilder.mygame.helpers.SaveLoad;
+import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
+import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.items.Item;
 import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
@@ -238,10 +241,6 @@ public class Player {
 
     public static void setFlagGoBackToPreviousMenuState(boolean flag) {
         flagGoBackToPreviousMenuState = flag;
-    }
-
-    public static boolean isPointWithinRange(XYPair<Float> point) {
-        return GenericHelpers.isPointWithinRange(point, positionOnStage);
     }
 
     public static Array<Item> getOwnedItems() {

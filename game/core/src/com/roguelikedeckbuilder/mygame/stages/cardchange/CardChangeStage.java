@@ -86,8 +86,10 @@ public class CardChangeStage extends GenericStage {
     }
 
     private void prepareCardChoiceCards(Card card) {
-        int number = random.nextInt(50);
-        if (number > 40) {
+        int CHANCE_OUT_OF_100_FOR_UPGRADED_CARD = 20;
+        int number = random.nextInt(100);
+        
+        if (number > 100 - CHANCE_OUT_OF_100_FOR_UPGRADED_CARD) {
             card.setUpgraded(true);
         }
 

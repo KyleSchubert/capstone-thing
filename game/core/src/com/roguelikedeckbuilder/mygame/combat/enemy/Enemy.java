@@ -11,7 +11,6 @@ import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
 import com.roguelikedeckbuilder.mygame.combat.ability.AbilityData;
 import com.roguelikedeckbuilder.mygame.combat.ability.AbilityTypeName;
-import com.roguelikedeckbuilder.mygame.helpers.GenericHelpers;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.stages.combatmenu.EnemyPositions;
@@ -39,10 +38,6 @@ public class Enemy {
         intentHolder.setUserObject(UserObjectOptions.INTENT);
 
         resetNextAbility();
-    }
-
-    public static boolean isPointWithinRange(XYPair<Float> point, XYPair<Float> positionOfEnemy) {
-        return GenericHelpers.isPointWithinRange(point, positionOfEnemy);
     }
 
     public void putOnStage(Stage stage) {

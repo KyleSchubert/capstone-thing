@@ -466,12 +466,12 @@ public class CombatMenuStage extends GenericStage {
             CombatHandler.resetIsTargetingValid();
 
             if (Player.getPotentialAbilityTargetType() == TargetType.SELF) {
-                if (Player.isPointWithinRange(mousePosition)) {
+                if (isPointWithinRange(mousePosition, Player.getPositionOnStage())) {
                     CombatHandler.setEnemyTargets(currentEnemies);
                 }
             } else {
                 for (Enemy enemy : currentEnemies) {
-                    if (Enemy.isPointWithinRange(mousePosition, enemy.getPositionOnStage())) {
+                    if (isPointWithinRange(mousePosition, enemy.getPositionOnStage())) {
                         CombatHandler.setEnemyTargets(currentEnemies, enemy);
                         break;
                     }
@@ -501,6 +501,23 @@ public class CombatMenuStage extends GenericStage {
                 }
             }
         };
+    }
+
+    private boolean isPointWithinRange(XYPair<Float> point, XYPair<Float> positionOnStage) {
+        float width = 220;
+        float height = 400;
+        float heightBottomOffset = 120;
+
+        float left = positionOnStage.x() - width / 2;
+        float right = positionOnStage.x() + width / 2;
+
+        float bottom = positionOnStage.y() - height / 2 + heightBottomOffset;
+        float top = positionOnStage.y() + height / 2 + heightBottomOffset;
+
+        return (point.x() < right
+                && point.x() > left
+                && point.y() < top
+                && point.y() > bottom);
     }
 
     private void updateMaximumAmountOfCardsLabel() {

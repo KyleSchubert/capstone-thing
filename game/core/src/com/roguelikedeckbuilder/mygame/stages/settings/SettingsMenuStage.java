@@ -14,6 +14,8 @@ public class SettingsMenuStage extends GenericStage {
     private static Slider overallVolumeSlider;
     private static Slider musicVolumeSlider;
     private static Slider soundVolumeSlider;
+    private static boolean justLoaded = false;
+    private static boolean mustPlaySound = false;
 
     public SettingsMenuStage() {
         super("settings background");
@@ -48,6 +50,8 @@ public class SettingsMenuStage extends GenericStage {
         overallVolumeSlider.loadPositionFromValue(AudioManager.getOverallVolume());
         musicVolumeSlider.loadPositionFromValue(AudioManager.getMusicVolume());
         soundVolumeSlider.loadPositionFromValue(AudioManager.getSoundVolume());
+
+        justLoaded = true;
     }
 
     @Override
@@ -57,7 +61,7 @@ public class SettingsMenuStage extends GenericStage {
         if (overallVolumeSlider.isChanged()) {
             AudioManager.setOverallVolume(overallVolumeSlider.getValue());
             overallVolumeSlider.setIsChanged(false);
-            AudioManager.playHitSound();
+            mustPlaySound = true;
         }
         if (musicVolumeSlider.isChanged()) {
             AudioManager.setMusicVolume(musicVolumeSlider.getValue());
@@ -66,6 +70,16 @@ public class SettingsMenuStage extends GenericStage {
         if (soundVolumeSlider.isChanged()) {
             AudioManager.setSoundVolume(soundVolumeSlider.getValue());
             soundVolumeSlider.setIsChanged(false);
+            mustPlaySound = true;
+        }
+
+        if (justLoaded) {
+            mustPlaySound = false;
+            justLoaded = false;
+        }
+
+        if (mustPlaySound) {
+            mustPlaySound = false;
             AudioManager.playHitSound();
         }
     }
