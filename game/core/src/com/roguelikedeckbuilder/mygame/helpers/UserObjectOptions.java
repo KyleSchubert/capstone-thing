@@ -6,5 +6,6 @@ public enum UserObjectOptions {
     ITEM,
     SLIDER_KNOB,
     PLAYER,
+    INTENT,
     TREASURE_GROUP
 }

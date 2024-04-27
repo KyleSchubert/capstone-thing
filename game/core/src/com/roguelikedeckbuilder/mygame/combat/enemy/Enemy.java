@@ -36,6 +36,7 @@ public class Enemy {
         combatInformation.setHpBarVisibility(true);
 
         abilityOptions = EnemyData.getAbilityOptions(characterTypeName);
+        intentHolder.setUserObject(UserObjectOptions.INTENT);
 
         resetNextAbility();
     }
@@ -89,6 +90,10 @@ public class Enemy {
 
         intent.setPosition(position.x() - 3.5f, position.y() - 3.8f);
         intentHolder.addActor(intent);
+    }
+
+    public void removeIntentHolder() {
+        intentHolder.remove();
     }
 
     public void endTurn() {

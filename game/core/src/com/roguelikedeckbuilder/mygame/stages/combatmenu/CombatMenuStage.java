@@ -220,6 +220,7 @@ public class CombatMenuStage extends GenericStage {
         positionTemporaryItems();
 
         for (Enemy enemy : mustRemoveBecauseDead) {
+            enemy.removeIntentHolder();
             removeEnemy(enemy);
         }
         mustRemoveBecauseDead.clear();
@@ -406,6 +407,7 @@ public class CombatMenuStage extends GenericStage {
         removeActorsByType(UserObjectOptions.ENEMY);
         removeActorsByType(UserObjectOptions.CARD);
         removeActorsByType(UserObjectOptions.ITEM);
+        removeActorsByType(UserObjectOptions.INTENT);
 
         getScheduledDelays().clear();
         setPlayerCharacter();
