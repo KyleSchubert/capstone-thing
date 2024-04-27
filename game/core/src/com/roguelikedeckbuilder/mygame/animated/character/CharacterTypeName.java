@@ -14,6 +14,7 @@ public enum CharacterTypeName {
     KNIGHT,
     KING_OF_THE_BURROW,
     MONOLITH,
+    PEANUT_BEE,
     POINTER,
     SAD_DOLLAR,
     SOCK,

@@ -98,6 +98,11 @@ public class EnemyData {
                     abilityOptions = prepareOptions(AbilityTypeName.DEFEND_UPGRADED, AbilityTypeName.HEAL_SELF_ENEMY);
                     enemyClassification = EnemyClassification.NORMAL;
                     break;
+                case PEANUT_BEE:
+                    maxHp = 20;
+                    abilityOptions = prepareOptions(AbilityTypeName.DEFEND_UPGRADED, AbilityTypeName.HEAL_SELF_ENEMY);
+                    enemyClassification = EnemyClassification.NORMAL;
+                    break;
                 case POINTER:
                     maxHp = 20;
                     abilityOptions = prepareOptions(AbilityTypeName.DEFEND_UPGRADED, AbilityTypeName.FIRE_STRIKE);

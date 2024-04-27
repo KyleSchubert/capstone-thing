@@ -85,6 +85,7 @@ public class MainMenuStage extends GenericStage {
         getStage().addActor(new Character(CharacterTypeName.MONOLITH, 68, 7));
         getStage().addActor(new Character(CharacterTypeName.ALIEN, 34, 11.3f));
         getStage().addActor(new Character(CharacterTypeName.HAM_AND_FIST, 43.3f, 0));
+        getStage().addActor(new Character(CharacterTypeName.PEANUT_BEE, 51f, 13));
 
         Group creditsHolder = new Group();
         creditsHolder.setTouchable(Touchable.disabled);

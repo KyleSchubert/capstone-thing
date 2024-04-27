@@ -97,6 +97,7 @@ public class CharacterData {
             case "8c00ffff" -> characterTypeName = CharacterTypeName.HOT_DOG;
             case "0026ffff" -> characterTypeName = CharacterTypeName.ANTEATER;
             case "b200ffff" -> characterTypeName = CharacterTypeName.MONOLITH;
+            case "c0ff96ff" -> characterTypeName = CharacterTypeName.PEANUT_BEE;
             default -> {
                 System.out.println("Got this color: " + colorString + " which doesn't correspond to anything");
                 return CharacterTypeName.HELMET_PENGUIN;
@@ -203,6 +204,12 @@ public class CharacterData {
                     this.internalName = "monolith";
                     standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(8, 0.010f));
                     this.origin = new XYPair<>(115, 240);
+                    this.dimensions = new XYPair<>(220, 270);
+                    break;
+                case PEANUT_BEE:
+                    this.internalName = "peanut bee";
+                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(2, 0.010f));
+                    this.origin = new XYPair<>(110, 260);
                     this.dimensions = new XYPair<>(220, 270);
                     break;
                 case POINTER:
