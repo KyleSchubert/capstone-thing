@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.MyGame;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
@@ -31,8 +30,8 @@ public class ResultsMenuStage extends GenericStage {
     private final Label turnsPlayed;
     private final Label superCoinsEarned; // "persistent money/currency" = SUPER Coins
 
-    public ResultsMenuStage(ScreenViewport viewportForStage) {
-        super(viewportForStage, "results background");
+    public ResultsMenuStage() {
+        super("results background");
 
         getStageBackgroundActor().setPosition(48, 0.7f);
 

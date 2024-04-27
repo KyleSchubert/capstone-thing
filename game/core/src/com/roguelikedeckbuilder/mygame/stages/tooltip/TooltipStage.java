@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.helpers.*;
 import com.roguelikedeckbuilder.mygame.items.ItemData;
 import com.roguelikedeckbuilder.mygame.items.ItemTier;
@@ -37,8 +36,8 @@ public class TooltipStage extends GenericStage {
     private boolean isAbove;
     private boolean showChooseOneItemDetails = false;
 
-    public TooltipStage(ScreenViewport viewportForStage) {
-        super(viewportForStage, "tooltip");
+    public TooltipStage() {
+        super("tooltip");
         getStageBackgroundActor().setTouchable(Touchable.disabled);
         getStageBackgroundActor().setPosition(offScreen.x(), offScreen.y());
         getStageBackgroundActor().setScale(SCALE_FACTOR);

@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.cards.CardData;
@@ -42,8 +41,8 @@ public class ShopMenuStage extends GenericStage {
     private int numberOfCards = 0;
     private int numberOfItems = 0;
 
-    public ShopMenuStage(ScreenViewport viewportForStage) {
-        super(viewportForStage, "shop");
+    public ShopMenuStage() {
+        super("shop");
         super.getStageBackgroundActor().setPosition(5, 3);
 
         ImageButton exitButton = ClickListenerManager.getMenuSwitchingButton(

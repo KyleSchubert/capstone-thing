@@ -4,7 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.MenuSoundType;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
@@ -18,8 +17,8 @@ public class TreasureMenuStage extends GenericStage {
     private final ClickListener cardChoicePreparerClickListener;
     private Group treasureGroup;
 
-    public TreasureMenuStage(ScreenViewport viewportForStage) {
-        super(viewportForStage, "treasure background");
+    public TreasureMenuStage() {
+        super("treasure background");
         getStageBackgroundActor().setPosition(16, 1.6f);
 
         ImageButton exitButton = ClickListenerManager.getMenuSwitchingButton(

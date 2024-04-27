@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.animated.character.Character;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
@@ -26,8 +25,8 @@ public class MainMenuStage extends GenericStage {
     private static final XYPair<Float> CHOSEN_CHARACTER_POS = new XYPair<>(17f, 32f);
     private Character chosenCharacter = new Character(CharacterTypeName.HELMET_PENGUIN, CHOSEN_CHARACTER_POS.x(), CHOSEN_CHARACTER_POS.y());
 
-    public MainMenuStage(ScreenViewport viewportForStage) {
-        super(viewportForStage);
+    public MainMenuStage() {
+        super();
 
         // Hidden character selection bounds-by-color image
         Pixmap characterSelectionPixmap = new Pixmap(Gdx.files.internal("characters/character select.png"));

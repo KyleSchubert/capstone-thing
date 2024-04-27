@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.roguelikedeckbuilder.mygame.MyGame;
 import com.roguelikedeckbuilder.mygame.helpers.DelayScheduler;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
@@ -16,12 +16,12 @@ public class GenericStage {
     private final Array<DelayScheduler.Delay> scheduledDelays = new Array<>();
     private boolean isDraw = false;
 
-    public GenericStage(ScreenViewport viewportForStage) {
-        stage = new Stage(viewportForStage);
+    public GenericStage() {
+        stage = new Stage(MyGame.viewport);
     }
 
-    public GenericStage(ScreenViewport viewportForStage, String stageBackgroundFilename) {
-        stage = new Stage(viewportForStage);
+    public GenericStage(String stageBackgroundFilename) {
+        stage = new Stage(MyGame.viewport);
 
         Image stageBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/" + stageBackgroundFilename + ".png")));
         stageBackground.setScale(SCALE_FACTOR);

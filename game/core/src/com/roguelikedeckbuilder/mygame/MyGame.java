@@ -36,7 +36,7 @@ public class MyGame extends ApplicationAdapter {
     public static SpriteBatch batch;
     public static BitmapFont font;
     public static String timeText = "0:00";
-    static ScreenViewport viewport;
+    public static ScreenViewport viewport;
     static OrthographicCamera camera;
     MenuController menuController;
     float accumulator = 0;
@@ -81,7 +81,7 @@ public class MyGame extends ApplicationAdapter {
         SaveLoad.initialize();
 
         menuController = new MenuController();
-        menuController.create(camera);
+        menuController.create();
 
         Player.referenceMenuController(menuController);
         ClickListenerManager.initialize(menuController);

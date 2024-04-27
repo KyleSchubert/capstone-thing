@@ -3,7 +3,6 @@ package com.roguelikedeckbuilder.mygame.stages.topbar;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.MenuSoundType;
@@ -14,8 +13,8 @@ import static com.roguelikedeckbuilder.mygame.MyGame.*;
 
 public class TopBarStage extends GenericStage {
 
-    public TopBarStage(ScreenViewport viewportForStage) {
-        super(viewportForStage, "top bar background");
+    public TopBarStage() {
+        super("top bar background");
 
         getStageBackgroundActor().setPosition(0, 42.7f);
 

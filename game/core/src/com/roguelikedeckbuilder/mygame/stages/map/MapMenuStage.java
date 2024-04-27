@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 import com.roguelikedeckbuilder.mygame.stages.tooltip.Location;
@@ -46,8 +45,8 @@ public class MapMenuStage extends GenericStage {
     private int currentNodeStage = 0;
     private int currentNodeIndex = 0;
 
-    public MapMenuStage(ScreenViewport viewportForStage, ClickListener hoverAndClickListener) {
-        super(viewportForStage);
+    public MapMenuStage(ClickListener hoverAndClickListener) {
+        super();
 
         // Background is separate because it needs to be drawn after the lines on the map and after the node icons
         background = new Image(new Texture(Gdx.files.internal("MENU backgrounds/map background.png")));

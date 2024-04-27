@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.MenuSoundType;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
@@ -13,8 +12,8 @@ import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 import static com.roguelikedeckbuilder.mygame.MyGame.SCALE_FACTOR;
 
 public class RestMenuStage extends GenericStage {
-    public RestMenuStage(ScreenViewport viewportForStage) {
-        super(viewportForStage, "gray background");
+    public RestMenuStage() {
+        super("gray background");
         float backgroundXPosition = 13.5f;
         super.getStageBackgroundActor().setPosition(backgroundXPosition, 4);
 

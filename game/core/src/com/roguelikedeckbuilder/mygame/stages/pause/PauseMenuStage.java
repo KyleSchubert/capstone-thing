@@ -1,15 +1,14 @@
 package com.roguelikedeckbuilder.mygame.stages.pause;
 
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.MenuSoundType;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 
 public class PauseMenuStage extends GenericStage {
-    public PauseMenuStage(ScreenViewport viewportForStage) {
-        super(viewportForStage, "pause background");
+    public PauseMenuStage() {
+        super("pause background");
 
         getStageBackgroundActor().setPosition(29.5f, 20);
 

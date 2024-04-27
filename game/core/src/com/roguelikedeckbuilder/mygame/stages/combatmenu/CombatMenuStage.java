@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Null;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.animated.character.Character;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterState;
@@ -48,8 +47,8 @@ public class CombatMenuStage extends GenericStage {
     private boolean isPlayerTurn = true;
     private boolean victory = false;
 
-    public CombatMenuStage(ScreenViewport viewportForStage) {
-        super(viewportForStage, "combat background");
+    public CombatMenuStage() {
+        super("combat background");
 
         // Reposition the background
         getStageBackgroundActor().setPosition(-7, -3.8f);

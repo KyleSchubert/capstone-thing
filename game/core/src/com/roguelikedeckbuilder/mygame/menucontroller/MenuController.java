@@ -1,7 +1,6 @@
 package com.roguelikedeckbuilder.mygame.menucontroller;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -9,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Null;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
 import com.roguelikedeckbuilder.mygame.helpers.AudioManager;
@@ -67,26 +65,23 @@ public class MenuController {
         return isGameplayPaused;
     }
 
-    public void create(OrthographicCamera camera) {
+    public void create() {
         // For the UI and menus
-        ScreenViewport viewportForStage = new ScreenViewport(camera);
-        viewportForStage.setUnitsPerPixel(SCALE_FACTOR);
-
-        mainMenuStage = new MainMenuStage(viewportForStage);
-        pauseMenuStage = new PauseMenuStage(viewportForStage);
-        resultsMenuStage = new ResultsMenuStage(viewportForStage);
-        upgradesMenuStage = new UpgradesMenuStage(viewportForStage);
-        settingsMenuStage = new SettingsMenuStage(viewportForStage);
-        cardChangeMenuStage = new CardChangeStage(viewportForStage);
-        restMenuStage = new RestMenuStage(viewportForStage);
-        treasureMenuStage = new TreasureMenuStage(viewportForStage);
-        shopMenuStage = new ShopMenuStage(viewportForStage);
-        combatMenuStage = new CombatMenuStage(viewportForStage);
-        tooltipStage = new TooltipStage(viewportForStage);
-        topBarStage = new TopBarStage(viewportForStage);
+        mainMenuStage = new MainMenuStage();
+        pauseMenuStage = new PauseMenuStage();
+        resultsMenuStage = new ResultsMenuStage();
+        upgradesMenuStage = new UpgradesMenuStage();
+        settingsMenuStage = new SettingsMenuStage();
+        cardChangeMenuStage = new CardChangeStage();
+        restMenuStage = new RestMenuStage();
+        treasureMenuStage = new TreasureMenuStage();
+        shopMenuStage = new ShopMenuStage();
+        combatMenuStage = new CombatMenuStage();
+        tooltipStage = new TooltipStage();
+        topBarStage = new TopBarStage();
 
         ClickListener hoverAndClickListener = makeHoverAndClickListener();
-        mapMenuStage = new MapMenuStage(viewportForStage, hoverAndClickListener);
+        mapMenuStage = new MapMenuStage(hoverAndClickListener);
 
         Gdx.input.setInputProcessor(mainMenuStage.getStage());
         currentInputProcessor = mainMenuStage.getStage();

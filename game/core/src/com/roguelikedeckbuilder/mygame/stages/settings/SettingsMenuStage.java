@@ -3,7 +3,6 @@ package com.roguelikedeckbuilder.mygame.stages.settings;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.helpers.AudioManager;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
@@ -18,8 +17,8 @@ public class SettingsMenuStage extends GenericStage {
     private static Slider musicVolumeSlider;
     private static Slider soundVolumeSlider;
 
-    public SettingsMenuStage(ScreenViewport viewportForStage) {
-        super(viewportForStage, "settings background");
+    public SettingsMenuStage() {
+        super("settings background");
 
         getStageBackgroundActor().setPosition(23.7f, 3.7f);
 

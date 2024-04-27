@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.cards.Card;
 import com.roguelikedeckbuilder.mygame.cards.CardData;
@@ -29,8 +28,8 @@ public class CardChangeStage extends GenericStage {
     private final Label textAtTop;
     private Group cardChoiceGroup;
 
-    public CardChangeStage(ScreenViewport viewportForStage) {
-        super(viewportForStage, "gray background");
+    public CardChangeStage() {
+        super("gray background");
         super.getStageBackgroundActor().setPosition(13.5f, 4);
         resetCardChoiceGroup();
         this.clickListenerToGoBackToTreasure = ClickListenerManager.triggeringMenuState(MenuState.TREASURE, MenuSoundType.OPEN);
