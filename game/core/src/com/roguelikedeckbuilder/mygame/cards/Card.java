@@ -24,9 +24,8 @@ import com.roguelikedeckbuilder.mygame.stages.combatmenu.UseLine;
 
 import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 
-public class Card {
+public class Card extends Group {
     private final CardTypeName cardTypeName;
-    private final Group group;
     private final float width;
     private final float height;
     private final Label cardName;
@@ -64,44 +63,42 @@ public class Card {
         cardEffectDescription.setAlignment(Align.topLeft);
         cardEffectDescription.setPosition(16, 140);
 
-        group = new Group();
-
-        group.addActor(background);
-        group.addActor(image);
-        group.addActor(cardName);
-        group.addActor(cardEffectDescription);
+        addActor(background);
+        addActor(image);
+        addActor(cardName);
+        addActor(cardEffectDescription);
 
         if (showValue) {
             Image coinImage = new Image(new Texture(Gdx.files.internal("ITEMS/doubloon.png")));
             coinImage.setPosition(148, 18);
-            group.addActor(coinImage);
+            addActor(coinImage);
 
             Label cardValueLabel = LabelMaker.newLabel("" + CardData.getValue(cardTypeName), LabelMaker.getMedium());
             cardValueLabel.setPosition(184, 18);
-            group.addActor(cardValueLabel);
+            addActor(cardValueLabel);
         }
 
         // Energy
         Image energyImage = new Image(new Texture(Gdx.files.internal("CARDS/energy on card.png")));
         energyImage.setPosition(170, 200);
-        group.addActor(energyImage);
+        addActor(energyImage);
 
         energyCostLabel = LabelMaker.newLabel(
                 String.valueOf(AbilityData.getEnergyCost(getUsedAbilityTypeName())),
                 LabelMaker.getMediumHpAndDamage());
         energyCostLabel.setPosition(186, 206);
         energyCostLabel.setWidth(width);
-        group.addActor(energyCostLabel);
+        addActor(energyCostLabel);
 
         // Final things
-        group.setUserObject(UserObjectOptions.CARD);
+        setUserObject(UserObjectOptions.CARD);
 
-        group.setWidth(width);
-        group.setHeight(height);
+        setWidth(width);
+        setHeight(height);
 
         // Defend is really the only non-obvious mechanic to people that don't know these kinds of games, I think. Probably.
         if (EffectData.getEffectType(AbilityData.getEffect(CardData.getAbilityTypeName(cardTypeName))) == EffectType.DEFEND) {
-            group.addCaptureListener(
+            addCaptureListener(
                     ClickListenerManager.hoverAndPutTextInTooltip(
                             "Defend",
                             "Protects from 1 damage per 1 Defend. Resets to 0 when the character starts their turn.",
@@ -111,7 +108,7 @@ public class Card {
         }
 
         // Only the background should register the mouse
-        for (Actor actor : group.getChildren()) {
+        for (Actor actor : getChildren()) {
             actor.setTouchable(Touchable.disabled);
         }
         background.setTouchable(Touchable.enabled);
@@ -129,11 +126,6 @@ public class Card {
         }
     }
 
-
-    public Group getGroup() {
-        return group;
-    }
-
     public boolean isUpgraded() {
         return isUpgraded;
     }
@@ -144,7 +136,7 @@ public class Card {
             Image upgradedImage = new Image(new Texture(Gdx.files.internal("CARDS/upgraded star.png")));
             upgradedImage.setPosition(25, 212);
             upgradedImage.setTouchable(Touchable.disabled);
-            group.addActor(upgradedImage);
+            addActor(upgradedImage);
         }
 
         isUpgraded = upgraded;
@@ -167,8 +159,8 @@ public class Card {
                 Player.setPotentialAbilityTargetType(AbilityData.getTargetTypeForHoveringAndHighlighting(getUsedAbilityTypeName()));
                 UseLine.setPosition(
                         new XYPair<>(
-                                getGroup().getX() + width / 2,
-                                getGroup().getY() + height / 2),
+                                getX() + width / 2,
+                                getY() + height / 2),
                         getMousePosition());
             }
 

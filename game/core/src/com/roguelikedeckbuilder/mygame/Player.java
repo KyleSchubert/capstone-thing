@@ -65,12 +65,12 @@ public class Player {
 
         for (CardTypeName cardTypeName : CardData.getSomeRandomCards(CardTypeName.values().length - 1, false)) {
             Card card = new Card(cardTypeName, false);
-            card.getGroup().addCaptureListener(card.getClickListener());
+            card.addCaptureListener(card.getClickListener());
             ownedCards.add(card);
 
             Card cardUpgraded = new Card(cardTypeName, false);
             cardUpgraded.setUpgraded(true);
-            cardUpgraded.getGroup().addCaptureListener(cardUpgraded.getClickListener());
+            cardUpgraded.addCaptureListener(cardUpgraded.getClickListener());
             ownedCards.add(cardUpgraded);
         }
 
@@ -141,7 +141,7 @@ public class Player {
         if (isUpgraded) {
             Statistics.upgradedCard();
         }
-        card.getGroup().addCaptureListener(card.getClickListener());
+        card.addCaptureListener(card.getClickListener());
         Statistics.gainedCard();
         ownedCards.add(card);
     }
@@ -252,21 +252,21 @@ public class Player {
         Item item = new Item(itemTypeName);
         System.out.println("Player gained item: " + itemTypeName);
 
-        item.getGroup().setPosition(10 + ownedItems.size * 60, 802);
+        item.setPosition(10 + ownedItems.size * 60, 802);
 
         for (Item ownedItem : ownedItems) {
             if (itemTypeName == ItemTypeName.JUNK) {
                 changePersistentMoney(5);
                 AudioManager.playFunnyTadaSound();
             } else if (ownedItem.getItemTypeName() == itemTypeName) {
-                item.getGroup().clear();
+                item.clear();
                 changePersistentMoney(5);
                 AudioManager.playFunnyTadaSound();
                 return;
             }
         }
 
-        menuController.getTopBarStage().addActor(item.getGroup());
+        menuController.getTopBarStage().addActor(item);
 
         ownedItems.add(item);
         Statistics.gainedItem();
@@ -292,7 +292,7 @@ public class Player {
                 card.setToGoToShufflePile(false);
 
                 handContents.removeValue(card, true);
-                card.getGroup().remove();
+                card.remove();
                 Statistics.discardedCard();
                 combatMenuStageMustUpdatePileText = true;
                 discardedSomething = true;
@@ -334,8 +334,8 @@ public class Player {
                 shufflePileContents.clear();
             }
             Card drawnCard = drawPileContents.get(0);
-            drawnCard.getGroup().clearActions();
-            drawnCard.getGroup().setPosition(-4000, 0);
+            drawnCard.clearActions();
+            drawnCard.setPosition(-4000, 0);
 
             combatMenuStageMustUpdatePileText = true;
             combatMenuStageMustAddCard = true;

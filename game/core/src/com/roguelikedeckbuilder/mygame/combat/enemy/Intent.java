@@ -11,21 +11,16 @@ import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
 
 // Enemies' attacks only do one thing for now.
-public class Intent {
-    private final Group group = new Group();
-
-    public Intent(AbilityTypeName abilityTypeName) {
+public class Intent extends Group {
+    public Intent(AbilityTypeName abilityTypeName, float x, float y) {
         EffectName effectName = AbilityData.getEffect(abilityTypeName);
 
         String description = EffectData.prepareOneEffectDescription(effectName);
-        group.addCaptureListener(ClickListenerManager.hoverAndPutTextInTooltip("", description, Statistics.getRunNumber()));
+        addCaptureListener(ClickListenerManager.hoverAndPutTextInTooltip("", description, Statistics.getRunNumber()));
 
         Image intentIcon = EffectData.getIntentIcon(effectName);
-        group.addActor(intentIcon);
-    }
+        addActor(intentIcon);
 
-
-    public Group getGroup() {
-        return group;
+        setPosition(x - 70, y - 76);
     }
 }

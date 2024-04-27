@@ -14,14 +14,12 @@ import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import java.util.Random;
 
 
-public class Treasure {
-    private final Group treasureGroup;
+public class Treasure extends Group {
     private final Random random;
     private final ClickListener cardChoiceClickListener;
 
     public Treasure(ClickListener cardChoiceClickListener) {
-        treasureGroup = new Group();
-        treasureGroup.setUserObject(UserObjectOptions.TREASURE_GROUP);
+        setUserObject(UserObjectOptions.TREASURE_GROUP);
 
         random = new Random();
 
@@ -76,7 +74,7 @@ public class Treasure {
         treasureWrapper.setPosition(0, 0);
 
         group.addActor(treasureWrapper);
-        treasureGroup.addActor(group);
+        addActor(group);
 
         return group;
     }
@@ -108,9 +106,4 @@ public class Treasure {
     private int generateRandomPersistentCurrencyAmount() {
         return random.nextInt(2) + 2;
     }
-
-    public Group getGroup() {
-        return treasureGroup;
-    }
-
 }

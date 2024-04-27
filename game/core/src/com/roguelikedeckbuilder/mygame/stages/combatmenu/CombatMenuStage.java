@@ -70,17 +70,13 @@ public class CombatMenuStage extends GenericStage {
         addActor(shufflePile);
 
         // Labels for amount of cards in each pile
-        Group groupForLabels = new Group();
-
         drawPileAmountText = LabelMaker.newLabel("", LabelMaker.getLarge());
         drawPileAmountText.setPosition(108, 40);
-        groupForLabels.addActor(drawPileAmountText);
+        addActor(drawPileAmountText);
 
         shufflePileAmountText = LabelMaker.newLabel("", LabelMaker.getLarge());
         shufflePileAmountText.setPosition(1308, 40);
-        groupForLabels.addActor(shufflePileAmountText);
-
-        addActor(groupForLabels);
+        addActor(shufflePileAmountText);
 
         // End turn button
         ImageButton endTurnButton = ClickListenerManager.getImageButton("end turn");
@@ -133,7 +129,6 @@ public class CombatMenuStage extends GenericStage {
 
         this.getStage().addListener(getCardHoverListener());
 
-        Group group = new Group();
         maximumAmountOfCardsLabel = LabelMaker.newLabel(
                 String.format("Cards in hand: %d / %d", Player.getHandContents().size, Player.MAXIMUM_CARDS_IN_HAND),
                 LabelMaker.getMedium()
@@ -141,8 +136,7 @@ public class CombatMenuStage extends GenericStage {
         maximumAmountOfCardsLabel.setPosition(12, 300);
         maximumAmountOfCardsLabel.setWidth(300);
         maximumAmountOfCardsLabel.setTouchable(Touchable.disabled);
-        group.addActor(maximumAmountOfCardsLabel);
-        addActor(group);
+        addActor(maximumAmountOfCardsLabel);
     }
 
     public static Array<Enemy> getCurrentEnemies() {
@@ -177,7 +171,7 @@ public class CombatMenuStage extends GenericStage {
 
     public void batch(float elapsedTime, SpriteBatch batch) {
         while (HpChangeNumberHandler.size() > 0) {
-            addActor(HpChangeNumberHandler.pop().getGroup());
+            addActor(HpChangeNumberHandler.pop());
         }
 
         super.batch(elapsedTime);
@@ -259,21 +253,21 @@ public class CombatMenuStage extends GenericStage {
                     positionY = 0;
                 }
 
-                card.getGroup().clearActions();
+                card.clearActions();
                 if (card.isToBeAddedToCombatMenuStage()) {
                     // Add it to the stage and snap its position to where it should be
-                    addActor(card.getGroup());
+                    addActor(card);
                     card.setToBeAddedToCombatMenuStage(false);
-                    card.getGroup().setPosition(positionX, positionY);
+                    card.setPosition(positionX, positionY);
                 } else {
                     // It's already on the stage, so slide it over
                     SequenceAction sequenceAction = new SequenceAction(
                             Actions.moveTo(positionX, positionY, 0.1f)
                     );
-                    card.getGroup().addAction(sequenceAction);
+                    card.addAction(sequenceAction);
                 }
                 // Reset z index so it looks OK
-                card.getGroup().setZIndex(1);
+                card.setZIndex(1);
                 i++;
             }
             Player.setCombatMenuStageMustAddCard(false);
@@ -296,13 +290,13 @@ public class CombatMenuStage extends GenericStage {
 
         int amountOfTemporaryItems = 0;
         for (Item item : Player.getCombatInformation().getTemporaryItems()) {
-            addActor(item.getGroup());
+            addActor(item);
 
             int rowNumber = (int) (amountOfTemporaryItems % MAX_AMOUNT_PER_COLUMN);
             int columnNumber = (int) Math.floor(amountOfTemporaryItems / MAX_AMOUNT_PER_COLUMN);
 
-            item.getGroup().setY(TOP_MOST - GAP_Y * rowNumber);
-            item.getGroup().setX(LEFT_MOST + GAP_X * columnNumber);
+            item.setY(TOP_MOST - GAP_Y * rowNumber);
+            item.setX(LEFT_MOST + GAP_X * columnNumber);
             amountOfTemporaryItems++;
         }
     }
@@ -503,7 +497,7 @@ public class CombatMenuStage extends GenericStage {
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, @Null Actor toActor) {
                 for (Card card : Player.getHandContents()) {
-                    card.getGroup().setZIndex(1);
+                    card.setZIndex(1);
                 }
             }
         };

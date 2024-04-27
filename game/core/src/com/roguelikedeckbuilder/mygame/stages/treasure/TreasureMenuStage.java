@@ -46,7 +46,7 @@ public class TreasureMenuStage extends GenericStage {
         treasure.addTreasure(TreasureType.CURRENCY);
         treasure.addTreasure(TreasureType.PERSISTENT_CURRENCY);
 
-        treasureGroup = treasure.getGroup();
+        treasureGroup = treasure;
         addActor(treasureGroup);
         positionTreasures();
     }
@@ -59,14 +59,14 @@ public class TreasureMenuStage extends GenericStage {
         treasure.addTreasure(TreasureType.CURRENCY);
         addCardTreasure(treasure);
 
-        treasureGroup = treasure.getGroup();
+        treasureGroup = treasure;
         addActor(treasureGroup);
         positionTreasures();
     }
 
     private void addCardTreasure(Treasure treasure) {
         treasure.addTreasure(TreasureType.CARDS);
-        treasure.getGroup().getChild(treasure.getGroup().getChildren().size - 1).addCaptureListener(cardChoicePreparerClickListener);
+        treasure.getChild(treasure.getChildren().size - 1).addCaptureListener(cardChoicePreparerClickListener);
     }
 
     private void positionTreasures() {

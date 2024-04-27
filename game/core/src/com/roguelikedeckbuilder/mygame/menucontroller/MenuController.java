@@ -199,7 +199,7 @@ public class MenuController {
 
         batch.end();
         batch.begin();
-        
+
         if (cardChangeMenuStage.isDraw()) {
             cardChangeMenuStage.batch(elapsedTime);
         }
@@ -436,6 +436,7 @@ public class MenuController {
                 treasureMenuStage.setDraw(true);
                 cardChangeMenuStage.setDraw(false);
                 setDrawDarkTransparentScreen(true);
+                setGameplayPaused(false);
                 Gdx.input.setInputProcessor(treasureMenuStage.getStage());
                 currentInputProcessor = treasureMenuStage.getStage();
                 setDrawTooltipMenu(false);

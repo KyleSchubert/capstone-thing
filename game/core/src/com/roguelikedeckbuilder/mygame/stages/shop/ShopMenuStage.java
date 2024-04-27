@@ -98,7 +98,7 @@ public class ShopMenuStage extends GenericStage {
         for (int i = 0; i < 8; i++) {
             Card card = new Card(cardTypeNames.get(i), true);
             card.setUpgraded(whichAreUpgraded.get(i));
-            card.getGroup().addCaptureListener(ClickListenerManager.buyingCard(card));
+            card.addCaptureListener(ClickListenerManager.buyingCard(card));
             addCard(card);
         }
 
@@ -106,7 +106,7 @@ public class ShopMenuStage extends GenericStage {
         for (int i = 0; i < 3; i++) {
             Item item = new Item(itemTypeNames.get(i));
             item.setShowPriceLabel(true);
-            item.getGroup().addCaptureListener(ClickListenerManager.buyingItem(item));
+            item.addCaptureListener(ClickListenerManager.buyingItem(item));
             addItem(item);
         }
 
@@ -129,8 +129,6 @@ public class ShopMenuStage extends GenericStage {
     }
 
     public void addCard(Card card) {
-        Group cardGroup = card.getGroup();
-
         ShopPositions position = switch (numberOfCards) {
             case 0 -> ShopPositions.CARD1;
             case 1 -> ShopPositions.CARD2;
@@ -143,10 +141,10 @@ public class ShopMenuStage extends GenericStage {
             default -> throw new IllegalStateException("Unexpected value: " + numberOfCards);
         };
 
-        cardGroup.setPosition(position.x, position.y);
+        card.setPosition(position.x, position.y);
         numberOfCards += 1;
 
-        addActor(cardGroup);
+        addActor(card);
     }
 
     public void useCorrectButtons() {
@@ -171,28 +169,30 @@ public class ShopMenuStage extends GenericStage {
     }
 
     public void setCardSold(Card card) {
-        float posX = card.getGroup().getX();
-        float posY = card.getGroup().getY();
-        getStage().getActors().removeValue(card.getGroup(), true);
+        float posX = card.getX();
+        float posY = card.getY();
+
+        getStage().getActors().removeValue(card, true);
+
         Card newCard = new Card(CardTypeName.OUT_OF_STOCK, false);
-        newCard.getGroup().setPosition(posX, posY);
-        addActor(newCard.getGroup());
+        newCard.setPosition(posX, posY);
+        addActor(newCard);
     }
 
     public void setItemSold(Item item) {
-        float posX = item.getGroup().getX();
-        float posY = item.getGroup().getY();
-        getStage().getActors().removeValue(item.getGroup(), true);
+        float posX = item.getX();
+        float posY = item.getY();
+
+        getStage().getActors().removeValue(item, true);
+
         Item newItem = new Item(ItemTypeName.JUNK);
         newItem.setShowPriceLabel(true);
-        newItem.getGroup().addCaptureListener(ClickListenerManager.buyingItem(newItem));
-        newItem.getGroup().setPosition(posX, posY);
-        addActor(newItem.getGroup());
+        newItem.addCaptureListener(ClickListenerManager.buyingItem(newItem));
+        newItem.setPosition(posX, posY);
+        addActor(newItem);
     }
 
     public void addItem(Item item) {
-        Group itemGroup = item.getGroup();
-
         ShopPositions position = switch (numberOfItems) {
             case 0 -> ShopPositions.ITEM1;
             case 1 -> ShopPositions.ITEM2;
@@ -200,10 +200,10 @@ public class ShopMenuStage extends GenericStage {
             default -> throw new IllegalStateException("Unexpected value: " + numberOfItems);
         };
 
-        itemGroup.setPosition(position.x, position.y);
+        item.setPosition(position.x, position.y);
         numberOfItems += 1;
 
-        addActor(itemGroup);
+        addActor(item);
     }
 
     private enum ShopPositions {

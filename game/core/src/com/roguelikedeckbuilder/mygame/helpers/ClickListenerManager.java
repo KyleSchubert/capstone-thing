@@ -26,7 +26,7 @@ import com.roguelikedeckbuilder.mygame.items.ItemData;
 import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
-import com.roguelikedeckbuilder.mygame.stages.mainmenu.MainMenuStage;
+import com.roguelikedeckbuilder.mygame.stages.mainmenu.CharacterSelection;
 import com.roguelikedeckbuilder.mygame.stages.settings.SettingsMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.settings.Slider;
 import com.roguelikedeckbuilder.mygame.stages.tooltip.Size;
@@ -274,7 +274,7 @@ public class ClickListenerManager {
         });
     }
 
-    public static ClickListener characterSelectPixelColor(Pixmap pixmap, MainMenuStage mainMenuStage) {
+    public static ClickListener characterSelectPixelColor(Pixmap pixmap, Stage stageThisIsOn, CharacterSelection characterSelection) {
         return new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -300,10 +300,10 @@ public class ClickListenerManager {
                         event.getTarget().getScaleX()
                 );
                 visualEffect.setTouchable(Touchable.disabled);
-                mainMenuStage.addActor(visualEffect);
+                stageThisIsOn.addActor(visualEffect);
 
                 CharacterTypeName characterTypeName = CharacterData.colorToCharacterTypeName(color);
-                mainMenuStage.setCharacter(characterTypeName);
+                characterSelection.setCharacter(characterTypeName);
 
                 System.out.println(pos.x() + " " + pos.y() + "  -  " + color + "  Character:  " + characterTypeName);
             }

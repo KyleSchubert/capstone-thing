@@ -26,17 +26,15 @@ public class HpChangeNumberHandler {
         return numbersThatNeedToBeDrawn.pop();
     }
 
-    public static class HpChangeNumber {
-        Group group = new Group();
-
+    public static class HpChangeNumber extends Group {
         public HpChangeNumber(XYPair<Float> centerPoint, int hpChangeAmount) {
 
             float xFluctuation = random.nextFloat(120) - 60;
             float yFluctuation = random.nextFloat(120) - 60;
 
-            group.setPosition(centerPoint.x() + xFluctuation, centerPoint.y() + yFluctuation);
+            setPosition(centerPoint.x() + xFluctuation, centerPoint.y() + yFluctuation);
 
-            group.addActor(LabelMaker.newLabel(Integer.toString(hpChangeAmount), LabelMaker.getHpAndDamage()));
+            addActor(LabelMaker.newLabel(Integer.toString(hpChangeAmount), LabelMaker.getHpAndDamage()));
 
             SequenceAction sequenceAction = new SequenceAction(
                     Actions.moveBy(0, 80, 0.8f),
@@ -44,11 +42,7 @@ public class HpChangeNumberHandler {
                     Actions.removeActor()
             );
 
-            group.addAction(sequenceAction);
-        }
-
-        public Group getGroup() {
-            return group;
+            addAction(sequenceAction);
         }
     }
 }

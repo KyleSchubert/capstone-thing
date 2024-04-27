@@ -36,11 +36,7 @@ public class CardChangeStage extends GenericStage {
 
         textAtTop = new Label("", LabelMaker.getLarge());
         textAtTop.setPosition(346, 800);
-
-        Group groupForTextAtTop = new Group();
-
-        groupForTextAtTop.addActor(textAtTop);
-        addActor(groupForTextAtTop);
+        addActor(textAtTop);
 
         scrollPaneStyle = new ScrollPane.ScrollPaneStyle();
 
@@ -78,9 +74,9 @@ public class CardChangeStage extends GenericStage {
         Card card2 = new Card(cardTypeNames.get(1), false);
         Card card3 = new Card(cardTypeNames.get(2), false);
 
-        card1.getGroup().setPosition(346, 360);
-        card2.getGroup().setPosition(606, 360);
-        card3.getGroup().setPosition(866, 360);
+        card1.setPosition(346, 360);
+        card2.setPosition(606, 360);
+        card3.setPosition(866, 360);
 
         prepareCardChoiceCards(card1);
         prepareCardChoiceCards(card2);
@@ -95,9 +91,9 @@ public class CardChangeStage extends GenericStage {
             card.setUpgraded(true);
         }
 
-        card.getGroup().addCaptureListener(clickListenerToGoBackToTreasure);
-        card.getGroup().addCaptureListener(ClickListenerManager.obtainingCard(card.getCardTypeName(), card.isUpgraded()));
-        cardChoiceGroup.addActor(card.getGroup());
+        card.addCaptureListener(clickListenerToGoBackToTreasure);
+        card.addCaptureListener(ClickListenerManager.obtainingCard(card.getCardTypeName(), card.isUpgraded()));
+        cardChoiceGroup.addActor(card);
     }
 
     public void prepareUpgradePlayerCards() {
@@ -167,15 +163,15 @@ public class CardChangeStage extends GenericStage {
             Card cardWithClickListener = new Card(card.getCardTypeName(), false);
             if (addUpgradingClick) {
                 cardWithClickListener.setUpgraded(true);
-                cardWithClickListener.getGroup().addCaptureListener(ClickListenerManager.upgradingCard(i, card.getCardTypeName()));
+                cardWithClickListener.addCaptureListener(ClickListenerManager.upgradingCard(i, card.getCardTypeName()));
             } else {
                 cardWithClickListener.setUpgraded(card.isUpgraded());
             }
             if (addRemovingClick) {
-                cardWithClickListener.getGroup().addCaptureListener(ClickListenerManager.removingCard(i));
+                cardWithClickListener.addCaptureListener(ClickListenerManager.removingCard(i));
             }
 
-            scrollTable.add(cardWithClickListener.getGroup());
+            scrollTable.add(cardWithClickListener);
 
             counter++;
             if (counter == 3) {
@@ -194,7 +190,7 @@ public class CardChangeStage extends GenericStage {
 
             Card cardCopy = new Card(card.getCardTypeName(), false);
             cardCopy.setUpgraded(card.isUpgraded());
-            scrollTable.add(cardCopy.getGroup());
+            scrollTable.add(cardCopy);
 
             counter++;
             if (counter == 3) {

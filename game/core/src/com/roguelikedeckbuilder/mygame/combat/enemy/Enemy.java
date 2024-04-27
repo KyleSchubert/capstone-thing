@@ -84,12 +84,9 @@ public class Enemy {
 
     private void resetNextAbility() {
         nextAbility = abilityOptions.random();
-
-        Group intent = new Intent(nextAbility).getGroup();
         XYPair<Float> position = character.getCharacterCenter();
 
-        intent.setPosition(position.x() - 70, position.y() - 76);
-        intentHolder.addActor(intent);
+        intentHolder.addActor(new Intent(nextAbility, position.x(), position.y()));
     }
 
     public void removeIntentHolder() {

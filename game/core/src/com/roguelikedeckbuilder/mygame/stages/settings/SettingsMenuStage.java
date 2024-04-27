@@ -1,6 +1,5 @@
 package com.roguelikedeckbuilder.mygame.stages.settings;
 
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.roguelikedeckbuilder.mygame.helpers.AudioManager;
@@ -31,12 +30,9 @@ public class SettingsMenuStage extends GenericStage {
         confirmButton.addCaptureListener(ClickListenerManager.savingSettings());
         addActor(confirmButton);
 
-        Group titleArea = new Group();
-        addActor(titleArea);
-
         Label title = LabelMaker.newLabel("Settings", LabelMaker.getLarge());
-        titleArea.addActor(title);
-        titleArea.setPosition(500, 800);
+        title.setPosition(500, 800);
+        addActor(title);
 
         overallVolumeSlider = new Slider(0.5f, "Overall Volume", 520, 700);
         addActor(overallVolumeSlider);

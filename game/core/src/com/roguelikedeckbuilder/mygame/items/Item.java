@@ -18,9 +18,8 @@ import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 import com.roguelikedeckbuilder.mygame.tracking.trigger.Trigger;
 
 
-public class Item {
+public class Item extends Group {
     private final ItemTypeName itemTypeName;
-    private final Group group;
     private final Trigger trigger;
     private final Label priceLabel;
     private int activations = 0;
@@ -30,27 +29,25 @@ public class Item {
     public Item(ItemTypeName itemTypeName) {
         this.itemTypeName = itemTypeName;
 
-        group = new Group();
-
         Image itemImage = new Image(new Texture(Gdx.files.internal(getImagePath())));
         itemImage.setPosition(0, 0);
         itemImage.setZIndex(10);
 
-        group.addActor(itemImage);
-        group.setUserObject(UserObjectOptions.ITEM);
+        addActor(itemImage);
+        setUserObject(UserObjectOptions.ITEM);
 
-        group.setScale(2);
+        setScale(2);
 
         Group groupHoldingPriceLabel = new Group();
         priceLabel = LabelMaker.newLabel("Price: " + ItemData.getValue(itemTypeName), LabelMaker.getMedium());
         priceLabel.setPosition(72, 16);
         priceLabel.setVisible(false);
-        groupHoldingPriceLabel.setScale(1 / group.getScaleX());
+        groupHoldingPriceLabel.setScale(1 / getScaleX());
         groupHoldingPriceLabel.addActor(priceLabel);
         groupHoldingPriceLabel.setTouchable(Touchable.disabled);
-        group.addActor(groupHoldingPriceLabel);
+        addActor(groupHoldingPriceLabel);
 
-        group.addCaptureListener(ClickListenerManager.hoverAndPutTextInTooltip(getName(), getDescription(), Statistics.getRunNumber()));
+        addCaptureListener(ClickListenerManager.hoverAndPutTextInTooltip(getName(), getDescription(), Statistics.getRunNumber()));
 
         trigger = new Trigger(ItemData.getTriggerName(itemTypeName));
     }
@@ -64,11 +61,11 @@ public class Item {
         if (hasTriggered) {
             AbilityTypeName abilityTypeName = ItemData.getAbilityTypeName(itemTypeName);
             VisualEffect visualEffect = new VisualEffect(VisualEffectName.ITEM_TRIGGERED_2,
-                    group.getChild(0).getWidth() / 2,
-                    group.getChild(0).getHeight() / 2,
-                    2 / this.group.getScaleX());
+                    getChild(0).getWidth() / 2,
+                    getChild(0).getHeight() / 2,
+                    2 / getScaleX());
 
-            this.group.addActor(visualEffect);
+            addActor(visualEffect);
 
             // With this, items scale with status effects. But maybe they shouldn't
             AbilityData.useAbility(Player.getCombatInformation(), abilityTypeName, true);
@@ -80,10 +77,6 @@ public class Item {
 
             Statistics.itemTriggered();
         }
-    }
-
-    public Group getGroup() {
-        return group;
     }
 
     public String getName() {
