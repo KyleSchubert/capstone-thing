@@ -95,11 +95,15 @@ public class MapMenuStage extends GenericStage {
                         shapeRenderer.setColor(0.4f, 0.3f, 0.3f, 1);
                     }
 
+                    float offsetXForCurrentNode = currentNode.nodeImage.getWidth() / 2 * currentNode.nodeImage.getScaleX();
+                    float offsetYForCurrentNode = currentNode.nodeImage.getHeight() / 2 * currentNode.nodeImage.getScaleY();
+                    float offsetXForNextNode = currentNode.nodeImage.getWidth() / 2 * currentNode.nodeImage.getScaleX();
+                    float offsetYForNextNode = currentNode.nodeImage.getHeight() / 2 * currentNode.nodeImage.getScaleY();
                     shapeRenderer.rectLine(
-                            (currentNode.getPos().x() + 30),
-                            (currentNode.getPos().y() + 30),
-                            (nextNode.getPos().x() + 30),
-                            (nextNode.getPos().y() + 30),
+                            (currentNode.getPos().x() + offsetXForCurrentNode),
+                            (currentNode.getPos().y() + offsetYForCurrentNode),
+                            (nextNode.getPos().x() + offsetXForNextNode),
+                            (nextNode.getPos().y() + offsetYForNextNode),
                             4
                     );
                 }
@@ -412,57 +416,22 @@ public class MapMenuStage extends GenericStage {
 
         public void prepareNodeImage() {
             String filePath = "MAP NODES/";
-            int x, y;
 
             switch (nodeType) {
-                case NORMAL_BATTLE:
-                    filePath += "normal battle.png";
-                    x = 26;
-                    y = 26;
-                    break;
-                case ELITE_BATTLE:
-                    filePath += "elite battle.png";
-                    x = 36;
-                    y = 32;
-                    break;
-                case BOSS_BATTLE:
-                    filePath += "boss battle.png";
-                    x = 36;
-                    y = 33;
-                    break;
-                case START:
-                    filePath += "start.png";
-                    x = 33;
-                    y = 28;
-                    break;
-                case SHOP:
-                    filePath += "shop.png";
-                    x = 32;
-                    y = 33;
-                    break;
-                case REST:
-                    filePath += "rest.png";
-                    x = 34;
-                    y = 26;
-                    break;
-                case RANDOM_EVENT:
-                    filePath += "random event.png";
-                    x = 33;
-                    y = 32;
-                    break;
-                case TREASURE:
-                    filePath += "treasure.png";
-                    x = 29;
-                    y = 31;
-                    break;
-                default:
-                    filePath += "default.png";
-                    x = 29;
-                    y = 31;
-                    break;
+                case NORMAL_BATTLE -> filePath += "normal battle.png";
+                case ELITE_BATTLE -> filePath += "elite battle.png";
+                case BOSS_BATTLE -> filePath += "boss battle.png";
+                case START -> filePath += "start.png";
+                case SHOP -> filePath += "shop.png";
+                case REST -> filePath += "rest.png";
+                case RANDOM_EVENT -> filePath += "random event.png";
+                case TREASURE -> filePath += "treasure.png";
+                default -> filePath += "default.png";
             }
+            // Preferably, all the images should have the same dimensions
+            
             nodeImage = new Image(new Texture(Gdx.files.internal(filePath)));
-            nodeImage.setSize(x * 2, y * 2);
+            nodeImage.setScale(2);
             nodeImage.setPosition(pos.x(), pos.y());
         }
 

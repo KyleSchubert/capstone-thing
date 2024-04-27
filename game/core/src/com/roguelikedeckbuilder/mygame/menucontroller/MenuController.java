@@ -93,7 +93,7 @@ public class MenuController {
 
         // Dark transparent screen
         darkTransparentScreen = new Image(new Texture(Gdx.files.internal("MENU backgrounds/dark transparent screen.png")));
-        darkTransparentScreen.setSize(40 * 300, 40 * 300);
+        darkTransparentScreen.setScale(300);
         darkTransparentScreen.setPosition(0, 0);
 
 
