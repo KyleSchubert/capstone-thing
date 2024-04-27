@@ -188,6 +188,12 @@ public class CharacterData {
                     this.origin = new XYPair<>(110, 261);
                     this.dimensions = new XYPair<>(220, 270);
                     break;
+                case KING_OF_THE_BURROW:
+                    this.internalName = "king of the burrow";
+                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(39, 0.140f));
+                    this.origin = new XYPair<>(110, 269);
+                    this.dimensions = new XYPair<>(220, 270);
+                    break;
                 case MONOLITH:
                     this.internalName = "monolith";
                     this.origin = new XYPair<>(115, 240);

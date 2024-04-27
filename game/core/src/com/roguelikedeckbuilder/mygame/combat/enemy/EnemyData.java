@@ -88,6 +88,11 @@ public class EnemyData {
                     abilityOptions = prepareOptions(AbilityTypeName.DEFEND_UPGRADED, AbilityTypeName.FIRE_STRIKE);
                     enemyClassification = EnemyClassification.NORMAL;
                     break;
+                case KING_OF_THE_BURROW:
+                    maxHp = 20;
+                    abilityOptions = prepareOptions(AbilityTypeName.DEFEND_UPGRADED, AbilityTypeName.FIRE_STRIKE);
+                    enemyClassification = EnemyClassification.NORMAL;
+                    break;
                 case MONOLITH:
                     maxHp = 20;
                     abilityOptions = prepareOptions(AbilityTypeName.DEFEND_UPGRADED, AbilityTypeName.HEAL_SELF_ENEMY);

@@ -12,6 +12,7 @@ public enum CharacterTypeName {
     HELMET_PENGUIN,
     HOT_DOG,
     KNIGHT,
+    KING_OF_THE_BURROW,
     MONOLITH,
     POINTER,
     SAD_DOLLAR,
