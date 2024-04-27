@@ -194,12 +194,16 @@ public class TooltipStage extends GenericStage {
 
         XYPair<Float> pos = middlePosition;
 
-        itemChoiceLabel1.setPosition(pos.x() + 120, pos.y() + 420);
-        itemChoiceLabel2.setPosition(pos.x() + 120, pos.y() + 280);
-        itemChoiceLabel3.setPosition(pos.x() + 120, pos.y() + 140);
+        int VERTICAL_GAP = 140;
+        int TOP_POSITION = 420;
+        int X_OFFSET = 120;
+
+        itemChoiceLabel1.setPosition(pos.x() + X_OFFSET, pos.y() + TOP_POSITION);
+        itemChoiceLabel2.setPosition(pos.x() + X_OFFSET, pos.y() + TOP_POSITION - VERTICAL_GAP);
+        itemChoiceLabel3.setPosition(pos.x() + X_OFFSET, pos.y() + TOP_POSITION - VERTICAL_GAP * 2);
 
         for (int i = 0; i < itemImages.size; i++) {
-            itemImages.get(i).setPosition(pos.x() + 40, pos.y() + 340 - i * 140);
+            itemImages.get(i).setPosition(pos.x() + 40, pos.y() + TOP_POSITION - i * VERTICAL_GAP - 80);
             nonBackgroundThings.addActor(itemImages.get(i));
         }
     }
