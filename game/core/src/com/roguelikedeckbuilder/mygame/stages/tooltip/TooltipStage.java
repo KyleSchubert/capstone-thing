@@ -30,6 +30,8 @@ public class TooltipStage extends GenericStage {
     private final Label title = LabelMaker.newLabel("", LabelMaker.getLarge());
     private final Label body = LabelMaker.newLabel("", LabelMaker.getSmall());
     private final Group nonBackgroundThings = new Group();
+    private final Image mediumTooltipBackground;
+    private final Image smallTooltipBackground;
     private Size size;
     private Location location;
     private boolean isAbove;
@@ -45,12 +47,12 @@ public class TooltipStage extends GenericStage {
         isAbove = true;
 
         // Other sizes of tooltipStage backgrounds
-        Image mediumTooltipBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/medium tooltip.png")));
+        mediumTooltipBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/medium tooltip.png")));
         mediumTooltipBackground.setPosition(offScreen.x(), offScreen.y());
         mediumTooltipBackground.setTouchable(Touchable.disabled);
         addActor(mediumTooltipBackground);
 
-        Image smallTooltipBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/small tooltip.png")));
+        smallTooltipBackground = new Image(new Texture(Gdx.files.internal("MENU backgrounds/small tooltip.png")));
         smallTooltipBackground.setPosition(offScreen.x(), offScreen.y());
         smallTooltipBackground.setTouchable(Touchable.disabled);
         addActor(smallTooltipBackground);
@@ -84,41 +86,46 @@ public class TooltipStage extends GenericStage {
         }
         XYPair<Float> pos;
         float titleX = 0, bodyX = 0, titleY, bodyY;
-        float usedTooltipWidth = getStage().getActors().get(size.ordinal()).getWidth();
-        float usedTooltipHeight = getStage().getActors().get(size.ordinal()).getHeight();
+        float usedTooltipWidth = getTooltip(size).getWidth();
+        float usedTooltipHeight = getTooltip(size).getHeight();
 
+        int scaleX = 1;
         switch (location) {
             case RIGHT -> {
                 pos = getMousePosition();
-                getStage().getActors().get(2).setScaleX(1);
                 titleX = pos.x() + 20;
                 bodyX = pos.x() + 20;
             }
             case LEFT -> {
                 pos = getMousePosition();
-                getStage().getActors().get(2).setScaleX(-1);
+                scaleX = -1;
                 titleX = pos.x() - usedTooltipWidth + 20;
                 bodyX = pos.x() - usedTooltipWidth + 20;
             }
             case MIDDLE -> {
                 pos = middlePosition;
-                getStage().getActors().get(2).setScaleX(1);
                 titleX = pos.x() + 20;
                 bodyX = pos.x() + usedTooltipWidth - 20; // this is probably wrong
             }
             default -> pos = new XYPair<>(0f, 0f);
         }
+
+        int scaleY = 1;
         if (isAbove) {
-            getStage().getActors().get(2).setScaleY(1);
             titleY = pos.y() + usedTooltipHeight - 20;
             bodyY = pos.y() + usedTooltipHeight - 64;
         } else {
-            getStage().getActors().get(2).setScaleY(-1);
+            scaleY = -1;
             titleY = pos.y() - 20;
             bodyY = pos.y() - 64;
         }
 
-        getStage().getActors().get(size.ordinal()).setPosition(pos.x(), pos.y()); // TooltipStage background
+        if (size == Size.SMALL) {
+            smallTooltipBackground.setScaleX(scaleX);
+            smallTooltipBackground.setScaleY(scaleY);
+        }
+
+        getTooltip(size).setPosition(pos.x(), pos.y()); // TooltipStage background
         super.batch(elapsedTime);
 
         title.setPosition(titleX, titleY); // Text for tooltip title
@@ -239,9 +246,9 @@ public class TooltipStage extends GenericStage {
     }
 
     public void resetPositionsOffscreen() {
-        getStage().getActors().get(0).setPosition(offScreen.x(), offScreen.y());
-        getStage().getActors().get(1).setPosition(offScreen.x(), offScreen.y());
-        getStage().getActors().get(2).setPosition(offScreen.x(), offScreen.y());
+        getTooltip(Size.LARGE).setPosition(offScreen.x(), offScreen.y());
+        getTooltip(Size.MEDIUM).setPosition(offScreen.x(), offScreen.y());
+        getTooltip(Size.SMALL).setPosition(offScreen.x(), offScreen.y());
 
         for (Actor actor : nonBackgroundThings.getChildren()) {
             actor.setPosition(offScreen.x(), offScreen.y());
@@ -254,6 +261,21 @@ public class TooltipStage extends GenericStage {
             itemChoiceLabel1.setPosition(offScreen.x(), offScreen.y());
             itemChoiceLabel2.setPosition(offScreen.x(), offScreen.y());
             itemChoiceLabel3.setPosition(offScreen.x(), offScreen.y());
+        }
+    }
+
+    private Image getTooltip(Size sizeToGet) {
+        switch (sizeToGet) {
+            case LARGE -> {
+                return (Image) getStageBackgroundActor();
+            }
+            case MEDIUM -> {
+                return mediumTooltipBackground;
+            }
+            case SMALL -> {
+                return smallTooltipBackground;
+            }
+            default -> throw new IllegalStateException("Unexpected value in   getTooltip(): " + sizeToGet);
         }
     }
 
