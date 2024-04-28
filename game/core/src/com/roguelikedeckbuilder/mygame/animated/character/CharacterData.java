@@ -229,6 +229,12 @@ public class CharacterData {
                     this.origin = new XYPair<>(115, 200);
                     this.dimensions = new XYPair<>(220, 270);
                     break;
+                case PUFF:
+                    this.internalName = "puff";
+                    standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(24, 0.190f));
+                    this.origin = new XYPair<>(161, 194);
+                    this.dimensions = new XYPair<>(315, 248);
+                    break;
                 case SAD_DOLLAR:
                     this.internalName = "sad dollar";
                     standingAnimationFrameDelays = new ArrayList<>(Collections.nCopies(5, 0.190f));

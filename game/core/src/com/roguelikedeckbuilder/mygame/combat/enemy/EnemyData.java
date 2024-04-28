@@ -108,6 +108,11 @@ public class EnemyData {
                     abilityOptions = prepareOptions(AbilityTypeName.DEFEND_UPGRADED, AbilityTypeName.FIRE_STRIKE);
                     enemyClassification = EnemyClassification.NORMAL;
                     break;
+                case PUFF:
+                    maxHp = 2000;
+                    abilityOptions = prepareOptions(AbilityTypeName.FIRE_STRIKE, AbilityTypeName.HEAL_SELF_ENEMY);
+                    enemyClassification = EnemyClassification.NORMAL;
+                    break;
                 case SAD_DOLLAR:
                     maxHp = 20;
                     abilityOptions = prepareOptions(AbilityTypeName.FIRE_STRIKE, AbilityTypeName.HEAL_SELF_ENEMY);

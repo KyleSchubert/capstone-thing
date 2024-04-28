@@ -75,7 +75,7 @@ public class CombatNodeOptions {
         zoneThree.add(CombatNodeSectionName.ELITE, CharacterTypeName.KNIGHT, CharacterTypeName.MONOLITH);
         zoneThree.add(CombatNodeSectionName.ELITE, CharacterTypeName.EVIL_HH, CharacterTypeName.EVIL_HH);
 
-        zoneThree.add(CombatNodeSectionName.BOSS, CharacterTypeName.HAMMIE);
+        zoneThree.add(CombatNodeSectionName.BOSS, CharacterTypeName.PUFF);
     }
 
     public Array<CharacterTypeName> getAlmostRandomFromOptions(int zoneNumber, CombatNodeSectionName combatNodeSectionName) {
