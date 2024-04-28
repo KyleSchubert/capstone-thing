@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
+import com.roguelikedeckbuilder.mygame.animated.character.CharacterData;
+import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
 import com.roguelikedeckbuilder.mygame.helpers.*;
 import com.roguelikedeckbuilder.mygame.items.ItemData;
 import com.roguelikedeckbuilder.mygame.items.ItemTier;
@@ -32,10 +34,15 @@ public class TooltipStage extends GenericStage {
     private final Group nonBackgroundThings = new Group();
     private final Image mediumTooltipBackground;
     private final Image smallTooltipBackground;
+    private Image enemyIcon1 = new Image();
+    private Image enemyIcon2 = new Image();
+    private Image enemyIcon3 = new Image();
+    private Image enemyIcon4 = new Image();
     private Size size;
     private Location location;
     private boolean isAbove;
     private boolean showChooseOneItemDetails = false;
+    private boolean showEnemyIcons = false;
 
     public TooltipStage() {
         super("tooltip");
@@ -132,10 +139,20 @@ public class TooltipStage extends GenericStage {
         if (!showChooseOneItemDetails) {
             body.setPosition(bodyX, bodyY); // Text for tooltip body
         }
+        if (showEnemyIcons) {
+            enemyIcon1.setPosition(bodyX - 8, bodyY - 160);
+            enemyIcon2.setPosition(bodyX - 8 + (CharacterData.ICON_WIDTH + 2), bodyY - 160);
+            enemyIcon3.setPosition(bodyX - 8 + (CharacterData.ICON_WIDTH + 2) * 2, bodyY - 160);
+            enemyIcon4.setPosition(bodyX - 8 + (CharacterData.ICON_WIDTH + 2) * 3, bodyY - 160);
+        }
     }
 
-    public void useMapNodeData(MapNodeType mapNodeType, int stageNumber, int index) {
-        resetPositionsOffscreen();
+    public void useMapNodeData(MapNodeType mapNodeType, int stageNumber, int index, Array<CharacterTypeName> enemies) {
+        enemyIcon1.remove();
+        enemyIcon2.remove();
+        enemyIcon3.remove();
+        enemyIcon4.remove();
+
         String typeText = "";
         switch (mapNodeType) {
             case NORMAL_BATTLE -> typeText = "Normal Monster";
@@ -149,6 +166,26 @@ public class TooltipStage extends GenericStage {
         }
         title.setText(String.format("%s", typeText));
         body.setText(String.format("%d-%d", stageNumber, index));
+
+
+        for (int i = 0; i < enemies.size; i++) {
+            if (i == 0) {
+                enemyIcon1 = CharacterData.getIcon(enemies.get(i));
+                addActor(enemyIcon1);
+            } else if (i == 1) {
+                enemyIcon2 = CharacterData.getIcon(enemies.get(i));
+                addActor(enemyIcon2);
+            } else if (i == 2) {
+                enemyIcon3 = CharacterData.getIcon(enemies.get(i));
+                addActor(enemyIcon3);
+            } else if (i == 3) {
+                enemyIcon4 = CharacterData.getIcon(enemies.get(i));
+                addActor(enemyIcon4);
+            }
+        }
+
+        resetPositionsOffscreen();
+        showEnemyIcons = enemies.notEmpty();
     }
 
     public void setSize(Size size) {
@@ -257,6 +294,13 @@ public class TooltipStage extends GenericStage {
         for (Actor actor : nonBackgroundThings.getChildren()) {
             actor.setPosition(offScreen.x(), offScreen.y());
         }
+
+        enemyIcon1.setPosition(offScreen.x(), offScreen.y());
+        enemyIcon2.setPosition(offScreen.x(), offScreen.y());
+        enemyIcon3.setPosition(offScreen.x(), offScreen.y());
+        enemyIcon4.setPosition(offScreen.x(), offScreen.y());
+
+        showEnemyIcons = false;
     }
 
     public void setShowChooseOneItemDetails(boolean showChooseOneItemDetails) {

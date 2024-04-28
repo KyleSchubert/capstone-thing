@@ -3,6 +3,7 @@ package com.roguelikedeckbuilder.mygame.animated.visualeffect;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 public class VisualEffect extends Group {
     private final VisualEffectName visualEffectName;
@@ -21,6 +22,8 @@ public class VisualEffect extends Group {
         this.setPosition(x, y);
         this.setSize(VisualEffectData.getDimensions(visualEffectName).x(), VisualEffectData.getDimensions(visualEffectName).y());
         this.setScale(scaleAmount);
+
+        this.setTouchable(Touchable.disabled);
 
         setBounds(x, y,
                 VisualEffectData.getDimensions(visualEffectName).x(),

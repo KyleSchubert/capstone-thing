@@ -206,12 +206,17 @@ public class ClickListenerManager {
         return new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, @Null Actor fromActor) {
-                menuController.getTooltipStage().setSize(Size.SMALL);
-                menuController.getTooltipStage().setLocation();
-                menuController.getTooltipStage().setTitleText(title);
-                menuController.getTooltipStage().setBodyText(body);
-                menuController.getTooltipStage().resetPositionsOffscreen();
-                MenuController.setDrawTooltipMenu(true);
+                if (pointer != 0) {
+                    menuController.getTooltipStage().setSize(Size.SMALL);
+                    menuController.getTooltipStage().setLocation();
+                    menuController.getTooltipStage().setTitleText(title);
+                    menuController.getTooltipStage().setBodyText(body);
+                    menuController.getTooltipStage().resetPositionsOffscreen();
+
+                    if (MenuController.getCurrentMenuState() != MenuState.TREASURE) {
+                        MenuController.setDrawTooltipMenu(true);
+                    }
+                }
             }
 
             @Override
@@ -219,7 +224,7 @@ public class ClickListenerManager {
                 int currentRun = Statistics.getRunNumber();
                 // Prevent going back to the main menu, storing this event, and triggering it in the next run
                 // -999 is a value I made up that is impossible to reach unless directly used
-                if (runNumber == currentRun || runNumber == -999) {
+                if (pointer != 0 && (runNumber == currentRun || runNumber == -999)) {
                     menuController.getTooltipStage().resetPositionsOffscreen();
                     MenuController.setDrawTooltipMenu(false);
                 }

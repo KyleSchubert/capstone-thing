@@ -63,7 +63,7 @@ public class Item extends Group {
             VisualEffect visualEffect = new VisualEffect(VisualEffectName.ITEM_TRIGGERED_2,
                     getChild(0).getWidth() / 2,
                     getChild(0).getHeight() / 2,
-                    2 / getScaleX());
+                    1 / getScaleX());
 
             addActor(visualEffect);
 

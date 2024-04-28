@@ -21,7 +21,6 @@ public class CombatHandler {
     }
 
     public static void playerUsesCard(Card card) {
-        System.out.println("Player used this card: " + AbilityData.getName(card.getUsedAbilityTypeName()));
         for (Enemy enemy : CombatMenuStage.getCurrentEnemies()) {
             enemy.setTargeted(false);
         }
@@ -34,6 +33,7 @@ public class CombatHandler {
                 card.setToGoToShufflePile(true);
                 card.setDiscardedByUse(true);
                 Statistics.playedCard();
+                System.out.println("Player used this card: " + AbilityData.getName(card.getUsedAbilityTypeName()));
             }
             isTargetingValid = false;
         }

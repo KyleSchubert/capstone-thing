@@ -496,8 +496,10 @@ public class CombatMenuStage extends GenericStage {
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, @Null Actor toActor) {
-                for (Card card : Player.getHandContents()) {
-                    card.setZIndex(1);
+                if (pointer != 0) {
+                    for (Card card : Player.getHandContents()) {
+                        card.setZIndex(1);
+                    }
                 }
             }
         };

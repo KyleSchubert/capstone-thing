@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Null;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
@@ -15,6 +16,8 @@ import com.roguelikedeckbuilder.mygame.stages.cardchange.CardChangeStage;
 import com.roguelikedeckbuilder.mygame.stages.combatmenu.CombatMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.combatmenu.UseLine;
 import com.roguelikedeckbuilder.mygame.stages.mainmenu.MainMenuStage;
+import com.roguelikedeckbuilder.mygame.stages.map.CombatNodeOptions;
+import com.roguelikedeckbuilder.mygame.stages.map.CombatNodeSectionName;
 import com.roguelikedeckbuilder.mygame.stages.map.MapMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.map.MapNodeType;
 import com.roguelikedeckbuilder.mygame.stages.pause.PauseMenuStage;
@@ -28,16 +31,18 @@ import com.roguelikedeckbuilder.mygame.stages.treasure.TreasureMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.upgrades.UpgradesMenuStage;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
-import java.util.Random;
-
 import static com.roguelikedeckbuilder.mygame.MyGame.batch;
 import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
+import static com.roguelikedeckbuilder.mygame.stages.map.MapNodeType.ELITE_BATTLE;
 import static com.roguelikedeckbuilder.mygame.stages.map.MapNodeType.RANDOM_EVENT;
 
 public class MenuController {
     public static MenuState previousNonimportantMenuState;
     protected static boolean isGameplayPaused;
     private static boolean isDrawTooltipMenu;
+    private static MenuState currentMenuState;
+    private final Array<CharacterTypeName> enemiesToLoadIn = new Array<>();
+    private final CombatNodeOptions combatNodeOptionsForRandomEvent = new CombatNodeOptions();
     private MainMenuStage mainMenuStage;
     private PauseMenuStage pauseMenuStage;
     private ResultsMenuStage resultsMenuStage;
@@ -52,11 +57,11 @@ public class MenuController {
     private TooltipStage tooltipStage;
     private TopBarStage topBarStage;
     private Image darkTransparentScreen;
-    private MenuState currentMenuState;
     private MenuState previousImportantMenuState;
     private Stage currentInputProcessor;
     private Stage previousInputProcessor;
     private boolean isDrawDarkTransparentScreen;
+    private boolean victory = false;
 
     public static void setDrawTooltipMenu(boolean drawTooltipMenu) {
         isDrawTooltipMenu = drawTooltipMenu;
@@ -64,6 +69,10 @@ public class MenuController {
 
     public static boolean getIsGameplayPaused() {
         return isGameplayPaused;
+    }
+
+    public static MenuState getCurrentMenuState() {
+        return currentMenuState;
     }
 
     public void create() {
@@ -150,10 +159,15 @@ public class MenuController {
                 Statistics.combatEnded();
                 combatMenuStage.setVictory(false);
 
-                treasureMenuStage.addGenericWinTreasureSet();
+                if (Statistics.getZoneNumber() > MapMenuStage.NUMBER_OF_ZONES) {
+                    victory = true;
+                    setMenuState(MenuState.RESULTS);
+                } else {
+                    treasureMenuStage.addGenericWinTreasureSet();
 
-                setMenuState(MenuState.MAP);
-                setMenuState(MenuState.TREASURE);
+                    setMenuState(MenuState.MAP);
+                    setMenuState(MenuState.TREASURE);
+                }
             }
         }
         batch.end();
@@ -243,23 +257,30 @@ public class MenuController {
                 if (currentMenuState == MenuState.START_REWARDS) {
                     return;
                 }
-                // Get the MapNodeData object from the image actor that triggered the mouse over event
-                MapMenuStage.MapNode.MapNodeData data = (MapMenuStage.MapNode.MapNodeData) event.getTarget().getUserObject();
+                if (pointer != 0) {
+                    // Get the MapNodeData object from the image actor that triggered the mouse over event
+                    MapMenuStage.MapNode.MapNodeData data = (MapMenuStage.MapNode.MapNodeData) event.getTarget().getUserObject();
 
-                // Use the data
-                tooltipStage.useMapNodeData(data.nodeType(), data.stageNumberOfSelf(), data.indexOfSelf());
-                Statistics.setStageNumber(data.stageNumberOfSelf());
-                Statistics.setNodeNumber(data.indexOfSelf());
-                tooltipStage.setSize(data.tooltipSize());
-                tooltipStage.setLocation(data.tooltipLocation());
+                    // Use the data
+                    Statistics.setStageNumber(data.stageNumberOfSelf());
+                    Statistics.setNodeNumber(data.indexOfSelf());
+                    tooltipStage.setSize(data.tooltipSize());
+                    tooltipStage.setLocation(data.tooltipLocation());
 
-                // Draw the tooltipStage
-                setDrawTooltipMenu(true);
+                    tooltipStage.useMapNodeData(data.nodeType(), data.stageNumberOfSelf(), data.indexOfSelf(), data.enemies());
+                    enemiesToLoadIn.clear();
+                    enemiesToLoadIn.addAll(data.enemies());
+
+                    // Draw the tooltipStage
+                    if (MenuController.getCurrentMenuState() != MenuState.TREASURE) {
+                        setDrawTooltipMenu(true);
+                    }
+                }
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, @Null Actor toActor) {
-                if (currentMenuState != MenuState.START_REWARDS) {
+                if (pointer != 0 && currentMenuState != MenuState.START_REWARDS) {
                     setDrawTooltipMenu(false);
                 }
             }
@@ -277,6 +298,15 @@ public class MenuController {
                     MapNodeType nodeType;
                     if (data.nodeType() == RANDOM_EVENT) {
                         nodeType = mapMenuStage.getRandomEventOptions().random();
+                        if (nodeType == ELITE_BATTLE) {
+                            enemiesToLoadIn.addAll(
+                                    combatNodeOptionsForRandomEvent.getAlmostRandomFromOptions(
+                                            Statistics.getZoneNumber(),
+                                            CombatNodeSectionName.ELITE
+                                    )
+                            );
+                        }
+
                     } else {
                         nodeType = data.nodeType();
                     }
@@ -326,7 +356,6 @@ public class MenuController {
                 // GAME STARTS IN THIS STATE
                 Player.reset();
                 currentMenuState = MenuState.MAIN_MENU;
-                mapMenuStage.reset();
                 Gdx.input.setInputProcessor(mainMenuStage.getStage());
                 currentInputProcessor = mainMenuStage.getStage();
                 UseLine.setVisibility(false);
@@ -394,7 +423,6 @@ public class MenuController {
             case RESULTS -> {
                 Statistics.runEnded();
 
-                boolean victory = false;
                 resultsMenuStage.setAllLabels(victory);
 
                 currentMenuState = MenuState.RESULTS;
@@ -410,6 +438,7 @@ public class MenuController {
                 Statistics.setRunNumber(Statistics.getRunNumber() + 1);
                 Statistics.runStarted();
                 Statistics.resetVariables();
+                mapMenuStage.reset();
                 tooltipStage.itemReward();
                 currentMenuState = MenuState.START_REWARDS;
                 Gdx.input.setInputProcessor(tooltipStage.getStage());
@@ -480,16 +509,15 @@ public class MenuController {
                 setGameplayPaused(false);
                 setDrawDarkTransparentScreen(false);
 
-                // Reset and then add 4 random enemies for testing
                 if (previousImportantMenuState != MenuState.COMBAT) {
-                    Random random = new Random();
                     combatMenuStage.reset();
-                    for (int i = 0; i < 4; i++) {
-                        int randomNumber = random.nextInt(CharacterTypeName.values().length);
-                        combatMenuStage.addEnemy(CharacterTypeName.values()[randomNumber]);
+                    for (CharacterTypeName characterTypeName : enemiesToLoadIn) {
+                        combatMenuStage.addEnemy(characterTypeName);
                     }
+
+                    Statistics.combatStarted();
                 }
-                Statistics.combatStarted();
+
                 previousImportantMenuState = MenuState.COMBAT;
             }
 
@@ -504,10 +532,6 @@ public class MenuController {
 
     private void setGameplayPaused(boolean gameplayPaused) {
         isGameplayPaused = gameplayPaused;
-    }
-
-    public MenuState getCurrentMenuState() {
-        return currentMenuState;
     }
 
     public TreasureMenuStage getTreasureMenuStage() {

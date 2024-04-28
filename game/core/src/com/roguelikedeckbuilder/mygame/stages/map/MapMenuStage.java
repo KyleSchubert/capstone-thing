@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 import com.roguelikedeckbuilder.mygame.stages.tooltip.Location;
@@ -21,14 +22,15 @@ import static com.roguelikedeckbuilder.mygame.MyGame.batch;
 import static com.roguelikedeckbuilder.mygame.MyGame.shapeRenderer;
 
 public class MapMenuStage extends GenericStage {
+    public static final int NUMBER_OF_ZONES = 3;
     private static final int MAX_STAGES = 10; // Minimum of 2: 1 for start, 1 for boss.
     private static final int MAX_NODES_PER_STAGE = 6;
     private static final int MIN_NODES_PER_STAGE = 4;
     private static final int MAX_NEXT_CONNECTIONS_PER_NODE = 2;
-    private static final int MIN_ELITE_BATTLE = 3;
-    private static final int MIN_SHOP = 2;
-    private static final int MIN_REST = 4;
-    private static final int MIN_TREASURE = 2;
+    private static final int MIN_ELITE_BATTLE = 5;
+    private static final int MIN_SHOP = 3;
+    private static final int MIN_REST = 5;
+    private static final int MIN_TREASURE = 3;
     private static final int MAX_ELITE_BATTLE = 8;
     private static final int MAX_SHOP = 6;
     private static final int MAX_REST = 8;
@@ -39,6 +41,7 @@ public class MapMenuStage extends GenericStage {
     private final Array<Array<MapNode>> mapNodes;
     private final ClickListener hoverAndClickListener;
     private final Image background;
+    private final CombatNodeOptions combatNodeOptions = new CombatNodeOptions();
     public HashMap<MapNodeType, Integer> mapNodeTypeWeights;
     public int weightSum;
     private int currentNodeStage = 0;
@@ -221,16 +224,57 @@ public class MapMenuStage extends GenericStage {
 
         // Complete the start node
         completeNode(0, 0);
+
+        // Assign battles to various battle nodes
+        int zoneNumber = Statistics.getZoneNumber();
+
+        if (zoneNumber < NUMBER_OF_ZONES) {
+            Array<MapNode> normalBattleNodes = findNodesByType(MapNodeType.NORMAL_BATTLE);
+            Array<MapNode> eliteBattleNodes = findNodesByType(MapNodeType.ELITE_BATTLE);
+            Array<MapNode> bossBattleNodes = findNodesByType(MapNodeType.BOSS_BATTLE);
+
+            // First combat node
+            for (MapNode mapNode : normalBattleNodes) {
+                if (mapNode.stageNumberOfSelf == 1) {
+                    mapNode.setEnemies(combatNodeOptions.getAlmostRandomFromOptions(zoneNumber, CombatNodeSectionName.FIRST));
+                }
+            }
+
+            // First half of all combat nodes
+            for (MapNode mapNode : normalBattleNodes) {
+                if (mapNode.stageNumberOfSelf < MAX_STAGES / 2 && mapNode.stageNumberOfSelf != 1) {
+                    mapNode.setEnemies(combatNodeOptions.getAlmostRandomFromOptions(zoneNumber, CombatNodeSectionName.FIRST_HALF));
+                }
+            }
+
+            // Second half of all combat nodes
+            for (MapNode mapNode : normalBattleNodes) {
+                if (mapNode.stageNumberOfSelf >= MAX_STAGES / 2) {
+                    mapNode.setEnemies(combatNodeOptions.getAlmostRandomFromOptions(zoneNumber, CombatNodeSectionName.SECOND_HALF));
+                }
+            }
+
+            // All elite combat nodes
+            for (MapNode mapNode : eliteBattleNodes) {
+                mapNode.setEnemies(combatNodeOptions.getAlmostRandomFromOptions(zoneNumber, CombatNodeSectionName.ELITE));
+            }
+
+            // Boss node(s)
+            for (MapNode mapNode : bossBattleNodes) {
+                mapNode.setEnemies(combatNodeOptions.getAlmostRandomFromOptions(zoneNumber, CombatNodeSectionName.BOSS));
+            }
+        }
     }
 
     public void drawImagesAndAddActors() {
         // Create and use the images of all nodes
         for (int stageNumber = 0; stageNumber < MAX_STAGES; stageNumber++) {
             for (int i = 0; i < mapNodes.get(stageNumber).size; i++) {
-                getMapNode(stageNumber, i).prepareNodeImage();
-                getMapNode(stageNumber, i).getImage().addListener(hoverAndClickListener);
-                getMapNode(stageNumber, i).getImage().setUserObject(getMapNode(stageNumber, i).getMapNodeData());
-                addActor(getMapNode(stageNumber, i).getImage());
+                MapNode node = getMapNode(stageNumber, i);
+                node.prepareNodeImage();
+                node.getImage().addListener(hoverAndClickListener);
+                node.getImage().setUserObject(node.getMapNodeData());
+                addActor(node.getImage());
             }
         }
     }
@@ -327,8 +371,8 @@ public class MapMenuStage extends GenericStage {
 
         // If the node that was just completed was the last node
         if (currentNodeStage == MAX_STAGES - 1) {
-            reset();
             Statistics.setZoneNumber(Statistics.getZoneNumber() + 1);
+            reset();
         }
     }
 
@@ -365,6 +409,7 @@ public class MapMenuStage extends GenericStage {
         private Image nodeImage;
         private MapNodeType nodeType;
         private boolean isCompleted = false;
+        private Array<CharacterTypeName> enemies = new Array<>();
 
         public MapNode(int stageNumber, int thisNodesFutureIndex, int numberOfNodesInThisStage) {
             nextConnections = new Array<>();
@@ -434,6 +479,10 @@ public class MapMenuStage extends GenericStage {
             nodeImage.setPosition(pos.x(), pos.y());
         }
 
+        public void setEnemies(Array<CharacterTypeName> enemies) {
+            this.enemies = enemies;
+        }
+
         public Image getImage() {
             return nodeImage;
         }
@@ -471,7 +520,8 @@ public class MapMenuStage extends GenericStage {
                     this.indexOfSelf,
                     this.nodeType,
                     Size.SMALL,
-                    desiredLocation
+                    desiredLocation,
+                    enemies
             );
         }
 
@@ -480,7 +530,8 @@ public class MapMenuStage extends GenericStage {
                 int indexOfSelf,
                 MapNodeType nodeType,
                 Size tooltipSize,
-                Location tooltipLocation
+                Location tooltipLocation,
+                Array<CharacterTypeName> enemies
         ) {
         }
     }

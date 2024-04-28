@@ -1,8 +1,10 @@
 package com.roguelikedeckbuilder.mygame.animated.character;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 
@@ -11,6 +13,7 @@ import java.util.Collections;
 
 
 public class CharacterData {
+    public static final int ICON_WIDTH = 64;
     private static Array<IndividualCharacterData> data;
 
     public static void initialize() {
@@ -34,6 +37,15 @@ public class CharacterData {
 
     public static ArrayList<Float> getAllAnimationFrameDelays(CharacterTypeName typeName) {
         return data.get(typeName.ordinal()).getAllAnimationFrameDelays();
+    }
+
+    public static String getInternalName(CharacterTypeName typeName) {
+        return data.get(typeName.ordinal()).getInternalName();
+    }
+
+    public static Image getIcon(CharacterTypeName typeName) {
+        // 64x64 icons
+        return new Image(new Texture(Gdx.files.internal("characters/" + getInternalName(typeName) + "/icon.png")));
     }
 
     public static int getStartFrameIndex(CharacterTypeName typeName, CharacterState state) {
@@ -106,7 +118,6 @@ public class CharacterData {
 
         return characterTypeName;
     }
-
 
     private static class IndividualCharacterData {
         private final ArrayList<Float> allAnimationFrameDelays = new ArrayList<>();
@@ -372,6 +383,10 @@ public class CharacterData {
 
         public int getStandingAnimationEndFrameIndex() {
             return standingEndFrameIndex;
+        }
+
+        public String getInternalName() {
+            return internalName;
         }
 
         private enum FileNameByType {
