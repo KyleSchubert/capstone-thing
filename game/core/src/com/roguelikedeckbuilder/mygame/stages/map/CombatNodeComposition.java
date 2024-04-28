@@ -22,40 +22,10 @@ public class CombatNodeComposition {
         workingSet = new Array<>();
     }
 
-    public void add(CombatNodeSectionName section, CharacterTypeName enemy1) {
+    public void add(CombatNodeSectionName section, CharacterTypeName... enemy) {
         Array<CharacterTypeName> composition = new Array<>();
 
-        composition.add(enemy1);
-
-        putDataWhereItGoes(section, composition);
-    }
-
-    public void add(CombatNodeSectionName section, CharacterTypeName enemy1, CharacterTypeName enemy2) {
-        Array<CharacterTypeName> composition = new Array<>();
-
-        composition.add(enemy1);
-        composition.add(enemy2);
-
-        putDataWhereItGoes(section, composition);
-    }
-
-    public void add(CombatNodeSectionName section, CharacterTypeName enemy1, CharacterTypeName enemy2, CharacterTypeName enemy3) {
-        Array<CharacterTypeName> composition = new Array<>();
-
-        composition.add(enemy1);
-        composition.add(enemy2);
-        composition.add(enemy3);
-
-        putDataWhereItGoes(section, composition);
-    }
-
-    public void add(CombatNodeSectionName section, CharacterTypeName enemy1, CharacterTypeName enemy2, CharacterTypeName enemy3, CharacterTypeName enemy4) {
-        Array<CharacterTypeName> composition = new Array<>();
-
-        composition.add(enemy1);
-        composition.add(enemy2);
-        composition.add(enemy3);
-        composition.add(enemy4);
+        composition.addAll(enemy);
 
         putDataWhereItGoes(section, composition);
     }
