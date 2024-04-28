@@ -8,21 +8,26 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterData;
 import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffectData;
 import com.roguelikedeckbuilder.mygame.cards.CardData;
+import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 import com.roguelikedeckbuilder.mygame.combat.ability.AbilityData;
 import com.roguelikedeckbuilder.mygame.combat.ability.AbilityTypeName;
 import com.roguelikedeckbuilder.mygame.combat.effect.EffectData;
 import com.roguelikedeckbuilder.mygame.combat.enemy.EnemyData;
+import com.roguelikedeckbuilder.mygame.combat.statuseffect.StatusEffect;
 import com.roguelikedeckbuilder.mygame.combat.statuseffect.StatusEffectData;
+import com.roguelikedeckbuilder.mygame.combat.statuseffect.StatusEffectTypeName;
 import com.roguelikedeckbuilder.mygame.helpers.*;
 import com.roguelikedeckbuilder.mygame.items.ItemData;
 import com.roguelikedeckbuilder.mygame.items.ItemTier;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
+import com.roguelikedeckbuilder.mygame.stages.combatmenu.CombatMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.combatmenu.UseLine;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 import com.roguelikedeckbuilder.mygame.tracking.trigger.TriggerData;
@@ -121,10 +126,11 @@ public class MyGame extends ApplicationAdapter {
         accumulator += Math.min(delta, 0.25f);
         if (accumulator >= STEP_TIME) {
             accumulator -= STEP_TIME;
-            if (Player.getCombatInformation().getHp() == 0 && menuController.getCurrentMenuState() != MenuState.RESULTS) {
+            if (Player.getCombatInformation().getHp() == 0 && MenuController.getCurrentMenuState() != MenuState.RESULTS) {
                 menuController.setMenuState(MenuState.RESULTS);
+                System.out.println("here2");
             }
-            if (!MenuController.getIsGameplayPaused() || menuController.getCurrentMenuState() == MenuState.MAIN_MENU) {
+            if (!MenuController.getIsGameplayPaused() || MenuController.getCurrentMenuState() == MenuState.MAIN_MENU) {
                 float currentTime = Statistics.getSecondsIntoRun();
                 Statistics.setSecondsIntoRun(currentTime + STEP_TIME);
                 int hours = (int) currentTime / 3600;
@@ -141,17 +147,17 @@ public class MyGame extends ApplicationAdapter {
             }
 
             // Check for ESCAPE key -- Toggle pause menu
-            if (menuController.getCurrentMenuState() == MenuState.MAP || menuController.getCurrentMenuState() == MenuState.COMBAT) {
+            if (MenuController.getCurrentMenuState() == MenuState.MAP || MenuController.getCurrentMenuState() == MenuState.COMBAT) {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                     AudioManager.playMenuOpenSound();
                     menuController.setMenuState(MenuState.PAUSED);
                 }
-            } else if (menuController.getCurrentMenuState() == MenuState.PAUSED) {
+            } else if (MenuController.getCurrentMenuState() == MenuState.PAUSED) {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                     AudioManager.playMenuCloseSound();
                     menuController.setMenuState(MenuState.RESUME);
                 }
-            } else if (menuController.getCurrentMenuState() == MenuState.MAIN_MENU) {
+            } else if (MenuController.getCurrentMenuState() == MenuState.MAIN_MENU) {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {
                     isSomeDebugOn = !isSomeDebugOn;
                     if (isSomeDebugOn) {
@@ -172,6 +178,8 @@ public class MyGame extends ApplicationAdapter {
                         System.out.println("- ; : Get a temporary item");
                         System.out.println("- PAGE UP : Clear save data");
                         System.out.println("- F : Print mouse position");
+                        System.out.println("- N : Give everyone +1 Burning and +1 Poison");
+                        System.out.println("- M : Give everyone +1 Vulnerability and +1 Weakness");
                         AudioManager.playHealSound();
                     } else {
                         System.out.println("DEBUG: OFF");
@@ -205,14 +213,15 @@ public class MyGame extends ApplicationAdapter {
                     menuController.setMenuState(MenuState.MAIN_MENU);
                     menuController.setMenuState(MenuState.START_REWARDS);
                     menuController.setMenuState(MenuState.MAP);
+                    menuController.debugOnlyAddEnemiesForCombat();
                     menuController.setMenuState(MenuState.COMBAT);
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_5)) {
                     menuController.setMenuState(MenuState.RESULTS);
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_6)) {
-                    if (menuController.getCurrentMenuState() == MenuState.MAP ||
-                            menuController.getCurrentMenuState() == MenuState.REST_AREA ||
-                            menuController.getCurrentMenuState() == MenuState.TREASURE ||
-                            menuController.getCurrentMenuState() == MenuState.SHOP) {
+                    if (MenuController.getCurrentMenuState() == MenuState.MAP ||
+                            MenuController.getCurrentMenuState() == MenuState.REST_AREA ||
+                            MenuController.getCurrentMenuState() == MenuState.TREASURE ||
+                            MenuController.getCurrentMenuState() == MenuState.SHOP) {
                         Player.obtainItem(ItemData.getSomeRandomItemNamesByTier(ItemTier.ANY, 1, false).get(0));
                     }
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_7)) {
@@ -222,7 +231,7 @@ public class MyGame extends ApplicationAdapter {
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_9)) {
                     Player.getCombatInformation().changeHp(Player.getCombatInformation().getMaxHp());
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
-                    if (menuController.getCurrentMenuState() == MenuState.COMBAT) {
+                    if (MenuController.getCurrentMenuState() == MenuState.COMBAT) {
                         Statistics.combatEnded();
                         menuController.setMenuState(MenuState.MAP);
                         AudioManager.playMenuCloseSound();
@@ -238,7 +247,7 @@ public class MyGame extends ApplicationAdapter {
                             true
                     );
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT_BRACKET)) {
-                    if (menuController.getCurrentMenuState() == MenuState.COMBAT) {
+                    if (MenuController.getCurrentMenuState() == MenuState.COMBAT) {
                         Player.drawCards(1);
                     }
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_UP)) {
@@ -252,6 +261,24 @@ public class MyGame extends ApplicationAdapter {
                     );
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
                     System.out.println(getMousePosition());
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+                    Player.getCombatInformation().addStatusEffect(new StatusEffect(StatusEffectTypeName.BURNING, 1));
+                    Player.getCombatInformation().addStatusEffect(new StatusEffect(StatusEffectTypeName.POISON, 1));
+
+                    Array<CombatInformation> enemies = CombatMenuStage.getCombatInformationForLivingEnemies();
+                    for (CombatInformation enemy : enemies) {
+                        enemy.addStatusEffect(new StatusEffect(StatusEffectTypeName.BURNING, 1));
+                        enemy.addStatusEffect(new StatusEffect(StatusEffectTypeName.POISON, 1));
+                    }
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
+                    Player.getCombatInformation().addStatusEffect(new StatusEffect(StatusEffectTypeName.VULNERABILITY, 1));
+                    Player.getCombatInformation().addStatusEffect(new StatusEffect(StatusEffectTypeName.WEAKNESS, 1));
+
+                    Array<CombatInformation> enemies = CombatMenuStage.getCombatInformationForLivingEnemies();
+                    for (CombatInformation enemy : enemies) {
+                        enemy.addStatusEffect(new StatusEffect(StatusEffectTypeName.VULNERABILITY, 1));
+                        enemy.addStatusEffect(new StatusEffect(StatusEffectTypeName.WEAKNESS, 1));
+                    }
                 }
             }
 

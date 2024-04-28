@@ -50,13 +50,6 @@ public class VisualEffectData {
             String internalName;
 
             switch (visualEffectName) {
-                case ITEM_TRIGGERED -> {
-                    internalName = "item triggered";
-                    this.totalFrameCount = 8;
-                    this.animationFrameDelays = new ArrayList<>(Collections.nCopies(totalFrameCount, 0.040f));
-                    this.dimensions = new XYPair<>(242, 242);
-                    this.origin = new XYPair<>(121, 121);
-                }
                 case ITEM_TRIGGERED_2 -> {
                     internalName = "item triggered 2";
                     this.totalFrameCount = 10;

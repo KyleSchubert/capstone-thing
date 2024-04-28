@@ -67,7 +67,13 @@ public class EffectData {
                 switch (effectType) {
                     case ATTACK -> {
                         int strengthAmount = theAttacker.getStatusEffectValue(StatusEffectTypeName.STRENGTH);
-                        stopEarly = combatInformation.takeDamage(effectiveness + strengthAmount, false);
+                        double totalDamage = effectiveness + strengthAmount;
+
+                        if (theAttacker.getStatusEffectValue(StatusEffectTypeName.WEAKNESS) > 0) {
+                            totalDamage *= 0.75;
+                        }
+
+                        stopEarly = combatInformation.takeDamage(totalDamage, false);
                         AudioManager.playHitSound();
                     }
                     case CONSTITUTION ->
@@ -91,12 +97,24 @@ public class EffectData {
                     case TEMPORARY_ITEM ->
                             combatInformation.obtainTemporaryItem(getTemporaryItem(effectName), isSingleUseItem(effectName));
                     case TRUE_DAMAGE_FLAT -> {
-                        combatInformation.takeDamage(effectiveness, true);
+                        double totalDamage = effectiveness;
+
+                        if (theAttacker.getStatusEffectValue(StatusEffectTypeName.WEAKNESS) > 0) {
+                            totalDamage *= 0.75;
+                        }
+
+                        combatInformation.takeDamage(totalDamage, true);
                         AudioManager.playHitSound();
                     }
                     case TRUE_DAMAGE_PERCENT -> {
+                        if (theAttacker.getStatusEffectValue(StatusEffectTypeName.WEAKNESS) > 0) {
+                            double newEffectiveness = effectiveness * 0.75;
+                            effectiveness = (int) Math.round(newEffectiveness);
+                        }
+
                         float percent = (float) effectiveness / 100;
-                        int change = Math.round(combatInformation.getMaxHp() * percent);
+                        double change = combatInformation.getMaxHp() * percent;
+
                         combatInformation.takeDamage(change, true);
                         AudioManager.playHitSound();
                     }

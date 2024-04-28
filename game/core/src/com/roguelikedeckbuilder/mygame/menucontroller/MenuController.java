@@ -31,6 +31,8 @@ import com.roguelikedeckbuilder.mygame.stages.treasure.TreasureMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.upgrades.UpgradesMenuStage;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
+import java.util.Random;
+
 import static com.roguelikedeckbuilder.mygame.MyGame.batch;
 import static com.roguelikedeckbuilder.mygame.MyGame.getMousePosition;
 import static com.roguelikedeckbuilder.mygame.stages.map.MapNodeType.ELITE_BATTLE;
@@ -73,6 +75,16 @@ public class MenuController {
 
     public static MenuState getCurrentMenuState() {
         return currentMenuState;
+    }
+
+    public void debugOnlyAddEnemiesForCombat() {
+        Random random = new Random();
+
+        enemiesToLoadIn.clear();
+        for (int i = 0; i < 4; i++) {
+            int randomNumber = random.nextInt(CharacterTypeName.values().length);
+            enemiesToLoadIn.add(CharacterTypeName.values()[randomNumber]);
+        }
     }
 
     public void create() {
@@ -438,6 +450,7 @@ public class MenuController {
                 Statistics.setRunNumber(Statistics.getRunNumber() + 1);
                 Statistics.runStarted();
                 Statistics.resetVariables();
+
                 mapMenuStage.reset();
                 tooltipStage.itemReward();
                 currentMenuState = MenuState.START_REWARDS;

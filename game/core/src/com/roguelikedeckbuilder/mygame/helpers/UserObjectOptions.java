@@ -7,5 +7,6 @@ public enum UserObjectOptions {
     SLIDER_KNOB,
     PLAYER,
     INTENT,
+    STATUS_EFFECT,
     TREASURE_GROUP
 }

@@ -208,6 +208,7 @@ public class CombatMenuStage extends GenericStage {
         positionTemporaryItems();
 
         for (Enemy enemy : mustRemoveBecauseDead) {
+            enemy.getCombatInformation().resetStatusEffects();
             enemy.removeIntentHolder();
             removeEnemy(enemy);
         }
@@ -242,7 +243,7 @@ public class CombatMenuStage extends GenericStage {
                 if (i >= 5) {
                     gapSize = (RIGHTMOST_POSITION - LEFTMOST_POSITION) / (amountOfCards - 5 + 1);
                     positionX = LEFTMOST_POSITION + gapSize * (i - 5 + 1);
-                    positionY = 5;
+                    positionY = 100;
                 } else {
                     if (amountOfCards > 5) {
                         gapSize = (RIGHTMOST_POSITION - LEFTMOST_POSITION) / 6;
@@ -313,8 +314,8 @@ public class CombatMenuStage extends GenericStage {
                         deleteDelay(delay);
                     }
                     case "enemyTurnEnd" -> {
-                        for (Enemy enemy : currentEnemies) {
-                            enemy.endTurn();
+                        for (int i = 0; i < currentEnemies.size; i++) {
+                            currentEnemies.get(i).endTurn();
                         }
                         if (!currentEnemies.isEmpty()) {
                             Statistics.setTurnNumber(Statistics.getTurnNumber() + 1);
@@ -396,6 +397,7 @@ public class CombatMenuStage extends GenericStage {
         removeActorsByType(UserObjectOptions.CARD);
         removeActorsByType(UserObjectOptions.ITEM);
         removeActorsByType(UserObjectOptions.INTENT);
+        removeActorsByType(UserObjectOptions.STATUS_EFFECT);
 
         getScheduledDelays().clear();
         setPlayerCharacter();

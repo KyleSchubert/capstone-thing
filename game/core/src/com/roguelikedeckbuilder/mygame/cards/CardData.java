@@ -62,32 +62,32 @@ public class CardData {
         private int value;
 
         public IndividualCardData(CardTypeName cardTypeName) {
-            String iconFileName = "1.png";
+            String iconFileName = "not done.png";
 
             switch (cardTypeName) {
                 case ENERGY_SLICES -> {
                     abilityTypeName = AbilityTypeName.ENERGY_SLICES;
                     upgradedAbilityTypeName = AbilityTypeName.ENERGY_SLICES_UPGRADED;
                     value = 110;
-                    iconFileName = "1.png";
+                    iconFileName = "not done.png";
                 }
                 case FLAME -> {
                     abilityTypeName = AbilityTypeName.FLAME;
                     upgradedAbilityTypeName = AbilityTypeName.FLAME_UPGRADED;
                     value = 70;
-                    iconFileName = "2.png";
+                    iconFileName = "not done.png";
                 }
                 case FIRE_STRIKE -> {
                     abilityTypeName = AbilityTypeName.FIRE_STRIKE;
                     upgradedAbilityTypeName = AbilityTypeName.FIRE_STRIKE_UPGRADED;
                     value = 80;
-                    iconFileName = "3.png";
+                    iconFileName = "not done.png";
                 }
                 case DEFEND -> {
                     abilityTypeName = AbilityTypeName.DEFEND;
                     upgradedAbilityTypeName = AbilityTypeName.DEFEND_UPGRADED;
                     value = 80;
-                    iconFileName = "4.png";
+                    iconFileName = "not done.png";
                 }
                 case OUT_OF_STOCK -> {
                     abilityTypeName = AbilityTypeName.NOTHING;

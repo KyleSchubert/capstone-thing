@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
+import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
 
@@ -16,6 +17,7 @@ public class StatusEffect extends Group {
     private final Label amountOfStacks;
     private int amount;
     private boolean toBeAdded = true;
+    private boolean isDebuff;
 
     public StatusEffect(StatusEffectTypeName statusEffectTypeName, int amount) {
         this.statusEffectTypeName = statusEffectTypeName;
@@ -34,6 +36,10 @@ public class StatusEffect extends Group {
                 StatusEffectData.getDescription(statusEffectTypeName),
                 Statistics.getRunNumber()
         ));
+
+        isDebuff = StatusEffectData.isDebuff(statusEffectTypeName);
+
+        setUserObject(UserObjectOptions.STATUS_EFFECT);
     }
 
     public int getAmount() {
@@ -47,6 +53,10 @@ public class StatusEffect extends Group {
             return;
         }
         amountOfStacks.setText(Integer.toString(this.amount));
+    }
+
+    public boolean isDebuff() {
+        return isDebuff;
     }
 
     public StatusEffectTypeName getStatusEffectTypeName() {

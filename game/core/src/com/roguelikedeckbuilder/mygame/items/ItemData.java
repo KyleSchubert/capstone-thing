@@ -114,7 +114,7 @@ public class ItemData {
 
             switch (itemTypeName) {
                 case TEST_SWORD -> {
-                    iconFileName = "sword1.png";
+                    iconFileName = "not done.png";
                     name = "Test Sword";
                     abilityTypeName = AbilityTypeName.ITEM_SWORD_ABILITY;
                     itemTier = ItemTier.COMMON;
@@ -122,7 +122,7 @@ public class ItemData {
                     value = 400;
                 }
                 case TEST_SHIELD -> {
-                    iconFileName = "shield1.png";
+                    iconFileName = "not done.png";
                     name = "Test Shield";
                     abilityTypeName = AbilityTypeName.ITEM_SHIELD_ABILITY;
                     itemTier = ItemTier.COMMON;
@@ -130,7 +130,7 @@ public class ItemData {
                     value = 250;
                 }
                 case TEST_SWORD_2 -> {
-                    iconFileName = "sword2.png";
+                    iconFileName = "not done.png";
                     name = "Test Sword 2";
                     abilityTypeName = AbilityTypeName.ITEM_SWORD_2_ABILITY;
                     itemTier = ItemTier.COMMON;
@@ -146,7 +146,7 @@ public class ItemData {
                     value = 999;
                 }
                 case FOR_CARD_DAMAGE_EVERY_TURN -> {
-                    iconFileName = "default.png";
+                    iconFileName = "not done.png";
                     name = "Temporary Buff";
                     abilityTypeName = AbilityTypeName.ITEM_SMALL_DAMAGE;
                     itemTier = ItemTier.TEMPORARY_ITEM;
@@ -154,7 +154,7 @@ public class ItemData {
                     value = 1;
                 }
                 case FOR_CARD_DEFENSE_EVERY_TURN -> {
-                    iconFileName = "default.png";
+                    iconFileName = "not done.png";
                     name = "Temporary Buff";
                     abilityTypeName = AbilityTypeName.ITEM_SMALL_DEFENSE;
                     itemTier = ItemTier.TEMPORARY_ITEM;
@@ -162,7 +162,7 @@ public class ItemData {
                     value = 1;
                 }
                 case FOR_CARD_DRAW_EVERY_TURN -> {
-                    iconFileName = "default.png";
+                    iconFileName = "not done.png";
                     name = "Temporary Buff";
                     abilityTypeName = AbilityTypeName.ITEM_DRAW_CARD;
                     itemTier = ItemTier.TEMPORARY_ITEM;
@@ -170,7 +170,7 @@ public class ItemData {
                     value = 1;
                 }
                 case FOR_CARD_STRENGTH_EVERY_TURN -> {
-                    iconFileName = "default.png";
+                    iconFileName = "not done.png";
                     name = "Temporary Buff";
                     abilityTypeName = AbilityTypeName.ITEM_GAIN_STRENGTH;
                     itemTier = ItemTier.TEMPORARY_ITEM;
@@ -178,7 +178,7 @@ public class ItemData {
                     value = 1;
                 }
                 case FOR_CARD_DAMAGE_ON_DRAW -> {
-                    iconFileName = "default.png";
+                    iconFileName = "not done.png";
                     name = "Temporary Buff";
                     abilityTypeName = AbilityTypeName.ITEM_SMALL_TRUE_DAMAGE_ONE;
                     itemTier = ItemTier.TEMPORARY_ITEM;

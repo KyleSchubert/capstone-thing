@@ -64,6 +64,8 @@ public class Player {
         money = 1500;
         flagGoBackToPreviousMenuState = false;
 
+        combatInformation.loadPlayerStats();
+
         ownedCards.clear();
 
         for (CardTypeName cardTypeName : CardData.getSomeRandomCards(CardTypeName.values().length - 1, false)) {
@@ -163,7 +165,6 @@ public class Player {
         character.setUserObject(UserObjectOptions.PLAYER);
         character.faceRight();
         combatInformation.setPositions(character.getCharacterCenter());
-        combatInformation.loadPlayerStats();
         return character;
     }
 
@@ -207,6 +208,8 @@ public class Player {
         energy = 3;
         Statistics.restoredEnergy(energy - oldEnergyAmount);
         combatInformation.clearDefense();
+
+        combatInformation.activateStartTurnStatusEffects();
     }
 
     public static int getEnergy() {
@@ -312,6 +315,9 @@ public class Player {
             Statistics.discardedCard();
         }
         handContents.clear();
+
+        combatInformation.activateEndTurnStatusEffects();
+        combatInformation.tickDownDebuffStatusEffects();
     }
 
     public static void drawCards(int amount) {

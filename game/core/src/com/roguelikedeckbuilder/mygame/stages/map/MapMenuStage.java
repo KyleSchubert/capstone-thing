@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
+import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffect;
+import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffectName;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 import com.roguelikedeckbuilder.mygame.stages.tooltip.Location;
@@ -475,8 +477,19 @@ public class MapMenuStage extends GenericStage {
             // Preferably, all the images should have the same dimensions
 
             nodeImage = new Image(new Texture(Gdx.files.internal(filePath)));
-            nodeImage.setScale(2);
             nodeImage.setPosition(pos.x(), pos.y());
+
+            if (nodeType == MapNodeType.BOSS_BATTLE) {
+                int HALF_NODE_WIDTH_AND_HEIGHT = 32;
+                VisualEffect visualEffect = new VisualEffect(
+                        VisualEffectName.EVIL_HH_AURA,
+                        pos.x() + HALF_NODE_WIDTH_AND_HEIGHT,
+                        pos.y() + HALF_NODE_WIDTH_AND_HEIGHT,
+                        1
+                );
+                visualEffect.setLooping();
+                addActor(visualEffect);
+            }
         }
 
         public void setEnemies(Array<CharacterTypeName> enemies) {

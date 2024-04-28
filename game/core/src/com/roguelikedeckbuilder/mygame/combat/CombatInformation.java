@@ -91,16 +91,22 @@ public class CombatInformation {
         }
     }
 
-    public boolean takeDamage(int amount, boolean isIgnoringDefense) {
+    public boolean takeDamage(double amount, boolean isIgnoringDefense) {
         if (hp == 0) {
             return true;
         }
 
+        if (getStatusEffectValue(StatusEffectTypeName.VULNERABILITY) > 0) {
+            amount *= 1.5;
+        }
+
+        int adjustedAmount = (int) Math.round(amount);
+
         int totalDamageTaken;
         if (isIgnoringDefense) {
-            totalDamageTaken = Math.min(hp, amount);
+            totalDamageTaken = Math.min(hp, adjustedAmount);
         } else {
-            totalDamageTaken = Math.min(defense + hp, amount);
+            totalDamageTaken = Math.min(defense + hp, adjustedAmount);
         }
 
         if (isPlayerInformation) {
@@ -113,9 +119,9 @@ public class CombatInformation {
 
         int excessDamage;
         if (isIgnoringDefense) {
-            excessDamage = -amount;
+            excessDamage = -adjustedAmount;
         } else {
-            excessDamage = changeDefense(-amount);
+            excessDamage = changeDefense(-adjustedAmount);
         }
 
         setNeedToPlayHitEffect(true);
@@ -160,7 +166,7 @@ public class CombatInformation {
     public void setPositions(XYPair<Float> position) {
         damageNumberCenter = new XYPair<>(position.x(), position.y() + 120);
         hpBar.setPosition(new XYPair<>(position.x() - 82, position.y() - 30));
-        statusEffectVisualX = position.x() - 28;
+        statusEffectVisualX = position.x() - 48;
         repositionStatusEffectVisuals();
     }
 
@@ -206,16 +212,23 @@ public class CombatInformation {
     private void repositionStatusEffectVisuals() {
         // The player's Y position matches the enemies' Y positions
         float TOPMOST_POSITION = Player.getPositionOnStage().y() - 72;
-        float GAP = 34;
+        float VERTICAL_GAP = 34;
+        float HORIZONTAL_GAP = 72;
+        int AMOUNT_PER_COLUMN = 3;
 
         float i = 0;
+        float additionalX = 0;
         for (StatusEffect statusEffect : statusEffects) {
-            statusEffect.setPosition(statusEffectVisualX, TOPMOST_POSITION - i * GAP);
+            statusEffect.setPosition(statusEffectVisualX + additionalX, TOPMOST_POSITION - (i % AMOUNT_PER_COLUMN) * VERTICAL_GAP);
             if (statusEffect.isToBeAdded()) {
                 statusEffectVisuals.addActor(statusEffect);
                 statusEffect.setToBeAdded(false);
             }
             i++;
+
+            if (i % AMOUNT_PER_COLUMN == 0) {
+                additionalX += HORIZONTAL_GAP;
+            }
         }
     }
 
@@ -251,6 +264,41 @@ public class CombatInformation {
             if (temporaryItems.get(i).isUsedUp()) {
                 temporaryItems.removeIndex(i);
             }
+        }
+    }
+
+    public void activateEndTurnStatusEffects() {
+        // Poison
+        int poisonStacks = getStatusEffectValue(StatusEffectTypeName.POISON);
+        if (poisonStacks > 0) {
+            takeDamage(poisonStacks, false);
+        }
+    }
+
+    public void activateStartTurnStatusEffects() {
+        // Burning
+        int burningStacks = getStatusEffectValue(StatusEffectTypeName.BURNING);
+        if (burningStacks > 0) {
+            takeDamage(burningStacks, false);
+        }
+    }
+
+    public void tickDownDebuffStatusEffects() {
+        boolean removedSomething = false;
+
+        for (int i = statusEffects.size - 1; i >= 0; i--) {
+            StatusEffect statusEffect = statusEffects.get(i);
+            if (statusEffect.isDebuff()) {
+                statusEffect.setAmount(statusEffect.getAmount() - 1);
+                if (statusEffect.getAmount() <= 0) {
+                    statusEffects.removeIndex(i);
+                    removedSomething = true;
+                }
+            }
+        }
+
+        if (removedSomething) {
+            repositionStatusEffectVisuals();
         }
     }
 

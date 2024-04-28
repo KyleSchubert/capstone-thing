@@ -75,13 +75,15 @@ public class Enemy {
             Statistics.enemyWasTargeted();
         }
         CombatHandler.enemyUsesAbility(nextAbility, combatInformation);
+
+        combatInformation.activateStartTurnStatusEffects();
     }
 
     private void resetNextAbility() {
         nextAbility = abilityOptions.random();
         XYPair<Float> position = character.getCharacterCenter();
 
-        intentHolder.addActor(new Intent(nextAbility, position.x(), position.y()));
+        intentHolder.addActor(new Intent(nextAbility, position.x() - 18, position.y() - 28));
     }
 
     public void removeIntentHolder() {
@@ -90,5 +92,8 @@ public class Enemy {
 
     public void endTurn() {
         resetNextAbility();
+
+        combatInformation.activateEndTurnStatusEffects();
+        combatInformation.tickDownDebuffStatusEffects();
     }
 }

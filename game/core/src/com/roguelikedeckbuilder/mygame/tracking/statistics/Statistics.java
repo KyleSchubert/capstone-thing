@@ -2,7 +2,7 @@ package com.roguelikedeckbuilder.mygame.tracking.statistics;
 
 import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.Player;
-import com.roguelikedeckbuilder.mygame.items.Item;
+import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 import com.roguelikedeckbuilder.mygame.stages.combatmenu.CombatMenuStage;
 
 public class Statistics {
@@ -140,20 +140,17 @@ public class Statistics {
             Player.getOwnedItems().get(i).checkTrigger(newRow, indexOfThisNewRow);
         }
 
-        // Temporary items (during combat only)
-        int amountOfPlayerTemporaryItems = Player.getCombatInformation().getTemporaryItems().size;
-        for (int i = 0; i < amountOfPlayerTemporaryItems; i++) {
-            Player.getCombatInformation().getTemporaryItems().get(i).checkTrigger(newRow, indexOfThisNewRow);
-        }
-        Player.getCombatInformation().removeUsedUpTemporaryItems();
+        Array<CombatInformation> allEnemiesAndThePlayer = new Array<>();
+        allEnemiesAndThePlayer.add(Player.getCombatInformation());
+        allEnemiesAndThePlayer.addAll(CombatMenuStage.getCombatInformationForLivingEnemies());
 
-        for (int i = 0; i < CombatMenuStage.getCombatInformationForLivingEnemies().size; i++) {
-            Array<Item> temporaryItems = CombatMenuStage.getCombatInformationForLivingEnemies().get(i).getTemporaryItems();
-            int amountOfTemporaryItems = temporaryItems.size;
-            for (int j = 0; j < amountOfTemporaryItems; j++) {
-                temporaryItems.get(j).checkTrigger(newRow, indexOfThisNewRow);
+        for (CombatInformation combatInformation : allEnemiesAndThePlayer) {
+
+            // Temporary items (during combat only)
+            for (int i = 0; i < combatInformation.getTemporaryItems().size; i++) {
+                combatInformation.getTemporaryItems().get(i).checkTrigger(newRow, indexOfThisNewRow);
             }
-            CombatMenuStage.getCombatInformationForLivingEnemies().get(i).removeUsedUpTemporaryItems();
+            combatInformation.removeUsedUpTemporaryItems();
         }
     }
 
