@@ -116,31 +116,31 @@ public class CardData {
                 case ROUTINE_POKING -> {
                     abilityTypeName = AbilityTypeName.SMALL_DAMAGE_EVERY_TURN;
                     upgradedAbilityTypeName = AbilityTypeName.SMALL_DAMAGE_EVERY_TURN_UPGRADED;
-                    iconFileName = "not done.png";
+                    iconFileName = "ability4.png";
                     value = 280;
                 }
                 case SHIELDS_UP -> {
                     abilityTypeName = AbilityTypeName.SHIELDS_UP;
                     upgradedAbilityTypeName = AbilityTypeName.SHIELDS_UP_UPGRADED;
-                    iconFileName = "not done.png";
+                    iconFileName = "ability5.png";
                     value = 280;
                 }
                 case SPEED_DIAL -> {
                     abilityTypeName = AbilityTypeName.SPEED_DIAL;
                     upgradedAbilityTypeName = AbilityTypeName.SPEED_DIAL_UPGRADED;
-                    iconFileName = "not done.png";
+                    iconFileName = "ability3.png";
                     value = 350;
                 }
                 case PINS_AND_NEEDLES -> {
                     abilityTypeName = AbilityTypeName.PINS_AND_NEEDLES;
                     upgradedAbilityTypeName = AbilityTypeName.PINS_AND_NEEDLES_UPGRADED;
-                    iconFileName = "not done.png";
+                    iconFileName = "ability1.png";
                     value = 350;
                 }
                 case PUMP_IRON -> {
                     abilityTypeName = AbilityTypeName.PUMP_IRON;
                     upgradedAbilityTypeName = AbilityTypeName.PUMP_IRON_UPGRADED;
-                    iconFileName = "not done.png";
+                    iconFileName = "ability2.png";
                     value = 550;
                 }
                 default ->
