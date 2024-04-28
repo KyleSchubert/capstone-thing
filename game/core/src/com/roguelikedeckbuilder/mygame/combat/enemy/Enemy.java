@@ -3,7 +3,6 @@ package com.roguelikedeckbuilder.mygame.combat.enemy;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.animated.character.Character;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
 import com.roguelikedeckbuilder.mygame.combat.CombatHandler;
@@ -19,7 +18,7 @@ import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 public class Enemy {
     private final Character character;
     private final CombatInformation combatInformation;
-    private final Array<AbilityTypeName> abilityOptions;
+    private final AttackPattern attackPattern;
     private final XYPair<Float> positionOnStage;
     private final Group intentHolder = new Group();
     private AbilityTypeName nextAbility;
@@ -34,10 +33,10 @@ public class Enemy {
         combatInformation.loadEnemyStats(characterTypeName);
         combatInformation.setHpBarVisibility(true);
 
-        abilityOptions = EnemyData.getAbilityOptions(characterTypeName);
+        attackPattern = EnemyData.getAttackPattern(characterTypeName);
         intentHolder.setUserObject(UserObjectOptions.INTENT);
 
-        resetNextAbility();
+        prepareNextAbility();
     }
 
     public void putOnStage(Stage stage) {
@@ -79,8 +78,9 @@ public class Enemy {
         combatInformation.activateStartTurnStatusEffects();
     }
 
-    private void resetNextAbility() {
-        nextAbility = abilityOptions.random();
+    private void prepareNextAbility() {
+        nextAbility = attackPattern.getNextMove();
+
         XYPair<Float> position = character.getCharacterCenter();
 
         intentHolder.addActor(new Intent(nextAbility, position.x() - 18, position.y() - 28));
@@ -91,7 +91,7 @@ public class Enemy {
     }
 
     public void endTurn() {
-        resetNextAbility();
+        prepareNextAbility();
 
         combatInformation.activateEndTurnStatusEffects();
         combatInformation.tickDownDebuffStatusEffects();
