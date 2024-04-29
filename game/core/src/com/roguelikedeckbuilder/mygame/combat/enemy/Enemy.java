@@ -79,6 +79,10 @@ public class Enemy {
     }
 
     private void prepareNextAbility() {
+        if (combatInformation.getHp() <= combatInformation.getMaxHp() / 2) {
+            attackPattern.belowHalfHealth();
+        }
+
         nextAbility = attackPattern.getNextMove();
 
         XYPair<Float> position = character.getCharacterCenter();

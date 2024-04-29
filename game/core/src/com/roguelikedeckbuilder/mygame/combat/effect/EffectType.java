@@ -2,6 +2,7 @@ package com.roguelikedeckbuilder.mygame.combat.effect;
 
 public enum EffectType {
     ATTACK,
+    BURNING,
     CONSTITUTION,
     DEFEND,
     DISCARD_RANDOM_CARD,
@@ -11,8 +12,12 @@ public enum EffectType {
     HEAL,
     MAX_HP_CHANGE,
     NOTHING,
+    POISON,
     STRENGTH,
     TEMPORARY_ITEM,
     TRUE_DAMAGE_FLAT,
-    TRUE_DAMAGE_PERCENT
+    TRUE_DAMAGE_PERCENT,
+    VULNERABILITY,
+    WEAKNESS
+
 }

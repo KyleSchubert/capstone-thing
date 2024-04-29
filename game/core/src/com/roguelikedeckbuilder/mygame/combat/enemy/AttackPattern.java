@@ -10,7 +10,10 @@ public class AttackPattern {
     private final Random random;
     private int totalWeight;
     private AbilityTypeName initialAbility;
+    private AbilityTypeName halfHealthAbility;
     private boolean needToUseInitialAbility = false;
+    private boolean canUseHalfHealthAbility = false;
+    private boolean haveUsedHalfHealthAbility = false;
 
     public AttackPattern() {
         totalWeight = 0;
@@ -39,6 +42,9 @@ public class AttackPattern {
         if (needToUseInitialAbility) {
             needToUseInitialAbility = false;
             return initialAbility;
+        } else if (canUseHalfHealthAbility) {
+            canUseHalfHealthAbility = false;
+            return halfHealthAbility;
         }
 
         // Ex: with 3 Moves with weightings of 2, randomNumber is in the range of 1-6 as an integer.
@@ -77,6 +83,21 @@ public class AttackPattern {
             } else {
                 moves.get(i).resetRepetitions();
             }
+        }
+    }
+
+    public void setHalfHealthAbility(AbilityTypeName halfHealthAbility) {
+        if (halfHealthAbility == null) {
+            return;
+        }
+
+        this.halfHealthAbility = halfHealthAbility;
+    }
+
+    public void belowHalfHealth() {
+        if (halfHealthAbility != null && !haveUsedHalfHealthAbility) {
+            canUseHalfHealthAbility = true;
+            haveUsedHalfHealthAbility = true;
         }
     }
 }

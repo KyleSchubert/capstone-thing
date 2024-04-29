@@ -15,7 +15,7 @@ public class Intent extends Group {
     public Intent(AbilityTypeName abilityTypeName, float x, float y) {
         EffectName effectName = AbilityData.getEffect(abilityTypeName);
 
-        String description = EffectData.prepareOneEffectDescription(effectName);
+        String description = AbilityData.getDescription(abilityTypeName);
         addCaptureListener(ClickListenerManager.hoverAndPutTextInTooltip("", description, Statistics.getRunNumber()));
 
         Image intentIcon = EffectData.getIntentIcon(effectName);
