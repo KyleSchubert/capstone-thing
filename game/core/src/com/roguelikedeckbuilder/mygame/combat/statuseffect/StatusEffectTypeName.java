@@ -6,6 +6,7 @@ public enum StatusEffectTypeName {
     POISON,
     STRENGTH,
     VULNERABILITY,
+    PRE_CURE,
     WEAKNESS
 
 }

@@ -247,6 +247,16 @@ public class AbilityData {
                     energyCost = 1;
                     effect = EffectName.ATTACK_ON_DRAW;
                 }
+                case PRE_CURE -> {
+                    name = "Pre-Cure";
+                    energyCost = 1;
+                    effect = EffectName.PRE_CURE_ONE;
+                }
+                case PRE_CURE_UPGRADED -> {
+                    name = "Pre-Cure+";
+                    energyCost = 0;
+                    effect = EffectName.PRE_CURE_ONE;
+                }
                 case PUMP_IRON -> {
                     name = "Pump Iron";
                     energyCost = 2;

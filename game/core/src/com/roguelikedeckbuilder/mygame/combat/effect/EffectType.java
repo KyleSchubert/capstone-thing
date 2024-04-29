@@ -4,6 +4,7 @@ public enum EffectType {
     ATTACK,
     BURNING,
     CONSTITUTION,
+    PRE_CURE,
     DEFEND,
     DISCARD_RANDOM_CARD,
     DRAW_CARD,

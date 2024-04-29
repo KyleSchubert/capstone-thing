@@ -233,6 +233,13 @@ public class CombatInformation {
     }
 
     public void addStatusEffect(StatusEffect statusEffect) {
+        // Pre-Cure prevents getting an entire instance of a debuff once
+        if (getStatusEffectValue(StatusEffectTypeName.PRE_CURE) > 0 && statusEffect.isDebuff()) {
+            Optional<StatusEffect> preCure = findStatusEffect(StatusEffectTypeName.PRE_CURE);
+            preCure.ifPresent(effect -> effect.setAmount(effect.getAmount() - 1));
+            return;
+        }
+
         Optional<StatusEffect> alreadyExistingStatusEffect = findStatusEffect(statusEffect.getStatusEffectTypeName());
         if (alreadyExistingStatusEffect.isPresent()) {
             int currentAmount = alreadyExistingStatusEffect.get().getAmount();

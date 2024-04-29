@@ -143,6 +143,12 @@ public class CardData {
                     iconFileName = "ability2.png";
                     value = 550;
                 }
+                case PRE_CURE -> {
+                    abilityTypeName = AbilityTypeName.PRE_CURE;
+                    upgradedAbilityTypeName = AbilityTypeName.PRE_CURE_UPGRADED;
+                    iconFileName = "not done.png";
+                    value = 110;
+                }
                 default ->
                         System.out.println("Why was an ability almost generated with no matching type name? abilityTypeName:  " + cardTypeName);
             }

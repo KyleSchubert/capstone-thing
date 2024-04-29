@@ -69,6 +69,12 @@ public class StatusEffectData {
                     description = "Increases [CYAN]damage taken to 150%[].\n\nStacks reduce by 1 when turn starts, removing the effect at 0.";
                     isDebuff = true;
                 }
+                case PRE_CURE -> {
+                    iconFileName = "pre cure.png";
+                    name = "Pre-Cure";
+                    description = "Prevents the next debuff from being gotten.\n\nStacks reduce by 1 when preventing a debuff from being gotten, removing the effect at 0.";
+                    isDebuff = false;
+                }
                 case WEAKNESS -> {
                     iconFileName = "weakness.png";
                     name = "Weakness";

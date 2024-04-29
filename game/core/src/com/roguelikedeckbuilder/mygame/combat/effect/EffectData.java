@@ -80,6 +80,8 @@ public class EffectData {
                             combatInformation.addStatusEffect(new StatusEffect(StatusEffectTypeName.BURNING, effectiveness));
                     case CONSTITUTION ->
                             combatInformation.addStatusEffect(new StatusEffect(StatusEffectTypeName.CONSTITUTION, effectiveness));
+                    case PRE_CURE ->
+                            combatInformation.addStatusEffect(new StatusEffect(StatusEffectTypeName.PRE_CURE, effectiveness));
                     case DEFEND -> {
                         int constitutionAmount = theAttacker.getStatusEffectValue(StatusEffectTypeName.CONSTITUTION);
                         combatInformation.grantDefense(effectiveness + constitutionAmount);
@@ -144,7 +146,7 @@ public class EffectData {
         switch (effectType) {
             case ATTACK -> fileName = "attack";
             case BURNING, POISON, VULNERABILITY, WEAKNESS -> fileName = "debuff";
-            case CONSTITUTION, STRENGTH -> fileName = "buff";
+            case CONSTITUTION, STRENGTH, PRE_CURE -> fileName = "buff";
             case DEFEND -> fileName = "defend";
             case DRAW_CARD, DISCARD_RANDOM_CARD, GAIN_ENERGY, GOLD_CHANGE, MAX_HP_CHANGE, NOTHING, TEMPORARY_ITEM ->
                     fileName = "other";
@@ -166,6 +168,7 @@ public class EffectData {
             case ATTACK -> effectText = String.format("Deal [RED]%d Damage[]", effectiveness);
             case BURNING -> effectText = String.format("Inflict [ORANGE]%d Burning[]", effectiveness);
             case CONSTITUTION -> effectText = String.format("Grant [YELLOW]%d Constitution[]", effectiveness);
+            case PRE_CURE -> effectText = String.format("Grant [YELLOW]%d Pre-Cure[]", effectiveness);
             case DEFEND -> effectText = String.format("Grant [YELLOW]%d Defense[]", effectiveness);
             case DISCARD_RANDOM_CARD -> {
                 String singularOrPlural = "cards";
@@ -818,6 +821,12 @@ public class EffectData {
                     targetType = TargetType.SELF;
                     temporaryItem = ItemTypeName.FOR_CARD_DAMAGE_ON_DRAW;
                     isSingleUseItem = false;
+                }
+                case PRE_CURE_ONE -> {
+                    effectType = EffectType.PRE_CURE;
+                    effectiveness = 1;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
                 }
                 case STRENGTH_AT_START_OF_TURN -> {
                     effectType = EffectType.TEMPORARY_ITEM;

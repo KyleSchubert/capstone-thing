@@ -13,6 +13,7 @@ public enum CardTypeName {
     ROUTINE_POKING,
     SHIELDS_UP,
     SPEED_DIAL,
-    WEIRD_PUNCH
+    WEIRD_PUNCH,
+    PRE_CURE
 
 }
