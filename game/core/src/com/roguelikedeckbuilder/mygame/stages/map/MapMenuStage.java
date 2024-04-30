@@ -44,6 +44,8 @@ public class MapMenuStage extends GenericStage {
     private final Array<Array<MapNode>> mapNodes;
     private final ClickListener hoverAndClickListener;
     private final Image background;
+    private final Image background2;
+    private final Image background3;
     private final CombatNodeOptions combatNodeOptions = new CombatNodeOptions();
     public HashMap<MapNodeType, Integer> mapNodeTypeWeights;
     public int weightSum;
@@ -56,6 +58,14 @@ public class MapMenuStage extends GenericStage {
         // Background is separate because it needs to be drawn after the lines on the map and after the node icons
         background = new Image(new Texture(Gdx.files.internal("MENU backgrounds/map background.png")));
         background.setPosition(0, -20);
+
+        background2 = new Image(new Texture(Gdx.files.internal("MENU backgrounds/map background 2.png")));
+        background2.setPosition(0, -20);
+
+        background3 = new Image(new Texture(Gdx.files.internal("MENU backgrounds/map background 3.png")));
+        background3.setPosition(0, -20);
+
+        resetBackground();
 
         mapNodes = new Array<>();
 
@@ -77,9 +87,22 @@ public class MapMenuStage extends GenericStage {
         reset();
     }
 
+    private void resetBackground() {
+        background.setVisible(true);
+        background2.setVisible(false);
+        background3.setVisible(false);
+    }
+
     @Override
     public void batch(float elapsedTime) {
-        background.draw(batch, 1);
+        if (background.isVisible()) {
+            background.draw(batch, 1);
+        } else if (background2.isVisible()) {
+            background2.draw(batch, 1);
+        } else if (background3.isVisible()) {
+            background3.draw(batch, 1);
+        }
+        
         batch.end();
         batch.begin();
 
@@ -121,6 +144,16 @@ public class MapMenuStage extends GenericStage {
 
     private void generateMap() {
         int randomNumberOfNodes;
+
+        resetBackground();
+        int zoneNumber = Statistics.getZoneNumber();
+        if (zoneNumber == 2) {
+            background.setVisible(false);
+            background2.setVisible(true);
+        } else if (zoneNumber == 3) {
+            background.setVisible(false);
+            background3.setVisible(true);
+        }
 
         // Create all the nodes
         for (int stageNumber = 0; stageNumber < MAX_STAGES; stageNumber++) {
@@ -229,8 +262,6 @@ public class MapMenuStage extends GenericStage {
         completeNode(0, 0);
 
         // Assign battles to various battle nodes
-        int zoneNumber = Statistics.getZoneNumber();
-
         if (zoneNumber < NUMBER_OF_ZONES) {
             Array<MapNode> normalBattleNodes = findNodesByType(MapNodeType.NORMAL_BATTLE);
             Array<MapNode> eliteBattleNodes = findNodesByType(MapNodeType.ELITE_BATTLE);
