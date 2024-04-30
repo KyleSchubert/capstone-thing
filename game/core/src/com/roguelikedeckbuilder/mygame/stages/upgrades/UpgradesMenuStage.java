@@ -58,7 +58,7 @@ public class UpgradesMenuStage extends GenericStage {
         int limit = 999999;
 
         switch (upgradeName) {
-            case "upgrade-bypassImmunity", "upgrade-restMenu" -> limit = 1;
+            case "upgrade-bypassImmunity" -> limit = 1;
             case "upgrade-draw" -> limit = 3;
         }
 
@@ -76,7 +76,6 @@ public class UpgradesMenuStage extends GenericStage {
             case "upgrade-energy" -> price = 750;
             case "upgrade-item" -> price = 200;
             case "upgrade-maxHP" -> price = 120;
-            case "upgrade-restMenu" -> price = 2500;
             case "upgrade-str" -> price = 180;
             case "upgrade-x2Damage" -> price = 3000;
             case "upgrade-x2SUPER" -> price = 220;
