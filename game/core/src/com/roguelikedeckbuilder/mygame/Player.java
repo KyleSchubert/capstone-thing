@@ -11,24 +11,34 @@ import com.roguelikedeckbuilder.mygame.combat.TargetType;
 import com.roguelikedeckbuilder.mygame.combat.ability.AbilityData;
 import com.roguelikedeckbuilder.mygame.combat.effect.EffectData;
 import com.roguelikedeckbuilder.mygame.combat.effect.EffectType;
+import com.roguelikedeckbuilder.mygame.combat.statuseffect.StatusEffect;
+import com.roguelikedeckbuilder.mygame.combat.statuseffect.StatusEffectTypeName;
 import com.roguelikedeckbuilder.mygame.helpers.AudioManager;
 import com.roguelikedeckbuilder.mygame.helpers.SaveLoad;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.items.Item;
 import com.roguelikedeckbuilder.mygame.items.ItemData;
+import com.roguelikedeckbuilder.mygame.items.ItemTier;
 import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Player {
     public static final int MAXIMUM_CARDS_IN_HAND = 10;
+    public static final ArrayList<String> allUpgradeNames = new ArrayList<>();
     public static boolean combatMenuStageMustUpdatePileText;
     public static boolean combatMenuStageMustAddCard;
     private static CharacterTypeName characterTypeName;
     private static CombatInformation combatInformation;
     private static int money;
     private static int persistentMoney;
+    private static int spentPersistentMoney;
+    private static Map<String, Integer> upgrades;
     private static Array<Card> ownedCards;
     private static int energy;
     private static TargetType potentialAbilityTargetType;
@@ -43,7 +53,9 @@ public class Player {
     public static void initialize() {
         positionOnStage = new XYPair<>(360f, 576f);
         persistentMoney = 0;
+        spentPersistentMoney = 0;
         setCharacterTypeName(CharacterTypeName.HELMET_PENGUIN);
+        upgrades = new HashMap<>();
         ownedCards = new Array<>();
         combatInformation = new CombatInformation();
         combatInformation.setPlayerInformation(true);
@@ -53,7 +65,22 @@ public class Player {
         shufflePileContents = new Array<>();
         handContents = new Array<>();
         combatMenuStageMustUpdatePileText = false;
+        initializeUpgradeNames();
         reset();
+    }
+
+    private static void initializeUpgradeNames() {
+        allUpgradeNames.add("upgrade-maxHP");
+        allUpgradeNames.add("upgrade-draw");
+        allUpgradeNames.add("upgrade-str");
+        allUpgradeNames.add("upgrade-con");
+        allUpgradeNames.add("upgrade-preCure");
+        allUpgradeNames.add("upgrade-coins");
+        allUpgradeNames.add("upgrade-x2SUPER");
+        allUpgradeNames.add("upgrade-item");
+        allUpgradeNames.add("upgrade-energy");
+        allUpgradeNames.add("upgrade-x2Damage");
+        allUpgradeNames.add("upgrade-bypassImmunity");
     }
 
     public static void referenceMenuController(MenuController _menuController) {
@@ -61,7 +88,7 @@ public class Player {
     }
 
     public static void reset() {
-        money = 0;
+        money = Player.getUpgrades().getOrDefault("upgrade-coins", 0) * 300;
         flagGoBackToPreviousMenuState = false;
 
         combatInformation.loadPlayerStats();
@@ -83,6 +110,20 @@ public class Player {
 
         for (Actor actor : mustRemove) {
             actor.remove();
+        }
+
+        if (menuController != null) {
+            int bonusItems = Player.getUpgrades().getOrDefault("upgrade-item", 0);
+            for (int i = 0; i < bonusItems; i++) {
+                ItemTypeName itemTypeName = ItemData.getSomeRandomItemNamesByTier(ItemTier.COMMON, 1, false).first();
+
+                // Because Millionth Dollar gives 100 SUPER Coins. So this leaves it as an exploit, but it's much smaller (fun)
+                if (itemTypeName == ItemTypeName.MILLIONTH_DOLLAR) {
+                    itemTypeName = ItemTypeName.JUNK;
+                }
+
+                Player.obtainItem(itemTypeName);
+            }
         }
     }
 
@@ -121,6 +162,9 @@ public class Player {
     }
 
     public static void changePersistentMoney(int change) {
+        if (Player.getUpgrades().getOrDefault("upgrade-x2SUPER", 0) > 0) {
+            change *= (int) Math.pow(2, Player.getUpgrades().get("upgrade-x2SUPER"));
+        }
         persistentMoney += change;
         if (change > 0) {
             AudioManager.playGetCoinsSound();
@@ -195,7 +239,6 @@ public class Player {
         combatInformation.getTemporaryItems().clear();
         combatInformation.resetStatusEffects();
         combatInformation.setHpBarVisibility(true);
-        startTurn();
 
         drawPileContents.clear();
         for (Card card : ownedCards) {
@@ -210,17 +253,38 @@ public class Player {
 
         handContents.clear();
 
-        drawCards(5);
+        startTurn();
     }
 
     public static void startTurn() {
         int oldEnergyAmount = energy;
-        drawCards(5);
+        drawCards(5 + Player.getUpgrades().getOrDefault("upgrade-draw", 0));
         energy = 3;
+
+        if (Player.hasItem(ItemTypeName.LED_BULB)) {
+            energy += 1;
+        }
+
+        energy += Player.getUpgrades().getOrDefault("upgrade-energy", 0);
+
         Statistics.restoredEnergy(energy - oldEnergyAmount);
         combatInformation.clearDefense();
 
         combatInformation.activateStartTurnStatusEffects();
+
+        int bonusStrength = Player.getUpgrades().getOrDefault("upgrade-str", 0);
+        int bonusConstitution = Player.getUpgrades().getOrDefault("upgrade-con", 0);
+        int bonusPreCure = Player.getUpgrades().getOrDefault("upgrade-preCure", 0);
+
+        if (bonusStrength > 0) {
+            combatInformation.addStatusEffect(new StatusEffect(StatusEffectTypeName.STRENGTH, bonusStrength));
+        }
+        if (bonusConstitution > 0) {
+            combatInformation.addStatusEffect(new StatusEffect(StatusEffectTypeName.CONSTITUTION, bonusConstitution));
+        }
+        if (bonusPreCure > 0) {
+            combatInformation.addStatusEffect(new StatusEffect(StatusEffectTypeName.PRE_CURE, bonusPreCure));
+        }
     }
 
     public static int getEnergy() {
@@ -422,5 +486,25 @@ public class Player {
             return true;
         }
         return false;
+    }
+
+    public static Map<String, Integer> getUpgrades() {
+        return upgrades;
+    }
+
+    public static int getSpentPersistentMoney() {
+        return spentPersistentMoney;
+    }
+
+    public static void setSpentPersistentMoney(int spentPersistentMoney) {
+        Player.spentPersistentMoney = spentPersistentMoney;
+    }
+
+    public static void changeSpentPersistentMoney(int change) {
+        if (change < 0) {
+            System.out.println("SOMETHING TRIED TO CHANGE THE SPENT SUPER COIN AMOUNT with - instead of +");
+            return;
+        }
+        spentPersistentMoney += change;
     }
 }

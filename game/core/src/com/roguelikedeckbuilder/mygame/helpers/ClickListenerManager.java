@@ -31,6 +31,7 @@ import com.roguelikedeckbuilder.mygame.stages.mainmenu.CharacterSelection;
 import com.roguelikedeckbuilder.mygame.stages.settings.SettingsMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.settings.Slider;
 import com.roguelikedeckbuilder.mygame.stages.tooltip.Size;
+import com.roguelikedeckbuilder.mygame.stages.upgrades.UpgradesMenuStage;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 import com.roguelikedeckbuilder.mygame.treasure.Treasure;
 import com.roguelikedeckbuilder.mygame.treasure.TreasureType;
@@ -199,6 +200,22 @@ public class ClickListenerManager {
         });
     }
 
+    public static ClickListener increasingCostInUpgrades(Label label, String upgradeName) {
+        return getClickListenerForTouchUp(() -> {
+            if (Player.getUpgrades().get(upgradeName) >= UpgradesMenuStage.getUpgradeLimit(upgradeName)) {
+                return;
+            }
+
+            int cost = UpgradesMenuStage.getTotalPrice(upgradeName);
+            if (Player.getPersistentMoney() - Player.getSpentPersistentMoney() >= cost) {
+                Player.changeSpentPersistentMoney(cost); // Change should be positive only
+                Player.getUpgrades().put(upgradeName, Player.getUpgrades().get(upgradeName) + 1);
+                label.setText(UpgradesMenuStage.getOwnAmountAndPriceString(upgradeName));
+                AudioManager.playBuyInShopSound();
+            }
+        });
+    }
+
     public static ClickListener increasingCostInShop(Integer[] cost, Label label) {
         return getClickListenerForTouchUp(() -> {
             if (Player.getMoney() >= cost[0]) {
@@ -326,5 +343,16 @@ public class ClickListenerManager {
 
     public static ClickListener resettingResolution() {
         return getClickListenerForTouchUp(() -> Gdx.graphics.setWindowedMode(MyGame.windowWidth, MyGame.windowHeight));
+    }
+
+    public static ClickListener saveUpgrades() {
+        return getClickListenerForTouchUp(SaveLoad::saveUpgrades);
+    }
+
+    public static ClickListener resetUpgrades() {
+        return getClickListenerForTouchUp(() -> {
+            SaveLoad.resetUpgrades();
+            UpgradesMenuStage.resetLabels();
+        });
     }
 }

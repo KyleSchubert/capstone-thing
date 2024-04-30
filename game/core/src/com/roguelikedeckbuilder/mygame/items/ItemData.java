@@ -469,13 +469,14 @@ public class ItemData {
                     triggerName = TriggerName.START_OF_TURN;
                     value = 700;
                 }
-                case SUPER_HOUSE_RULES -> {
+                case LED_BULB -> {
                     iconFileName = "not done.png";
-                    name = "SUPER House Rules";
-                    abilityTypeName = AbilityTypeName.ITEM_GAIN_ENERGY_ONE;
+                    name = "LED Bulb";
+                    abilityTypeName = AbilityTypeName.NOTHING;
                     itemTier = ItemTier.COMMON;
-                    triggerName = TriggerName.START_OF_TURN;
+                    triggerName = TriggerName.NOTHING;
                     value = 700;
+                    descriptionOverride = "+1 Energy.";
                 }
                 case A_REMINDER -> {
                     iconFileName = "not done.png";

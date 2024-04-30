@@ -366,7 +366,6 @@ public class MenuController {
         switch (menuState) {
             case MAIN_MENU -> {
                 // GAME STARTS IN THIS STATE
-                Player.reset();
                 currentMenuState = MenuState.MAIN_MENU;
                 Gdx.input.setInputProcessor(mainMenuStage.getStage());
                 currentInputProcessor = mainMenuStage.getStage();
@@ -450,6 +449,7 @@ public class MenuController {
                 Statistics.setRunNumber(Statistics.getRunNumber() + 1);
                 Statistics.runStarted();
                 Statistics.resetVariables();
+                Player.reset();
 
                 mapMenuStage.reset();
                 tooltipStage.itemReward();

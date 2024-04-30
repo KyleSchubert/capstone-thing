@@ -41,7 +41,7 @@ public class CombatInformation {
     }
 
     public void loadPlayerStats() {
-        maxHp = 70;
+        maxHp = 70 + Player.getUpgrades().getOrDefault("upgrade-maxHP", 0) * 20;
         hp = maxHp;
         updateHpBar();
     }
@@ -94,6 +94,16 @@ public class CombatInformation {
     public boolean takeDamage(double amount, boolean isIgnoringDefense) {
         if (hp == 0) {
             return true;
+        }
+
+        if (isPlayerInformation) {
+            if (Player.getUpgrades().getOrDefault("upgrade-bypassImmunity", 0) != 0) {
+                isIgnoringDefense = false;
+            }
+        } else {
+            int damageMultiplier = (int) Math.pow(2, Player.getUpgrades().getOrDefault("upgrade-2xDamage", 0));
+            amount *= damageMultiplier;
+            amount = Math.min(amount, Integer.MAX_VALUE);
         }
 
         if (getStatusEffectValue(StatusEffectTypeName.VULNERABILITY) > 0) {

@@ -131,7 +131,7 @@ public class MyGame extends ApplicationAdapter {
                 menuController.setMenuState(MenuState.RESULTS);
                 System.out.println("here2");
             }
-            if (!MenuController.getIsGameplayPaused() || MenuController.getCurrentMenuState() == MenuState.MAIN_MENU) {
+            if (!MenuController.getIsGameplayPaused() || MenuController.getCurrentMenuState() == MenuState.MAIN_MENU || MenuController.getCurrentMenuState() == MenuState.UPGRADES) {
                 float currentTime = Statistics.getSecondsIntoRun();
                 Statistics.setSecondsIntoRun(currentTime + STEP_TIME);
                 int hours = (int) currentTime / 3600;

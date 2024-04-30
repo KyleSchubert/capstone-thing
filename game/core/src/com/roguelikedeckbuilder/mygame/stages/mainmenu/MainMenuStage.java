@@ -18,7 +18,7 @@ public class MainMenuStage extends GenericStage {
         super();
 
         addActor(new CharacterSelection(getStage()));
-        
+
         Image persistentCurrencyCounterImage = new Image(new Texture(Gdx.files.internal("ITEMS/persistent coin.png")));
         persistentCurrencyCounterImage.setPosition(310, 280);
         addActor(persistentCurrencyCounterImage);
@@ -48,6 +48,6 @@ public class MainMenuStage extends GenericStage {
     public void batch(float elapsedTime) {
         super.batch(elapsedTime);
 
-        font.draw(batch, "x " + Player.getPersistentMoney(), 346, 306); // text for currency counter
+        font.draw(batch, "x " + (Player.getPersistentMoney() - Player.getSpentPersistentMoney()), 346, 306); // text for currency counter
     }
 }

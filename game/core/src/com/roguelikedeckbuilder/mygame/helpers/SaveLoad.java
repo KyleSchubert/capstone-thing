@@ -12,6 +12,11 @@ public class SaveLoad {
 
         loadVolumeSettings();
         Player.setPersistentMoney(prefs.getInteger("persistentMoney", 0));
+        Player.setSpentPersistentMoney(prefs.getInteger("spentPersistentMoney", 0));
+
+        for (String upgradeName : Player.allUpgradeNames) {
+            Player.getUpgrades().put(upgradeName, prefs.getInteger(upgradeName, 0));
+        }
     }
 
     public static void loadVolumeSettings() {
@@ -40,6 +45,24 @@ public class SaveLoad {
     public static void savePersistentMoney() {
         prefs.putInteger("persistentMoney", Player.getPersistentMoney());
         prefs.flush();
+    }
+
+    public static void saveUpgrades() {
+        for (String upgradeName : Player.allUpgradeNames) {
+            prefs.putInteger(upgradeName, Player.getUpgrades().get(upgradeName));
+        }
+
+        prefs.putInteger("spentPersistentMoney", Player.getSpentPersistentMoney());
+        prefs.flush();
+    }
+
+    public static void resetUpgrades() {
+        for (String upgradeName : Player.allUpgradeNames) {
+            Player.getUpgrades().put(upgradeName, 0);
+        }
+
+        Player.setSpentPersistentMoney(0);
+        saveUpgrades();
     }
 
     public static void clearSave() {

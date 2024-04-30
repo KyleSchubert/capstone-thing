@@ -165,10 +165,6 @@ public class CombatMenuStage extends GenericStage {
         playerCharacter = Player.getCharacter();
         removeActorsByType(UserObjectOptions.PLAYER);
         addActor(playerCharacter);
-
-        System.out.println(playerCharacter.getX());
-        System.out.println(playerCharacter.getY());
-        System.out.println(getStage().getActors().indexOf(playerCharacter, true));
     }
 
     public void batch(float elapsedTime, SpriteBatch batch) {
@@ -449,7 +445,7 @@ public class CombatMenuStage extends GenericStage {
         Player.endTurn();
 
         updatePileText();
-        
+
         updateMaximumAmountOfCardsLabel();
 
         currentAttackingEnemyIndex = 0;
