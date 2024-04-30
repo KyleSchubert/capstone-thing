@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
 import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffect;
 import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffectName;
@@ -374,6 +375,8 @@ public class MapMenuStage extends GenericStage {
         // If the node that was just completed was the last node
         if (currentNodeStage == MAX_STAGES - 1) {
             Statistics.setZoneNumber(Statistics.getZoneNumber() + 1);
+            // Heal the player to full HP
+            Player.getCombatInformation().changeHp(999999);
             reset();
         }
     }
