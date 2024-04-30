@@ -17,6 +17,7 @@ import com.roguelikedeckbuilder.mygame.helpers.SaveLoad;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
 import com.roguelikedeckbuilder.mygame.helpers.XYPair;
 import com.roguelikedeckbuilder.mygame.items.Item;
+import com.roguelikedeckbuilder.mygame.items.ItemData;
 import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
@@ -254,6 +255,15 @@ public class Player {
         Item item = new Item(itemTypeName);
         System.out.println("Player gained item: " + itemTypeName);
 
+        switch (ItemData.getName(itemTypeName)) {
+            case "Cash Injection" -> changeMoney(500);
+            case "Millionth Dollar" -> changePersistentMoney(100);
+            case "Heart V2.0" -> {
+                combatInformation.changeMaxHp(50);
+                combatInformation.changeHp(99999);
+            }
+        }
+
         item.setPosition(10 + ownedItems.size * 60, 802);
 
         for (Item ownedItem : ownedItems) {
@@ -273,6 +283,15 @@ public class Player {
         ownedItems.add(item);
         Statistics.gainedItem();
         AudioManager.playGetItemSound();
+    }
+
+    public static boolean hasItem(ItemTypeName itemTypeName) {
+        for (Item ownedItem : ownedItems) {
+            if (ownedItem.getItemTypeName() == itemTypeName) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static Array<Card> getDrawPileContents() {

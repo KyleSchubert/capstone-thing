@@ -165,27 +165,28 @@ public class AbilityData {
                     energyCost = 1;
                     effect = EffectName.DAMAGE_MANY_TIMES;
                 }
-                case FLAME -> {
-                    name = "Flame";
+                case STRIKE -> {
+                    name = "Strike";
                     energyCost = 1;
                     effect = EffectName.HIGH_DAMAGE_ONCE;
                 }
-                case FLAME_UPGRADED -> {
-                    name = "Double Flame";
-                    energyCost = 1;
-                    effect = EffectName.DAMAGE_MANY_TIMES;
-                    postEffect = EffectName.DAMAGE_A_BIT;
-                }
-                case FIRE_STRIKE -> {
-                    name = "Fire Strike";
-                    energyCost = 1;
-                    effect = EffectName.HIGH_DAMAGE_ONCE;
-                }
-                case FIRE_STRIKE_UPGRADED -> {
-                    name = "Fire Strike+";
+                case STRIKE_UPGRADED -> {
+                    name = "Strike+";
                     energyCost = 1;
                     effect = EffectName.HIGH_DAMAGE_ONCE;
                     postEffect = EffectName.DEFEND_SOME;
+                }
+                case AFFLICTION -> {
+                    name = "Affliction";
+                    energyCost = 1;
+                    effect = EffectName.AFFLICTION_BURNING;
+                    postEffect = EffectName.AFFLICTION_POISON;
+                }
+                case AFFLICTION_UPGRADED -> {
+                    name = "Affliction+";
+                    energyCost = 1;
+                    effect = EffectName.AFFLICTION_BURNING_UP;
+                    postEffect = EffectName.AFFLICTION_POISON_UP;
                 }
                 case AMPLIFY -> {
                     name = "Amplify";
@@ -198,6 +199,99 @@ public class AbilityData {
                     energyCost = 2;
                     preEffect = EffectName.STRENGTH_ONE;
                     effect = EffectName.CONSTITUTION_ONE;
+                }
+                case BLOCK_AND_STUFF -> {
+                    name = "Block and Stuff";
+                    energyCost = 2;
+                    preEffect = EffectName.BLOCK_AND_STUFF_BURN;
+                    effect = EffectName.BLOCK_AND_STUFF_DEFEND;
+                    postEffect = EffectName.BLOCK_AND_STUFF_POISON;
+                }
+                case BLOCK_AND_STUFF_UPGRADED -> {
+                    name = "Block and Stuff+";
+                    energyCost = 2;
+                    preEffect = EffectName.BLOCK_AND_STUFF_BURN_UP;
+                    effect = EffectName.BLOCK_AND_STUFF_DEFEND;
+                    postEffect = EffectName.BLOCK_AND_STUFF_POISON_UP;
+                }
+                case BOULDER_THROW -> {
+                    name = "Boulder Throw";
+                    energyCost = 2;
+                    effect = EffectName.BOULDER_THROW;
+                }
+                case BOULDER_THROW_UPGRADED -> {
+                    name = "Boulder Throw+";
+                    energyCost = 2;
+                    preEffect = EffectName.STRENGTH_ONE;
+                    effect = EffectName.BOULDER_THROW;
+                }
+                case BURN_STEEL_WOOL -> {
+                    name = "Burn Steel Wool";
+                    energyCost = 2;
+                    effect = EffectName.BURN_STEEL_WOOL;
+                    postEffect = EffectName.DRAW_CARD_ONE;
+                }
+                case BURN_STEEL_WOOL_UPGRADED -> {
+                    name = "Burn Steel Wool+";
+                    energyCost = 2;
+                    effect = EffectName.BURN_STEEL_WOOL;
+                    postEffect = EffectName.BURN_STEEL_WOOL_DRAW;
+                }
+                case COIN_WALL -> {
+                    name = "Coin Wall";
+                    energyCost = 1;
+                    effect = EffectName.COIN_WALL_GOLD;
+                    postEffect = EffectName.COIN_WALL_DEFEND;
+                }
+                case COIN_WALL_UPGRADED -> {
+                    name = "Coin Wall+";
+                    energyCost = 1;
+                    effect = EffectName.COIN_WALL_GOLD;
+                    postEffect = EffectName.COIN_WALL_DEFEND_UP;
+                }
+                case CRACK_KNUCKLES -> {
+                    name = "Crack Knuckles";
+                    energyCost = 1;
+                    effect = EffectName.CRACK_KNUCKLES;
+                }
+                case CRACK_KNUCKLES_UPGRADED -> {
+                    name = "Crack Knuckles+";
+                    energyCost = 1;
+                    effect = EffectName.CRACK_KNUCKLES_UP;
+                }
+                case CULL -> {
+                    name = "Cull";
+                    energyCost = 3;
+                    effect = EffectName.CULL_ATTACK;
+                    postEffect = EffectName.CULL_HEAL;
+                }
+                case CULL_UPGRADED -> {
+                    name = "Cull+";
+                    energyCost = 2;
+                    effect = EffectName.CULL_ATTACK;
+                    postEffect = EffectName.CULL_HEAL;
+                }
+                case CURSE -> {
+                    name = "Curse";
+                    energyCost = 1;
+                    effect = EffectName.CURSE_WEAKNESS;
+                }
+                case CURSE_UPGRADED -> {
+                    name = "Curse+";
+                    energyCost = 1;
+                    effect = EffectName.CURSE_WEAKNESS_UP;
+                }
+                case DEBILITATE -> {
+                    name = "Debilitate";
+                    energyCost = 2;
+                    effect = EffectName.DEBILITATE_WEAKNESS;
+                    postEffect = EffectName.DEBILITATE_VULNERABILITY;
+                }
+                case DEBILITATE_UPGRADED -> {
+                    name = "Debilitate+";
+                    energyCost = 1;
+                    effect = EffectName.DEBILITATE_WEAKNESS;
+                    postEffect = EffectName.DEBILITATE_VULNERABILITY;
                 }
                 case DEFEND -> {
                     name = "Defend";
@@ -301,6 +395,18 @@ public class AbilityData {
                     energyCost = 1;
                     effect = EffectName.DRAW_CARD_AT_START_OF_TURN;
                 }
+                case ITEM_BURN_ONE -> effect = EffectName.ENEMY_ALIEN_BURNING;
+                case ITEM_HEAL_5 -> effect = EffectName.ITEM_HEAL_5;
+                case ITEM_DEFEND_30 -> effect = EffectName.ITEM_DEFEND_30;
+                case ITEM_TRUE_DAMAGE_35 -> effect = EffectName.ITEM_TRUE_DAMAGE_35;
+                case ITEM_GAIN_CONSTITUTION -> effect = EffectName.ITEM_GAIN_CONSTITUTION;
+                case ITEM_GAIN_ENERGY_ONE -> effect = EffectName.GAIN_ENERGY_ONE;
+                case ITEM_DEFEND_14 -> effect = EffectName.ITEM_DEFEND_14;
+                case ITEM_REDUCE_MAX_HP_5_PERCENT -> effect = EffectName.ITEM_REDUCE_MAX_HP_5_PERCENT;
+                case ITEM_REDUCE_MAX_HP_10_PERCENT -> effect = EffectName.ITEM_REDUCE_MAX_HP_10_PERCENT;
+                case ITEM_REDUCE_MAX_HP_15_PERCENT -> effect = EffectName.ITEM_REDUCE_MAX_HP_15_PERCENT;
+                case ITEM_3_BURNING -> effect = EffectName.ITEM_3_BURNING;
+                case ITEM_1_POISON -> effect = EffectName.ITEM_1_POISON;
                 case ENEMY_ALIEN_HIT_AND_BURN -> {
                     effect = EffectName.ENEMY_ALIEN_HIT;
                     postEffect = EffectName.ENEMY_ALIEN_BURNING;
@@ -455,6 +561,288 @@ public class AbilityData {
                 case ENEMY_SWORD_FISH_VULNERABILITY -> effect = EffectName.ENEMY_SWORD_FISH_VULNERABILITY;
                 case ENEMY_UNIMPRESSED_FISH_HIT -> effect = EffectName.ENEMY_UNIMPRESSED_FISH_HIT;
                 case ENEMY_UNIMPRESSED_FISH_STRENGTH_TEAM -> effect = EffectName.ENEMY_UNIMPRESSED_FISH_STRENGTH_TEAM;
+                case DISTRACTION -> {
+                    name = "Distraction";
+                    energyCost = 1;
+                    effect = EffectName.DISTRACTION;
+                    postEffect = EffectName.DISCARD_RANDOM_CARD_ONE;
+                }
+                case DISTRACTION_UPGRADED -> {
+                    name = "Distraction+";
+                    energyCost = 0;
+                    effect = EffectName.DISTRACTION;
+                    postEffect = EffectName.DISCARD_RANDOM_CARD_ONE;
+                }
+                case DUST -> {
+                    name = "Dust";
+                    energyCost = 2;
+                    effect = EffectName.DUST;
+                }
+                case DUST_UPGRADED -> {
+                    name = "Dust+";
+                    energyCost = 2;
+                    effect = EffectName.DUST_UP;
+                }
+                case FIRE_BREATH -> {
+                    name = "Fire Breath";
+                    energyCost = 3;
+                    effect = EffectName.FIRE_BREATH;
+                }
+                case FIRE_BREATH_UPGRADED -> {
+                    name = "Fire Breath+";
+                    energyCost = 2;
+                    effect = EffectName.FIRE_BREATH;
+                }
+                case FIRE_WHIRL -> {
+                    name = "Fire Whirl";
+                    energyCost = 3;
+                    effect = EffectName.FIRE_WHIRL;
+                }
+                case FIRE_WHIRL_UPGRADED -> {
+                    name = "Fire Whirl+";
+                    energyCost = 2;
+                    effect = EffectName.FIRE_WHIRL;
+                }
+                case FOIL_ARMOR -> {
+                    name = "Foil Armor";
+                    energyCost = 1;
+                    effect = EffectName.FOIL_ARMOR;
+                }
+                case FOIL_ARMOR_UPGRADED -> {
+                    name = "Foil Armor+";
+                    energyCost = 1;
+                    effect = EffectName.FOIL_ARMOR_UP;
+                }
+                case FRYING_PAN -> {
+                    name = "Frying Pan";
+                    energyCost = 1;
+                    effect = EffectName.FRYING_PAN_DEFEND;
+                    postEffect = EffectName.FRYING_PAN_BURNING;
+                }
+                case FRYING_PAN_UPGRADED -> {
+                    name = "Frying Pan+";
+                    energyCost = 1;
+                    effect = EffectName.FRYING_PAN_DEFEND;
+                    postEffect = EffectName.FRYING_PAN_BURNING_UP;
+                }
+                case HEX -> {
+                    name = "Hex";
+                    energyCost = 1;
+                    effect = EffectName.HEX_VULNERABILITY;
+                }
+                case HEX_UPGRADED -> {
+                    name = "Hex+";
+                    energyCost = 1;
+                    effect = EffectName.HEX_VULNERABILITY_UP;
+                }
+                case HOT_HOLY_WATER -> {
+                    name = "Hot Holy Water";
+                    energyCost = 1;
+                    effect = EffectName.HOT_HOLY_WATER_BURNING;
+                    postEffect = EffectName.HOT_HOLY_WATER_PRE_CURE;
+                }
+                case HOT_HOLY_WATER_UPGRADED -> {
+                    name = "Hot Holy Water+";
+                    energyCost = 1;
+                    effect = EffectName.HOT_HOLY_WATER_BURNING;
+                    postEffect = EffectName.HOT_HOLY_WATER_PRE_CURE_LESS;
+                }
+                case ITEM_TWO_VULNERABILITY_ALL -> effect = EffectName.ITEM_TWO_VULNERABILITY_ALL;
+                case LIFE_LEECHING -> {
+                    name = "Life Leeching";
+                    energyCost = 3;
+                    effect = EffectName.LIFE_LEECHING_DAMAGE;
+                    postEffect = EffectName.LIFE_LEECHING_HEAL;
+                }
+                case LIFE_LEECHING_UPGRADED -> {
+                    name = "Life Leeching+";
+                    energyCost = 2;
+                    effect = EffectName.LIFE_LEECHING_DAMAGE;
+                    postEffect = EffectName.LIFE_LEECHING_HEAL;
+                }
+                case MAGIC_BARRIER -> {
+                    name = "Magic Barrier";
+                    energyCost = 2;
+                    effect = EffectName.MAGIC_BARRIER_DEFEND;
+                    postEffect = EffectName.MAGIC_BARRIER_PRE_CURE;
+                }
+                case MAGIC_BARRIER_UPGRADED -> {
+                    name = "Magic Barrier+";
+                    energyCost = 1;
+                    effect = EffectName.MAGIC_BARRIER_DEFEND;
+                    postEffect = EffectName.MAGIC_BARRIER_PRE_CURE;
+                }
+                case MULTI_STAB -> {
+                    name = "Multi-Stab";
+                    energyCost = 1;
+                    effect = EffectName.MULTI_STAB;
+                }
+                case MULTI_STAB_UPGRADED -> {
+                    name = "Multi-Stab+";
+                    energyCost = 1;
+                    effect = EffectName.MULTI_STAB_UP;
+                }
+                case NAILS_ON_CHALKBOARD -> {
+                    name = "Nails on a Chalkboard";
+                    energyCost = 1;
+                    effect = EffectName.NAILS_ON_CHALKBOARD_TRUE_DAMAGE;
+                }
+                case NAILS_ON_CHALKBOARD_UPGRADED -> {
+                    name = "Nails on a Chalkboard+";
+                    energyCost = 1;
+                    effect = EffectName.NAILS_ON_CHALKBOARD_TRUE_DAMAGE_UP;
+                }
+                case NOTHING_BUT_GOLD, NOTHING_BUT_GOOD -> {
+                    name = "Nothing?";
+                    energyCost = 1;
+                    effect = EffectName.NOTHING;
+                }
+                case NOTHING_BUT_GOLD_UPGRADED -> {
+                    name = "Nothing, but gold";
+                    energyCost = 1;
+                    effect = EffectName.NOTHING_BUT_GOLD_ONE_GOLD;
+                }
+                case NOTHING_BUT_GOOD_UPGRADED -> {
+                    name = "Nothing, but good";
+                    energyCost = 1;
+                    effect = EffectName.NOTHING_BUT_GOOD_ATTACK;
+                    postEffect = EffectName.NOTHING_BUT_GOOD_DEFEND;
+                }
+                case RAMPING -> {
+                    name = "Ramping";
+                    energyCost = 2;
+                    effect = EffectName.STRENGTH_ONE;
+                    postEffect = EffectName.RAMPING_WEAKNESS;
+                }
+                case RAMPING_UPGRADED -> {
+                    name = "Ramping+";
+                    energyCost = 2;
+                    effect = EffectName.STRENGTH_ONE;
+                }
+                case REGENERATE -> {
+                    name = "Regenerate";
+                    energyCost = 1;
+                    effect = EffectName.HEAL_SMALL;
+                    postEffect = EffectName.REGENERATE;
+                }
+                case REGENERATE_UPGRADED -> {
+                    name = "Regenerate+";
+                    energyCost = 1;
+                    effect = EffectName.REGENERATE_UP;
+                    postEffect = EffectName.REGENERATE;
+                }
+                case SCATTERSHOT -> {
+                    name = "Scattershot";
+                    energyCost = 1;
+                    effect = EffectName.SCATTERSHOT_ATTACK;
+                    postEffect = EffectName.SCATTERSHOT_DEFEND;
+                }
+                case SCATTERSHOT_UPGRADED -> {
+                    name = "Scattershot+";
+                    energyCost = 1;
+                    effect = EffectName.SCATTERSHOT_ATTACK_UP;
+                    postEffect = EffectName.SCATTERSHOT_DEFEND_UP;
+                }
+                case SPIKED_SHIELD -> {
+                    name = "Spiked Shield";
+                    energyCost = 1;
+                    effect = EffectName.SPIKED_SHIELD_DEFEND;
+                    postEffect = EffectName.SPIKED_SHIELD_ATTACK;
+                }
+                case SPIKED_SHIELD_UPGRADED -> {
+                    name = "Spiked Shield+";
+                    energyCost = 1;
+                    effect = EffectName.SPIKED_SHIELD_DEFEND_UP;
+                    postEffect = EffectName.SPIKED_SHIELD_ATTACK_UP;
+                }
+                case SPREAD_GERMS -> {
+                    name = "Spread Germs";
+                    energyCost = 1;
+                    effect = EffectName.SPREAD_GERMS;
+                }
+                case SPREAD_GERMS_UPGRADED -> {
+                    name = "Spread Germs+";
+                    energyCost = 1;
+                    effect = EffectName.SPREAD_GERMS_UP;
+                }
+                case SWIFT_BLOCK -> {
+                    name = "Swift Block";
+                    energyCost = 1;
+                    effect = EffectName.SWIFT_BLOCK;
+                    postEffect = EffectName.DRAW_CARD_ONE;
+                }
+                case SWIFT_BLOCK_UPGRADED -> {
+                    name = "Swift Block+";
+                    energyCost = 0;
+                    effect = EffectName.SWIFT_BLOCK;
+                    postEffect = EffectName.DRAW_CARD_ONE;
+                }
+                case SYMPATHETIC_PAIN -> {
+                    name = "Sympathetic Pain";
+                    energyCost = 2;
+                    effect = EffectName.SYMPATHETIC_PAIN;
+                    postEffect = EffectName.LIFE_LEECHING_HEAL;
+                }
+                case SYMPATHETIC_PAIN_UPGRADED -> {
+                    name = "Sympathetic Pain+";
+                    energyCost = 1;
+                    effect = EffectName.SYMPATHETIC_PAIN;
+                    postEffect = EffectName.LIFE_LEECHING_HEAL;
+                }
+                case TETANUS -> {
+                    name = "Tetanus";
+                    energyCost = 1;
+                    effect = EffectName.TETANUS_ATTACK;
+                    postEffect = EffectName.TETANUS_POISON;
+                }
+                case TETANUS_UPGRADED -> {
+                    name = "Tetanus+";
+                    energyCost = 0;
+                    effect = EffectName.TETANUS_ATTACK;
+                    postEffect = EffectName.TETANUS_POISON;
+                }
+                case THORNS -> {
+                    name = "Thorns";
+                    energyCost = 3;
+                    effect = EffectName.THORNS;
+                }
+                case THORNS_UPGRADED -> {
+                    name = "Thorns+";
+                    energyCost = 2;
+                    effect = EffectName.THORNS;
+                }
+                case TWO_SHIELDS -> {
+                    name = "Two Shields";
+                    energyCost = 2;
+                    effect = EffectName.TWO_SHIELDS;
+                }
+                case TWO_SHIELDS_UPGRADED -> {
+                    name = "Two Shields+";
+                    energyCost = 1;
+                    effect = EffectName.TWO_SHIELDS;
+                }
+                case VERY_ILL -> {
+                    name = "Very Ill";
+                    energyCost = 1;
+                    effect = EffectName.VERY_ILL;
+                    postEffect = EffectName.RAMPING_WEAKNESS;
+                }
+                case VERY_ILL_UPGRADED -> {
+                    name = "Very Ill+";
+                    energyCost = 1;
+                    effect = EffectName.VERY_ILL_UP;
+                    postEffect = EffectName.RAMPING_WEAKNESS;
+                }
+                case WEAR_POISON -> {
+                    name = "Wear Poison";
+                    energyCost = 3;
+                    effect = EffectName.WEAR_POISON;
+                }
+                case WEAR_POISON_UPGRADED -> {
+                    name = "Wear Poison+";
+                    energyCost = 2;
+                    effect = EffectName.WEAR_POISON;
+                }
                 default ->
                         System.out.println("Why was an ability almost generated with no matching type name? abilityTypeName:  " + abilityTypeName);
             }

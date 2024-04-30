@@ -12,6 +12,7 @@ public enum EffectType {
     GOLD_CHANGE,
     HEAL,
     MAX_HP_CHANGE,
+    MAX_HP_PERCENT_CHANGE,
     NOTHING,
     POISON,
     STRENGTH,

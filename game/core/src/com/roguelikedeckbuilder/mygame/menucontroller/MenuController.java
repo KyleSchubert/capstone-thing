@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Null;
 import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
 import com.roguelikedeckbuilder.mygame.helpers.AudioManager;
+import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
 import com.roguelikedeckbuilder.mygame.stages.cardchange.CardChangeStage;
 import com.roguelikedeckbuilder.mygame.stages.combatmenu.CombatMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.combatmenu.UseLine;
@@ -309,16 +310,19 @@ public class MenuController {
                     // Make ??? (RANDOM_EVENT) nodes act like a random mapMenuStage node type
                     MapNodeType nodeType;
                     if (data.nodeType() == RANDOM_EVENT) {
-                        nodeType = mapMenuStage.getRandomEventOptions().random();
-                        if (nodeType == ELITE_BATTLE) {
-                            enemiesToLoadIn.addAll(
-                                    combatNodeOptionsForRandomEvent.getAlmostRandomFromOptions(
-                                            Statistics.getZoneNumber(),
-                                            CombatNodeSectionName.ELITE
-                                    )
-                            );
+                        if (Player.hasItem(ItemTypeName.LUCKY_TROWEL)) {
+                            nodeType = MapNodeType.TREASURE;
+                        } else {
+                            nodeType = mapMenuStage.getRandomEventOptions().random();
+                            if (nodeType == ELITE_BATTLE) {
+                                enemiesToLoadIn.addAll(
+                                        combatNodeOptionsForRandomEvent.getAlmostRandomFromOptions(
+                                                Statistics.getZoneNumber(),
+                                                CombatNodeSectionName.ELITE
+                                        )
+                                );
+                            }
                         }
-
                     } else {
                         nodeType = data.nodeType();
                     }

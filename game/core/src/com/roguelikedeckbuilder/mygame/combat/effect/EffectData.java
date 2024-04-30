@@ -96,6 +96,12 @@ public class EffectData {
                         AudioManager.playHealSound();
                     }
                     case MAX_HP_CHANGE -> combatInformation.changeMaxHp(effectiveness);
+                    case MAX_HP_PERCENT_CHANGE -> {
+                        float maxHp = combatInformation.getMaxHp();
+                        float ratio = (float) effectiveness / 100;
+                        int amount = -Math.round(maxHp * ratio);
+                        combatInformation.changeMaxHp(amount);
+                    }
                     case POISON ->
                             combatInformation.addStatusEffect(new StatusEffect(StatusEffectTypeName.POISON, effectiveness));
                     case STRENGTH ->
@@ -191,7 +197,10 @@ public class EffectData {
                 return String.format("Gain [ORANGE]%d Gold[]. ", effectiveness);
             }
             case HEAL -> effectText = String.format("Grant [GREEN]%d Immediate HP Recovery[]", effectiveness);
-            case MAX_HP_CHANGE -> effectText = String.format("Permanently grant [RED]%d Max HP[]", effectiveness);
+            case MAX_HP_CHANGE ->
+                    effectText = String.format("Permanently reduce target's [RED]Max HP by %d[]", effectiveness);
+            case MAX_HP_PERCENT_CHANGE ->
+                    effectText = String.format("Permanently reduce target's [RED]Max HP by %d%%[]", effectiveness);
             case NOTHING -> effectText = "Do nothing";
             case POISON -> effectText = String.format("Inflict [ORANGE]%d Poison[]", effectiveness);
             case STRENGTH -> effectText = String.format("Grant [YELLOW]%d Strength[]", effectiveness);
@@ -282,7 +291,7 @@ public class EffectData {
                     repetitions = 1;
                     targetType = TargetType.ONE;
                 }
-                case CONSTITUTION_ONE, ENEMY_KING_OF_THE_BURROW_CONSTITUTION, ENEMY_SAD_DOLLAR_CONSTITUTION_SELF -> {
+                case CONSTITUTION_ONE, ENEMY_KING_OF_THE_BURROW_CONSTITUTION, ENEMY_SAD_DOLLAR_CONSTITUTION_SELF, ITEM_GAIN_CONSTITUTION -> {
                     effectType = EffectType.CONSTITUTION;
                     effectiveness = 1;
                     repetitions = 1;
@@ -354,7 +363,7 @@ public class EffectData {
                     repetitions = 1;
                     targetType = TargetType.ONE;
                 }
-                case ENEMY_ANTEATER_HIT_TWICE -> {
+                case ENEMY_ANTEATER_HIT_TWICE, TETANUS_ATTACK -> {
                     effectType = EffectType.ATTACK;
                     effectiveness = 1;
                     repetitions = 2;
@@ -366,7 +375,7 @@ public class EffectData {
                     repetitions = 1;
                     targetType = TargetType.ONE;
                 }
-                case ENEMY_ANTEATER_POISON_ONE, ENEMY_PEANUT_BEE_POISON_ONCE -> {
+                case ENEMY_ANTEATER_POISON_ONE, ENEMY_PEANUT_BEE_POISON_ONCE, ITEM_1_POISON -> {
                     effectType = EffectType.POISON;
                     effectiveness = 1;
                     repetitions = 1;
@@ -378,7 +387,7 @@ public class EffectData {
                     repetitions = 1;
                     targetType = TargetType.ONE;
                 }
-                case ENEMY_ANTEATER_WEAKNESS, ENEMY_HELMET_PENGUIN_WEAKNESS -> {
+                case ENEMY_ANTEATER_WEAKNESS, ENEMY_HELMET_PENGUIN_WEAKNESS, CURSE_WEAKNESS -> {
                     effectType = EffectType.WEAKNESS;
                     effectiveness = 1;
                     repetitions = 1;
@@ -504,17 +513,71 @@ public class EffectData {
                     repetitions = 1;
                     targetType = TargetType.ONE;
                 }
-                case ENEMY_HELMET_PENGUIN_VULNERABILITY, ENEMY_SWORD_FISH_VULNERABILITY -> {
+                case ENEMY_HELMET_PENGUIN_VULNERABILITY, ENEMY_SWORD_FISH_VULNERABILITY, HEX_VULNERABILITY -> {
                     effectType = EffectType.VULNERABILITY;
                     effectiveness = 1;
                     repetitions = 1;
                     targetType = TargetType.ONE;
                 }
-                case ENEMY_HOT_DOG_VULNERABILITY_TEAM -> {
+                case ENEMY_HOT_DOG_VULNERABILITY_TEAM, HEX_VULNERABILITY_UP -> {
                     effectType = EffectType.VULNERABILITY;
                     effectiveness = 1;
                     repetitions = 1;
                     targetType = TargetType.ALL;
+                }
+                case ITEM_TWO_VULNERABILITY_ALL -> {
+                    effectType = EffectType.VULNERABILITY;
+                    effectiveness = 2;
+                    repetitions = 1;
+                    targetType = TargetType.ALL;
+                }
+                case ITEM_HEAL_5 -> {
+                    effectType = EffectType.HEAL;
+                    effectiveness = 5;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                }
+                case ITEM_DEFEND_30 -> {
+                    effectType = EffectType.DEFEND;
+                    effectiveness = 30;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                }
+                case ITEM_TRUE_DAMAGE_35 -> {
+                    effectType = EffectType.TRUE_DAMAGE_FLAT;
+                    effectiveness = 35;
+                    repetitions = 1;
+                    targetType = TargetType.ALL;
+                }
+                case ITEM_DEFEND_14 -> {
+                    effectType = EffectType.DEFEND;
+                    effectiveness = 14;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                }
+                case ITEM_REDUCE_MAX_HP_5_PERCENT -> {
+                    effectType = EffectType.MAX_HP_PERCENT_CHANGE;
+                    effectiveness = 5;
+                    repetitions = 1;
+                    targetType = TargetType.ALL;
+                }
+                case ITEM_REDUCE_MAX_HP_10_PERCENT -> {
+                    effectType = EffectType.MAX_HP_PERCENT_CHANGE;
+                    effectiveness = 10;
+                    repetitions = 1;
+                    targetType = TargetType.ALL;
+                }
+                case ITEM_REDUCE_MAX_HP_15_PERCENT -> {
+                    effectType = EffectType.MAX_HP_PERCENT_CHANGE;
+                    effectiveness = 15;
+                    repetitions = 1;
+                    targetType = TargetType.ALL;
+                }
+                case ITEM_3_BURNING -> {
+                    effectType = EffectType.BURNING;
+                    effectiveness = 3;
+                    repetitions = 1;
+                    targetType = TargetType.ONE;
                 }
                 case ENEMY_KING_OF_THE_BURROW_DEFEND -> {
                     effectType = EffectType.DEFEND;
@@ -702,7 +765,7 @@ public class EffectData {
                     repetitions = 1;
                     targetType = TargetType.ONE;
                 }
-                case ENEMY_SAD_DOLLAR_DEFEND -> {
+                case ENEMY_SAD_DOLLAR_DEFEND, REGENERATE -> {
                     effectType = EffectType.DEFEND;
                     effectiveness = 2;
                     repetitions = 4;
@@ -822,7 +885,7 @@ public class EffectData {
                     temporaryItem = ItemTypeName.FOR_CARD_DAMAGE_ON_DRAW;
                     isSingleUseItem = false;
                 }
-                case PRE_CURE_ONE -> {
+                case PRE_CURE_ONE, MAGIC_BARRIER_PRE_CURE -> {
                     effectType = EffectType.PRE_CURE;
                     effectiveness = 1;
                     repetitions = 1;
@@ -847,6 +910,392 @@ public class EffectData {
                 case DEFEND_TWO -> {
                     effectType = EffectType.DEFEND;
                     effectiveness = 2;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                }
+                case MAGIC_BARRIER_DEFEND -> {
+                    effectType = EffectType.DEFEND;
+                    effectiveness = 25;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                }
+                case FRYING_PAN_DEFEND -> {
+                    effectType = EffectType.DEFEND;
+                    effectiveness = 6;
+                    repetitions = 2;
+                    targetType = TargetType.SELF;
+                }
+                case FRYING_PAN_BURNING, BLOCK_AND_STUFF_BURN -> {
+                    effectType = EffectType.BURNING;
+                    effectiveness = 1;
+                    repetitions = 2;
+                    targetType = TargetType.ONE;
+                }
+                case FRYING_PAN_BURNING_UP, DISTRACTION -> {
+                    effectType = EffectType.BURNING;
+                    effectiveness = 1;
+                    repetitions = 4;
+                    targetType = TargetType.ONE;
+                }
+                case TETANUS_POISON, BLOCK_AND_STUFF_POISON -> {
+                    effectType = EffectType.POISON;
+                    effectiveness = 1;
+                    repetitions = 2;
+                    targetType = TargetType.ONE;
+                }
+                case NAILS_ON_CHALKBOARD_TRUE_DAMAGE -> {
+                    effectType = EffectType.TRUE_DAMAGE_FLAT;
+                    effectiveness = 8;
+                    repetitions = 1;
+                    targetType = TargetType.ALL;
+                }
+                case NAILS_ON_CHALKBOARD_TRUE_DAMAGE_UP -> {
+                    effectType = EffectType.TRUE_DAMAGE_FLAT;
+                    effectiveness = 12;
+                    repetitions = 1;
+                    targetType = TargetType.ALL;
+                }
+                case CURSE_WEAKNESS_UP -> {
+                    effectType = EffectType.WEAKNESS;
+                    effectiveness = 1;
+                    repetitions = 1;
+                    targetType = TargetType.ALL;
+                }
+                case DEBILITATE_VULNERABILITY -> {
+                    effectType = EffectType.VULNERABILITY;
+                    effectiveness = 2;
+                    repetitions = 1;
+                    targetType = TargetType.ONE;
+                }
+                case DEBILITATE_WEAKNESS -> {
+                    effectType = EffectType.WEAKNESS;
+                    effectiveness = 2;
+                    repetitions = 1;
+                    targetType = TargetType.ONE;
+                }
+                case SPREAD_GERMS -> {
+                    effectType = EffectType.POISON;
+                    effectiveness = 2;
+                    repetitions = 2;
+                    targetType = TargetType.ONE;
+                }
+                case SPREAD_GERMS_UP, DUST -> {
+                    effectType = EffectType.POISON;
+                    effectiveness = 2;
+                    repetitions = 3;
+                    targetType = TargetType.ONE;
+                }
+                case CRACK_KNUCKLES -> {
+                    effectType = EffectType.ATTACK;
+                    effectiveness = 0;
+                    repetitions = 8;
+                    targetType = TargetType.ONE;
+                }
+                case CRACK_KNUCKLES_UP -> {
+                    effectType = EffectType.ATTACK;
+                    effectiveness = 0;
+                    repetitions = 10;
+                    targetType = TargetType.ONE;
+                }
+                case THORNS -> {
+                    effectType = EffectType.TEMPORARY_ITEM;
+                    effectiveness = 1;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                    temporaryItem = ItemTypeName.FOR_CARD_DAMAGE_WHEN_ATTACKED;
+                    isSingleUseItem = false;
+                }
+                case WEAR_POISON -> {
+                    effectType = EffectType.TEMPORARY_ITEM;
+                    effectiveness = 1;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                    temporaryItem = ItemTypeName.FOR_CARD_POISON_WHEN_ATTACKED;
+                    isSingleUseItem = false;
+                }
+                case FIRE_WHIRL -> {
+                    effectType = EffectType.TEMPORARY_ITEM;
+                    effectiveness = 1;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                    temporaryItem = ItemTypeName.FOR_CARD_BURNING_WHEN_ATTACKED;
+                    isSingleUseItem = false;
+                }
+                case SPIKED_SHIELD_DEFEND -> {
+                    effectType = EffectType.DEFEND;
+                    effectiveness = 3;
+                    repetitions = 3;
+                    targetType = TargetType.SELF;
+                }
+                case SPIKED_SHIELD_ATTACK -> {
+                    effectType = EffectType.ATTACK;
+                    effectiveness = 5;
+                    repetitions = 2;
+                    targetType = TargetType.ONE;
+                }
+                case SPIKED_SHIELD_DEFEND_UP -> {
+                    effectType = EffectType.DEFEND;
+                    effectiveness = 3;
+                    repetitions = 4;
+                    targetType = TargetType.SELF;
+                }
+                case SPIKED_SHIELD_ATTACK_UP -> {
+                    effectType = EffectType.ATTACK;
+                    effectiveness = 7;
+                    repetitions = 2;
+                    targetType = TargetType.ONE;
+                }
+                case MULTI_STAB -> {
+                    effectType = EffectType.ATTACK;
+                    effectiveness = 4;
+                    repetitions = 5;
+                    targetType = TargetType.ONE;
+                }
+                case MULTI_STAB_UP -> {
+                    effectType = EffectType.ATTACK;
+                    effectiveness = 5;
+                    repetitions = 5;
+                    targetType = TargetType.ONE;
+                }
+                case SWIFT_BLOCK -> {
+                    effectType = EffectType.DEFEND;
+                    effectiveness = 4;
+                    repetitions = 2;
+                    targetType = TargetType.ONE;
+                }
+                case BURN_STEEL_WOOL -> {
+                    effectType = EffectType.BURNING;
+                    effectiveness = 2;
+                    repetitions = 3;
+                    targetType = TargetType.ONE;
+                }
+                case BURN_STEEL_WOOL_DRAW -> {
+                    effectType = EffectType.DRAW_CARD;
+                    effectiveness = 2;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                }
+                case VERY_ILL -> {
+                    effectType = EffectType.POISON;
+                    effectiveness = 1;
+                    repetitions = 5;
+                    targetType = TargetType.ONE;
+                }
+                case VERY_ILL_UP -> {
+                    effectType = EffectType.POISON;
+                    effectiveness = 1;
+                    repetitions = 5;
+                    targetType = TargetType.ALL;
+                }
+                case RAMPING_WEAKNESS -> {
+                    effectType = EffectType.WEAKNESS;
+                    effectiveness = 1;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                }
+                case REGENERATE_UP -> {
+                    effectType = EffectType.HEAL;
+                    effectiveness = 2;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                }
+                case SCATTERSHOT_DEFEND -> {
+                    effectType = EffectType.DEFEND;
+                    effectiveness = 1;
+                    repetitions = 3;
+                    targetType = TargetType.SELF;
+                }
+                case SCATTERSHOT_DEFEND_UP -> {
+                    effectType = EffectType.DEFEND;
+                    effectiveness = 1;
+                    repetitions = 4;
+                    targetType = TargetType.SELF;
+                }
+                case SCATTERSHOT_ATTACK -> {
+                    effectType = EffectType.ATTACK;
+                    effectiveness = 1;
+                    repetitions = 5;
+                    targetType = TargetType.ALL;
+                }
+                case SCATTERSHOT_ATTACK_UP -> {
+                    effectType = EffectType.ATTACK;
+                    effectiveness = 2;
+                    repetitions = 5;
+                    targetType = TargetType.ALL;
+                }
+                case CULL_ATTACK -> {
+                    effectType = EffectType.ATTACK;
+                    effectiveness = 40;
+                    repetitions = 1;
+                    targetType = TargetType.ONE;
+                }
+                case CULL_HEAL -> {
+                    effectType = EffectType.HEAL;
+                    effectiveness = 40;
+                    repetitions = 1;
+                    targetType = TargetType.ONE;
+                }
+                case LIFE_LEECHING_DAMAGE -> {
+                    effectType = EffectType.ATTACK;
+                    effectiveness = 7;
+                    repetitions = 3;
+                    targetType = TargetType.ONE;
+                }
+                case LIFE_LEECHING_HEAL -> {
+                    effectType = EffectType.HEAL;
+                    effectiveness = 3;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                }
+                case AFFLICTION_POISON -> {
+                    effectType = EffectType.POISON;
+                    effectiveness = 1;
+                    repetitions = 2;
+                    targetType = TargetType.ALL;
+                }
+                case AFFLICTION_BURNING -> {
+                    effectType = EffectType.BURNING;
+                    effectiveness = 1;
+                    repetitions = 2;
+                    targetType = TargetType.ALL;
+                }
+                case AFFLICTION_BURNING_UP -> {
+                    effectType = EffectType.BURNING;
+                    effectiveness = 1;
+                    repetitions = 3;
+                    targetType = TargetType.ALL;
+                }
+                case AFFLICTION_POISON_UP -> {
+                    effectType = EffectType.POISON;
+                    effectiveness = 1;
+                    repetitions = 3;
+                    targetType = TargetType.ALL;
+                }
+                case HOT_HOLY_WATER_BURNING -> {
+                    effectType = EffectType.BURNING;
+                    effectiveness = 1;
+                    repetitions = 7;
+                    targetType = TargetType.ONE;
+                }
+                case HOT_HOLY_WATER_PRE_CURE -> {
+                    effectType = EffectType.PRE_CURE;
+                    effectiveness = 1;
+                    repetitions = 2;
+                    targetType = TargetType.ONE;
+                }
+                case HOT_HOLY_WATER_PRE_CURE_LESS -> {
+                    effectType = EffectType.PRE_CURE;
+                    effectiveness = 1;
+                    repetitions = 1;
+                    targetType = TargetType.ONE;
+                }
+                case TWO_SHIELDS -> {
+                    effectType = EffectType.DEFEND;
+                    effectiveness = 10;
+                    repetitions = 2;
+                    targetType = TargetType.ONE;
+                }
+                case BOULDER_THROW -> {
+                    effectType = EffectType.ATTACK;
+                    effectiveness = 22;
+                    repetitions = 1;
+                    targetType = TargetType.ALL;
+                }
+                case BOULDER_THROW_UP -> {
+                    effectType = EffectType.ATTACK;
+                    effectiveness = 28;
+                    repetitions = 1;
+                    targetType = TargetType.ALL;
+                }
+                case SYMPATHETIC_PAIN -> {
+                    effectType = EffectType.TRUE_DAMAGE_FLAT;
+                    effectiveness = 6;
+                    repetitions = 1;
+                    targetType = TargetType.ALL;
+                }
+                case SYMPATHETIC_PAIN_UP -> {
+                    effectType = EffectType.TRUE_DAMAGE_FLAT;
+                    effectiveness = 10;
+                    repetitions = 1;
+                    targetType = TargetType.ALL;
+                }
+                case DUST_UP -> {
+                    effectType = EffectType.POISON;
+                    effectiveness = 2;
+                    repetitions = 3;
+                    targetType = TargetType.ALL;
+                }
+                case FIRE_BREATH -> {
+                    effectType = EffectType.TEMPORARY_ITEM;
+                    effectiveness = 1;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                    temporaryItem = ItemTypeName.FOR_CARD_BURNING_EVERY_TURN;
+                    isSingleUseItem = false;
+                }
+                case COIN_WALL_GOLD -> {
+                    effectType = EffectType.GOLD_CHANGE;
+                    effectiveness = 25;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                }
+                case COIN_WALL_DEFEND -> {
+                    effectType = EffectType.DEFEND;
+                    effectiveness = 5;
+                    repetitions = 2;
+                    targetType = TargetType.SELF;
+                }
+                case COIN_WALL_DEFEND_UP -> {
+                    effectType = EffectType.DEFEND;
+                    effectiveness = 5;
+                    repetitions = 3;
+                    targetType = TargetType.SELF;
+                }
+                case FOIL_ARMOR -> {
+                    effectType = EffectType.DEFEND;
+                    effectiveness = 1;
+                    repetitions = 4;
+                    targetType = TargetType.SELF;
+                }
+                case FOIL_ARMOR_UP -> {
+                    effectType = EffectType.DEFEND;
+                    effectiveness = 1;
+                    repetitions = 6;
+                    targetType = TargetType.SELF;
+                }
+                case BLOCK_AND_STUFF_DEFEND -> {
+                    effectType = EffectType.DEFEND;
+                    effectiveness = 3;
+                    repetitions = 4;
+                    targetType = TargetType.SELF;
+                }
+                case BLOCK_AND_STUFF_POISON_UP -> {
+                    effectType = EffectType.POISON;
+                    effectiveness = 1;
+                    repetitions = 3;
+                    targetType = TargetType.ONE;
+                }
+                case BLOCK_AND_STUFF_BURN_UP -> {
+                    effectType = EffectType.BURNING;
+                    effectiveness = 1;
+                    repetitions = 3;
+                    targetType = TargetType.ONE;
+                }
+                case NOTHING_BUT_GOOD_ATTACK -> {
+                    effectType = EffectType.ATTACK;
+                    effectiveness = 33;
+                    repetitions = 1;
+                    targetType = TargetType.ONE;
+                }
+                case NOTHING_BUT_GOOD_DEFEND -> {
+                    effectType = EffectType.DEFEND;
+                    effectiveness = 33;
+                    repetitions = 1;
+                    targetType = TargetType.SELF;
+                }
+                case NOTHING_BUT_GOLD_ONE_GOLD -> {
+                    effectType = EffectType.GOLD_CHANGE;
+                    effectiveness = 1;
                     repetitions = 1;
                     targetType = TargetType.SELF;
                 }

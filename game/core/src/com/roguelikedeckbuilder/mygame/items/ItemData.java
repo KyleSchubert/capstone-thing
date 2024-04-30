@@ -60,7 +60,12 @@ public class ItemData {
     }
 
     public static String getPartialDescription(ItemTypeName itemTypeName) {
-        return String.format("    %s\n    %s", getEffectExplanation(itemTypeName), getTriggerExplanation(itemTypeName));
+        String descriptionOverride = getDescriptionOverride(itemTypeName);
+        if (descriptionOverride.isEmpty()) {
+            return String.format("    %s\n    %s", getEffectExplanation(itemTypeName), getTriggerExplanation(itemTypeName));
+        } else {
+            return descriptionOverride;
+        }
     }
 
     public static String getEffectExplanation(ItemTypeName itemTypeName) {
@@ -74,7 +79,12 @@ public class ItemData {
     }
 
     public static String getFullDescription(ItemTypeName itemTypeName) {
-        return getName(itemTypeName) + "\n" + getPartialDescription(itemTypeName);
+        String descriptionOverride = getDescriptionOverride(itemTypeName);
+        if (descriptionOverride.isEmpty()) {
+            return getName(itemTypeName) + "\n" + getPartialDescription(itemTypeName);
+        } else {
+            return descriptionOverride;
+        }
     }
 
     public static String getImagePath(ItemTypeName itemTypeName) {
@@ -97,6 +107,10 @@ public class ItemData {
         return data.get(itemTypeName.ordinal()).getTriggerName();
     }
 
+    public static String getDescriptionOverride(ItemTypeName itemTypeName) {
+        return data.get(itemTypeName.ordinal()).getDescriptionOverride();
+    }
+
     public static int getValue(ItemTypeName itemTypeName) {
         return data.get(itemTypeName.ordinal()).getValue();
     }
@@ -105,9 +119,10 @@ public class ItemData {
         private final String imagePath;
         private String name;
         private AbilityTypeName abilityTypeName;
-        private ItemTier itemTier;
+        private ItemTier itemTier; // Does nearly nothing, because elites give 1 item and bosses give 2, instead.
         private TriggerName triggerName;
         private int value;
+        private String descriptionOverride = "";
 
         public IndividualItemData(ItemTypeName itemTypeName) {
             String iconFileName = "default.png";
@@ -185,6 +200,308 @@ public class ItemData {
                     triggerName = TriggerName.DRAW_CARD;
                     value = 1;
                 }
+                case FOR_CARD_DAMAGE_WHEN_ATTACKED -> {
+                    iconFileName = "not done.png";
+                    name = "Temporary Buff";
+                    abilityTypeName = AbilityTypeName.ENEMY_BURGER_LARGER_HIT;
+                    itemTier = ItemTier.TEMPORARY_ITEM;
+                    triggerName = TriggerName.PLAYER_TOOK_DAMAGE;
+                    value = 1;
+                }
+                case FOR_CARD_POISON_WHEN_ATTACKED -> {
+                    iconFileName = "not done.png";
+                    name = "Temporary Buff";
+                    abilityTypeName = AbilityTypeName.ENEMY_SAD_DOLLAR_POISON;
+                    itemTier = ItemTier.TEMPORARY_ITEM;
+                    triggerName = TriggerName.PLAYER_TOOK_DAMAGE;
+                    value = 1;
+                }
+                case FOR_CARD_BURNING_WHEN_ATTACKED -> {
+                    iconFileName = "not done.png";
+                    name = "Temporary Buff";
+                    abilityTypeName = AbilityTypeName.ITEM_BURN_ONE;
+                    itemTier = ItemTier.TEMPORARY_ITEM;
+                    triggerName = TriggerName.PLAYER_TOOK_DAMAGE;
+                    value = 1;
+                }
+                case FOR_CARD_BURNING_EVERY_TURN -> {
+                    iconFileName = "not done.png";
+                    name = "Temporary Buff";
+                    abilityTypeName = AbilityTypeName.ITEM_BURN_ONE;
+                    itemTier = ItemTier.TEMPORARY_ITEM;
+                    triggerName = TriggerName.START_OF_TURN;
+                    value = 1;
+                }
+                case ANTI_CURSE -> {
+                    iconFileName = "not done.png";
+                    name = "Anti-Curse";
+                    abilityTypeName = AbilityTypeName.NOTHING;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.NOTHING;
+                    value = 700;
+                    descriptionOverride = "Immunity to Weakness.";
+                }
+                case ANTI_HEX -> {
+                    iconFileName = "not done.png";
+                    name = "Anti-Hex";
+                    abilityTypeName = AbilityTypeName.NOTHING;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.NOTHING;
+                    value = 700;
+                    descriptionOverride = "Immunity to Vulnerability.";
+                }
+                case DAILY_MULTIVITAMIN -> {
+                    iconFileName = "not done.png";
+                    name = "Daily Multivitamin";
+                    abilityTypeName = AbilityTypeName.NOTHING;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.NOTHING;
+                    value = 1500;
+                    descriptionOverride = "Immunity to Poison.";
+                }
+                case ANTI_FIRE_WHICH_IS_WATER -> {
+                    iconFileName = "not done.png";
+                    name = "Anti-Fire (Water)";
+                    abilityTypeName = AbilityTypeName.NOTHING;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.NOTHING;
+                    value = 1500;
+                    descriptionOverride = "Immunity to Burning.";
+                }
+                case AUTO_SHIELD -> {
+                    iconFileName = "not done.png";
+                    name = "Auto Shield";
+                    abilityTypeName = AbilityTypeName.ITEM_SMALL_DEFENSE;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.ENEMY_USED_ABILITY;
+                    value = 600;
+                }
+                case CUP_OF_POISON -> {
+                    iconFileName = "not done.png";
+                    name = "Cup of Poison";
+                    abilityTypeName = AbilityTypeName.ITEM_1_POISON;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.DAMAGE_IN_ONE_HIT_GTE_12;
+                    value = 700;
+                }
+                case CUP_OF_MATCHES -> {
+                    iconFileName = "not done.png";
+                    name = "Cup of Matches";
+                    abilityTypeName = AbilityTypeName.ITEM_3_BURNING;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.DAMAGE_IN_ONE_HIT_GTE_24;
+                    value = 700;
+                }
+                case WEIGHTED_BANDS -> {
+                    iconFileName = "not done.png";
+                    name = "Weighted Bands";
+                    abilityTypeName = AbilityTypeName.NOTHING;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.NOTHING;
+                    value = 700;
+                    descriptionOverride = "Gain 1 Strength when gaining Constitution.";
+                }
+                case EVIL_NOTE -> {
+                    iconFileName = "not done.png";
+                    name = "Evil Note (Note)";
+                    abilityTypeName = AbilityTypeName.ITEM_TWO_VULNERABILITY_ALL;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.EVERY_START_OF_BATTLE;
+                    value = 500;
+                }
+                case EVIL_NOTE_ACTUAL -> {
+                    iconFileName = "not done.png";
+                    name = "Evil Note (Letter)";
+                    abilityTypeName = AbilityTypeName.ENEMY_CHIPS_INITIAL;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.EVERY_START_OF_BATTLE;
+                    value = 500;
+                }
+                case SPECIAL_MATCHES -> {
+                    iconFileName = "not done.png";
+                    name = "Special Matches";
+                    abilityTypeName = AbilityTypeName.NOTHING;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.NOTHING;
+                    value = 800;
+                    descriptionOverride = "Inflict 1 additional Burning when inflicting Burning.";
+                }
+                case POISONOUS_POISON -> {
+                    iconFileName = "not done.png";
+                    name = "Poisonous Poison";
+                    abilityTypeName = AbilityTypeName.NOTHING;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.NOTHING;
+                    value = 800;
+                    descriptionOverride = "Inflict 1 additional Poison when inflicting Poison.";
+                }
+                case BAND_AID_BOX -> {
+                    iconFileName = "not done.png";
+                    name = "Band-Aid Box";
+                    abilityTypeName = AbilityTypeName.ITEM_HEAL_5;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.END_OF_COMBAT;
+                    value = 400;
+                }
+                case NORMAL_MONOCLE -> {
+                    iconFileName = "not done.png";
+                    name = "Normal Monocle";
+                    abilityTypeName = AbilityTypeName.NOTHING;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.NOTHING;
+                    value = 620;
+                    descriptionOverride = "+1 Card Reward after combat.";
+                }
+                case GOLD_MONOCLE -> {
+                    iconFileName = "not done.png";
+                    name = "Gold Monocle";
+                    abilityTypeName = AbilityTypeName.NOTHING;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.NOTHING;
+                    value = 620;
+                    descriptionOverride = "+1 Coin Reward after combat.";
+                }
+                case LUCKY_TROWEL -> {
+                    iconFileName = "not done.png";
+                    name = "Lucky Trowel";
+                    abilityTypeName = AbilityTypeName.NOTHING;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.NOTHING;
+                    value = 740;
+                    descriptionOverride = "??? Map Nodes are always Treasure.";
+                }
+                case GAME_FACE -> {
+                    iconFileName = "not done.png";
+                    name = "Game Face";
+                    abilityTypeName = AbilityTypeName.ITEM_GAIN_STRENGTH;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.EVERY_START_OF_BATTLE;
+                    value = 500;
+                }
+                case A_SHIELD_SHIELD -> {
+                    iconFileName = "not done.png";
+                    name = "A Shield Shield";
+                    abilityTypeName = AbilityTypeName.ITEM_GAIN_CONSTITUTION;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.EVERY_START_OF_BATTLE;
+                    value = 500;
+                }
+                case EASY_LUNCH -> {
+                    iconFileName = "not done.png";
+                    name = "An Easy Lunch";
+                    abilityTypeName = AbilityTypeName.PRE_CURE;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.EVERY_START_OF_BATTLE;
+                    value = 550;
+                }
+                case PHASING_SHIELD -> {
+                    iconFileName = "not done.png";
+                    name = "Phasing Shield";
+                    abilityTypeName = AbilityTypeName.ITEM_DEFEND_30;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.TURN_NUMBER_4;
+                    value = 350;
+                }
+                case CASH_INJECTION -> {
+                    iconFileName = "not done.png";
+                    name = "Cash Injection";
+                    abilityTypeName = AbilityTypeName.NOTHING;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.NOTHING;
+                    value = 90;
+                    descriptionOverride = "+500 Coins immediately.";
+                }
+                case MILLIONTH_DOLLAR -> {
+                    iconFileName = "not done.png";
+                    name = "Millionth Dollar";
+                    abilityTypeName = AbilityTypeName.NOTHING;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.NOTHING;
+                    value = 1000;
+                    descriptionOverride = "+100 SUPER Coins immediately.";
+                }
+                case HEART_V2 -> {
+                    iconFileName = "not done.png";
+                    name = "Heart V2.0";
+                    abilityTypeName = AbilityTypeName.NOTHING;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.NOTHING;
+                    value = 900;
+                    descriptionOverride = "Max HP +50. Heal to full.";
+                }
+                case PENCIL_ERASER -> {
+                    iconFileName = "not done.png";
+                    name = "Pencil Eraser";
+                    abilityTypeName = AbilityTypeName.ITEM_REDUCE_MAX_HP_5_PERCENT;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.EVERY_START_OF_BATTLE;
+                    value = 500;
+                }
+                case GOOD_ERASER -> {
+                    iconFileName = "not done.png";
+                    name = "Good Eraser";
+                    abilityTypeName = AbilityTypeName.ITEM_REDUCE_MAX_HP_10_PERCENT;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.EVERY_START_OF_BATTLE;
+                    value = 700;
+                }
+                case COMICALLY_LARGE_ERASER -> {
+                    iconFileName = "not done.png";
+                    name = "Too-Large Eraser";
+                    abilityTypeName = AbilityTypeName.ITEM_REDUCE_MAX_HP_15_PERCENT;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.EVERY_START_OF_BATTLE;
+                    value = 1000;
+                }
+                case HURRY_UP_ALARM -> {
+                    iconFileName = "not done.png";
+                    name = "Hurry-Up Alarm";
+                    abilityTypeName = AbilityTypeName.ITEM_TRUE_DAMAGE_35;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.TURN_NUMBER_7;
+                    value = 700;
+                }
+                case HOUSE_RULES -> {
+                    iconFileName = "not done.png";
+                    name = "House Rules";
+                    abilityTypeName = AbilityTypeName.ITEM_DRAW_CARD;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.START_OF_TURN;
+                    value = 700;
+                }
+                case SUPER_HOUSE_RULES -> {
+                    iconFileName = "not done.png";
+                    name = "SUPER House Rules";
+                    abilityTypeName = AbilityTypeName.ITEM_GAIN_ENERGY_ONE;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.START_OF_TURN;
+                    value = 700;
+                }
+                case A_REMINDER -> {
+                    iconFileName = "not done.png";
+                    name = "A Reminder";
+                    abilityTypeName = AbilityTypeName.ITEM_DEFEND_14;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.USED_4_CARDS_IN_TURN;
+                    value = 450;
+                }
+                case SOUP_SPOON -> {
+                    iconFileName = "not done.png";
+                    name = "Soup Spoon";
+                    abilityTypeName = AbilityTypeName.ITEM_SMALL_HEAL;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.ENEMY_DIED;
+                    value = 450;
+                }
+                case THE_PLASTIC_CUP -> {
+                    iconFileName = "not done.png";
+                    name = "The Plastic Cup";
+                    abilityTypeName = AbilityTypeName.NOTHING;
+                    itemTier = ItemTier.COMMON;
+                    triggerName = TriggerName.NOTHING;
+                    value = 700;
+                    descriptionOverride = "Heal for 1 when you gain a stack of Pre-Cure.";
+                }
             }
 
             imagePath = "ITEMS/" + iconFileName;
@@ -212,6 +529,10 @@ public class ItemData {
 
         public int getValue() {
             return value;
+        }
+
+        public String getDescriptionOverride() {
+            return descriptionOverride;
         }
     }
 }

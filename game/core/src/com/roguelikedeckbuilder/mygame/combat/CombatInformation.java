@@ -34,10 +34,6 @@ public class CombatInformation {
         defense = 0;
     }
 
-    public void setPlayerInformation(boolean playerInformation) {
-        isPlayerInformation = playerInformation;
-    }
-
     public void loadEnemyStats(CharacterTypeName characterTypeName) {
         maxHp = EnemyData.getMaxHp(characterTypeName);
         hp = maxHp;
@@ -52,6 +48,10 @@ public class CombatInformation {
 
     public void changeHp(int change) {
         int hpBefore = hp;
+
+        if (hpBefore == 0) {
+            return;
+        }
 
         if (hp + change >= 1) {
             hp = Math.min(hp + change, maxHp);
@@ -233,11 +233,41 @@ public class CombatInformation {
     }
 
     public void addStatusEffect(StatusEffect statusEffect) {
+        StatusEffectTypeName statusEffectTypeName = statusEffect.getStatusEffectTypeName();
+
+        // Various immunity-granting items
+        if (isPlayerInformation) {
+            if (statusEffectTypeName == StatusEffectTypeName.WEAKNESS && Player.hasItem(ItemTypeName.ANTI_CURSE)) {
+                return;
+            } else if (statusEffectTypeName == StatusEffectTypeName.VULNERABILITY && Player.hasItem(ItemTypeName.ANTI_HEX)) {
+                return;
+            } else if (statusEffectTypeName == StatusEffectTypeName.POISON && Player.hasItem(ItemTypeName.DAILY_MULTIVITAMIN)) {
+                return;
+            } else if (statusEffectTypeName == StatusEffectTypeName.BURNING && Player.hasItem(ItemTypeName.ANTI_FIRE_WHICH_IS_WATER)) {
+                return;
+            }
+        }
+
         // Pre-Cure prevents getting an entire instance of a debuff once
         if (getStatusEffectValue(StatusEffectTypeName.PRE_CURE) > 0 && statusEffect.isDebuff()) {
             Optional<StatusEffect> preCure = findStatusEffect(StatusEffectTypeName.PRE_CURE);
             preCure.ifPresent(effect -> effect.setAmount(effect.getAmount() - 1));
             return;
+        }
+
+        // Various additional effects from items
+        if (isPlayerInformation) {
+            if (statusEffectTypeName == StatusEffectTypeName.PRE_CURE && Player.hasItem(ItemTypeName.THE_PLASTIC_CUP)) {
+                changeHp(1);
+            } else if (statusEffectTypeName == StatusEffectTypeName.CONSTITUTION && Player.hasItem(ItemTypeName.WEIGHTED_BANDS)) {
+                addStatusEffect(new StatusEffect(StatusEffectTypeName.STRENGTH, 1));
+            }
+        } else {
+            if (statusEffectTypeName == StatusEffectTypeName.BURNING && Player.hasItem(ItemTypeName.SPECIAL_MATCHES)) {
+                statusEffect.setAmount(statusEffect.getAmount() + 1);
+            } else if (statusEffectTypeName == StatusEffectTypeName.POISON && Player.hasItem(ItemTypeName.POISONOUS_POISON)) {
+                statusEffect.setAmount(statusEffect.getAmount() + 1);
+            }
         }
 
         Optional<StatusEffect> alreadyExistingStatusEffect = findStatusEffect(statusEffect.getStatusEffectTypeName());
@@ -315,5 +345,9 @@ public class CombatInformation {
 
     public void setNeedToPlayHitEffect(boolean needToPlayHitEffect) {
         this.needToPlayHitEffect = needToPlayHitEffect;
+    }
+
+    public void setPlayerInformation(boolean playerInformation) {
+        isPlayerInformation = playerInformation;
     }
 }

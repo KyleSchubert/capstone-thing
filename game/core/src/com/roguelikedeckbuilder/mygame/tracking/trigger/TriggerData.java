@@ -138,6 +138,87 @@ public class TriggerData {
                     whenToReset = StatisticsType.TURN_ENDED;
                     explanationString = "At the start of your turn.";
                 }
+                case PLAYER_TOOK_DAMAGE -> {
+                    typeOfTrackedStatistic = StatisticsType.PLAYER_TOOK_DAMAGE;
+                    whatToLookAt = WhatToLookAt.OCCURRENCES;
+                    activationComparison = ActivationComparison.EQUAL;
+                    activationValue = 1;
+                    whenToCheck = StatisticsType.PLAYER_TOOK_DAMAGE;
+                    whenToReset = StatisticsType.PLAYER_TOOK_DAMAGE;
+                    explanationString = "When you take damage.";
+                }
+                case DAMAGE_IN_ONE_HIT_GTE_12 -> {
+                    typeOfTrackedStatistic = StatisticsType.ENEMY_TOOK_DAMAGE;
+                    whatToLookAt = WhatToLookAt.VALUE;
+                    activationComparison = ActivationComparison.GREATER_THAN_OR_EQUAL;
+                    activationValue = 12;
+                    whenToCheck = StatisticsType.ENEMY_TOOK_DAMAGE;
+                    whenToReset = StatisticsType.ENEMY_TOOK_DAMAGE;
+                    explanationString = "When an enemy takes 12+ damage in one hit.";
+                }
+                case DAMAGE_IN_ONE_HIT_GTE_24 -> {
+                    typeOfTrackedStatistic = StatisticsType.ENEMY_TOOK_DAMAGE;
+                    whatToLookAt = WhatToLookAt.VALUE;
+                    activationComparison = ActivationComparison.GREATER_THAN_OR_EQUAL;
+                    activationValue = 24;
+                    whenToCheck = StatisticsType.ENEMY_TOOK_DAMAGE;
+                    whenToReset = StatisticsType.ENEMY_TOOK_DAMAGE;
+                    explanationString = "When an enemy takes 24+ damage in one hit.";
+                }
+                case ENEMY_DIED -> {
+                    typeOfTrackedStatistic = StatisticsType.ENEMY_DIED;
+                    whatToLookAt = WhatToLookAt.OCCURRENCES;
+                    activationComparison = ActivationComparison.EQUAL;
+                    activationValue = 1;
+                    whenToCheck = StatisticsType.ENEMY_DIED;
+                    whenToReset = StatisticsType.ENEMY_DIED;
+                    explanationString = "When an enemy dies.";
+                }
+                case ENEMY_USED_ABILITY -> {
+                    typeOfTrackedStatistic = StatisticsType.ENEMY_USED_ABILITY;
+                    whatToLookAt = WhatToLookAt.OCCURRENCES;
+                    activationComparison = ActivationComparison.EQUAL;
+                    activationValue = 1;
+                    whenToCheck = StatisticsType.ENEMY_USED_ABILITY;
+                    whenToReset = StatisticsType.ENEMY_USED_ABILITY;
+                    explanationString = "When an enemy uses an ability.";
+                }
+                case END_OF_COMBAT -> {
+                    typeOfTrackedStatistic = StatisticsType.COMBAT_ENDED;
+                    whatToLookAt = WhatToLookAt.OCCURRENCES;
+                    activationComparison = ActivationComparison.EQUAL;
+                    activationValue = 1;
+                    whenToCheck = StatisticsType.COMBAT_ENDED;
+                    whenToReset = StatisticsType.COMBAT_STARTED;
+                    explanationString = "After combat.";
+                }
+                case TURN_NUMBER_4 -> {
+                    typeOfTrackedStatistic = StatisticsType.TURN_STARTED;
+                    whatToLookAt = WhatToLookAt.OCCURRENCES;
+                    activationComparison = ActivationComparison.EQUAL;
+                    activationValue = 4;
+                    whenToCheck = StatisticsType.TURN_STARTED;
+                    whenToReset = StatisticsType.COMBAT_STARTED;
+                    explanationString = "On the 4th turn of combat.";
+                }
+                case TURN_NUMBER_7 -> {
+                    typeOfTrackedStatistic = StatisticsType.TURN_STARTED;
+                    whatToLookAt = WhatToLookAt.OCCURRENCES;
+                    activationComparison = ActivationComparison.EQUAL;
+                    activationValue = 7;
+                    whenToCheck = StatisticsType.TURN_STARTED;
+                    whenToReset = StatisticsType.COMBAT_STARTED;
+                    explanationString = "On the 7th turn of combat.";
+                }
+                case USED_4_CARDS_IN_TURN -> {
+                    typeOfTrackedStatistic = StatisticsType.PLAYED_CARD;
+                    whatToLookAt = WhatToLookAt.OCCURRENCES;
+                    activationComparison = ActivationComparison.GREATER_THAN_OR_EQUAL;
+                    activationValue = 4;
+                    whenToCheck = StatisticsType.TURN_ENDED;
+                    whenToReset = StatisticsType.TURN_STARTED;
+                    explanationString = "When you use 4+ cards in a turn.";
+                }
             }
         }
 
