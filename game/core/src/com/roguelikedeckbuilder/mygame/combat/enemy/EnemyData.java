@@ -322,7 +322,7 @@ public class EnemyData {
                     move1 = new Move(1, AbilityTypeName.ENEMY_UNIMPRESSED_FISH_STRENGTH_TEAM);
                     move1.setUseLimit(2);
 
-                    move2 = new Move(999999, AbilityTypeName.ENEMY_UNIMPRESSED_FISH_HIT);
+                    move2 = new Move(3, AbilityTypeName.ENEMY_UNIMPRESSED_FISH_HIT);
 
                     moves.add(move1, move2);
 
