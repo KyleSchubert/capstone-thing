@@ -257,6 +257,7 @@ public class Player {
     }
 
     public static void startTurn() {
+        Statistics.turnStarted();
         int oldEnergyAmount = energy;
         drawCards(5 + Player.getUpgrades().getOrDefault("upgrade-draw", 0));
         energy = 3;

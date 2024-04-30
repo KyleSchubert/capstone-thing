@@ -317,7 +317,6 @@ public class CombatMenuStage extends GenericStage {
                         }
                         if (!currentEnemies.isEmpty()) {
                             Statistics.setTurnNumber(Statistics.getTurnNumber() + 1);
-                            Statistics.turnStarted();
                             isPlayerTurn = true;
                             Player.startTurn();
                         }
@@ -405,7 +404,6 @@ public class CombatMenuStage extends GenericStage {
         victory = false;
 
         Statistics.setTurnNumber(1);
-        Statistics.turnStarted();
         Player.combatStart();
 
         currentEnemies.clear();

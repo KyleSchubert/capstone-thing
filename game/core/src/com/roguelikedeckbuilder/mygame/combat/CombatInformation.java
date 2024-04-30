@@ -125,7 +125,6 @@ public class CombatInformation {
             Statistics.enemyTookDamage(totalDamageTaken);
         }
 
-        createHpChangeNumbers(totalDamageTaken);
 
         int excessDamage;
         if (isIgnoringDefense) {
@@ -136,6 +135,7 @@ public class CombatInformation {
 
         setNeedToPlayHitEffect(true);
 
+        createHpChangeNumbers(-excessDamage);
         changeHp(excessDamage);
         return false;
     }
@@ -174,7 +174,7 @@ public class CombatInformation {
     }
 
     public void setPositions(XYPair<Float> position) {
-        damageNumberCenter = new XYPair<>(position.x(), position.y() + 120);
+        damageNumberCenter = new XYPair<>(position.x(), position.y() + 80);
         hpBar.setPosition(new XYPair<>(position.x() - 82, position.y() - 30));
         statusEffectVisualX = position.x() - 48;
         repositionStatusEffectVisuals();

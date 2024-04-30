@@ -109,7 +109,7 @@ public class Treasure extends Group {
     }
 
     private int generateRandomPersistentCurrencyAmount() {
-        return random.nextInt(8) + 10;
+        return random.nextInt(2) + 2;
     }
 
     public void addItem(ItemTypeName itemTypeName) {

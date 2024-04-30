@@ -55,14 +55,14 @@ public class EnemyData {
 
             switch (characterTypeName) {
                 case ALIEN:
-                    maxHp = 34;
+                    maxHp = 58;
 
                     move1 = new Move(1, AbilityTypeName.ENEMY_ALIEN_HIT_AND_BURN);
 
                     moves.add(move1);
                     break;
                 case ANTEATER:
-                    maxHp = 160;
+                    maxHp = 240;
 
                     move1 = new Move(999999, AbilityTypeName.ENEMY_ANTEATER_DEFEND);
                     move1.setUseLimit(2);
@@ -80,7 +80,7 @@ public class EnemyData {
                     halfHealthAbility = AbilityTypeName.ENEMY_ANTEATER_HALF_HEALTH;
                     break;
                 case BURGER:
-                    maxHp = 14;
+                    maxHp = 26;
 
                     move1 = new Move(1, AbilityTypeName.ENEMY_BURGER_SMALLER_HIT);
 
@@ -91,7 +91,7 @@ public class EnemyData {
                     initialAbility = AbilityTypeName.ENEMY_BURGER_DEFEND;
                     break;
                 case CHIPS:
-                    maxHp = 72;
+                    maxHp = 102;
 
                     move1 = new Move(1, AbilityTypeName.ENEMY_CHIPS_STRENGTH_TEAM);
 
@@ -103,7 +103,7 @@ public class EnemyData {
                     initialAbility = AbilityTypeName.ENEMY_CHIPS_INITIAL;
                     break;
                 case EVIL_HH:
-                    maxHp = 70;
+                    maxHp = 110;
 
                     move1 = new Move(4, AbilityTypeName.ENEMY_EVIL_HH_HEAL_AND_DEFEND);
 
@@ -115,7 +115,7 @@ public class EnemyData {
                     initialAbility = AbilityTypeName.ENEMY_EVIL_HH_INITIAL;
                     break;
                 case HAM_AND_FIST:
-                    maxHp = 20;
+                    maxHp = 34;
 
                     move1 = new Move(1, AbilityTypeName.ENEMY_HAM_AND_FIST_DOUBLE_HIT);
 
@@ -126,7 +126,7 @@ public class EnemyData {
                     initialAbility = AbilityTypeName.ENEMY_HAM_AND_FIST_WEAKNESS_SELF;
                     break;
                 case HAM_SHAMWITCH:
-                    maxHp = 10;
+                    maxHp = 22;
 
                     move1 = new Move(1, AbilityTypeName.ENEMY_HAM_SHAMWITCH_HEAL_TEAM);
 
@@ -138,7 +138,7 @@ public class EnemyData {
 
                     break;
                 case HAMMIE:
-                    maxHp = 8;
+                    maxHp = 14;
 
                     move1 = new Move(1, AbilityTypeName.ENEMY_HAMMIE_DEFEND);
 
@@ -150,7 +150,7 @@ public class EnemyData {
 
                     break;
                 case HELMET_PENGUIN:
-                    maxHp = 175;
+                    maxHp = 280;
 
                     move1 = new Move(1, AbilityTypeName.ENEMY_HELMET_PENGUIN_CONSTITUTION_TEAM);
                     move1.setUseLimit(2);
@@ -168,7 +168,7 @@ public class EnemyData {
                     initialAbility = AbilityTypeName.ENEMY_HELMET_PENGUIN_INITIAL;
                     break;
                 case HOT_DOG:
-                    maxHp = 13;
+                    maxHp = 28;
 
                     move1 = new Move(1, AbilityTypeName.ENEMY_HOT_DOG_STRENGTH_TEAM);
 
@@ -177,7 +177,7 @@ public class EnemyData {
                     initialAbility = AbilityTypeName.ENEMY_HOT_DOG_VULNERABILITY_TEAM;
                     break;
                 case KING_OF_THE_BURROW:
-                    maxHp = 560;
+                    maxHp = 850;
 
                     move1 = new Move(10, AbilityTypeName.ENEMY_KING_OF_THE_BURROW_HIT_FOUR_TIMES);
 
@@ -193,7 +193,7 @@ public class EnemyData {
                     halfHealthAbility = AbilityTypeName.ENEMY_KING_OF_THE_BURROW_HALF_HEALTH;
                     break;
                 case KNIGHT:
-                    maxHp = 142;
+                    maxHp = 235;
 
                     move1 = new Move(1, AbilityTypeName.ENEMY_KNIGHT_DEFEND);
 
@@ -205,7 +205,7 @@ public class EnemyData {
 
                     break;
                 case MONOLITH:
-                    maxHp = 260;
+                    maxHp = 415;
 
                     move1 = new Move(10, AbilityTypeName.ENEMY_MONOLITH_DEFEND);
 
@@ -220,7 +220,7 @@ public class EnemyData {
 
                     break;
                 case PEANUT_BEE:
-                    maxHp = 120;
+                    maxHp = 195;
 
                     move1 = new Move(1, AbilityTypeName.ENEMY_PEANUT_BEE_HIT_TWICE_AND_POISON);
 
@@ -233,7 +233,7 @@ public class EnemyData {
                     initialAbility = AbilityTypeName.ENEMY_PEANUT_BEE_INITIAL;
                     break;
                 case POINTER:
-                    maxHp = 32;
+                    maxHp = 65;
 
                     move1 = new Move(1, AbilityTypeName.ENEMY_POINTER_HIT);
 
@@ -244,7 +244,7 @@ public class EnemyData {
                     initialAbility = AbilityTypeName.ENEMY_POINTER_INITIAL;
                     break;
                 case PUFF:
-                    maxHp = 1850;
+                    maxHp = 9999;
 
                     move1 = new Move(1, AbilityTypeName.ENEMY_PUFF_VULNERABILITY_AND_WEAKNESS);
 
@@ -265,7 +265,7 @@ public class EnemyData {
                     halfHealthAbility = AbilityTypeName.ENEMY_PUFF_HALF_HEALTH;
                     break;
                 case SAD_DOLLAR:
-                    maxHp = 49;
+                    maxHp = 92;
 
                     move1 = new Move(1, AbilityTypeName.ENEMY_SAD_DOLLAR_CONSTITUTION_SELF);
                     move1.setUseLimit(2);
@@ -283,7 +283,7 @@ public class EnemyData {
                     initialAbility = AbilityTypeName.ENEMY_SAD_DOLLAR_CONSTITUTION_TEAM;
                     break;
                 case SOCK:
-                    maxHp = 40;
+                    maxHp = 73;
 
                     move1 = new Move(3, AbilityTypeName.ENEMY_SOCK_POISON);
                     move1.setRepetitionLimit(1);
@@ -294,7 +294,7 @@ public class EnemyData {
 
                     break;
                 case STARER:
-                    maxHp = 16;
+                    maxHp = 31;
 
                     move1 = new Move(3, AbilityTypeName.ENEMY_STARER_DEFEND_TEAM);
 
@@ -304,7 +304,7 @@ public class EnemyData {
 
                     break;
                 case SWORD_FISH:
-                    maxHp = 41;
+                    maxHp = 74;
 
                     move1 = new Move(1, AbilityTypeName.ENEMY_SWORD_FISH_HIT_SMALL);
 
@@ -317,7 +317,7 @@ public class EnemyData {
 
                     break;
                 case UNIMPRESSED_FISH:
-                    maxHp = 55;
+                    maxHp = 95;
 
                     move1 = new Move(1, AbilityTypeName.ENEMY_UNIMPRESSED_FISH_STRENGTH_TEAM);
                     move1.setUseLimit(2);
