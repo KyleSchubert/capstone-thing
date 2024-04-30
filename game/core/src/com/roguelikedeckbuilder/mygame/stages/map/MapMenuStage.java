@@ -26,17 +26,17 @@ import static com.roguelikedeckbuilder.mygame.MyGame.shapeRenderer;
 
 public class MapMenuStage extends GenericStage {
     public static final int NUMBER_OF_ZONES = 3;
-    private static final int MAX_STAGES = 10; // Minimum of 2: 1 for start, 1 for boss.
+    private static final int MAX_STAGES = 12; // Minimum of 2: 1 for start, 1 for boss.
     private static final int MAX_NODES_PER_STAGE = 6;
     private static final int MIN_NODES_PER_STAGE = 4;
     private static final int MAX_NEXT_CONNECTIONS_PER_NODE = 2;
     private static final int MIN_ELITE_BATTLE = 5;
     private static final int MIN_SHOP = 3;
-    private static final int MIN_REST = 5;
+    private static final int MIN_REST = 4;
     private static final int MIN_TREASURE = 3;
-    private static final int MAX_ELITE_BATTLE = 8;
-    private static final int MAX_SHOP = 6;
-    private static final int MAX_REST = 8;
+    private static final int MAX_ELITE_BATTLE = 10;
+    private static final int MAX_SHOP = 4;
+    private static final int MAX_REST = 6;
     private static final int MAX_TREASURE = 6;
     private static final int NO_REST_NODES_BEFORE_STAGE_NUMBER = 3;
     private static final int NO_SHOP_NODES_BEFORE_STAGE_NUMBER = 4;
@@ -102,7 +102,7 @@ public class MapMenuStage extends GenericStage {
         } else if (background3.isVisible()) {
             background3.draw(batch, 1);
         }
-        
+
         batch.end();
         batch.begin();
 
@@ -256,6 +256,21 @@ public class MapMenuStage extends GenericStage {
             System.out.println("TREASURE NODES: " + treasureNodeCount + " | REMOVING TREASURE");
             replaceOneRandomNodeByType(MapNodeType.TREASURE, MapNodeType.NORMAL_BATTLE);
             treasureNodeCount--;
+        }
+
+        // Replace all first nodes with combat
+        for (MapNode node : mapNodes.get(1)) {
+            node.nodeType = MapNodeType.NORMAL_BATTLE;
+        }
+
+        // Replace all before-boss nodes with rest or shop
+        for (MapNode node : mapNodes.get(MAX_STAGES - 2)) {
+            int number = random.nextInt(2);
+            if (number == 0) {
+                node.nodeType = MapNodeType.REST;
+            } else {
+                node.nodeType = MapNodeType.SHOP;
+            }
         }
 
         // Complete the start node
