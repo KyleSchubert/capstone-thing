@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Null;
 import com.roguelikedeckbuilder.mygame.Player;
@@ -80,7 +81,7 @@ public class CombatMenuStage extends GenericStage {
 
         // End turn button
         ImageButton endTurnButton = ClickListenerManager.getImageButton("end turn");
-        endTurnButton.setPosition(1160, 180);
+        endTurnButton.setPosition(1190, 220);
         endTurnButton.addCaptureListener(
                 ClickListenerManager.hoverAndPutTextInTooltip("End Turn", "Clicking this ends your turn and starts the Enemies' turns from left to right.", -999)
         );
@@ -133,8 +134,9 @@ public class CombatMenuStage extends GenericStage {
                 String.format("Cards in hand: %d / %d", Player.getHandContents().size, Player.MAXIMUM_CARDS_IN_HAND),
                 LabelMaker.getMedium()
         );
-        maximumAmountOfCardsLabel.setPosition(12, 300);
-        maximumAmountOfCardsLabel.setWidth(300);
+        maximumAmountOfCardsLabel.setPosition(1236, 160);
+        maximumAmountOfCardsLabel.setWidth(160);
+        maximumAmountOfCardsLabel.setAlignment(Align.center);
         maximumAmountOfCardsLabel.setTouchable(Touchable.disabled);
         addActor(maximumAmountOfCardsLabel);
     }
@@ -235,8 +237,8 @@ public class CombatMenuStage extends GenericStage {
 
             for (Card card : Player.getHandContents()) {
                 // Reposition the cards
-                float LEFTMOST_POSITION = 160;
-                float RIGHTMOST_POSITION = 1000;
+                float LEFTMOST_POSITION = 0;
+                float RIGHTMOST_POSITION = 1140;
                 float gapSize, positionX, positionY;
 
                 // If there are more than 5 cards, some will be on a second, higher row behind the first row
@@ -447,6 +449,8 @@ public class CombatMenuStage extends GenericStage {
         Player.endTurn();
 
         updatePileText();
+        
+        updateMaximumAmountOfCardsLabel();
 
         currentAttackingEnemyIndex = 0;
 
