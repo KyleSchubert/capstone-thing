@@ -201,7 +201,7 @@ public class ItemData {
                     value = 1;
                 }
                 case FOR_CARD_DAMAGE_WHEN_ATTACKED -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "thorns.png";
                     name = "Temporary Buff";
                     abilityTypeName = AbilityTypeName.ENEMY_BURGER_LARGER_HIT;
                     itemTier = ItemTier.TEMPORARY_ITEM;
@@ -209,7 +209,7 @@ public class ItemData {
                     value = 1;
                 }
                 case FOR_CARD_POISON_WHEN_ATTACKED -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "poison attacked.png";
                     name = "Temporary Buff";
                     abilityTypeName = AbilityTypeName.ENEMY_SAD_DOLLAR_POISON;
                     itemTier = ItemTier.TEMPORARY_ITEM;
@@ -217,7 +217,7 @@ public class ItemData {
                     value = 1;
                 }
                 case FOR_CARD_BURNING_WHEN_ATTACKED -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "burn when attacked.png";
                     name = "Temporary Buff";
                     abilityTypeName = AbilityTypeName.ITEM_BURN_ONE;
                     itemTier = ItemTier.TEMPORARY_ITEM;
@@ -225,7 +225,7 @@ public class ItemData {
                     value = 1;
                 }
                 case FOR_CARD_BURNING_EVERY_TURN -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "burn on turn.png";
                     name = "Temporary Buff";
                     abilityTypeName = AbilityTypeName.ITEM_BURN_ONE;
                     itemTier = ItemTier.TEMPORARY_ITEM;
@@ -233,7 +233,7 @@ public class ItemData {
                     value = 1;
                 }
                 case ANTI_CURSE -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "anti curse.png";
                     name = "Anti-Curse";
                     abilityTypeName = AbilityTypeName.NOTHING;
                     itemTier = ItemTier.COMMON;
@@ -242,7 +242,7 @@ public class ItemData {
                     descriptionOverride = "Immunity to Weakness.";
                 }
                 case ANTI_HEX -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "anti hex.png";
                     name = "Anti-Hex";
                     abilityTypeName = AbilityTypeName.NOTHING;
                     itemTier = ItemTier.COMMON;
@@ -251,7 +251,7 @@ public class ItemData {
                     descriptionOverride = "Immunity to Vulnerability.";
                 }
                 case DAILY_MULTIVITAMIN -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "daily multivitamin.png";
                     name = "Daily Multivitamin";
                     abilityTypeName = AbilityTypeName.NOTHING;
                     itemTier = ItemTier.COMMON;
@@ -260,7 +260,7 @@ public class ItemData {
                     descriptionOverride = "Immunity to Poison.";
                 }
                 case ANTI_FIRE_WHICH_IS_WATER -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "anti fire.png";
                     name = "Anti-Fire (Water)";
                     abilityTypeName = AbilityTypeName.NOTHING;
                     itemTier = ItemTier.COMMON;
@@ -269,7 +269,7 @@ public class ItemData {
                     descriptionOverride = "Immunity to Burning.";
                 }
                 case AUTO_SHIELD -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "auto shield.png";
                     name = "Auto Shield";
                     abilityTypeName = AbilityTypeName.ITEM_SMALL_DEFENSE;
                     itemTier = ItemTier.COMMON;
@@ -277,7 +277,7 @@ public class ItemData {
                     value = 600;
                 }
                 case CUP_OF_POISON -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "cup of poison.png";
                     name = "Cup of Poison";
                     abilityTypeName = AbilityTypeName.ITEM_1_POISON;
                     itemTier = ItemTier.COMMON;
@@ -285,7 +285,7 @@ public class ItemData {
                     value = 700;
                 }
                 case CUP_OF_MATCHES -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "cup of matches.png";
                     name = "Cup of Matches";
                     abilityTypeName = AbilityTypeName.ITEM_3_BURNING;
                     itemTier = ItemTier.COMMON;
@@ -293,7 +293,7 @@ public class ItemData {
                     value = 700;
                 }
                 case WEIGHTED_BANDS -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "weighted bands.png";
                     name = "Weighted Bands";
                     abilityTypeName = AbilityTypeName.NOTHING;
                     itemTier = ItemTier.COMMON;
@@ -302,7 +302,7 @@ public class ItemData {
                     descriptionOverride = "Gain 1 Strength when gaining Constitution.";
                 }
                 case EVIL_NOTE -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "evil note note.png";
                     name = "Evil Note (Note)";
                     abilityTypeName = AbilityTypeName.ITEM_TWO_VULNERABILITY_ALL;
                     itemTier = ItemTier.COMMON;
@@ -310,7 +310,7 @@ public class ItemData {
                     value = 500;
                 }
                 case EVIL_NOTE_ACTUAL -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "evil note letter.png";
                     name = "Evil Note (Letter)";
                     abilityTypeName = AbilityTypeName.ENEMY_CHIPS_INITIAL;
                     itemTier = ItemTier.COMMON;
@@ -318,7 +318,7 @@ public class ItemData {
                     value = 500;
                 }
                 case SPECIAL_MATCHES -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "special matches.png";
                     name = "Special Matches";
                     abilityTypeName = AbilityTypeName.NOTHING;
                     itemTier = ItemTier.COMMON;
@@ -327,7 +327,7 @@ public class ItemData {
                     descriptionOverride = "Inflict 1 additional Burning when inflicting Burning.";
                 }
                 case POISONOUS_POISON -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "poisonous poison.png";
                     name = "Poisonous Poison";
                     abilityTypeName = AbilityTypeName.NOTHING;
                     itemTier = ItemTier.COMMON;
@@ -336,7 +336,7 @@ public class ItemData {
                     descriptionOverride = "Inflict 1 additional Poison when inflicting Poison.";
                 }
                 case BAND_AID_BOX -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "band aid box.png";
                     name = "Band-Aid Box";
                     abilityTypeName = AbilityTypeName.ITEM_HEAL_5;
                     itemTier = ItemTier.COMMON;
@@ -344,7 +344,7 @@ public class ItemData {
                     value = 400;
                 }
                 case NORMAL_MONOCLE -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "normal monocle.png";
                     name = "Normal Monocle";
                     abilityTypeName = AbilityTypeName.NOTHING;
                     itemTier = ItemTier.COMMON;
@@ -353,7 +353,7 @@ public class ItemData {
                     descriptionOverride = "+1 Card Reward after combat.";
                 }
                 case GOLD_MONOCLE -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "gold monocle.png";
                     name = "Gold Monocle";
                     abilityTypeName = AbilityTypeName.NOTHING;
                     itemTier = ItemTier.COMMON;
@@ -362,7 +362,7 @@ public class ItemData {
                     descriptionOverride = "+1 Coin Reward after combat.";
                 }
                 case LUCKY_TROWEL -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "lucky trowel.png";
                     name = "Lucky Trowel";
                     abilityTypeName = AbilityTypeName.NOTHING;
                     itemTier = ItemTier.COMMON;
@@ -371,7 +371,7 @@ public class ItemData {
                     descriptionOverride = "??? Map Nodes are always Treasure.";
                 }
                 case GAME_FACE -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "game face.png";
                     name = "Game Face";
                     abilityTypeName = AbilityTypeName.ITEM_GAIN_STRENGTH;
                     itemTier = ItemTier.COMMON;
@@ -379,7 +379,7 @@ public class ItemData {
                     value = 500;
                 }
                 case A_SHIELD_SHIELD -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "a shield shield.png";
                     name = "A Shield Shield";
                     abilityTypeName = AbilityTypeName.ITEM_GAIN_CONSTITUTION;
                     itemTier = ItemTier.COMMON;
@@ -387,7 +387,7 @@ public class ItemData {
                     value = 500;
                 }
                 case EASY_LUNCH -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "easy lunch.png";
                     name = "An Easy Lunch";
                     abilityTypeName = AbilityTypeName.PRE_CURE;
                     itemTier = ItemTier.COMMON;
@@ -395,7 +395,7 @@ public class ItemData {
                     value = 550;
                 }
                 case PHASING_SHIELD -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "phasing shield.png";
                     name = "Phasing Shield";
                     abilityTypeName = AbilityTypeName.ITEM_DEFEND_30;
                     itemTier = ItemTier.COMMON;
@@ -403,7 +403,7 @@ public class ItemData {
                     value = 350;
                 }
                 case CASH_INJECTION -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "cash injection.png";
                     name = "Cash Injection";
                     abilityTypeName = AbilityTypeName.NOTHING;
                     itemTier = ItemTier.COMMON;
@@ -412,7 +412,7 @@ public class ItemData {
                     descriptionOverride = "+500 Coins immediately.";
                 }
                 case MILLIONTH_DOLLAR -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "millionth dollar.png";
                     name = "Millionth Dollar";
                     abilityTypeName = AbilityTypeName.NOTHING;
                     itemTier = ItemTier.COMMON;
@@ -421,7 +421,7 @@ public class ItemData {
                     descriptionOverride = "+100 SUPER Coins immediately.";
                 }
                 case HEART_V2 -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "heart v2.png";
                     name = "Heart V2.0";
                     abilityTypeName = AbilityTypeName.NOTHING;
                     itemTier = ItemTier.COMMON;
@@ -430,7 +430,7 @@ public class ItemData {
                     descriptionOverride = "Max HP +50. Heal to full.";
                 }
                 case PENCIL_ERASER -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "pencil eraser.png";
                     name = "Pencil Eraser";
                     abilityTypeName = AbilityTypeName.ITEM_REDUCE_MAX_HP_5_PERCENT;
                     itemTier = ItemTier.COMMON;
@@ -438,7 +438,7 @@ public class ItemData {
                     value = 500;
                 }
                 case GOOD_ERASER -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "good eraser.png";
                     name = "Good Eraser";
                     abilityTypeName = AbilityTypeName.ITEM_REDUCE_MAX_HP_10_PERCENT;
                     itemTier = ItemTier.COMMON;
@@ -446,7 +446,7 @@ public class ItemData {
                     value = 700;
                 }
                 case COMICALLY_LARGE_ERASER -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "comically large eraser.png";
                     name = "Too-Large Eraser";
                     abilityTypeName = AbilityTypeName.ITEM_REDUCE_MAX_HP_15_PERCENT;
                     itemTier = ItemTier.COMMON;
@@ -454,7 +454,7 @@ public class ItemData {
                     value = 1000;
                 }
                 case HURRY_UP_ALARM -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "hurry up alarm.png";
                     name = "Hurry-Up Alarm";
                     abilityTypeName = AbilityTypeName.ITEM_TRUE_DAMAGE_35;
                     itemTier = ItemTier.COMMON;
@@ -462,7 +462,7 @@ public class ItemData {
                     value = 700;
                 }
                 case HOUSE_RULES -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "house rules.png";
                     name = "House Rules";
                     abilityTypeName = AbilityTypeName.ITEM_DRAW_CARD;
                     itemTier = ItemTier.COMMON;
@@ -470,7 +470,7 @@ public class ItemData {
                     value = 700;
                 }
                 case LED_BULB -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "LED bulb.png";
                     name = "LED Bulb";
                     abilityTypeName = AbilityTypeName.NOTHING;
                     itemTier = ItemTier.COMMON;
@@ -479,7 +479,7 @@ public class ItemData {
                     descriptionOverride = "+1 Energy.";
                 }
                 case A_REMINDER -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "a reminder.png";
                     name = "A Reminder";
                     abilityTypeName = AbilityTypeName.ITEM_DEFEND_14;
                     itemTier = ItemTier.COMMON;
@@ -487,7 +487,7 @@ public class ItemData {
                     value = 450;
                 }
                 case SOUP_SPOON -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "soup spoon.png";
                     name = "Soup Spoon";
                     abilityTypeName = AbilityTypeName.ITEM_SMALL_HEAL;
                     itemTier = ItemTier.COMMON;
@@ -495,7 +495,7 @@ public class ItemData {
                     value = 450;
                 }
                 case THE_PLASTIC_CUP -> {
-                    iconFileName = "not done.png";
+                    iconFileName = "the plastic cup.png";
                     name = "The Plastic Cup";
                     abilityTypeName = AbilityTypeName.NOTHING;
                     itemTier = ItemTier.COMMON;

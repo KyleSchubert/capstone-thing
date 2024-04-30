@@ -206,19 +206,19 @@ public class CardData {
                 case THORNS -> {
                     abilityTypeName = AbilityTypeName.THORNS;
                     upgradedAbilityTypeName = AbilityTypeName.THORNS_UPGRADED;
-                    iconFileName = "not done.png";
+                    iconFileName = "thorns.png";
                     value = 360;
                 }
                 case WEAR_POISON -> {
                     abilityTypeName = AbilityTypeName.WEAR_POISON;
                     upgradedAbilityTypeName = AbilityTypeName.WEAR_POISON_UPGRADED;
-                    iconFileName = "not done.png";
+                    iconFileName = "poison attacked.png";
                     value = 350;
                 }
                 case FIRE_WHIRL -> {
                     abilityTypeName = AbilityTypeName.FIRE_WHIRL;
                     upgradedAbilityTypeName = AbilityTypeName.FIRE_WHIRL_UPGRADED;
-                    iconFileName = "not done.png";
+                    iconFileName = "burn when attacked.png";
                     value = 340;
                 }
                 case SPIKED_SHIELD -> {
@@ -326,7 +326,7 @@ public class CardData {
                 case FIRE_BREATH -> {
                     abilityTypeName = AbilityTypeName.FIRE_BREATH;
                     upgradedAbilityTypeName = AbilityTypeName.FIRE_BREATH_UPGRADED;
-                    iconFileName = "not done.png";
+                    iconFileName = "burn on turn.png";
                     value = 400;
                 }
                 case COIN_WALL -> {
