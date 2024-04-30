@@ -65,6 +65,12 @@ public class CardData {
             String iconFileName = "not done.png";
 
             switch (cardTypeName) {
+                case SLASH -> {
+                    abilityTypeName = AbilityTypeName.DEFAULT_ATTACK;
+                    upgradedAbilityTypeName = AbilityTypeName.DEFAULT_ATTACK_UPGRADED;
+                    value = 40;
+                    iconFileName = "not done.png";
+                }
                 case ENERGY_SLICES -> {
                     abilityTypeName = AbilityTypeName.ENERGY_SLICES;
                     upgradedAbilityTypeName = AbilityTypeName.ENERGY_SLICES_UPGRADED;

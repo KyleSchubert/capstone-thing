@@ -49,4 +49,5 @@ public enum CardTypeName {
     BLOCK_AND_STUFF,
     NOTHING_BUT_GOOD,
     NOTHING_BUT_GOLD,
+    SLASH,
 }

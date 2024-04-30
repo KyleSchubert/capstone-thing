@@ -5,7 +5,6 @@ import com.badlogic.gdx.utils.Array;
 import com.roguelikedeckbuilder.mygame.animated.character.Character;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
 import com.roguelikedeckbuilder.mygame.cards.Card;
-import com.roguelikedeckbuilder.mygame.cards.CardData;
 import com.roguelikedeckbuilder.mygame.cards.CardTypeName;
 import com.roguelikedeckbuilder.mygame.combat.CombatInformation;
 import com.roguelikedeckbuilder.mygame.combat.TargetType;
@@ -62,25 +61,12 @@ public class Player {
     }
 
     public static void reset() {
-        money = 1500;
+        money = 0;
         flagGoBackToPreviousMenuState = false;
 
         combatInformation.loadPlayerStats();
 
-        ownedCards.clear();
-
-        for (CardTypeName cardTypeName : CardData.getSomeRandomCards(CardTypeName.values().length - 1, false)) {
-            Card card = new Card(cardTypeName, false);
-            card.addCaptureListener(card.getClickListener());
-            ownedCards.add(card);
-
-            Card cardUpgraded = new Card(cardTypeName, false);
-            cardUpgraded.setUpgraded(true);
-            cardUpgraded.addCaptureListener(cardUpgraded.getClickListener());
-            ownedCards.add(cardUpgraded);
-        }
-
-        ownedCards.shuffle();
+        resetToDefaultDeck();
 
         ownedItems.clear();
 
@@ -98,6 +84,30 @@ public class Player {
         for (Actor actor : mustRemove) {
             actor.remove();
         }
+    }
+
+    private static void resetToDefaultDeck() {
+        ownedCards.clear();
+
+        // 5 Slash cards
+        for (int i = 0; i < 5; i++) {
+            Card card = new Card(CardTypeName.SLASH, false);
+            card.addCaptureListener(card.getClickListener());
+            ownedCards.add(card);
+        }
+        // Upgrade the last Slash card
+        ownedCards.get(ownedCards.size - 1).setUpgraded(true);
+
+        // 5 Defend cards
+        for (int i = 0; i < 5; i++) {
+            Card card = new Card(CardTypeName.DEFEND, false);
+            card.addCaptureListener(card.getClickListener());
+            ownedCards.add(card);
+        }
+        // Upgrade the last Defend card
+        ownedCards.get(ownedCards.size - 1).setUpgraded(true);
+
+        ownedCards.shuffle();
     }
 
     public static void changeMoney(int change) {

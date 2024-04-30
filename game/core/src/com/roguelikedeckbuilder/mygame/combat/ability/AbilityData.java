@@ -303,6 +303,16 @@ public class AbilityData {
                     energyCost = 1;
                     effect = EffectName.DEFEND_TWICE_A_BIT;
                 }
+                case DEFAULT_ATTACK -> {
+                    name = "Slash";
+                    energyCost = 1;
+                    effect = EffectName.DEFAULT_ATTACK;
+                }
+                case DEFAULT_ATTACK_UPGRADED -> {
+                    name = "Slash+";
+                    energyCost = 1;
+                    effect = EffectName.DEFAULT_ATTACK_UPGRADED;
+                }
                 case ITEM_SWORD_ABILITY -> effect = EffectName.DAMAGE_A_BIT;
                 case ITEM_SWORD_2_ABILITY -> effect = EffectName.DAMAGE_A_BIT_TO_ONE;
                 case HEAL_SELF_ENEMY -> {

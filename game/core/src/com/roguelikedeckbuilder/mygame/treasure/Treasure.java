@@ -58,6 +58,8 @@ public class Treasure extends Group {
         group.addActor(iconMaker(treasureType));
 
         label.setPosition(120, 20);
+        label.setWidth(240);
+
         group.addActor(label);
         group.addCaptureListener(ClickListenerManager.triggerTreasure(treasureType, amount, group));
 
@@ -107,11 +109,13 @@ public class Treasure extends Group {
     }
 
     private int generateRandomPersistentCurrencyAmount() {
-        return random.nextInt(2) + 2;
+        return random.nextInt(8) + 10;
     }
 
     public void addItem(ItemTypeName itemTypeName) {
         Label label = LabelMaker.newLabel(ItemData.getName(itemTypeName), LabelMaker.getLarge());
+        label.setWidth(240);
+
         Group group = prepareGenericTreasureWrapper(TreasureType.PERSISTENT_CURRENCY);
 
         Item item = new Item(itemTypeName);

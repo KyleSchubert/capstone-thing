@@ -267,9 +267,15 @@ public class EffectData {
                     repetitions = 0;
                     targetType = TargetType.SELF;
                 }
-                case DAMAGE_A_BIT_TO_ONE -> {
+                case DAMAGE_A_BIT_TO_ONE, DEFAULT_ATTACK_UPGRADED -> {
                     effectType = EffectType.ATTACK;
                     effectiveness = 9;
+                    repetitions = 1;
+                    targetType = TargetType.ONE;
+                }
+                case DEFAULT_ATTACK -> {
+                    effectType = EffectType.ATTACK;
+                    effectiveness = 5;
                     repetitions = 1;
                     targetType = TargetType.ONE;
                 }

@@ -47,6 +47,11 @@ public class TreasureMenuStage extends GenericStage {
     private void addRandomRewardFromOptions(Treasure treasure) {
         TreasureType result = options.random();
 
+        // Roll one more time if it's persistent currency, so that it is less common
+        if (result == TreasureType.PERSISTENT_CURRENCY) {
+            result = options.random();
+        }
+
         switch (result) {
             case CARDS -> addCardTreasure(treasure);
             case CURRENCY -> treasure.addTreasure(TreasureType.CURRENCY);
