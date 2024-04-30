@@ -218,6 +218,14 @@ public class Statistics {
         add(StatisticsType.ENEMY_GAINED_DEFENSE, amount);
     }
 
+    public static void eliteDied() {
+        add(StatisticsType.ELITE_DIED, Integer.MIN_VALUE);
+    }
+
+    public static void bossDied() {
+        add(StatisticsType.BOSS_DIED, Integer.MIN_VALUE);
+    }
+
     public static void playerWasTargeted() {
         add(StatisticsType.PLAYER_WAS_TARGETED, Integer.MIN_VALUE);
     }

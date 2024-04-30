@@ -124,7 +124,17 @@ public class ResultsMenuStage extends GenericStage {
 
         turnsPlayed.setText(String.format("Turns Played: %d", Statistics.countOccurrencesInCurrentRun(StatisticsType.TURN_ENDED)));
 
-        int amountOfSuperCoinsEarned = 100;
+
+        int enemiesKilled = Statistics.countOccurrencesInCurrentRun(StatisticsType.ENEMY_DIED);
+        int elitesKilled = Statistics.countOccurrencesInCurrentRun(StatisticsType.ELITE_DIED);
+        int bossesKilled = Statistics.countOccurrencesInCurrentRun(StatisticsType.BOSS_DIED);
+        int amountOfSuperCoinsEarned = enemiesKilled + elitesKilled * 9 + bossesKilled * 50;
+
+        int victoryMultiplier = 7;
+        if (victory) {
+            amountOfSuperCoinsEarned *= victoryMultiplier;
+        }
+
         superCoinsEarned.setText(String.format("SUPER Coins Earned:\n%d", amountOfSuperCoinsEarned));
         Player.changePersistentMoney(amountOfSuperCoinsEarned);
     }

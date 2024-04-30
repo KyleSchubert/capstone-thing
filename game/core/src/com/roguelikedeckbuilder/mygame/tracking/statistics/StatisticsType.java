@@ -2,10 +2,12 @@ package com.roguelikedeckbuilder.mygame.tracking.statistics;
 
 // When it says  "None"  that means it'll always return `Integer.MIN_VALUE`
 public enum StatisticsType {
+    BOSS_DIED, // value: None
     COMBAT_ENDED, // value: int (turns)
     COMBAT_STARTED, // value: None
     DISCARDED_CARD, // value: None
     DREW_CARD, // value: None
+    ELITE_DIED, // value: None
     ENEMY_DIED, // value: None
     ENEMY_GAINED_DEFENSE, // value: int (amount)
     ENEMY_HEALED, // value: int (amount)
@@ -35,4 +37,5 @@ public enum StatisticsType {
     TURN_ENDED, // value: None
     TURN_STARTED, // value: None
     UPGRADED_CARD // value: None
+
 }

@@ -14,6 +14,7 @@ import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.GenericStage;
 import com.roguelikedeckbuilder.mygame.stages.map.MapNodeType;
+import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 import com.roguelikedeckbuilder.mygame.treasure.Treasure;
 import com.roguelikedeckbuilder.mygame.treasure.TreasureType;
 
@@ -82,13 +83,13 @@ public class TreasureMenuStage extends GenericStage {
         switch (combatNodeType) {
 
             case BOSS_BATTLE -> {
-
                 addCardTreasure(treasure);
                 treasure.addTreasure(TreasureType.CURRENCY);
                 Array<ItemTypeName> items = ItemData.getSomeRandomItemNamesByTier(ItemTier.COMMON, 2, false);
                 treasure.addItem(items.pop());
                 treasure.addItem(items.pop());
                 amount = 2;
+                Statistics.bossDied();
             }
             case ELITE_BATTLE -> {
                 addCardTreasure(treasure);
@@ -96,6 +97,7 @@ public class TreasureMenuStage extends GenericStage {
                 treasure.addItem(items.pop());
                 treasure.addTreasure(TreasureType.CURRENCY);
                 amount = 2;
+                Statistics.eliteDied();
             }
             case NORMAL_BATTLE -> {
                 addCardTreasure(treasure);

@@ -174,6 +174,7 @@ public class MenuController {
                 combatMenuStage.setVictory(false);
 
                 if (Statistics.getZoneNumber() > MapMenuStage.NUMBER_OF_ZONES) {
+                    Statistics.bossDied();
                     victory = true;
                     setMenuState(MenuState.RESULTS);
                 } else {
