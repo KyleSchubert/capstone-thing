@@ -101,7 +101,7 @@ public class CombatInformation {
                 isIgnoringDefense = false;
             }
         } else {
-            int damageMultiplier = (int) Math.pow(2, Player.getUpgrades().getOrDefault("upgrade-2xDamage", 0));
+            int damageMultiplier = (int) Math.pow(2, Player.getUpgrades().getOrDefault("upgrade-x2Damage", 0));
             amount *= damageMultiplier;
             amount = Math.min(amount, Integer.MAX_VALUE);
         }

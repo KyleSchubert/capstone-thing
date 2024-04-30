@@ -70,16 +70,16 @@ public class UpgradesMenuStage extends GenericStage {
 
         switch (upgradeName) {
             case "upgrade-bypassImmunity" -> price = 2000;
-            case "upgrade-coins" -> price = 40;
-            case "upgrade-con" -> price = 160;
-            case "upgrade-draw" -> price = 600;
-            case "upgrade-energy" -> price = 750;
-            case "upgrade-item" -> price = 200;
-            case "upgrade-maxHP" -> price = 120;
-            case "upgrade-str" -> price = 180;
+            case "upgrade-coins" -> price = 4;
+            case "upgrade-con" -> price = 16;
+            case "upgrade-draw" -> price = 300;
+            case "upgrade-energy" -> price = 75;
+            case "upgrade-item" -> price = 20;
+            case "upgrade-maxHP" -> price = 12;
+            case "upgrade-str" -> price = 18;
             case "upgrade-x2Damage" -> price = 3000;
-            case "upgrade-x2SUPER" -> price = 220;
-            case "upgrade-preCure" -> price = 300;
+            case "upgrade-x2SUPER" -> price = 22;
+            case "upgrade-preCure" -> price = 30;
         }
 
         return price;
@@ -97,7 +97,7 @@ public class UpgradesMenuStage extends GenericStage {
 
     public static int getTotalPrice(String upgradeName) {
         int amount = Player.getUpgrades().get(upgradeName);
-        double multiplier = Math.pow(2.4, amount);
+        double multiplier = Math.pow(1.8, amount);
 
         // Since the largest base price that can increase infinitely is 3000, limit the multiplier to the integer limit / 4096.
         // That just means the price will stagnate eventually, but that's fine.
