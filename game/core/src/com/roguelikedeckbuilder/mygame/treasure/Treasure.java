@@ -10,6 +10,9 @@ import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.LabelMaker;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
+import com.roguelikedeckbuilder.mygame.items.Item;
+import com.roguelikedeckbuilder.mygame.items.ItemData;
+import com.roguelikedeckbuilder.mygame.items.ItemTypeName;
 
 import java.util.Random;
 
@@ -105,5 +108,19 @@ public class Treasure extends Group {
 
     private int generateRandomPersistentCurrencyAmount() {
         return random.nextInt(2) + 2;
+    }
+
+    public void addItem(ItemTypeName itemTypeName) {
+        Label label = LabelMaker.newLabel(ItemData.getName(itemTypeName), LabelMaker.getLarge());
+        Group group = prepareGenericTreasureWrapper(TreasureType.PERSISTENT_CURRENCY);
+
+        Item item = new Item(itemTypeName);
+        item.setPosition(20, 8);
+        group.addActor(item);
+
+        label.setPosition(120, 20);
+        group.addActor(label);
+
+        group.addCaptureListener(ClickListenerManager.obtainingItemFromTreasure(itemTypeName, group));
     }
 }

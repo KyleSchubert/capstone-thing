@@ -1193,7 +1193,7 @@ public class EffectData {
                     effectType = EffectType.DEFEND;
                     effectiveness = 10;
                     repetitions = 2;
-                    targetType = TargetType.ONE;
+                    targetType = TargetType.SELF;
                 }
                 case BOULDER_THROW -> {
                     effectType = EffectType.ATTACK;

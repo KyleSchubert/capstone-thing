@@ -65,6 +65,7 @@ public class MenuController {
     private Stage previousInputProcessor;
     private boolean isDrawDarkTransparentScreen;
     private boolean victory = false;
+    private MapNodeType combatNodeType;
 
     public static void setDrawTooltipMenu(boolean drawTooltipMenu) {
         isDrawTooltipMenu = drawTooltipMenu;
@@ -176,7 +177,7 @@ public class MenuController {
                     victory = true;
                     setMenuState(MenuState.RESULTS);
                 } else {
-                    treasureMenuStage.addGenericWinTreasureSet();
+                    treasureMenuStage.prepareTreasureFor(combatNodeType);
 
                     setMenuState(MenuState.MAP);
                     setMenuState(MenuState.TREASURE);
@@ -329,19 +330,14 @@ public class MenuController {
 
                     // Set the correct menu state
                     switch (nodeType) {
-                        case NORMAL_BATTLE -> {
+                        case NORMAL_BATTLE, ELITE_BATTLE -> {
                             setMenuState(MenuState.COMBAT);
-
-                            AudioManager.playNormalCombatMusic();
-                        }
-                        case ELITE_BATTLE -> {
-                            setMenuState(MenuState.COMBAT);
-
+                            combatNodeType = nodeType;
                             AudioManager.playNormalCombatMusic();
                         }
                         case BOSS_BATTLE -> {
                             setMenuState(MenuState.COMBAT);
-
+                            combatNodeType = nodeType;
                             AudioManager.playBossMusic();
                         }
                         case SHOP -> {
@@ -350,7 +346,7 @@ public class MenuController {
                         }
                         case REST -> setMenuState(MenuState.REST_AREA);
                         case TREASURE -> {
-                            treasureMenuStage.aLotOfTreasure();
+                            treasureMenuStage.prepareTreasureFor(MapNodeType.TREASURE);
                             setMenuState(MenuState.TREASURE);
                         }
                     }
@@ -569,5 +565,9 @@ public class MenuController {
 
     public TopBarStage getTopBarStage() {
         return topBarStage;
+    }
+
+    public void debugSetCombatNodeType(MapNodeType combatNodeType) {
+        this.combatNodeType = combatNodeType;
     }
 }

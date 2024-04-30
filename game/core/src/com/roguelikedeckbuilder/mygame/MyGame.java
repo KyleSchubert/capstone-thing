@@ -29,6 +29,7 @@ import com.roguelikedeckbuilder.mygame.menucontroller.MenuController;
 import com.roguelikedeckbuilder.mygame.menucontroller.MenuState;
 import com.roguelikedeckbuilder.mygame.stages.combatmenu.CombatMenuStage;
 import com.roguelikedeckbuilder.mygame.stages.combatmenu.UseLine;
+import com.roguelikedeckbuilder.mygame.stages.map.MapNodeType;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 import com.roguelikedeckbuilder.mygame.tracking.trigger.TriggerData;
 
@@ -200,7 +201,7 @@ public class MyGame extends ApplicationAdapter {
                     menuController.setMenuState(MenuState.MAIN_MENU);
                     menuController.setMenuState(MenuState.START_REWARDS);
                     menuController.setMenuState(MenuState.MAP);
-                    menuController.getTreasureMenuStage().aLotOfTreasure();
+                    menuController.getTreasureMenuStage().prepareTreasureFor(MapNodeType.BOSS_BATTLE);
                     menuController.setMenuState(MenuState.TREASURE);
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
                     menuController.setMenuState(MenuState.RESULTS);
@@ -214,6 +215,7 @@ public class MyGame extends ApplicationAdapter {
                     menuController.setMenuState(MenuState.START_REWARDS);
                     menuController.setMenuState(MenuState.MAP);
                     menuController.debugOnlyAddEnemiesForCombat();
+                    menuController.debugSetCombatNodeType(MapNodeType.ELITE_BATTLE);
                     menuController.setMenuState(MenuState.COMBAT);
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_5)) {
                     menuController.setMenuState(MenuState.RESULTS);

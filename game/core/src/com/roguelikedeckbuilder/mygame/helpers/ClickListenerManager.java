@@ -81,6 +81,14 @@ public class ClickListenerManager {
         return getClickListenerForTouchUp(() -> Player.obtainItem(itemTypeName));
     }
 
+
+    public static ClickListener obtainingItemFromTreasure(ItemTypeName itemTypeName, Group groupToRemove) {
+        return getClickListenerForTouchUp(() -> {
+            Player.obtainItem(itemTypeName);
+            groupToRemove.remove();
+        });
+    }
+
     public static ClickListener viewingPlayerCards() {
         return getClickListenerForTouchUp(() -> {
             menuController.getCardChangeMenuStage().prepareViewPlayerCards();
@@ -317,8 +325,6 @@ public class ClickListenerManager {
     }
 
     public static ClickListener resettingResolution() {
-        return getClickListenerForTouchUp(() -> {
-            Gdx.graphics.setWindowedMode(MyGame.windowWidth, MyGame.windowHeight);
-        });
+        return getClickListenerForTouchUp(() -> Gdx.graphics.setWindowedMode(MyGame.windowWidth, MyGame.windowHeight));
     }
 }
