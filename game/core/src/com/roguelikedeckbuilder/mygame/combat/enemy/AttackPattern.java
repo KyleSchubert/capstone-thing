@@ -48,20 +48,24 @@ public class AttackPattern {
         }
 
         // Ex: with 3 Moves with weightings of 2, randomNumber is in the range of 1-6 as an integer.
-        int randomNumber = random.nextInt(totalWeight + 1);
-        int weightAlreadySubtracted = 0;
+        int adjustedTotalWeight = totalWeight;
+
+        for (int i = 0; i < moves.size; i++) {
+            if (!moves.get(i).canUse()) {
+                adjustedTotalWeight -= moves.get(i).getWeighting();
+            }
+        }
+
+        int randomNumber = random.nextInt(adjustedTotalWeight + 1);
 
         for (int i = 0; i < moves.size; i++) {
             Move move = moves.get(i);
 
             int weightOfMove = move.getWeighting();
 
-            randomNumber -= weightOfMove;
-            weightAlreadySubtracted += weightOfMove;
+            if (move.canUse()) {
+                randomNumber -= weightOfMove;
 
-            if (!move.canUse()) {
-                randomNumber = random.nextInt(totalWeight - weightAlreadySubtracted + 1);
-            } else {
                 if (randomNumber <= 0) {
                     handleRepetitionChanges(i);
 

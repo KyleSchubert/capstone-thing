@@ -129,7 +129,6 @@ public class MyGame extends ApplicationAdapter {
             accumulator -= STEP_TIME;
             if (Player.getCombatInformation().getHp() == 0 && MenuController.getCurrentMenuState() != MenuState.RESULTS) {
                 menuController.setMenuState(MenuState.RESULTS);
-                System.out.println("here2");
             }
             if (!MenuController.getIsGameplayPaused() || MenuController.getCurrentMenuState() == MenuState.MAIN_MENU || MenuController.getCurrentMenuState() == MenuState.UPGRADES) {
                 float currentTime = Statistics.getSecondsIntoRun();

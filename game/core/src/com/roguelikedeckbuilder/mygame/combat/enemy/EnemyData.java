@@ -107,7 +107,7 @@ public class EnemyData {
 
                     move1 = new Move(4, AbilityTypeName.ENEMY_EVIL_HH_HEAL_AND_DEFEND);
 
-                    move2 = new Move(6, AbilityTypeName.ENEMY_EVIL_HH_HIT_AND_DEFEND);
+                    move2 = new Move(644444, AbilityTypeName.ENEMY_EVIL_HH_HIT_AND_DEFEND);
                     move2.setRepetitionLimit(2);
 
                     moves.add(move1, move2);

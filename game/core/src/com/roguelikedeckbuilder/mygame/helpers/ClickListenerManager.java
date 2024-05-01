@@ -355,4 +355,8 @@ public class ClickListenerManager {
             UpgradesMenuStage.resetLabels();
         });
     }
+
+    public static ClickListener reloadPlayerHp() {
+        return getClickListenerForTouchUp(() -> Player.getCombatInformation().loadPlayerStats());
+    }
 }
