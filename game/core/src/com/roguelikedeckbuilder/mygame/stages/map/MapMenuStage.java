@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.animated.character.CharacterTypeName;
 import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffect;
 import com.roguelikedeckbuilder.mygame.animated.visualeffect.VisualEffectName;
@@ -30,11 +29,11 @@ public class MapMenuStage extends GenericStage {
     private static final int MAX_NODES_PER_STAGE = 6;
     private static final int MIN_NODES_PER_STAGE = 4;
     private static final int MAX_NEXT_CONNECTIONS_PER_NODE = 2;
-    private static final int MIN_ELITE_BATTLE = 5;
+    private static final int MIN_ELITE_BATTLE = 8;
     private static final int MIN_SHOP = 3;
     private static final int MIN_REST = 4;
     private static final int MIN_TREASURE = 3;
-    private static final int MAX_ELITE_BATTLE = 10;
+    private static final int MAX_ELITE_BATTLE = 12;
     private static final int MAX_SHOP = 4;
     private static final int MAX_REST = 6;
     private static final int MAX_TREASURE = 6;
@@ -72,12 +71,12 @@ public class MapMenuStage extends GenericStage {
         this.hoverAndClickListener = hoverAndClickListener;
 
         mapNodeTypeWeights = new HashMap<>();
-        mapNodeTypeWeights.put(MapNodeType.NORMAL_BATTLE, 60);
-        mapNodeTypeWeights.put(MapNodeType.ELITE_BATTLE, 10);
-        mapNodeTypeWeights.put(MapNodeType.SHOP, 10);
+        mapNodeTypeWeights.put(MapNodeType.NORMAL_BATTLE, 40);
+        mapNodeTypeWeights.put(MapNodeType.ELITE_BATTLE, 35);
+        mapNodeTypeWeights.put(MapNodeType.SHOP, 15);
         mapNodeTypeWeights.put(MapNodeType.REST, 20);
-        mapNodeTypeWeights.put(MapNodeType.RANDOM_EVENT, 15);
-        mapNodeTypeWeights.put(MapNodeType.TREASURE, 10);
+        mapNodeTypeWeights.put(MapNodeType.RANDOM_EVENT, 25);
+        mapNodeTypeWeights.put(MapNodeType.TREASURE, 15);
 
         weightSum = mapNodeTypeWeights.values().stream().reduce(0, Integer::sum);
 
@@ -277,7 +276,7 @@ public class MapMenuStage extends GenericStage {
         completeNode(0, 0);
 
         // Assign battles to various battle nodes
-        if (zoneNumber < NUMBER_OF_ZONES) {
+        if (zoneNumber <= NUMBER_OF_ZONES) {
             Array<MapNode> normalBattleNodes = findNodesByType(MapNodeType.NORMAL_BATTLE);
             Array<MapNode> eliteBattleNodes = findNodesByType(MapNodeType.ELITE_BATTLE);
             Array<MapNode> bossBattleNodes = findNodesByType(MapNodeType.BOSS_BATTLE);
@@ -421,8 +420,6 @@ public class MapMenuStage extends GenericStage {
         // If the node that was just completed was the last node
         if (currentNodeStage == MAX_STAGES - 1) {
             Statistics.setZoneNumber(Statistics.getZoneNumber() + 1);
-            // Heal the player to full HP
-            Player.getCombatInformation().changeHp(999999);
             reset();
         }
     }
@@ -479,22 +476,30 @@ public class MapMenuStage extends GenericStage {
                         ((POS_Y_MAX - POS_Y_MIN) / (numberOfNodesInThisStage - 1)) * thisNodesFutureIndex + POS_Y_MIN
                 );
 
-                int usedNodeTypeWeight = weightSum;
-                // No rest nodes earlier than this stage number
-                if (stageNumber < NO_REST_NODES_BEFORE_STAGE_NUMBER) {
-                    usedNodeTypeWeight -= mapNodeTypeWeights.get(MapNodeType.REST);
-                }
 
-                // No shop nodes earlier than this stage number
-                if (stageNumber < NO_SHOP_NODES_BEFORE_STAGE_NUMBER) {
-                    usedNodeTypeWeight -= mapNodeTypeWeights.get(MapNodeType.SHOP);
-                }
+                if (stageNumber == MAX_STAGES - 2) {
+                    int someRandomNumber = random.nextInt(2);
+                    if (someRandomNumber == 0) {
+                        nodeType = MapNodeType.SHOP;
+                    } else {
+                        nodeType = MapNodeType.REST;
+                    }
+                } else if (stageNumber != 1) {
+                    int usedNodeTypeWeight = weightSum;
+                    // No rest nodes earlier than this stage number
+                    if (stageNumber < NO_REST_NODES_BEFORE_STAGE_NUMBER) {
+                        usedNodeTypeWeight -= mapNodeTypeWeights.get(MapNodeType.REST);
+                    }
 
-                int randomNumber = random.nextInt(usedNodeTypeWeight);
+                    // No shop nodes earlier than this stage number
+                    if (stageNumber < NO_SHOP_NODES_BEFORE_STAGE_NUMBER) {
+                        usedNodeTypeWeight -= mapNodeTypeWeights.get(MapNodeType.SHOP);
+                    }
 
-                for (MapNodeType key : mapNodeTypeWeights.keySet()) {
-                    if (stageNumber >= NO_SHOP_NODES_BEFORE_STAGE_NUMBER || key != MapNodeType.SHOP) {
-                        if (stageNumber >= NO_REST_NODES_BEFORE_STAGE_NUMBER || key != MapNodeType.REST) {
+                    int randomNumber = random.nextInt(usedNodeTypeWeight);
+
+                    for (MapNodeType key : mapNodeTypeWeights.keySet()) {
+                        if ((stageNumber >= NO_SHOP_NODES_BEFORE_STAGE_NUMBER || key != MapNodeType.SHOP) && (stageNumber >= NO_REST_NODES_BEFORE_STAGE_NUMBER || key != MapNodeType.REST)) {
                             randomNumber -= mapNodeTypeWeights.get(key);
                             if (randomNumber < 0) {
                                 nodeType = key;

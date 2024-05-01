@@ -10,7 +10,6 @@ import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.tracking.statistics.Statistics;
 
 
-// Enemies' attacks only do one thing for now.
 public class Intent extends Group {
     public Intent(AbilityTypeName abilityTypeName, float x, float y) {
         EffectName effectName = AbilityData.getEffect(abilityTypeName);

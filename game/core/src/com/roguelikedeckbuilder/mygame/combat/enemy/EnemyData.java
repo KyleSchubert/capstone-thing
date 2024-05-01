@@ -62,7 +62,7 @@ public class EnemyData {
                     moves.add(move1);
                     break;
                 case ANTEATER:
-                    maxHp = 240;
+                    maxHp = 290;
 
                     move1 = new Move(999999, AbilityTypeName.ENEMY_ANTEATER_DEFEND);
                     move1.setUseLimit(2);
@@ -193,7 +193,7 @@ public class EnemyData {
                     halfHealthAbility = AbilityTypeName.ENEMY_KING_OF_THE_BURROW_HALF_HEALTH;
                     break;
                 case KNIGHT:
-                    maxHp = 235;
+                    maxHp = 285;
 
                     move1 = new Move(1, AbilityTypeName.ENEMY_KNIGHT_DEFEND);
 
@@ -205,7 +205,7 @@ public class EnemyData {
 
                     break;
                 case MONOLITH:
-                    maxHp = 415;
+                    maxHp = 555;
 
                     move1 = new Move(10, AbilityTypeName.ENEMY_MONOLITH_DEFEND);
 
@@ -220,7 +220,7 @@ public class EnemyData {
 
                     break;
                 case PEANUT_BEE:
-                    maxHp = 195;
+                    maxHp = 255;
 
                     move1 = new Move(1, AbilityTypeName.ENEMY_PEANUT_BEE_HIT_TWICE_AND_POISON);
 

@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import com.roguelikedeckbuilder.mygame.Player;
 import com.roguelikedeckbuilder.mygame.helpers.ClickListenerManager;
 import com.roguelikedeckbuilder.mygame.helpers.MenuSoundType;
 import com.roguelikedeckbuilder.mygame.helpers.UserObjectOptions;
@@ -83,6 +84,9 @@ public class TreasureMenuStage extends GenericStage {
         switch (combatNodeType) {
 
             case BOSS_BATTLE -> {
+                // Heal the player to full HP
+                Player.getCombatInformation().changeHp(999999);
+
                 addCardTreasure(treasure);
                 treasure.addTreasure(TreasureType.CURRENCY);
                 Array<ItemTypeName> items = ItemData.getSomeRandomItemNamesByTier(ItemTier.COMMON, 2, false);

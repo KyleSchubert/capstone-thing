@@ -321,7 +321,7 @@ public class EffectData {
                     repetitions = 1;
                     targetType = TargetType.SELF;
                 }
-                case DEFEND_TWICE_A_BIT -> {
+                case DEFEND_TWICE_A_BIT, SWIFT_BLOCK -> {
                     effectType = EffectType.DEFEND;
                     effectiveness = 4;
                     repetitions = 2;
@@ -347,7 +347,7 @@ public class EffectData {
                 }
                 case ENEMY_ALIEN_BURNING -> {
                     effectType = EffectType.BURNING;
-                    effectiveness = 1;
+                    effectiveness = 2;
                     repetitions = 1;
                     targetType = TargetType.ONE;
                 }
@@ -360,7 +360,7 @@ public class EffectData {
                 case ENEMY_ANTEATER_HALF_HEALTH_HIT -> {
                     effectType = EffectType.ATTACK;
                     effectiveness = 1;
-                    repetitions = 3;
+                    repetitions = 6;
                     targetType = TargetType.ONE;
                 }
                 case ENEMY_ANTEATER_HIT_ONCE, ENEMY_BURGER_SMALLER_HIT, ENEMY_CHIPS_HIT -> {
@@ -377,7 +377,7 @@ public class EffectData {
                 }
                 case ENEMY_ANTEATER_INITIAL_POISON_TWO, ENEMY_PEANUT_BEE_POISON_TWICE, ENEMY_SAD_DOLLAR_POISON -> {
                     effectType = EffectType.POISON;
-                    effectiveness = 2;
+                    effectiveness = 3;
                     repetitions = 1;
                     targetType = TargetType.ONE;
                 }
@@ -389,7 +389,7 @@ public class EffectData {
                 }
                 case ENEMY_ANTEATER_POISON_THREE, ENEMY_SOCK_POISON -> {
                     effectType = EffectType.POISON;
-                    effectiveness = 3;
+                    effectiveness = 6;
                     repetitions = 1;
                     targetType = TargetType.ONE;
                 }
@@ -399,15 +399,15 @@ public class EffectData {
                     repetitions = 1;
                     targetType = TargetType.ONE;
                 }
-                case ENEMY_BURGER_DEFEND -> {
+                case ENEMY_BURGER_DEFEND, ENEMY_HELMET_PENGUIN_DEFEND -> {
                     effectType = EffectType.DEFEND;
-                    effectiveness = 8;
+                    effectiveness = 9;
                     repetitions = 1;
                     targetType = TargetType.SELF;
                 }
                 case ENEMY_BURGER_LARGER_HIT, ENEMY_SWORD_FISH_HIT_SMALL -> {
                     effectType = EffectType.ATTACK;
-                    effectiveness = 6;
+                    effectiveness = 8;
                     repetitions = 1;
                     targetType = TargetType.ONE;
                 }
@@ -500,12 +500,6 @@ public class EffectData {
                     effectiveness = 1;
                     repetitions = 1;
                     targetType = TargetType.ALL;
-                }
-                case ENEMY_HELMET_PENGUIN_DEFEND -> {
-                    effectType = EffectType.DEFEND;
-                    effectiveness = 9;
-                    repetitions = 1;
-                    targetType = TargetType.SELF;
                 }
                 case ENEMY_HELMET_PENGUIN_HIT -> {
                     effectType = EffectType.ATTACK;
@@ -779,13 +773,13 @@ public class EffectData {
                 }
                 case ENEMY_STARER_DEFEND_TEAM -> {
                     effectType = EffectType.DEFEND;
-                    effectiveness = 3;
+                    effectiveness = 5;
                     repetitions = 1;
                     targetType = TargetType.ALL;
                 }
                 case ENEMY_SWORD_FISH_HIT_LARGE -> {
                     effectType = EffectType.ATTACK;
-                    effectiveness = 8;
+                    effectiveness = 14;
                     repetitions = 1;
                     targetType = TargetType.ONE;
                 }
@@ -1031,12 +1025,6 @@ public class EffectData {
                     effectType = EffectType.ATTACK;
                     effectiveness = 4;
                     repetitions = 5;
-                    targetType = TargetType.ONE;
-                }
-                case SWIFT_BLOCK -> {
-                    effectType = EffectType.DEFEND;
-                    effectiveness = 4;
-                    repetitions = 2;
                     targetType = TargetType.ONE;
                 }
                 case BURN_STEEL_WOOL -> {
