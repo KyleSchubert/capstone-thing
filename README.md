@@ -1,50 +1,69 @@
 <h1>What</h1>
-This will be a roguelike deckbuilder made in Java using libGDX
+This is a roguelike deckbuilder made in Java using libGDX
 
 <h1>Images of parts of the game so far</h1>
-  <details><summary>Menu</summary>
+  <details><summary>Main Menu + Character Select (animated)</summary>
 
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/5db96ae7-433e-4d68-bba8-7eb26a76ce11)
+  ![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/ac6423b6-0af3-460f-aa33-73f3c37bd749)
+
    </details>
    
    <details><summary>Map</summary>
-   
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/3e9039cf-b9a9-424e-b219-0b54ecbb5a7b)
+
+   ![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/0bf26c29-edac-4267-beb7-ed34ecc17e24)
+
    </details>
 
   <details><summary>Combat</summary>
 
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/c202479c-40da-492a-b725-827091e9dc03)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/64ca3c84-f117-44bf-89a2-7582cb0856e9)
+
+  </details>
+
+  <details><summary>Upgrades</summary>
+    
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/bf1b4d13-41cb-4ab8-8d4f-3ba8aef6e97d)
+
   </details>
 
   <details><summary>Viewing Draw Pile in Combat</summary>
+    
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/624cee13-851a-42eb-a9c1-59a1aca573b0)
 
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/dccd17f1-2841-4d39-97b5-2bdf7590a5cf)
   </details>
   
   <details><summary>Rewards</summary>
-  
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/8d174f0b-fb3b-4a45-a090-e3e480c00001)
+
+  ![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/109d593e-0e22-4354-9944-e7a44cdcc16c)
+
+  ![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/5d4df7e8-123c-4c2d-b2ba-77ea511c6a89)
+
   </details>
 
   <details><summary>"Start with an item" panel</summary>
    
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/7cc02ef9-cd7e-4f1c-976f-d5852ad11bea)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/055f6723-b1d5-4b23-b041-885724b4522c)
+
   </details>
 
   <details><summary>Shop</summary>
     
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/aa7e2f6c-a3f2-4ada-b04a-f2c72828fc14)
+![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/05dbbbfb-f8a4-40ee-9e89-794b16732c39)
+
   </details>
 
   <details><summary>Rest Area</summary>
-    
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/d0b1ea64-d1c0-4933-9d7f-575fe06fc107)
+
+  ![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/dcf726cc-5d4f-45a8-8502-5bdb7ea64993)
+
+
   </details>
   
   <details><summary>Viewing Deck</summary>
     
-![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/35f88dc7-60fa-48f0-925d-4e1b5e7006da)
+  ![image](https://github.com/KyleSchubert/capstone-thing/assets/51379097/3c432213-578e-4927-9f77-50e884508e38)
+
+
   </details>
 
   
@@ -52,6 +71,8 @@ This will be a roguelike deckbuilder made in Java using libGDX
 
 <h1>How do I run this?</h1>
 Click the release in the Releases section, download the .zip, extract the entire folder together, and run the .exe
+<br>
+The releases section has more information
 
 <h1>How do I build this?</h1>
 If you want to build the game, follow this: https://libgdx.com/wiki/start/import-and-running 
@@ -126,8 +147,8 @@ I am using IntelliJ IDEA.
 <b>After Battles</b>
 - [x] Player receives in-game currency to spend at shops
 - [x] Player receives a choice of 3 cards to add to their deck
-- [ ] If it was an elite battle, player receives a random artifact item and more in-game currency
-- [ ] If it was a boss battle, player receives a choice of 3 high-tier artifact items, more in-game currency, and in-game currency that persists between runs
+- [x] If it was an elite battle, player receives a random artifact item and more in-game currency
+- [x If it was a boss battle, player receives a choice of 3 high-tier artifact items, more in-game currency, and in-game currency that persists between runs
 
 
 <b>Shops</b>
@@ -140,7 +161,6 @@ I am using IntelliJ IDEA.
 <b>Rest area</b>
 - [x] Player can rest to restore HP
 - [x] Player can upgrade 1 cards in their deck
-- [ ] Player can double the rewards of the next elite or boss battle but make it more difficult
 
 
 <b>Main menu</b>
@@ -148,9 +168,8 @@ I am using IntelliJ IDEA.
 - [x] Exit game button
 - [x] Upgrades button
 - [x] Settings button
-- [ ] Has a background
+- [x] Has a background
 - [x] Music plays
-- [ ] Has a title
 
 
 <b>Pause menu</b>
@@ -168,24 +187,24 @@ I am using IntelliJ IDEA.
 
 <b>Results menu</b>
 - [x] Has main menu button
-- [ ] Shows how far the player got
-- [ ] Shows the time spent playing that round
-- [ ] Shows how much persistent currency the player earned
-- [ ] Shows if the player won or lost
+- [x] Shows how far the player got
+- [x] Shows the time spent playing that round
+- [x] Shows how much persistent currency the player earned
+- [x] Shows if the player won or lost
 
 
 <b>Upgrades menu</b>
 - [x] Has a back button
-- [ ] Player can spend their in-game currency that persists between runs to buy permanent upgrades for all future runs
+- [x] Player can spend their in-game currency that persists between runs to buy permanent upgrades for all future runs
 
 
 <b>Starting the game</b>
 - [x] A menu appears with options for the player to choose from
-- [ ] Player receives a choice of 5 artifacts or 1 of 5 upgraded powerful cards
+- [x] Player receives a choice of 3 items
 - [x] Player starts with some in-game currency
-- [ ] Player starts with 10 cards, consisting of comparatively weak, un-upgraded defensive and offensive cards.
+- [x] Player starts with 10 cards, consisting of comparatively weak, un-upgraded defensive and offensive cards.
 
 
 <b>Winning</b>
-- [ ] The player receives much more persistent in-game currency
+- [x] The player receives much more persistent in-game currency
 
