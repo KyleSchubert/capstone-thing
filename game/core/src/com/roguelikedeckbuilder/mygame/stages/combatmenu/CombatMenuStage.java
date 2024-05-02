@@ -466,7 +466,7 @@ public class CombatMenuStage extends GenericStage {
             CombatHandler.resetIsTargetingValid();
 
             if (Player.getPotentialAbilityTargetType() == TargetType.SELF) {
-                if (isPointWithinRange(mousePosition, Player.getPositionOnStage())) {
+                if (isPointWithinRange(mousePosition, Player.getPositionOnStage()) && currentEnemies.notEmpty()) {
                     CombatHandler.setEnemyTargets(currentEnemies);
                 }
             } else {
