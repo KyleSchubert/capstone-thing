@@ -254,6 +254,20 @@ public class Player {
         handContents.clear();
 
         startTurn();
+
+        int bonusStrength = Player.getUpgrades().getOrDefault("upgrade-str", 0);
+        int bonusConstitution = Player.getUpgrades().getOrDefault("upgrade-con", 0);
+        int bonusPreCure = Player.getUpgrades().getOrDefault("upgrade-preCure", 0);
+
+        if (bonusStrength > 0) {
+            combatInformation.addStatusEffect(new StatusEffect(StatusEffectTypeName.STRENGTH, bonusStrength));
+        }
+        if (bonusConstitution > 0) {
+            combatInformation.addStatusEffect(new StatusEffect(StatusEffectTypeName.CONSTITUTION, bonusConstitution));
+        }
+        if (bonusPreCure > 0) {
+            combatInformation.addStatusEffect(new StatusEffect(StatusEffectTypeName.PRE_CURE, bonusPreCure));
+        }
     }
 
     public static void startTurn() {
@@ -272,20 +286,6 @@ public class Player {
         combatInformation.clearDefense();
 
         combatInformation.activateStartTurnStatusEffects();
-
-        int bonusStrength = Player.getUpgrades().getOrDefault("upgrade-str", 0);
-        int bonusConstitution = Player.getUpgrades().getOrDefault("upgrade-con", 0);
-        int bonusPreCure = Player.getUpgrades().getOrDefault("upgrade-preCure", 0);
-
-        if (bonusStrength > 0) {
-            combatInformation.addStatusEffect(new StatusEffect(StatusEffectTypeName.STRENGTH, bonusStrength));
-        }
-        if (bonusConstitution > 0) {
-            combatInformation.addStatusEffect(new StatusEffect(StatusEffectTypeName.CONSTITUTION, bonusConstitution));
-        }
-        if (bonusPreCure > 0) {
-            combatInformation.addStatusEffect(new StatusEffect(StatusEffectTypeName.PRE_CURE, bonusPreCure));
-        }
     }
 
     public static int getEnergy() {
